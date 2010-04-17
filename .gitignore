@@ -1,0 +1,6 @@
+/*
+!.emacs
+!.emacs.d/
+!.gitignore
+*~
+.emacs.d/auto-save-list
