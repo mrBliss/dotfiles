@@ -22,7 +22,7 @@
 ;; Require some stuff
 (mapcar #'require
         '(cl
-	  clojure
+          clojure
           color-theme
           custom-themes
           functions
@@ -38,8 +38,8 @@
 
 ;; Disable tool bar and scroll bar
 (when window-system
-    (tool-bar-mode -1)
-    (set-scroll-bar-mode nil))
+  (tool-bar-mode -1)
+  (set-scroll-bar-mode nil))
 
 ;; Other customizations
 (setq transient-mark-mode '(only . t))
