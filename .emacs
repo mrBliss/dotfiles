@@ -36,6 +36,7 @@
           recentf
           smart-tab
           uniquify
+          undo-tree
           zencoding-mode))
 
 ;; Disable tool bar and scroll bar
@@ -74,7 +75,10 @@
 
 ;; Enable Ido
 (ido-mode t)
-(setq ido-enable-flex-matching t)
+(ido-everywhere t)
+(setq ido-enable-flex-matching t
+      ido-use-filename-at-point 'guess
+      ido-create-new-buffer 'always)
 
 ;; Ignore some buffers when switching buffers
 (setq ido-ignore-buffers '("\\` " "^\*slime-events" "^\*Messages*"
@@ -97,7 +101,11 @@
 (global-set-key (kbd "C-c E") (lambda () (interactive)(find-file "~/.emacs")))
 (global-set-key (kbd "C-x r v") 'list-registers)
 (global-set-key (kbd "C-M-z") 'zap-back-to-char)
-
+(global-set-key (kbd "C-c r") 'replace-string)
+(global-set-key (kbd "C-x M-o") 'bury-buffer)
+(global-set-key (kbd "C-c e") (lambda () (interactive)(find-file "~/.emacs")))
+(global-set-key (kbd "C-c E") (lambda () (interactive)(eval-buffer)))
+(global-set-key (kbd "C-c k") 'kill-line-backwards)
 
 ;; Zencoding-mode
 (add-hook 'sgm-mode-hook 'zencoding-mode)
@@ -168,12 +176,14 @@
 (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 
 ;; Set frame title
-(setq-default
- frame-title-format
- '(:eval
-   (format "%s@%s"
-           (or (file-remote-p default-directory 'user) user-login-name)
-           (file-name-nondirectory (or (buffer-file-name) default-directory)))))
+(when window-system
+  (setq-default
+   frame-title-format
+   '(:eval
+     (format "%s@%s"
+             (or (file-remote-p default-directory 'user) user-login-name)
+             (file-name-nondirectory (or (buffer-file-name)
+                                         default-directory))))))
 
 ;; Abbreviations
 (setq abbrev-file-name "~/.emacs.d/abbrev_defs")
@@ -189,3 +199,6 @@
 
 ;; Show file size
 (size-indication-mode t)
+
+;; Use undo-tree-mode
+(global-undo-tree-mode t)

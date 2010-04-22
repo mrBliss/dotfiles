@@ -89,7 +89,6 @@ Symbols matching the text at point are put first in the completion list."
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
 
-
 (defun timestamp ()
   "Spit out the current time"
   (interactive)
@@ -99,5 +98,12 @@ Symbols matching the text at point are put first in the completion list."
   "No need to enter C-- to zap back."
   (interactive "p\ncZap back to char: ")
   (zap-to-char (- arg) char))
+
+(defun kill-line-backwards ()
+  "Removes everything between the start of the line and the point"
+  (interactive)
+  (cua-set-mark)
+  (move-beginning-of-line 1)
+  (kill-region (region-beginning) (region-end)))
 
 (provide 'functions)
