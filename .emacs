@@ -105,7 +105,7 @@
 (global-set-key (kbd "C-x M-o") 'bury-buffer)
 (global-set-key (kbd "C-c e") (lambda () (interactive)(find-file "~/.emacs")))
 (global-set-key (kbd "C-c E") (lambda () (interactive)(eval-buffer)))
-(global-set-key (kbd "C-c k") 'kill-line-backwards)
+(global-set-key (kbd "C-c d") 'kill-line-backwards)
 
 ;; Zencoding-mode
 (add-hook 'sgm-mode-hook 'zencoding-mode)

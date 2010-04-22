@@ -625,9 +625,9 @@ in visualizer."
   (define-key undo-tree-map (kbd "C-?") 'undo-tree-redo)
   (define-key undo-tree-map (kbd "M-_") 'undo-tree-redo)
   ;; just in case something has defined `redo'...
-  (define-key undo-tree-map [remap redo] 'undo-tree-redo)
+;;  (define-key undo-tree-map [remap redo] 'undo-tree-redo)
   ;; we use "C-x u" for the undo-tree visualizer
-  (define-key undo-tree-map (kbd "\C-x u") 'undo-tree-visualize)
+  (define-key undo-tree-map (kbd "C-x M-u") 'undo-tree-visualize)
   ;; bind register commands
   (define-key undo-tree-map (kbd "C-x r u")
     'undo-tree-save-state-to-register)
