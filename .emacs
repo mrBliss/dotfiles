@@ -30,6 +30,7 @@
           imenu
           mic-paren
           nxml-mode
+	  php-mode
           pretty-lambdada
           recentf
           smart-tab
