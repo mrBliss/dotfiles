@@ -8,6 +8,7 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 (set-language-environment "UTF-8")
+(setq current-language-environment "UTF-8")
 
 ;; Add ELPA
 (when
@@ -30,7 +31,7 @@
           imenu
           mic-paren
           nxml-mode
-	  php-mode
+          php-mode
           pretty-lambdada
           recentf
           smart-tab

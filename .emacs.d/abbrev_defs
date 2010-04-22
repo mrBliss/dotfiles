@@ -1,6 +1,8 @@
 ;;-*-coding: emacs-mule;-*-
 (define-abbrev-table 'Buffer-menu-mode-abbrev-table '(    ))
 
+(define-abbrev-table 'Custom-mode-abbrev-table '(    ))
+
 (define-abbrev-table 'apropos-mode-abbrev-table '(    ))
 
 (define-abbrev-table 'awk-mode-abbrev-table '(    ))
@@ -23,8 +25,16 @@
 
 (define-abbrev-table 'fundamental-mode-abbrev-table '(    ))
 
-(define-abbrev-table 'global-abbrev-table '(    ("thoams" "Thomas" nil 2)
+(define-abbrev-table 'global-abbrev-table '(
+    ("requirestr" "(require '[clojure.contrib.str-utils2 :as s])" nil 4)
+    ("thoams" "Thomas" nil 2)
+    ("ualpha" "†á" nil 1)
+    ("uar" "‘¡ú" nil 0)
+    ("ubeta" "†â" nil 1)
+    ("ugamma" "†ã" nil 0)
+    ("uinf" "‘¡Þ" nil 1)
     ("useshow" "(use '[clojure.contrib.repl-utils :only (show)])" nil 2)
+    ("utheta" "†è" nil 0)
     ))
 
 (define-abbrev-table 'html-mode-abbrev-table '(    ))
@@ -62,4 +72,3 @@
 (define-abbrev-table 'text-mode-abbrev-table '(    ))
 
 (define-abbrev-table 'vc-git-log-view-mode-abbrev-table '(    ))
-
