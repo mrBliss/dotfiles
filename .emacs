@@ -206,5 +206,13 @@
 (global-undo-tree-mode t)
 
 ;; Add git to path (magit needs this)
-(setenv "PATH" (concat (getenv "PATH") ":/usr/local/git/bin"))
-(setq exec-path (append exec-path '("/usr/local/git/bin")))
+(setenv "PATH" (concat
+                (case system-type
+                  ('darwin ":/usr/local/git/bin")
+                  ('windows-nt "d:/Documents/Cygwin/bin;"))
+                (getenv "PATH")))
+(setq exec-path
+      (append exec-path
+              (case system-type
+                ('darwin '("/usr/local/git/bin"))
+                ('windows-nt "d:/Documents/Cygwin/bin/"))))
