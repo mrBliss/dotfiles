@@ -106,7 +106,8 @@
 (global-set-key (kbd "C-c e") (lambda () (interactive)(find-file "~/.emacs")))
 (global-set-key (kbd "C-c E") (lambda () (interactive)(eval-buffer)))
 (global-set-key (kbd "C-c d") 'kill-line-backwards)
-(global-set-key (kbd "C-c f") 'make-frame))
+(global-set-key (kbd "C-c f") 'make-frame)
+(global-set-key (kbd "C-M-y") 'kill-ring-search)
 
 ;; Zencoding-mode
 (add-hook 'sgm-mode-hook 'zencoding-mode)
@@ -203,3 +204,7 @@
 
 ;; Use undo-tree-mode
 (global-undo-tree-mode t)
+
+;; Add git to path (magit needs this)
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/git/bin"))
+(setq exec-path (append exec-path '("/usr/local/git/bin")))
