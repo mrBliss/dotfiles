@@ -49,7 +49,7 @@
     ("udelta" "†ä" nil 5)
     ("ugamma" "†ã" nil 0)
     ("uinf" "‘¡Þ" nil 3)
-    ("ular" "‘¡û" nil 2)
+    ("ular" "‘¡û" nil 3)
     ("useshow" "(use '[clojure.contrib.repl-utils :only (show)])" nil 2)
     ("utheta" "†è" nil 0)
     ))
@@ -75,6 +75,8 @@
 (define-abbrev-table 'select-tags-table-mode-abbrev-table '(    ))
 
 (define-abbrev-table 'sgml-mode-abbrev-table '(    ))
+
+(define-abbrev-table 'sh-mode-abbrev-table '(    ))
 
 (define-abbrev-table 'shell-mode-abbrev-table '(    ))
 
