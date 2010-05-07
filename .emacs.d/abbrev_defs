@@ -41,16 +41,16 @@
 
 (define-abbrev-table 'fundamental-mode-abbrev-table '(    ))
 
-(define-abbrev-table 'global-abbrev-table '(    ("requirestr" "(require '[clojure.contrib.str-utils2 :as s])" nil 4)
+(define-abbrev-table 'global-abbrev-table '(    ("requirestr" "(require '[clojure.contrib.str-utils2 :as s])" nil 5)
     ("thoams" "Thomas" nil 2)
     ("ualpha" "†á" nil 1)
-    ("uar" "‘¡ú" nil 0)
+    ("urar" "‘¡ú" nil 0)
     ("ubeta" "†â" nil 1)
     ("udelta" "†ä" nil 5)
     ("ugamma" "†ã" nil 0)
     ("uinf" "‘¡Þ" nil 3)
     ("ular" "‘¡û" nil 3)
-    ("useshow" "(use '[clojure.contrib.repl-utils :only (show)])" nil 2)
+    ("useshow" "(use '[clojure.contrib.repl-utils :only (show)])" nil 3)
     ("utheta" "†è" nil 0)
     ))
 

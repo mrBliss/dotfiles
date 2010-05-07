@@ -78,7 +78,8 @@
 (ido-everywhere t)
 (setq ido-enable-flex-matching t
       ido-use-filename-at-point 'guess
-      ido-create-new-buffer 'always)
+      ido-create-new-buffer 'always
+      ido-default-buffer-method 'samewindow)
 
 ;; Ignore some buffers when switching buffers
 (setq ido-ignore-buffers '("\\` " "^\*slime-events" "^\*Messages*"
@@ -98,7 +99,7 @@
 (global-set-key (kbd "C-M-=") 'comment-region)
 (global-set-key (kbd "C-M-+") 'uncomment-region)
 (global-set-key (kbd "TAB") 'smart-tab)
-(global-set-key (kbd "C-c E") (lambda () (interactive)(find-file "~/.emacs")))
+(global-set-key (kbd "C-c E") (lambda () (interactive)(eval-buffer)))
 (global-set-key (kbd "C-x r v") 'list-registers)
 (global-set-key (kbd "C-M-z") 'zap-back-to-char)
 (global-set-key (kbd "C-c r") 'replace-string)
