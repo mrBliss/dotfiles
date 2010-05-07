@@ -171,7 +171,7 @@
       (case system-type
         ('darwin "/opt/local/bin/aspell")
         ('windows-nt "C:\\Program Files (x86)\\Aspell\\bin\\aspell.exe")
-	('gnu/linux "/usr/aspell")))
+        ('gnu/linux "/usr/aspell")))
 (setq ispell-dictionary "english")
 (add-hook 'text-mode-hook 'turn-on-flyspell)
 
