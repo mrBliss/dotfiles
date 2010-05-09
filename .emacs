@@ -207,8 +207,11 @@
 ;; Use undo-tree-mode
 (global-undo-tree-mode t)
 
-;; Increase kill ring size
-(setq kill-ring-max 1000)
+;; Increase kill ring size, save interprogram-pastes to kill ring,
+;; do not save duplicate kills
+ (setq kill-ring-max 1000
+       save-interprogram-paste-before-kill t
+       kill-do-not-save-duplicates t)
 
 ;; Add git to path (magit needs this)
 (setenv "PATH" (concat
