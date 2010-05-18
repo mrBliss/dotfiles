@@ -198,7 +198,7 @@
 (add-hook 'kill-emacs-hook 'write-abbrev-file)
 
 ;; Autoclose successfull compilations
-(setq compilation-window-height 12)
+(setq compilation-window-height 8)
 (setq compilation-finish-functions nil)
 
 ;; Show file size
@@ -209,9 +209,13 @@
 
 ;; Increase kill ring size, save interprogram-pastes to kill ring,
 ;; do not save duplicate kills
- (setq kill-ring-max 1000
-       save-interprogram-paste-before-kill t
-       kill-do-not-save-duplicates t)
+(setq kill-ring-max 1000
+      save-interprogram-paste-before-kill t
+      kill-do-not-save-duplicates t)
+
+;; Display el instead of Emacs Lisp in the mode-line
+(add-hook 'emacs-lisp-mode-hook
+          (lambda () (setq mode-name "el")))
 
 ;; Add git to path (magit needs this)
 (setenv "PATH" (concat
@@ -224,3 +228,6 @@
               (case system-type
                 ('darwin '("/usr/local/git/bin"))
                 ('windows-nt "d:/Documents/Cygwin/bin/"))))
+
+;; Saved by the bell -NOT!
+(setq ring-bell-function 'ignore)
