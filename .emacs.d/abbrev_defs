@@ -56,13 +56,13 @@
     ("ualpha" "†á" nil 1)
     ("ubeta" "†â" nil 1)
     ("udelta" "†ä" nil 5)
-    ("ugamma" "†ã" nil 0)
+    ("ugamma" "†ã" nil 2)
     ("uinf" "‘¡Þ" nil 3)
     ("ular" "‘¡û" nil 3)
-    ("urar" "‘¡ú" nil 0)
+    ("urar" "‘¡ú" nil 1)
     ("useshow" "(use '[clojure.contrib.repl-utils :only (show)])" nil 3)
-    ("utheta" "†è" nil 0)
-
+    ("utheta" "†è" nil 2)
+    ("uzeta" "†æ" nil 7)
    ))
 
 (define-abbrev-table 'html-mode-abbrev-table '())
@@ -79,8 +79,6 @@
 
 (define-abbrev-table 'magit-log-edit-mode-abbrev-table '())
 
-(define-abbrev-table 'message-mode-abbrev-table '())
-
 (define-abbrev-table 'objc-mode-abbrev-table
   '(
    ))
@@ -90,8 +88,6 @@
 (define-abbrev-table 'pike-mode-abbrev-table
   '(
    ))
-
-(define-abbrev-table 'ruby-mode-abbrev-table '())
 
 (define-abbrev-table 'select-tags-table-mode-abbrev-table '())
 
@@ -112,8 +108,6 @@
 (define-abbrev-table 'slime-xref-mode-abbrev-table '())
 
 (define-abbrev-table 'special-mode-abbrev-table '())
-
-(define-abbrev-table 'tar-mode-abbrev-table '())
 
 (define-abbrev-table 'text-mode-abbrev-table '())
 
