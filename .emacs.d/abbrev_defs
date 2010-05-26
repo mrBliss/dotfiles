@@ -9,6 +9,8 @@
   '(
    ))
 
+(define-abbrev-table 'bubbles-mode-abbrev-table '())
+
 (define-abbrev-table 'c++-mode-abbrev-table
   '(
    ))
@@ -44,6 +46,10 @@
 (define-abbrev-table 'diff-mode-abbrev-table '())
 
 (define-abbrev-table 'doctex-mode-abbrev-table '())
+
+(define-abbrev-table 'doctor-mode-abbrev-table '())
+
+(define-abbrev-table 'dun-mode-abbrev-table '())
 
 (define-abbrev-table 'emacs-lisp-mode-abbrev-table '())
 
@@ -114,6 +120,8 @@
 (define-abbrev-table 'slime-xref-mode-abbrev-table '())
 
 (define-abbrev-table 'slitex-mode-abbrev-table '())
+
+(define-abbrev-table 'solitaire-mode-abbrev-table '())
 
 (define-abbrev-table 'special-mode-abbrev-table '())
 

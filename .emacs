@@ -218,17 +218,10 @@
 (add-hook 'emacs-lisp-mode-hook
           (lambda () (setq mode-name "el")))
 
-;; Add git to path (magit needs this)
-(setenv "PATH" (concat
-                (case system-type
-                  ('darwin ":/usr/local/git/bin")
-                  ('windows-nt "d:/Documents/Cygwin/bin;"))
-                (getenv "PATH")))
-(setq exec-path
-      (append exec-path
-              (case system-type
-                ('darwin '("/usr/local/git/bin"))
-                ('windows-nt "d:/Documents/Cygwin/bin/"))))
+;; Add git to path on OS X (magit needs this)
+(when (eq system-type 'darwin)
+  (setenv "PATH" (concat ":/usr/local/git/bin" (getenv "PATH")))
+  (setq exec-path (append exec-path '("/usr/local/git/bin"))))
 
 ;; Saved by the bell -NOT!
 (setq ring-bell-function 'ignore)
@@ -236,9 +229,6 @@
 ;; Change .dvi viewer to Skim
 (setq tex-dvi-view-command
       '(cond ((eq window-system 'ns) "/Applications/Skim.app/Contents/MacOS/Skim")
-	     ((eq window-system 'x) "xdvi")
-	     ((eq window-system 'w32) "yap")
-	     (t "dvi2tty * | cat -s")))
-
-
-
+             ((eq window-system 'x) "xdvi")
+             ((eq window-system 'w32) "yap")
+             (t "dvi2tty * | cat -s")))

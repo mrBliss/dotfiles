@@ -1,8 +1,9 @@
 ;; Cygwin support
 
 ;; Sets your shell to use cygwin's bash, if Emacs finds it's running
-;; under Windows and c:\cygwin exists. Assumes that C:\cygwin\bin is
-;; not already in your Windows Path (it generally should not be).
+;; under Windows and D:\Documents\Cygwin exists. Assumes that
+;; D:\Documents\Cygwin\bin is not already in your Windows Path
+;; (it generally should not be).
 
 (let* ((cygwin-root "D:/Documents/Cygwin")
        (cygwin-bin (concat cygwin-root "/bin")))
@@ -12,11 +13,7 @@
     (setq exec-path (cons cygwin-bin exec-path))
     (setenv "PATH" (concat cygwin-bin ";" (getenv "PATH")))
 
-    ;; By default use the Windows HOME.
-    ;; Otherwise, uncomment below to set a HOME
-    ;;      (setenv "HOME" (concat cygwin-root "/home/eric"))
-
-    ;; NT-emacs assumes a Windows shell. Change to baash.
+    ;; NT-emacs assumes a Windows shell. Change to bash.
     (setq shell-file-name "bash")
     (setenv "SHELL" shell-file-name)
     (setq explicit-shell-file-name shell-file-name)
