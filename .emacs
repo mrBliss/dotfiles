@@ -220,7 +220,7 @@
 
 ;; Add git to path on OS X (magit needs this)
 (when (eq system-type 'darwin)
-  (setenv "PATH" (concat ":/usr/local/git/bin" (getenv "PATH")))
+  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/git/bin"))
   (setq exec-path (append exec-path '("/usr/local/git/bin"))))
 
 ;; Saved by the bell -NOT!
