@@ -233,17 +233,9 @@
 ;; Saved by the bell -NOT!
 (setq ring-bell-function 'ignore)
 
-;; AUCTeX settings
-(add-hook 'LaTeX-mode-hook '(lambda () (TeX-fold-mode 1) (outline-minor-mode 1)))
-(add-hook 'LaTeX-mode-hook '(lambda () (setq fill-column 72)))
-(add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
-(add-hook 'LaTeX-mode-hook '(lambda () (setq TeX-DVI-via-PDFTeX t)))
-(setq TeX-output-view-style
-      '(("^dvi$" "." "/Applications/Skim.app/Contents/MacOS/Skim %o")
-        ("^pdf$" "." "/Applications/Preview.app/Contents/MacOS/Preview %o")))
-
-
-
-
-
-
+;; Change .dvi viewer to Skim
+(setq tex-dvi-view-command
+      '(cond ((eq window-system 'ns) "/Applications/Skim.app/Contents/MacOS/Skim")
+	     ((eq window-system 'x) "xdvi")
+	     ((eq window-system 'w32) "yap")
+	     (t "dvi2tty * | cat -s")))
