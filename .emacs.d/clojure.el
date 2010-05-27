@@ -7,6 +7,9 @@
           swank-clojure
           swank-clojure-autoloads))
 
+;; Hide version mismatches
+(setq slime-protocol-version 'ignore)
+
 ;; Slime
 (eval-after-load "slime"
   '(progn
