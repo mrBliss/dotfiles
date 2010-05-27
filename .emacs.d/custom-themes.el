@@ -185,7 +185,7 @@
   (interactive)
   (color-theme-install
    '(color-theme-bespin
-     ((background-color . "#28211C")
+     ((background-color . "#302620")
       (foreground-color . "#BAAE9E")
       (cursor-color . "#A7A7A7"))
      (default ((t (nil))))
@@ -207,7 +207,7 @@
      (comint-highlight-prompt ((t (:foreground "#5EA6EA"))))
      (highlight-80+ ((t (:background "#F9EE98"))))
      (hl-line ((t (:background "#2A2A2A"))))
-     (region ((t (:background "#141414"))))
+     (region ((t (:background "#f8fab7"))))
      (ido-subdir ((t (:foreground "#F1266F")))))))
 
 (provide 'custom-themes)

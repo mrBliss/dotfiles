@@ -177,8 +177,10 @@
 (add-hook 'text-mode-hook 'turn-on-flyspell)
 
 ;; Put auto save files in one folder
-(setq autosave-dir "~/.emacs.d/autosaves")
-(make-directory autosave-dir t)
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
 ;; Set frame title
 (when window-system
