@@ -36,6 +36,15 @@
      (add-hook 'slime-repl-mode-hook
                'swank-clojure-slime-repl-modify-syntax t)))
 
+(eval-after-load "clojure-mode"
+  '(font-lock-add-keywords
+    'clojure-mode `(("(\\(fn\\>\\)"
+                     (0 (progn (compose-region (match-beginning 1)
+                                               (match-end 1) "ƒ")
+                               nil))))))
+
+
+
 (defmacro defclojureface (name color desc &optional others)
   `(defface ,name '((((class color)) (:foreground ,color ,@others)))
      ,desc :group 'faces))

@@ -1,6 +1,11 @@
 ;; Turn off welcome screen
 (setq inhibit-startup-message t)
 
+;; Disable tool bar and scroll bar
+(when window-system
+  (tool-bar-mode -1)
+  (set-scroll-bar-mode nil))
+
 ;; Unicode FTW
 (setq locale-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
@@ -39,11 +44,6 @@
           uniquify
           undo-tree
           zencoding-mode))
-
-;; Disable tool bar and scroll bar
-(when window-system
-  (tool-bar-mode -1)
-  (set-scroll-bar-mode nil))
 
 ;; Other customizations
 (setq transient-mark-mode '(only . t))
@@ -95,7 +95,7 @@
 (global-set-key (kbd "C-M-h") 'backward-kill-word)
 (global-set-key (kbd "C-M-g") 'backward-sexp) ;;TODO C-M-b doesn't work on OS X
 (global-set-key (kbd "C-x C-i") 'ido-imenu)
-(global-set-key (kbd "C-x j") 'join-line)
+(global-set-key (kbd "C-x j") 'join-line-or-lines-in-region)
 (global-set-key (kbd "C-x O") (lambda () (interactive) (other-window -1)))
 (global-set-key (kbd "C-M-=") 'comment-region)
 (global-set-key (kbd "C-M-+") 'uncomment-region)
@@ -113,6 +113,7 @@
 (global-set-key (kbd "C-c s") (lambda() (interactive)
 				(ispell-change-dictionary "nederlands")
 				(flyspell-buffer)))
+(global-set-key (kbd "C-c x") 'swap-windows)
 
 ;; Zencoding-mode
 (add-hook 'sgm-mode-hook 'zencoding-mode)
@@ -240,3 +241,7 @@
 
 ;; Load typing-speed mode
 (load "typing-speed.el")
+
+;; When opened via cocoa (i.e drop file on icon, or dbl click)
+;; open in a new window in existing frame, rather than new frame
+(setq ns-pop-up-frames nil)
