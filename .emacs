@@ -110,6 +110,9 @@
 (global-set-key (kbd "C-c d") 'kill-line-backwards)
 (global-set-key (kbd "C-c f") 'make-frame)
 (global-set-key (kbd "C-M-y") 'kill-ring-search)
+(global-set-key (kbd "C-c s") (lambda() (interactive)
+				(ispell-change-dictionary "nederlands")
+				(flyspell-buffer)))
 
 ;; Zencoding-mode
 (add-hook 'sgm-mode-hook 'zencoding-mode)
@@ -171,7 +174,7 @@
 (setq ispell-program-name
       (case system-type
         ('darwin "/opt/local/bin/aspell")
-        ('windows-nt "C:\\Program Files (x86)\\Aspell\\bin\\aspell.exe")
+	('windows-nt "aspell")
         ('gnu/linux "/usr/aspell")))
 (setq ispell-dictionary "english")
 (add-hook 'text-mode-hook 'turn-on-flyspell)
@@ -234,3 +237,6 @@
              ((eq window-system 'x) "xdvi")
              ((eq window-system 'w32) "yap")
              (t "dvi2tty * | cat -s")))
+
+;; Load typing-speed mode
+(load "typing-speed.el")

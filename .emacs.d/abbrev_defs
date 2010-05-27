@@ -73,6 +73,8 @@
     ("uzeta" "†æ" nil 7)
    ))
 
+(define-abbrev-table 'grep-mode-abbrev-table '())
+
 (define-abbrev-table 'html-mode-abbrev-table '())
 
 (define-abbrev-table 'idl-mode-abbrev-table '())
