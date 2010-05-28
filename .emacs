@@ -41,6 +41,7 @@
           pretty-lambdada
           recentf
           smart-tab
+          smex
           uniquify
           undo-tree
           zencoding-mode))
@@ -86,6 +87,10 @@
 (setq ido-ignore-buffers '("\\` " "^\*slime-events" "^\*Messages*"
                            "\\*Completions"))
 
+;; Smex replaces M-x
+(eval-after-load "~/.emacs" '(smex-initialize))
+
+
 ;; Key bindings
 (windmove-default-keybindings) ;; Shift+direction
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file)
@@ -111,9 +116,13 @@
 (global-set-key (kbd "C-c f") 'make-frame)
 (global-set-key (kbd "C-M-y") 'kill-ring-search)
 (global-set-key (kbd "C-c s") (lambda() (interactive)
-				(ispell-change-dictionary "nederlands")
-				(flyspell-buffer)))
+                                (ispell-change-dictionary "nederlands")
+                                (flyspell-buffer)))
 (global-set-key (kbd "C-c x") 'swap-windows)
+(global-set-key (kbd "M-g") 'goto-line)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "C-c M-x") 'execute-extended-command)
+(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; Zencoding-mode
 (add-hook 'sgm-mode-hook 'zencoding-mode)
@@ -175,7 +184,7 @@
 (setq ispell-program-name
       (case system-type
         ('darwin "/opt/local/bin/aspell")
-	('windows-nt "aspell")
+        ('windows-nt "aspell")
         ('gnu/linux "/usr/aspell")))
 (setq ispell-dictionary "english")
 (add-hook 'text-mode-hook 'turn-on-flyspell)
