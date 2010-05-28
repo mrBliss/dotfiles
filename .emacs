@@ -254,3 +254,11 @@
 ;; When opened via cocoa (i.e drop file on icon, or dbl click)
 ;; open in a new window in existing frame, rather than new frame
 (setq ns-pop-up-frames nil)
+
+;; Show commands to learn in the scratch buffer
+(setq initial-scratch-message
+";; SCRATCH Buffer
+;; Commands to learn:
+;;    slime-edit-definition: M-.
+
+")
