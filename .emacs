@@ -130,10 +130,9 @@
 ;; Mic Paren
 (paren-activate)
 
-;; Color Theme (other theme for the terminal)
-(if window-system
-    (color-theme-bespin)
-  (color-theme-emacs-nw))
+;; No Color Theme in the terminal
+(when window-system
+  (color-theme-bespin))
 
 ;; Cygwin as shell on Windows
 (if (eq system-type 'windows-nt)
@@ -257,8 +256,10 @@
 
 ;; Show commands to learn in the scratch buffer
 (setq initial-scratch-message
-";; SCRATCH Buffer
+      ";; SCRATCH Buffer
 ;; Commands to learn:
 ;;    slime-edit-definition: M-.
+;;    fill paragraph: M-q
+;;    redo previous command: C-x z
 
 ")
