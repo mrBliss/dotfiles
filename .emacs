@@ -90,7 +90,6 @@
 ;; Smex replaces M-x
 (eval-after-load "~/.emacs" '(smex-initialize))
 
-
 ;; Key bindings
 (windmove-default-keybindings) ;; Shift+direction
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file)
@@ -184,7 +183,7 @@
       (case system-type
         ('darwin "/opt/local/bin/aspell")
         ('windows-nt "aspell")
-        ('gnu/linux "/usr/aspell")))
+        ('gnu/linux "/usr/bin/aspell")))
 (setq ispell-dictionary "english")
 (add-hook 'text-mode-hook 'turn-on-flyspell)
 
@@ -240,7 +239,7 @@
 ;; Saved by the bell -NOT!
 (setq ring-bell-function 'ignore)
 
-;; Change .dvi viewer to Skim
+;; Change .dvi viewer to Skim on Mac OS X
 (setq tex-dvi-view-command
       '(cond ((eq window-system 'ns) "/Applications/Skim.app/Contents/MacOS/Skim")
              ((eq window-system 'x) "xdvi")
