@@ -42,7 +42,7 @@
 (define-abbrev-table 'fundamental-mode-abbrev-table '(    ))
 
 (define-abbrev-table 'global-abbrev-table '(    ("requirestr" "(require '[clojure.contrib.str-utils2 :as s])" nil 5)
-    ("thoams" "Thomas" nil 2)
+    ("thoams" "Thomas" nil 3)
     ("ualpha" "†á" nil 1)
     ("ubeta" "†â" nil 1)
     ("udelta" "†ä" nil 5)

@@ -2,9 +2,8 @@
 (setq inhibit-startup-message t)
 
 ;; Disable tool bar and scroll bar
-(when window-system
-  (tool-bar-mode -1)
-  (set-scroll-bar-mode nil))
+(tool-bar-mode -1)
+(set-scroll-bar-mode nil)
 
 ;; Unicode FTW
 (setq locale-coding-system 'utf-8)
@@ -122,6 +121,9 @@
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "C-c M-x") 'execute-extended-command)
 (global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x M-c") (lambda() (interactive)
+                                  (save-some-buffers t t)
+                                  (kill-emacs)))
 
 ;; Zencoding-mode
 (add-hook 'sgm-mode-hook 'zencoding-mode)
@@ -129,9 +131,18 @@
 ;; Mic Paren
 (paren-activate)
 
-;; No Color Theme in the terminal
-(when window-system
-  (color-theme-bespin))
+;; Use Bespin color-theme on windows
+;; or else use it only for windowed emacsclients
+(if (eq system-type 'windows-nt)
+    (color-theme-bespin)
+  (progn
+    (add-hook 'after-make-frame-functions
+              '(lambda (f)
+                 (with-selected-frame f
+                   (when (window-system f)
+                     (color-theme-bespin)))))
+    (setq color-theme-is-global nil
+          color-theme-is-cumulative nil)))
 
 ;; Cygwin as shell on Windows
 (if (eq system-type 'windows-nt)
@@ -194,14 +205,13 @@
       `((".*" ,temporary-file-directory t)))
 
 ;; Set frame title
-(when window-system
-  (setq-default
-   frame-title-format
-   '(:eval
-     (format "%s@%s"
-             (or (file-remote-p default-directory 'user) user-login-name)
-             (file-name-nondirectory (or (buffer-file-name)
-                                         default-directory))))))
+(setq-default
+ frame-title-format
+ '(:eval
+   (format "%s@%s"
+           (or (file-remote-p default-directory 'user) user-login-name)
+           (file-name-nondirectory (or (buffer-file-name)
+                                       default-directory)))))
 
 ;; Abbreviations
 (setq abbrev-file-name "~/.emacs.d/abbrev_defs")
