@@ -131,17 +131,18 @@
 ;; Mic Paren
 (paren-activate)
 
-;; Use Bespin color-theme on windows
-;; or else use it only for windowed emacsclients
-(if (eq system-type 'windows-nt)
-    (color-theme-bespin)
-  (progn
-    (add-hook 'after-make-frame-functions
-              '(lambda (f)
-                 (with-selected-frame f
-                   (when (window-system f)
-                     (color-theme-bespin)))))
-    (setq color-theme-is-global nil)))
+;; Only apply the color-theme when emacs is used with a window-system.
+;; On Linux, running emacsclient, we need the following snippet to do
+;; the same work.
+(cond ((eq system-type 'gnu/linux)
+       (progn
+	 (add-hook 'after-make-frame-functions
+		   '(lambda (f)
+		      (with-selected-frame f
+			(when (window-system f)
+			  (color-theme-bespin)))))
+	 (setq color-theme-is-global nil)))
+      ((window-system) (color-theme-bespin)))
 
 ;; Cygwin as shell on Windows
 (if (eq system-type 'windows-nt)
