@@ -192,7 +192,9 @@
      (modeline
       ((t (:background "#4c4a41" :foreground "#BAAE9E"
 		       :box (:line-width 1 :style released-button)))))
-     (mode-line-inactive ((t (:background "#1e1915"))))
+     (mode-line-inactive
+      ((t (:background "#1e1915" :foreground "#BAAE9E"
+		       :box (:line-width 1 :color "#1e1915")))))
      (minibuffer-prompt ((t (:foreground "#5EA6EA"))))
      (font-lock-builtin-face ((t (:foreground "#5EA6EA"))))
      (font-lock-comment-face ((t (:italic t :foreground "#666666"))))

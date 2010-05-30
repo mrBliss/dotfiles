@@ -141,8 +141,7 @@
                  (with-selected-frame f
                    (when (window-system f)
                      (color-theme-bespin)))))
-    (setq color-theme-is-global nil
-          color-theme-is-cumulative nil)))
+    (setq color-theme-is-global nil)))
 
 ;; Cygwin as shell on Windows
 (if (eq system-type 'windows-nt)
