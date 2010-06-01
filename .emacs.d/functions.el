@@ -134,4 +134,9 @@ Symbols matching the text at point are put first in the completion list."
              (join-line))))
         (t (call-interactively 'join-line))))
 
+(defun word-count ()
+  "Count words in buffer"
+  (interactive)
+  (shell-command-on-region (point-min) (point-max) "wc -w"))
+
 (provide 'functions)

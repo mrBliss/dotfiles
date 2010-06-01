@@ -4,3 +4,4 @@
 !.gitignore
 *~
 .emacs.d/auto-save-list
+.emacs.d/tramp
