@@ -1,10 +1,6 @@
 ;; Turn off welcome screen
 (setq inhibit-startup-message t)
 
-;; Disable tool bar and scroll bar
-(tool-bar-mode -1)
-(set-scroll-bar-mode nil)
-
 ;; Unicode FTW
 (setq locale-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
@@ -140,9 +136,15 @@
 		   '(lambda (f)
 		      (with-selected-frame f
 			(when (window-system f)
+			  (tool-bar-mode -1)
+			  (set-scroll-bar-mode nil)
 			  (color-theme-bespin)))))
 	 (setq color-theme-is-global nil)))
-      ((window-system) (color-theme-bespin)))
+      ;;No emacsclient:
+      ((window-system)
+       (progn (color-theme-bespin)
+	      (tool-bar-mode -1)
+	      (set-scroll-bar-mode nil))))
 
 ;; Cygwin as shell on Windows
 (if (eq system-type 'windows-nt)
