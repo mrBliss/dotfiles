@@ -243,10 +243,10 @@
 (add-hook 'emacs-lisp-mode-hook
           (lambda () (setq mode-name "el")))
 
-;; Add git to path on OS X (magit needs this)
+;; Add MacPorts to path on OS X
 (when (eq system-type 'darwin)
-  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/git/bin"))
-  (setq exec-path (append exec-path '("/usr/local/git/bin"))))
+  (setenv "PATH" (concat (getenv "PATH") ":/opt/local/bin/"))
+  (setq exec-path (append exec-path '("/opt/local/bin/"))))
 
 ;; Saved by the bell -NOT!
 (setq ring-bell-function 'ignore)
