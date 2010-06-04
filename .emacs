@@ -115,7 +115,9 @@
 (global-set-key (kbd "C-c x") 'swap-windows)
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "C-x C-m") 'smex)
 (global-set-key (kbd "C-c M-x") 'execute-extended-command)
+(global-set-key (kbd "C-c C-m") 'execute-extended-command)
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x M-c") (lambda() (interactive)
                                   (save-some-buffers t t)
@@ -177,6 +179,9 @@
 
 ;; Show column numbers
 (column-number-mode 1)
+
+;; Fill to 80 characters
+(set-fill-column 80)
 
 ;; Enable cua-mod, but not the keys
 (setq cua-enable-cua-keys nil)
@@ -270,7 +275,8 @@
       ";; SCRATCH Buffer
 ;; Commands to learn:
 ;;    slime-edit-definition: M-.
-;;    fill paragraph: M-q
-;;    redo previous command: C-x z
+;;    align to next tab: M-i
+;;    insert output for shell command: M-1 M-!
+;;    search with results: M-s o
 
 ")
