@@ -27,6 +27,13 @@ alias cd/='cd /'
 alias md='mkdir -p'
 alias rd=rmdir
 
+# Emacs
+alias em='emacsclient -t -a ""'
+
+# Make things safer with these aliases
+alias mv='mv -i'
+alias cp='cp -i'
+
 # Correction
 setopt correct_all
 alias man='nocorrect man'
@@ -35,10 +42,3 @@ alias mysql='nocorrect mysql'
 alias mkdir='nocorrect mkdir'
 alias gist='nocorrect gist'
 alias heroku='nocorrect heroku'
-
-# Emacs
-alias em='emacsclient -t -a ""'
-
-# Make things safer with these aliases
-alias mv='mv -i'
-alias cp='cp -i'

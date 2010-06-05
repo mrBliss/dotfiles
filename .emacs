@@ -201,6 +201,7 @@
       (case system-type
         ('darwin "/opt/local/bin/aspell")
         ('windows-nt "aspell")
+	('cygwin "aspell")
         ('gnu/linux "/usr/bin/aspell")))
 (setq ispell-dictionary "english")
 (add-hook 'text-mode-hook 'turn-on-flyspell)
