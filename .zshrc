@@ -30,4 +30,6 @@ if [ -e /cygdrive ]; then
     source $ZSH/platform/cygwin.zsh
 elif [ -e /Volumes ]; then
     source $ZSH/platform/osx.zsh
+else
+    source $ZSH/platform/linux.zsh
 fi

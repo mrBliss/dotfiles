@@ -11,3 +11,7 @@ export JAVA_HOME=/Library/Java/Home/
 export PATH=$PATH:$M2:/usr/local/git/bin
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 export MANPATH=/opt/local/share/man:$MANPATH
+
+# Git pull from other repositories
+alias gitpulllinux='git pull ssh://thomas@lucy/~ master'
+alias gitpullwin='git pull file:///Volumes/dotfiles/ master'
