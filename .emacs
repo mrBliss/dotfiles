@@ -22,7 +22,8 @@
 
 ;; Require some stuff
 (mapcar #'require
-        '(cl
+        '(bindings
+          cl
           clojure
           color-theme
           custom-themes
@@ -85,44 +86,6 @@
 ;; Smex replaces M-x
 (eval-after-load "~/.emacs" '(smex-initialize))
 
-;; Key bindings
-(windmove-default-keybindings) ;; Shift+direction
-(global-set-key (kbd "C-x f") 'recentf-ido-find-file)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key (kbd "C-c n") 'cleanup-buffer)
-(global-set-key (kbd "C-M-k") 'kill-word)
-(global-set-key (kbd "C-M-h") 'backward-kill-word)
-(global-set-key (kbd "C-M-g") 'backward-sexp) ;;TODO C-M-b doesn't work on OS X
-(global-set-key (kbd "C-x C-i") 'ido-imenu)
-(global-set-key (kbd "C-x j") 'join-line-or-lines-in-region)
-(global-set-key (kbd "C-x O") (lambda () (interactive) (other-window -1)))
-(global-set-key (kbd "C-M-=") 'comment-region)
-(global-set-key (kbd "C-M-+") 'uncomment-region)
-(global-set-key (kbd "TAB") 'smart-tab)
-(global-set-key (kbd "C-c E") (lambda () (interactive)(eval-buffer)))
-(global-set-key (kbd "C-x r v") 'list-registers)
-(global-set-key (kbd "C-M-z") 'zap-back-to-char)
-(global-set-key (kbd "C-c r") 'replace-string)
-(global-set-key (kbd "C-x M-o") 'bury-buffer)
-(global-set-key (kbd "C-c e") (lambda () (interactive)(find-file "~/.emacs")))
-(global-set-key (kbd "C-c E") (lambda () (interactive)(eval-buffer)))
-(global-set-key (kbd "C-c d") 'kill-line-backwards)
-(global-set-key (kbd "C-c f") 'make-frame)
-(global-set-key (kbd "C-M-y") 'kill-ring-search)
-(global-set-key (kbd "C-c s") (lambda() (interactive)
-                                (ispell-change-dictionary "nederlands")
-                                (flyspell-buffer)))
-(global-set-key (kbd "C-c x") 'swap-windows)
-(global-set-key (kbd "M-g") 'goto-line)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "C-x C-m") 'smex)
-(global-set-key (kbd "C-c M-x") 'execute-extended-command)
-(global-set-key (kbd "C-c C-m") 'execute-extended-command)
-(global-set-key (kbd "C-x g") 'magit-status)
-(global-set-key (kbd "C-x M-c") (lambda() (interactive)
-                                  (save-some-buffers t t)
-                                  (kill-emacs)))
-
 ;; Zencoding-mode
 (add-hook 'sgm-mode-hook 'zencoding-mode)
 
@@ -134,19 +97,19 @@
 ;; the same work.
 (cond ((eq system-type 'gnu/linux)
        (progn
-	 (add-hook 'after-make-frame-functions
-		   '(lambda (f)
-		      (with-selected-frame f
-			(when (window-system f)
-			  (tool-bar-mode -1)
-			  (set-scroll-bar-mode nil)
-			  (color-theme-bespin)))))
-	 (setq color-theme-is-global nil)))
+         (add-hook 'after-make-frame-functions
+                   '(lambda (f)
+                      (with-selected-frame f
+                        (when (window-system f)
+                          (tool-bar-mode -1)
+                          (set-scroll-bar-mode nil)
+                          (color-theme-bespin)))))
+         (setq color-theme-is-global nil)))
       ;;No emacsclient:
       ((window-system)
        (progn (color-theme-bespin)
-	      (tool-bar-mode -1)
-	      (set-scroll-bar-mode nil))))
+              (tool-bar-mode -1)
+              (set-scroll-bar-mode nil))))
 
 ;; Cygwin as shell on Windows
 (if (eq system-type 'windows-nt)
@@ -180,18 +143,20 @@
 ;; Show column numbers
 (column-number-mode 1)
 
-;; Fill to 80 characters
-(set-fill-column 80)
-
 ;; Enable cua-mod, but not the keys
 (setq cua-enable-cua-keys nil)
 (cua-mode t)
 
-;; Autoload nxml
+;; Autoload nxml for xml and nfo files
 (add-to-list 'auto-mode-alist '("\\xml$" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\nfo$" . nxml-mode))
 
-;; Starting scrolling 3 lines from the edge
-(setq scroll-margin 3)
+;; Autoload shell-script-mode for zsh files
+(add-to-list 'auto-mode-alist '("\\zsh$" . shell-script-mode))
+
+;; Better scrolling
+(setq scroll-margin 0)
+(setq scroll-conservatively 1)
 
 ;; Tetris score file
 (setq tetris-score-file "~/.emacs.d/tetris-scores")
@@ -201,7 +166,7 @@
       (case system-type
         ('darwin "/opt/local/bin/aspell")
         ('windows-nt "aspell")
-	('cygwin "aspell")
+        ('cygwin "aspell")
         ('gnu/linux "/usr/bin/aspell")))
 (setq ispell-dictionary "english")
 (add-hook 'text-mode-hook 'turn-on-flyspell)
@@ -281,3 +246,9 @@
 ;;    search with results: M-s o
 
 ")
+
+;; Beter colors for diff in magit
+(eval-after-load 'magit
+  '(progn
+     (set-face-foreground 'magit-diff-add "green3")
+     (set-face-foreground 'magit-diff-del "red3")))
