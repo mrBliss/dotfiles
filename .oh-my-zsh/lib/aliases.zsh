@@ -26,6 +26,7 @@ alias cd/='cd /'
 # Directory creation and deletion
 alias md='mkdir -p'
 alias rd=rmdir
+alias rmr='rm -r'
 
 # Emacs
 alias em='emacsclient -t -a ""'
@@ -34,7 +35,13 @@ alias em='emacsclient -t -a ""'
 alias mv='mv -i'
 alias cp='cp -i'
 
-# Correction
+# Directory size
+alias size='du -hs'
+
+# Find the largest directories
+alias space='find . -maxdepth 1 -mindepth 1 -print0  | xargs -0 -n1 du -ks | sort -rn | head -16 | cut -f2 | xargs -i du -hs {}'
+
+# Corrections
 setopt correct_all
 alias man='nocorrect man'
 alias mv='nocorrect mv'

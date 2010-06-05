@@ -11,3 +11,9 @@ parse_git_dirty () {
     echo "$ZSH_THEME_GIT_PROMPT_CLEAN"
   fi
 }
+
+# Clone a git repository and enter the directory
+gitc () {
+    git clone git://github.com/"$1"/"$2".git
+    cd "$2"
+}

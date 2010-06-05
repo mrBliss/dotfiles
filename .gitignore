@@ -5,6 +5,7 @@
 !.zshrc
 !.oh-my-zsh
 !.screenrc
+!.ssh/config
 *~
 .emacs.d/auto-save-list
 .emacs.d/tramp

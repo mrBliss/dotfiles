@@ -6,14 +6,20 @@ hardstatus alwayslastline "%{.kW}%-w%{.mW}%n %t%{-}%+w %=%{..c} %H %{..g} %d/%m/
 # Use zsh instead of bash
 shell -zsh
 
-# More than 100 liens scrollback please
+# More than 100 lines scrollback please
 defscrollback 10000
+
+# UTF FTW
+defutf8 on
 
 # Use C-o instead of C-a
 escape ^oo
 
 # Emacs movement keys
 markkeys "h=^B:l=^F:$=^E"
+
+# Show activity
+activity "<%n>"
 
 # Always open Emacs and a standard zsh window
 screen -t Anna 0 zsh
