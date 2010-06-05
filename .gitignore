@@ -2,6 +2,9 @@
 !.emacs
 !.emacs.d/
 !.gitignore
+!.zshrc
+!.oh-my-zsh
+!.screenrc
 *~
 .emacs.d/auto-save-list
 .emacs.d/tramp

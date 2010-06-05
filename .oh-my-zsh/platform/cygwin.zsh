@@ -1,0 +1,14 @@
+# Cygwin specific options
+
+# Change colours
+echo -e "\e]P0000000"
+echo -e "\e]P1FF0000"
+echo -e "\e]P2A6E32D"
+echo -e "\e]P3FC951E"
+echo -e "\e]P4C48DFF"
+echo -e "\e]P5FA2573"
+echo -e "\e]P667D9F0"
+echo -e "\e]P7F2F2F2"
+
+# Keychain
+eval `keychain --eval --nogui -Q -q id_rsa`

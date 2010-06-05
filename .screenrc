@@ -1,0 +1,19 @@
+startup_message off
+
+# Status line
+hardstatus alwayslastline "%{.kW}%-w%{.mW}%n %t%{-}%+w %=%{..c} %H %{..g} %d/%m/%y %c "
+
+# Use zsh instead of bash
+shell -zsh
+
+# More than 100 liens scrollback please
+defscrollback 10000
+
+# Use C-o instead of C-a
+escape ^oo
+
+# Emacs movement keys
+markkeys "h=^B:l=^F:$=^E"
+
+# Always open Emacs and a standard zsh window
+screen -t Anna 0 zsh
