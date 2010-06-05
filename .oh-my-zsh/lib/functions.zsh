@@ -11,7 +11,7 @@ mkcd () {
 
 # Connect to KULeuven
 kulssh () {
-    sh -t s0202013@st.cs.kuleuven.be ssh s0202013@"$*".cs.kotnet.kuleuven.be
+    ssh -t s0202013@st.cs.kuleuven.be ssh s0202013@"$*".cs.kotnet.kuleuven.be
 }
 
 # Extract files

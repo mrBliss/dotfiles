@@ -12,7 +12,7 @@ parse_git_dirty () {
   fi
 }
 
-# Clone a git repository and enter the directory
+# Clone a git repository from github.com and enter the directory
 gitc () {
     git clone git://github.com/"$1"/"$2".git
     cd "$2"
