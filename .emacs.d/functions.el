@@ -89,20 +89,6 @@ Symbols matching the text at point are put first in the completion list."
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
 
-(defun move-buffer-file (dir)
-  "Moves both current buffer and file it's visiting to DIR." (interactive "DNew directory: ")
-  (let* ((name (buffer-name))
-         (filename (buffer-file-name))
-         (dir
-          (if (string-match dir "\\(?:/\\|\\\\)$")
-              (substring dir 0 -1) dir))
-         (newname (concat dir "/" name)))
-
-    (if (not filename)
-        (message "Buffer '%s' is not visiting a file!" name)
-      (progn (copy-file filename newname 1) (delete-file filename) (set-visited-file-name newname) (set-buffer-modified-p nil) t))))
-
-
 (defun timestamp ()
   "Spit out the current time"
   (interactive)
@@ -152,5 +138,15 @@ Symbols matching the text at point are put first in the completion list."
   "Count words in buffer"
   (interactive)
   (shell-command-on-region (point-min) (point-max) "wc -w"))
+
+(defun prevent-killing-scratch ()
+  "Prevent the *scratch* buffer from being killed. Modified from function
+from http://amitp.blogspot.com/2007/03/emacs-dont-kill-unsaved-buffers.html."
+  (let ((buffer (current-buffer)))
+    (cond ((equal (buffer-name) "*scratch*")
+           ;; Never kill *scratch*
+           (and (message "Attempt to kill *scratch* buffer interrupted.")
+                nil))
+          (t t))))
 
 (provide 'functions)

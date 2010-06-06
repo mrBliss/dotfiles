@@ -63,6 +63,13 @@
       '(trailing lines space-before-tab indentation space-after-tab)
       whitespace-line-column 80)
 
+;; Always use spaces for indentation
+(setq-default indent-tabs-mode nil)
+
+;; Don't kill the scratch buffer
+(add-to-list 'kill-buffer-query-functions
+             'prevent-killing-scratch)
+
 ;; Enable deleting selections with del or ctrl-d
 (delete-selection-mode t)
 
