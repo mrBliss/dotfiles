@@ -54,8 +54,9 @@
 (define-abbrev-table 'global-abbrev-table
   '(
     ("requirestr" "(require '[clojure.contrib.str-utils2 :as s])" nil 5)
-    ("thoams" "Thomas" nil 4)
+    ("thoams" "Thomas" nil 3)
     ("ualpha" "†á" nil 1)
+    ("uand" "‘¡Ä" nil 8)
     ("ubeta" "†â" nil 1)
     ("udelta" "†ä" nil 5)
     ("udiv" "÷" nil 3)
@@ -67,6 +68,8 @@
     ("ujoin" "œò­İ" nil 15)
     ("ular" "‘¡û" nil 29)
     ("uneq" "‘¡Ù" nil 3)
+    ("unot" "¬" nil 2)
+    ("uor" "‘¡Å" nil 4)
     ("upi" "†ğ" nil 16)
     ("urar" "‘¡ú" nil 0)
     ("urho" "†ñ" nil 2)
@@ -76,6 +79,8 @@
     ("utheta" "†è" nil 0)
     ("uunion" "‘¡È" nil 3)
    ))
+
+(define-abbrev-table 'grep-mode-abbrev-table '())
 
 (define-abbrev-table 'html-mode-abbrev-table '())
 
@@ -104,10 +109,6 @@
    ))
 
 (define-abbrev-table 'plain-tex-mode-abbrev-table '())
-
-(define-abbrev-table 'reb-lisp-mode-abbrev-table '())
-
-(define-abbrev-table 'reb-mode-abbrev-table '())
 
 (define-abbrev-table 'select-tags-table-mode-abbrev-table '())
 

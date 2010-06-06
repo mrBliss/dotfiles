@@ -259,3 +259,10 @@
   '(progn
      (set-face-foreground 'magit-diff-add "green3")
      (set-face-foreground 'magit-diff-del "red3")))
+
+;; Smart-tab completions
+(setq smart-tab-completion-functions-alist
+      '((emacs-lisp-mode . lisp-complete-symbol)
+        (text-mode . dabbrev-completion)
+        (clojure-mode . slime-complete-symbol)
+        (slime-repl-mode . slime-complete-symbol)))
