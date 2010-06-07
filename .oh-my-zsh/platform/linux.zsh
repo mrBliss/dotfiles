@@ -1,5 +1,6 @@
 # Linux specific options
 
+# I don't like your Aptitude!
 alias apti='sudo aptitude install'
 alias aptrm='sudo aptitude remove'
 alias aptut='sudo aptitude update'
@@ -10,28 +11,34 @@ alias apts='aptitude search'
 alias gitpullwin='git pull file:///mnt/dotfiles/ master'
 alias gitpullosx='git pull file:///mnt/dotfiles2/ master'
 
-# Easy way to mount my samba shares
-mnt_samba () {
-    # Windows share on 192.168.1.3
-    # the OS X share on 192.168.1.9
-    if [ "$1" = "win" ]; then
-        digit=3
-        dotdigit=''
-        share='dotfiles'
-    elif [ "$1" = "osx" ]; then
-        digit=9
-        dotdigit=2
-        share='Thomas'
-    fi
-
-    if [ -z "$digit" ]; then
-        echo "Choose between win and osx"
+# Easy way to mount the OS X samba share on 192.168.1.9
+mnt_osx () {
+    echo -n "Password for the OS X share: "
+    stty -echo
+    read password
+    stty echo
+    echo ""
+    if [ ! -d "/mnt/dotfiles2" ]; then
+        sudo mkdir /mnt/dotfiles2
+    elif [ -f "/mnt/dotfiles2/.emacs" ]; then
+        echo "Already mounted"
     else
-        echo -n "Password for the share: "
-        stty -echo
-        read password
-        stty echo
-        echo ""
-        sudo smbmount //192.168.1.$digit/$share /mnt/dotfiles$dotdigit -o username=Thomas,password=$password,uid=1000,mask=000
+        sudo smbmount //192.168.1.9/Thomas /mnt/dotfiles2 -o username=Thomas,password=$password,uid=1000,mask=000
+    fi
+}
+
+# Easy way to mount the Windows samba share on 192.168.1.3
+mnt_win () {
+    echo -n "Password for the Windows share: "
+    stty -echo
+    read password
+    stty echo
+    echo ""
+    if [ ! -d "/mnt/dotfiles" ]; then
+        sudo mkdir /mnt/dotfiles
+    elif [ -f "/mnt/dotfiles/.emacs" ]; then
+        echo "Already mounted"
+    else
+        sudo smbmount //192.168.1.3/dotfiles /mnt/dotfiles -o username=Thomas,password=$password,uid=1000,mask=000
     fi
 }
