@@ -9,9 +9,9 @@ alias s='sudo'
 alias history='fc -l 1'
 
 # List direcory contents
-alias l='ls -lAh'
-alias ll='ls -lAh'
-alias sl=ls # often screw this up
+alias l='ls -lAFh'
+alias ll='ls -lAFh'
+alias sl='ls -lAFh'
 
 # Directory navigation
 alias .='pwd'
@@ -48,4 +48,4 @@ alias mv='nocorrect mv'
 alias mysql='nocorrect mysql'
 alias mkdir='nocorrect mkdir'
 alias gist='nocorrect gist'
-alias heroku='nocorrect heroku'
+
