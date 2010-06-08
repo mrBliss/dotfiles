@@ -2,6 +2,7 @@
 
 # Only emacs 22.1.1, so no daemon/emacsclient
 export EDITOR="emacs"
+alias em="emacs"
 
 # Pull latest repository (linux vm only)
 alias gitpull='git pull ssh://thomas@dewinant.mine.nu:8022/~ master'
