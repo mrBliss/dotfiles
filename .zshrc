@@ -30,6 +30,8 @@ if [ -e /cygdrive ]; then
     source $ZSH/platform/cygwin.zsh
 elif [ -e /Volumes ]; then
     source $ZSH/platform/osx.zsh
+elif [ "s0202013" = "$USER" ]; then
+    source $ZSH/platform/kul.zsh
 else
     source $ZSH/platform/linux.zsh
 fi
