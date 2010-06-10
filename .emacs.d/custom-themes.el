@@ -310,6 +310,7 @@
      (highlight-80+ ((t (:background "#F9EE98"))))
      (hl-line ((t (:background "#2A2A2A"))))
      (region ((t (:background "#f8fab7"))))
+     (link ((t (:foreground "#5EA6EA" :underline t))))
      (ido-subdir ((t (:foreground "#F1266F")))))))
 
 (provide 'custom-themes)

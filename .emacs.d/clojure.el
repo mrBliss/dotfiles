@@ -67,6 +67,7 @@
             (("#?\""               0 'clojure-double-quote prepend))
             (("nil\\|true\\|false\\|%[1-9]?" . 'clojure-special))
             (("(\\(\\.[^ \n)]*\\|[^ \n)]+\\.\\|new\\)\\([ )\n]\\|$\\)" 1 'clojure-java-call))
+            (("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t))
             )))
 
 (add-hook 'clojure-mode-hook 'tweak-clojure-syntax)

@@ -149,4 +149,27 @@ from http://amitp.blogspot.com/2007/03/emacs-dont-kill-unsaved-buffers.html."
                 nil))
           (t t))))
 
+(defun increment-number-at-point (&optional amount)
+  "Increment the number under point by `amount'"
+  (interactive "p")
+  (let ((num (number-at-point)))
+    (when (numberp num)
+      (let ((newnum (+ num amount))
+            (p (point)))
+        (save-excursion
+          (skip-chars-backward "-.0123456789")
+          (delete-region (point) (+ (point) (length (number-to-string num))))
+          (insert (number-to-string newnum)))
+        (goto-char p)))))
+
+(defun decrement-number-at-point (&optional amount)
+  (interactive "p")
+  "Decrement the number under point by `amount'"
+  (increment-number-at-point (- (abs amount))))
+
+(defun diff-current-buffer-with-disk ()
+  "Compare the current buffer with it's disk file."
+  (interactive)
+  (diff-buffer-with-file (current-buffer)))
+
 (provide 'functions)

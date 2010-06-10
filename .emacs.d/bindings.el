@@ -99,4 +99,14 @@
 ;; Untabifies the buffer and deletes trailing whitespace
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
 
+;; Resize windows
+(global-set-key (kbd "C-c <left>") 'shrink-window-horizontally)
+(global-set-key (kbd "C-c <right>") 'enlarge-window-horizontally)
+(global-set-key (kbd "C-c <up>") 'shrink-window)
+(global-set-key (kbd "C-c <down>") 'enlarge-window)
+
+;; Increment or decrement number at point
+(global-set-key (kbd "C-c i") 'increment-number-at-point)
+(global-set-key (kbd "C-c o") 'decrement-number-at-point)
+
 (provide 'bindings)

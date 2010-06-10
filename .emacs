@@ -62,7 +62,8 @@
 ;; Better whitespace settings
 (setq whitespace-style
       '(trailing lines space-before-tab indentation space-after-tab)
-      whitespace-line-column 80)
+      whitespace-line-column 80
+      show-trailing-whitespace t)
 
 ;; Always use spaces for indentation
 (setq-default indent-tabs-mode nil)
@@ -164,7 +165,7 @@
 
 ;; Better scrolling
 (setq scroll-margin 0)
-(setq scroll-conservatively 1)
+(setq scroll-conservatively 1000)
 
 ;; Tetris score file
 (setq tetris-score-file "~/.emacs.d/tetris-scores")
@@ -181,8 +182,10 @@
 
 ;; Put auto save files in one folder
 (setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
+      `((".*" . ,temporary-file-directory))
+      tramp-backup-directory-alist
+      `((".*" . ,temporary-file-directory))
+      auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
 ;; Set frame title
@@ -249,9 +252,19 @@
       ";; SCRATCH Buffer
 ;; Commands to learn:
 ;;    slime-edit-definition: M-.
-;;    align to next tab: M-i
+;;    goto previous macro: C-x C-k C-p
 ;;    insert output for shell command: M-1 M-!
 ;;    search with results: M-s o
+;;    move point to center/top/bottom: M-r
+;;    make sure the current function is visible: C-M-l
+;;    wordcount for active region: M-=
+;;    undo for the active region: C-u C-_
+;;    increment/decrement number: C-c i/o
+;;    move forward and backward across parens: C-M-n / C-m-p
+;;    mark the end of the next word: M-@
+;;    newline and indent in comments: M-j
+;;    apply macro to region: C-x C-k r
+;;    move between paragraphs: M-{ / M-}
 
 ")
 
@@ -273,3 +286,27 @@
 
 ;; Fill text to 74 chars in text-mode
 (add-hook 'text-mode-hook (lambda () (setq fill-column 74)))
+
+;; Make scripts executable on save
+(add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
+
+;; Backup by copying instead of moving
+(setq backup-by-copying t)
+
+;; Highlight FIXME/TODO/BUG in C/C++/Java etc modes
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (font-lock-add-keywords nil
+                                    '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1
+                                       font-lock-warning-face t)))))
+
+;; CSS color values colored by themselves
+(defvar hexcolour-keywords
+  '(("#[abcdef[:digit:]]\\{6\\}"
+     (0 (put-text-property
+         (match-beginning 0)
+         (match-end 0)
+         'face (list :background
+                     (match-string-no-properties 0)))))))
+(add-hook 'css-mode-hook
+          (lambda () (font-lock-add-keywords nil hexcolour-keywords)))
