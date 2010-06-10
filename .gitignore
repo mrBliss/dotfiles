@@ -5,6 +5,7 @@
 !.zshrc
 !.oh-my-zsh
 !.screenrc
+!.screenrc.nested
 !.ssh/config
 *~
 .emacs.d/auto-save-list

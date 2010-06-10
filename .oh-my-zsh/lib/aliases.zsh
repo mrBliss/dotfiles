@@ -41,6 +41,12 @@ alias size='du -hs'
 # Find the largest directories
 alias space='find . -maxdepth 1 -mindepth 1 -print0  | xargs -0 -n1 du -ks | sort -rn | head -16 | cut -f2 | xargs -i du -hs {}'
 
+# Faster to type
+alias gitgui='git gui'
+
+# Start a nested screen session
+alias screenn='screen -m -c ~/.screenrc.nested'
+
 # Corrections
 setopt correct_all
 alias man='nocorrect man'
