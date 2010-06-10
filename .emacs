@@ -310,3 +310,8 @@
                      (match-string-no-properties 0)))))))
 (add-hook 'css-mode-hook
           (lambda () (font-lock-add-keywords nil hexcolour-keywords)))
+
+;; Dired ls switches and search option
+(setq dired-listing-switches "-alhF"
+      dired-isearch-filenames 'dwim)
+      
