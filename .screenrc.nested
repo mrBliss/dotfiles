@@ -1,7 +1,7 @@
 # When opening an ssh connection to another server (in screen), it's
 # sometimes handy to start another screen session on the remote
 # host. For this to work, we need another keybinding for screen:
-# C-i instead of C-o
+# C-m instead of C-o
 
 startup_message off
 
@@ -17,8 +17,8 @@ defscrollback 10000
 # UTF FTW
 defutf8 on
 
-#### C-i instead of C-o (already replaces C-a) ####
-escape ^ii
+#### C-m instead of C-o (already replaces C-a) ####
+escape ^mm
 
 # Emacs movement keys in copy mode
 markkeys ^B=Y:^F=V:h=^B:l=^F:0=^A:$=^E
