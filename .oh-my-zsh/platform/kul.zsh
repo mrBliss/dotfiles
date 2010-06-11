@@ -5,7 +5,7 @@ export EDITOR="emacs"
 alias em="emacs"
 
 # Pull latest repository (linux vm only)
-alias gitpull='git pull ssh://thomas@dewinant.mine.nu:8022/~ master'
+alias gitpulllin='git pull ssh://thomas@dewinant.mine.nu/~ master'
 
 # Sicstus tool for AI
 alias sicstus="/cw/prolog/sicstus/sicstus-yes.linux/bin/sicstus-3.12.2 --goal main. -l"
