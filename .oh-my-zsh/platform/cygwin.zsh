@@ -14,5 +14,5 @@ echo -e "\e]P7F2F2F2"
 eval `keychain --eval --nogui -Q -q id_rsa`
 
 # Git pull from other repositories
-alias gitpulllinux='git pull ssh://thomas@lucy/~ master'
+alias gitpulllin='git pull ssh://thomas@lucy/~ master'
 alias gitpullwin='git pull file:///cygdrive/c/Users/Thomas/AppData/Roaming master'
