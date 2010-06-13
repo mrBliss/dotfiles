@@ -314,4 +314,7 @@
 ;; Dired ls switches and search option
 (setq dired-listing-switches "-alhF"
       dired-isearch-filenames 'dwim)
-      
+
+;; Indicate empty lines by default
+(setq default-indicate-empty-lines t)
+
