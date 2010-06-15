@@ -13,11 +13,10 @@
 ;; Slime
 (eval-after-load "slime"
   '(progn
-     ;; "Extra" features (contrib)
      (slime-setup
       '(slime-repl))
-     ;; Use UTF-8 coding
-     (setq slime-net-coding-system 'utf-8-unix)))
+     (setq slime-net-coding-system 'utf-8-unix)
+     (setq slime-highlight-compiler-notes nil)))
 ;;TODO ;; Use fuzzy completion (M-Tab)
 ;;     (require 'slime-fuzzy)
 ;;     (setq slime-complete-symbol*-fancy t)
