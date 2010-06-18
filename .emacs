@@ -22,7 +22,8 @@
 
 ;; Require some stuff
 (mapcar #'require
-        '(bindings
+        '(autopair
+          bindings
           cl
           clojure
           color-theme
@@ -46,6 +47,10 @@
 ;; Other customizations
 (setq transient-mark-mode '(only . t))
 (show-paren-mode t)
+
+;; Enable autopair (and autowrap) in all buffers
+(autopair-global-mode 1)
+(setq autopair-autowrap t)
 
 ;; Set font
 (case system-type
@@ -280,9 +285,8 @@
 (setq smart-tab-completion-functions-alist
       '((emacs-lisp-mode . lisp-complete-symbol)
         (text-mode . dabbrev-cgompletion)
+        (clojure-mode . slime-complete-symbol)
         (slime-repl-mode . slime-complete-symbol)))
-(setq hippie-expand-try-functions-list
-      (append hippie-expand-try-functions-list '(slime-complete-symbol)))
 
 ;; Make sure this is on
 (setq-default line-move-visual t)

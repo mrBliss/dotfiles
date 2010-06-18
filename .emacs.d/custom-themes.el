@@ -287,7 +287,7 @@
    '(color-theme-bespin
      ((background-color . "#302620")
       (foreground-color . "#BAAE9E")
-      (cursor-color . "#A7A7A7"))
+      (cursor-color . "#ffffff"))
      (default ((t (nil))))
      (modeline
       ((t (:background "#4c4a41" :foreground "#BAAE9E"
