@@ -91,6 +91,8 @@
 ;; Ignore some buffers when switching buffers
 (setq ido-ignore-buffers '("\\` " "^\*slime-events" "^\*Messages*"
                            "\\*Completions"))
+;; Ignore .DS_Store files
+(add-to-list 'ido-ignore-files "\\.DS_Store")
 
 ;; Smex replaces M-x
 (eval-after-load "~/.emacs" '(smex-initialize))
@@ -277,9 +279,10 @@
 ;; Smart-tab completions
 (setq smart-tab-completion-functions-alist
       '((emacs-lisp-mode . lisp-complete-symbol)
-        (text-mode . dabbrev-completion)
-        (clojure-mode . slime-complete-symbol)
+        (text-mode . dabbrev-cgompletion)
         (slime-repl-mode . slime-complete-symbol)))
+(setq hippie-expand-try-functions-list
+      (append hippie-expand-try-functions-list '(slime-complete-symbol)))
 
 ;; Make sure this is on
 (setq-default line-move-visual t)
@@ -318,3 +321,5 @@
 ;; Indicate empty lines by default
 (setq default-indicate-empty-lines t)
 
+;; Delete to trash
+(setq delete-by-moving-to-trash t)
