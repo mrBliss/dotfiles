@@ -71,8 +71,8 @@
 
 (add-hook 'clojure-mode-hook 'tweak-clojure-syntax)
 (add-hook 'clojure-mode-hook 'highlight-80+-mode)
-(add-hook 'clojure-mode-hook #'(lambda ()
-                                 (push '(?{ . ?})
-                                       (getf autopair-extra-pairs :code))))
+(add-hook 'clojure-mode-hook #'(lambda () (setq autopair-dont-activate t)))
+                                 ;; (push '(?{ . ?})
+                                 ;;       (getf autopair-extra-pairs :code))))
 
 (provide 'clojure)
