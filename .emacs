@@ -22,8 +22,7 @@
 
 ;; Require some stuff
 (mapcar #'require
-        '(autopair
-          bindings
+        '(bindings
           cl
           clojure
           color-theme
@@ -48,10 +47,6 @@
 (setq transient-mark-mode '(only . t))
 (show-paren-mode t)
 
-;; Enable autopair (and autowrap) in all buffers
-(autopair-global-mode 1)
-(setq autopair-autowrap t)
-
 ;; Set font
 (case system-type
   ('windows-nt
@@ -59,7 +54,7 @@
                 '(font . "-*-dejavu sans mono-*-*-*-*-13-*-*-*-*-*-iso8859-1")))
   ('gnu/linux
    (add-to-list 'default-frame-alist
-                '(font . "-*-Inconsolata-*-*-*-*-14-*-*-*-*-*-iso8859-1"))))
+                '(font . "-*-Monaco-*-*-*-*-11-*-*-*-*-*-iso8859-1"))))
 
 ;; y/n instead of yes/no
 (fset 'yes-or-no-p 'y-or-n-p)
