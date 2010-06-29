@@ -292,6 +292,7 @@
      (modeline
       ((t (:background "#4c4a41" :foreground "#BAAE9E"
                        :box (:line-width 1 :style released-button)))))
+     (modeline-buffer-id ((t nil)))
      (mode-line-inactive
       ((t (:background "#1e1915" :foreground "#BAAE9E"
                        :box (:line-width 1 :color "#1e1915")))))
