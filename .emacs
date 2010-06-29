@@ -37,6 +37,7 @@
           php-mode
           pretty-lambdada
           recentf
+          rainbow-mode
           smart-tab
           smex
           uniquify
@@ -301,17 +302,6 @@
             (font-lock-add-keywords nil
                                     '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1
                                        font-lock-warning-face t)))))
-
-;; CSS color values colored by themselves
-(defvar hexcolour-keywords
-  '(("#[abcdef[:digit:]]\\{6\\}"
-     (0 (put-text-property
-         (match-beginning 0)
-         (match-end 0)
-         'face (list :background
-                     (match-string-no-properties 0)))))))
-(add-hook 'css-mode-hook
-          (lambda () (font-lock-add-keywords nil hexcolour-keywords)))
 
 ;; Dired ls switches and search option
 (setq dired-listing-switches "-alhF"
