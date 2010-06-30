@@ -285,7 +285,7 @@
         (slime-repl-mode . slime-complete-symbol)))
 
 ;; Make sure this is on
-(setq-default line-move-visual t)
+(setq line-move-visual t)
 
 ;; Fill text to 74 chars in text-mode
 (add-hook 'text-mode-hook (lambda () (setq fill-column 74)))
