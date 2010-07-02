@@ -40,6 +40,7 @@
           rainbow-mode
           smart-tab
           smex
+          typing-speed
           uniquify
           undo-tree
           zencoding-mode))
@@ -52,7 +53,7 @@
 (case system-type
   ('windows-nt
    (add-to-list 'default-frame-alist
-                '(font . "-*-dejavu sans mono-*-*-*-*-13-*-*-*-*-*-iso8859-1")))
+                '(font . "-*-dejavu sans mono-*-*-*-*-12-*-*-*-*-*-iso8859-1")))
   ('gnu/linux
    (add-to-list 'default-frame-alist
                 '(font . "-*-Monaco-*-*-*-*-11-*-*-*-*-*-iso8859-1"))))
@@ -242,9 +243,6 @@
              ((eq window-system 'x) "xdvi")
              ((eq window-system 'w32) "yap")
              (t "dvi2tty * | cat -s")))
-
-;; Load typing-speed mode
-(load "typing-speed.el")
 
 ;; When opened via cocoa (i.e drop file on icon, or dbl click)
 ;; open in a new window in existing frame, rather than new frame

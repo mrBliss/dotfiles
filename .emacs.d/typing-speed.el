@@ -104,3 +104,5 @@
   "Turns off typing-speed-mode"
   (if typing-speed-mode
       (typing-speed-mode)))
+
+(provide 'typing-speed)
