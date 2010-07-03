@@ -199,4 +199,9 @@ fewer than 80 columns."
           (smart-split-helper w2))))
   (smart-split-helper nil))
 
+(defun maximize-frame ()
+  (interactive)
+  (set-frame-position (selected-frame) 0 0)
+  (set-frame-size (selected-frame) 1000 1000))
+
 (provide 'functions)

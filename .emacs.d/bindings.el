@@ -109,4 +109,7 @@
 (global-set-key (kbd "C-c i") 'increment-number-at-point)
 (global-set-key (kbd "C-c o") 'decrement-number-at-point)
 
+;; Maximize frame with C-c m
+(global-set-key (kbd "C-c m") 'maximize-frame)
+
 (provide 'bindings)
