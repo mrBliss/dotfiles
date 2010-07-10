@@ -18,7 +18,8 @@
 
 ;; Add subdirs
 (mapcar (lambda (x) (add-to-list 'load-path (expand-file-name x)))
-        '("~/.emacs.d" "~/.emacs.d/zencoding" "~/.emacs.d/color-theme"))
+        '("~/.emacs.d" "~/.emacs.d/zencoding" "~/.emacs.d/color-theme"
+          "~/.emacs.d/eproject"))
 
 ;; Require some stuff
 (mapcar #'require
@@ -27,6 +28,8 @@
           clojure
           color-theme
           custom-themes
+          eproject
+          eproject-extras
           functions
           htmlize
           ido
@@ -136,6 +139,9 @@
 
 ;; Allow shell colors
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+
+;; Shell prompt should be ready-only
+(setq comint-prompt-read-only t)
 
 ;; Pretty lambdas
 (pretty-lambda-for-modes)
@@ -252,7 +258,6 @@
 (setq initial-scratch-message
       ";; SCRATCH Buffer
 ;; Commands to learn:
-;;    slime-edit-definition: M-.
 ;;    goto previous macro: C-x C-k C-p
 ;;    insert output for shell command: M-1 M-!
 ;;    search with results: M-s o
@@ -266,6 +271,9 @@
 ;;    newline and indent in comments: M-j
 ;;    apply macro to region: C-x C-k r
 ;;    move between paragraphs: M-{ / M-}
+;;    unload a symbol or function: unload-feature
+;;    next tab stop: M-i
+;;    view methods for a java object: C-c I
 
 ")
 
@@ -310,3 +318,15 @@
 
 ;; Delete to trash
 (setq delete-by-moving-to-trash t)
+
+;; Kill to the clipboard on Linux
+(when (eq system-type 'gnu/linux)
+  (setq x-select-enable-clipboard t))
+
+;; Default method for tramp should be ssh
+(setq tramp-default-method "ssh")
+
+;; Clojure eprojects
+(define-project-type clojure (generic)
+  (look-for "project.clj")
+  :relevant-files ("\\.clj"))

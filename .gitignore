@@ -7,6 +7,7 @@
 !.screenrc
 !.screenrc.nested
 !.ssh/config
+!.conkerorrc
 *~
 .emacs.d/auto-save-list
 .emacs.d/tramp

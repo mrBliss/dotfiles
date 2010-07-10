@@ -199,4 +199,41 @@ fewer than 80 columns."
           (smart-split-helper w2))))
   (smart-split-helper nil))
 
+(defun sum-column ()
+  "Sums a column of numbers starting at point"
+  (interactive)
+  (save-excursion
+    (if (and (not (= (current-column) 0))
+             (re-search-backward "[ \t]" 0 t ))
+        (forward-char))
+    (let ((retn 0)
+          (old-column (current-column))
+          (old-next-line-add-newlines))
+      (setq next-line-add-newlines nil)
+      (while (not
+              (looking-at "^[ \t]*$"))
+        (move-to-column old-column t)
+        (if (and (looking-at "-?[0123456789]+")
+                 (eq (current-column) old-column))
+            (setq retn (+ retn (string-to-number (current-word)))))
+        (next-line)
+        (beginning-of-line))
+      (next-line)
+      (next-line)
+      (move-end-of-line 0)
+      (insert (make-string (- old-column (current-column)) 32))
+      (insert (number-to-string retn))
+      (setq next-line-add-newlines old-next-line-add-newlines)
+      retn)))
+
+(defun sudo-edit (&optional arg)
+  (interactive "p")
+  (if arg
+      (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
+(defun sudo-edit-current-file ()
+  (interactive)
+  (find-alternate-file (concat "/sudo:root@localhost:" (buffer-file-name (current-buffer)))))
+
 (provide 'functions)
