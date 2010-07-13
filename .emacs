@@ -274,6 +274,7 @@
 ;;    unload a symbol or function: unload-feature
 ;;    next tab stop: M-i
 ;;    view methods for a java object: C-c I
+;;    count lines in region: M-=
 
 ")
 

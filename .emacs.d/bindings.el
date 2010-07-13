@@ -109,4 +109,8 @@
 (global-set-key (kbd "C-c i") 'increment-number-at-point)
 (global-set-key (kbd "C-c o") 'decrement-number-at-point)
 
+;; Use easier bindings for the most used commands
+(global-set-key (kbd "M-s") 'save-buffer)
+(global-set-key (kbd "M-o") 'ido-find-file)
+
 (provide 'bindings)
