@@ -28,38 +28,24 @@ interactive("delete", null,
 
 //Check if the rc was valid, i.e. all the js files loaded
 function valid_rc (window) {
-    var success = "";
     var failed = "";
-    if (loaded_init) {
-        success += "init ";
-    } else {
-        failed += "init ";
-    }
-    if (loaded_bindings) {
-        success += "bindings ";
-    } else {
-        failed += "bindings ";
-    }
-    if (loaded_functions) {
-        success += "functions ";
-    } else {
-        failed += "functions ";
-    }
-    if (loaded_webjumps) {
-        success += "webjumps ";
-    } else {
-        failed += "webjumps ";
-    }
-    window.minibuffer.message("Success: " + success + " Failed: "
-                              + failed);
+    var msg = "Valid RC";
+    if (!loaded_init) failed += "init ";
+    if (!loaded_bindings) failed += "bindings ";
+    if (!loaded_functions) failed += "functions ";
+    if (!loaded_webjumps) failed += "webjumps ";
+    if (!loaded_undo_close_buffer) failed += "undo-close-buffer ";
+    if (failed != "") msg = "INVALID RC: failed to load " + failed;
+    window.minibuffer.message(msg);
 }
+
+//Del.icio.us
 interactive("valid-rc",
             "Show if the rc file was successfully loaded",
             function (I) {
                 valid_rc(I.window);
             });
 
-//Del.icio.us
 interactive("delicious-post",
             "bookmark the page via delicious",
             function (I) {
@@ -80,7 +66,7 @@ interactive("delicious-post",
                     '&extended=' +
                     encodeURIComponent(
                         yield I.minibuffer.read(
-                            $prompt = "extended description: "));
+                        $prompt = "extended description: "));
 
                 try {
                     var content = yield send_http_request(
@@ -100,7 +86,7 @@ interactive("delicious-post-link",
                     mylink +
                     '&description=' +
                     encodeURIComponent(
-                        yield I.minibuffer.read(p
+                        yield I.minibuffer.read(
                             $prompt = "name (required): ",
                             $initial_value = bo.textContent)) +
                     '&tags=' +

@@ -265,16 +265,17 @@
 ;;    make sure the current function is visible: C-M-l
 ;;    wordcount for active region: M-=
 ;;    undo for the active region: C-u C-_
-;;    increment/decrement number: C-c i/o
 ;;    move forward and backward across parens: C-M-n / C-m-p
 ;;    mark the end of the next word: M-@
-;;    newline and indent in comments: M-j
 ;;    apply macro to region: C-x C-k r
 ;;    move between paragraphs: M-{ / M-}
 ;;    unload a symbol or function: unload-feature
-;;    next tab stop: M-i
 ;;    view methods for a java object: C-c I
 ;;    count lines in region: M-=
+;;    go to previous any location (across files): C-x C-Space
+;;    regex search in all open buffers: multi-occur-in-matching-buffers
+;;    apply shell command on region: M-|
+;;    rename files with dired: wdired-change-to-wdired-mode
 
 ")
 

@@ -3,6 +3,7 @@ loaded_bindings = false;
 
 /*
  * List of a-z bindings: (* indicates my bindings)
+ * a = find-url-new-buffer*
  * r = reload
  * R = isearch-continue-backward
  * t = follow-top
@@ -45,6 +46,18 @@ define_key(content_buffer_normal_keymap, "l", "cmd_scrollRight");
 
 //C-x f is the same as C-x C-f
 define_key(default_global_keymap, "C-x f", "find-url-new-buffer");
+
+//a is the same as C-x f
+define_key(default_global_keymap, "a", "find-url-new-buffer");
+
+//Use kill-and-save-buffer instead of kill-buffer
+define_key(default_global_keymap, "C-x k", "kill-and-save-buffer");
+define_key(default_global_keymap, "q", "kill-and-save-buffer");
+
+//Restore the last killed buffer with C-x u, C-T or M-T (bindings I'm used to)
+define_key(default_global_keymap, "C-x u", "undo-kill-buffer");
+define_key(default_global_keymap, "C-T", "undo-kill-buffer");
+define_key(default_global_keymap, "M-T", "undo-kill-buffer");
 
 //Duplicate buffer with M-d
 define_key(content_buffer_normal_keymap, "M-d", "duplicate-buffer");

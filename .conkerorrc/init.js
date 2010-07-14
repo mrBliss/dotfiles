@@ -4,7 +4,9 @@ loaded_init = false;
 require("clicks-in-new-buffer.js");
 require("new-tabs.js");
 require("session.js");
-//require("page-modes/wikipedia.js");
+require("content-buffer.js");
+require("page-modes/google-images.js");
+require("page-modes/wikipedia.js");
 
 //Homepage
 homepage = "http://www.google.be";
@@ -40,8 +42,7 @@ let (dir = get_home_directory()) {
     dir.append("sessions");
     session_dir = dir;
 };
-
-session_auto_save_auto_load = true;
+session_auto_save_auto_load = "prompt";
 
 //Automatically follow "did you mean" links on wikipedia
 wikipedia_enable_didyoumean = true;
@@ -56,6 +57,14 @@ let (sheet = get_home_directory()) {
 
 //Don't quit when killing the last buffer
 can_kill_last_buffer = false;
+
+//Store more history for the minibuffer
+minibuffer_history_max_items = 1000;
+
+//Remove clock from mode-line and add loading_count and buffer_count
+remove_hook("mode_line_hook", mode_line_adder(clock_widget));
+add_hook("mode_line_hook", mode_line_adder(loading_count_widget), true);
+add_hook("mode_line_hook", mode_line_adder(buffer_count_widget), true);
 
 //To check if this page was succesfully loaded
 loaded_init = true;
