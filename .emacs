@@ -331,3 +331,9 @@
 (define-project-type clojure (generic)
   (look-for "project.clj")
   :relevant-files ("\\.clj"))
+
+;; Use Conkeror on linux
+(when (eq system-type 'gnu/linux)
+  (setq browse-url-browser-function 'browse-url-generic
+        browse-url-generic-program "/usr/bin/conkeror"))
+
