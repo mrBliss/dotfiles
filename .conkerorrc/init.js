@@ -60,7 +60,7 @@ var css_os_dir = cssdir.clone();
 cssdir.append("chrome.css");
 register_user_stylesheet(cssdir);
 let (os = get_os().toLowerCase()) {
-    css_os_dir.append(os + ".css");
+    css_os_dir.append("chrome-" + os + ".css");
     register_user_stylesheet(css_os_dir);
 };
 
