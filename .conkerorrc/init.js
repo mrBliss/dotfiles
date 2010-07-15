@@ -11,7 +11,7 @@ require("page-modes/wikipedia.js");
 //Homepage
 homepage = "http://www.google.be";
 
-if (get_os() == "WINNT") {
+if (get_os() == "WINNT" && cwd.path.indexOf("Roaming") < 0) {
     cwd.append("AppData");
     cwd.append("Roaming");
 }
