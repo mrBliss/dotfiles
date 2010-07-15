@@ -62,9 +62,6 @@ define_key(default_global_keymap, "M-T", "undo-kill-buffer");
 //Duplicate buffer with M-d
 define_key(content_buffer_normal_keymap, "M-d", "duplicate-buffer");
 
-//Confirm exit
-define_key(default_global_keymap, "C-x C-c", "confirm-quit");
-
 //Delete a dom node with C-d
 define_key(content_buffer_normal_keymap, "C-d", "delete");
 

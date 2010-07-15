@@ -64,8 +64,6 @@ let (os = get_os().toLowerCase()) {
     register_user_stylesheet(css_os_dir);
 };
 
-
-
 //Don't quit when killing the last buffer
 can_kill_last_buffer = false;
 
@@ -76,6 +74,17 @@ minibuffer_history_max_items = 1000;
 remove_hook("mode_line_hook", mode_line_adder(clock_widget));
 add_hook("mode_line_hook", mode_line_adder(loading_count_widget), true);
 add_hook("mode_line_hook", mode_line_adder(buffer_count_widget), true);
+
+//Confirm quit
+add_hook("before_quit_hook",
+         function () {
+             var w = get_recent_conkeror_window();
+             var result = (w == null) ||
+                 "y" == (yield w.minibuffer.read_single_character_option(
+                             $prompt = "Quit Conkeror? (y/n)",
+                             $options = ["y", "n"]));
+             yield co_return(result);
+         });
 
 //To check if this page was successfully loaded
 loaded_init = true;
