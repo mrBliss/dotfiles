@@ -1,8 +1,6 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
 /* TABS */
-.tab2-icon {
-    font-weight: bold;
-    padding: 1px 2px 0px 3px;
-    text-align: center;
+.tab2-label, .tab2-icon {
+    font: 11px 'Segui UI', Calibri, Tahoma, sans-serif;
 }

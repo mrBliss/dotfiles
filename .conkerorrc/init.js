@@ -11,6 +11,11 @@ require("page-modes/wikipedia.js");
 //Homepage
 homepage = "http://www.google.be";
 
+if (get_os() == "WINNT") {
+    cwd.append("AppData");
+    cwd.append("Roaming");
+}
+
 //Complete new urls with history
 url_completion_use_history = true;
 url_completion_use_bookmarks = false;
@@ -37,7 +42,7 @@ clicks_in_new_buffer_target = OPEN_NEW_BUFFER;
 url_remoting_fn = load_url_in_new_buffer;
 
 //Sessions
-let (dir = get_home_directory()) {
+let (dir = cwd.clone()) {
     dir.append(".conkerorrc");
     dir.append("sessions");
     session_dir = dir;
@@ -48,12 +53,18 @@ session_auto_save_auto_load = "prompt";
 wikipedia_enable_didyoumean = true;
 
 //Load stylesheet
-let (sheet = get_home_directory()) {
-    sheet.append(".conkerorrc");
-    sheet.append("css");
-    sheet.append("chrome.css");
-    register_user_stylesheet(make_uri(sheet));
+var cssdir = cwd.clone();
+cssdir.append(".conkerorrc");
+cssdir.append("css");
+var css_os_dir = cssdir.clone();
+cssdir.append("chrome.css");
+register_user_stylesheet(cssdir);
+let (os = get_os().toLowerCase()) {
+    css_os_dir.append(os + ".css");
+    register_user_stylesheet(css_os_dir);
 };
+
+
 
 //Don't quit when killing the last buffer
 can_kill_last_buffer = false;
