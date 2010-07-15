@@ -1,4 +1,4 @@
-//To check if this page was succesfully loaded
+//To check if this page was successfully loaded
 loaded_webjumps = false;
 
 //Webjumps
@@ -37,5 +37,5 @@ define_webjump("del", "http://delicious.com/search?p=%s&chk=&context=userposts%7
 //TODO XPather
 
 
-//To check if this page was succesfully loaded
+//To check if this page was successfully loaded
 loaded_webjumps = true;

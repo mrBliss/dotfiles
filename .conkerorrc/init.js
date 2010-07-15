@@ -1,4 +1,4 @@
-//To check if this page was succesfully loaded
+//To check if this page was successfully loaded
 loaded_init = false;
 
 require("clicks-in-new-buffer.js");
@@ -66,5 +66,5 @@ remove_hook("mode_line_hook", mode_line_adder(clock_widget));
 add_hook("mode_line_hook", mode_line_adder(loading_count_widget), true);
 add_hook("mode_line_hook", mode_line_adder(buffer_count_widget), true);
 
-//To check if this page was succesfully loaded
+//To check if this page was successfully loaded
 loaded_init = true;

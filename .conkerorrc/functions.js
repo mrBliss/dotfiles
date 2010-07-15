@@ -1,4 +1,4 @@
-//To check if this page was succesfully loaded
+//To check if this page was successfully loaded
 loaded_functions = false;
 
 //Duplicate buffer
@@ -105,5 +105,5 @@ interactive("delicious-post-link",
                 } catch (e) { }
             }, $browser_object = browser_object_links);
 
-//To check if this page was succesfully loaded
+//To check if this page was successfully loaded
 loaded_functions = true;

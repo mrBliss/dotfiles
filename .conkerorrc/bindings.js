@@ -1,4 +1,4 @@
-//To check if this page was succesfully loaded
+//To check if this page was successfully loaded
 loaded_bindings = false;
 
 /*
@@ -82,5 +82,5 @@ define_key(default_global_keymap, "C-x v", "valid-rc");
 //U goes to the root of the url
 define_key(content_buffer_normal_keymap, "U", "root");
 
-//To check if this page was succesfully loaded
+//To check if this page was successfully loaded
 loaded_bindings = true;

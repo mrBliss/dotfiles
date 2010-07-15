@@ -7,6 +7,9 @@
  * undo-kill-buffer.
  * 
  */
+//To check if this page was successfully loaded
+loaded_undo_close_buffer = false;
+
 
 var saved_buffers = [];
 var max_saved_buffers = 30;
@@ -35,3 +38,6 @@ interactive("undo-kill-buffer",
             "Restores the last killed buffer",
             "find-url-new-buffer",
             $browser_object = function () { return get_last_saved_buffer(); });
+
+//To check if this page was successfully loaded
+loaded_undo_close_buffer = true;
