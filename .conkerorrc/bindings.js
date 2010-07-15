@@ -82,5 +82,13 @@ define_key(default_global_keymap, "C-x v", "valid-rc");
 //U goes to the root of the url
 define_key(content_buffer_normal_keymap, "U", "root");
 
+//Save a session with C-x s and load one with C-x l (replacing the
+//current buffer)
+define_key(default_global_keymap, "C-x s", "session-save");
+define_key(default_global_keymap, "C-x l",
+           "session-load-window-current-replace");
+
+
+
 //To check if this page was successfully loaded
 loaded_bindings = true;
