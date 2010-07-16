@@ -86,5 +86,10 @@ add_hook("before_quit_hook",
              yield co_return(result);
          });
 
+//Nicer fonts on ubuntuforums.org
+register_user_stylesheet(
+    make_css_data_uri(["body{font: 12px Helvetica, sans-serif !important;}"],
+                      $url_prefixes = "http://ubuntuforums.org/"));
+
 //To check if this page was successfully loaded
 loaded_init = true;

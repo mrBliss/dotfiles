@@ -59,6 +59,9 @@ define_key(default_global_keymap, "C-x u", "undo-kill-buffer");
 define_key(default_global_keymap, "C-T", "undo-kill-buffer");
 define_key(default_global_keymap, "M-T", "undo-kill-buffer");
 
+//Search for a killed buffer to restore with C-x C-u
+define_key(default_global_keymap, "C-x C-u", "search-killed-buffer");
+
 //Duplicate buffer with M-d
 define_key(content_buffer_normal_keymap, "M-d", "duplicate-buffer");
 
