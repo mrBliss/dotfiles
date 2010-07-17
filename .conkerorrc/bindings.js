@@ -88,6 +88,8 @@ define_key(default_global_keymap, "C-x s", "session-save");
 define_key(default_global_keymap, "C-x l",
            "session-load-window-current-replace");
 
+//Unbind bookmark to b
+undefine_key(content_buffer_normal_keymap, "b");
 
 
 //To check if this page was successfully loaded

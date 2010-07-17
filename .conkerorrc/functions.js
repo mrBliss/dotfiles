@@ -35,6 +35,7 @@ function valid_rc (window) {
     if (!loaded_functions) failed += "functions ";
     if (!loaded_webjumps) failed += "webjumps ";
     if (!loaded_undo_close_buffer) failed += "undo-close-buffer ";
+    if (!loaded_userscripts) failed += "userscripts ";
     if (failed != "") msg = "INVALID RC: failed to load " + failed;
     window.minibuffer.message(msg);
 }
@@ -104,35 +105,6 @@ interactive("delicious-post-link",
                     I.window.minibuffer.message(content.responseText);
                 } catch (e) { }
             }, $browser_object = browser_object_links);
-
-//Some fonts to chose from
-var fonts = ['Helvetica', 'Helvetica Neue', 'Trebuchet MS', 'Monaco', 'Myriad Pro', 'DejaVu Sans Mono', 'Inconsolata', 'Century Old Style Std', 'Bembo Std', 'Grandesign Neue Serif', 'Lucida Mac', 'Lucida Grande'];
-
-//Change font(size) of the body for the given buffer
-function change_font(I, font_name, font_size) {
-    make_css_data_uri(["body{font: " + font_size + "x "
-                       + font_name + " !important;}"],
-                      $url_prefixes = url_path_trim(I.buffer.current_uri.spec));
-    I.window.minibuffer.message("Changed to " + font_name + " " + font_size + "px for " + url_path_trim(I.buffer.current_uri.spec));
-}
-
-interactive("change-font",
-            "Prompts the user for a new font and size to use on the current page",
-            function (I) {
-                var font_name = 
-                    yield I.minibuffer.read(
-                        $prompt = "New font:",
-                        $completer = all_word_completer(
-                            $completions = function(push) {
-                                for (var i in fonts) {push(fonts[i]);}},
-                            $get_string = function (x) {return x;}));
-                var font_size =
-                    yield I.minibuffer.read($prompt = "New font size:");
-                //Quote fonts containing a space
-                if (font_name.indexOf(" ") >= 0)
-                    font_name = '"' + font_name + '"';
-                change_font(I, font_name, font_size);
-            });
 
 //To check if this page was successfully loaded
 loaded_functions = true;

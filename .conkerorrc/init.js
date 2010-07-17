@@ -52,18 +52,6 @@ session_auto_save_auto_load = "prompt";
 //Automatically follow "did you mean" links on wikipedia
 wikipedia_enable_didyoumean = true;
 
-//Load stylesheet
-var cssdir = cwd.clone();
-cssdir.append(".conkerorrc");
-cssdir.append("css");
-var css_os_dir = cssdir.clone();
-cssdir.append("chrome.css");
-register_user_stylesheet(cssdir);
-let (os = get_os().toLowerCase()) {
-    css_os_dir.append("chrome-" + os + ".css");
-    register_user_stylesheet(css_os_dir);
-};
-
 //Don't quit when killing the last buffer
 can_kill_last_buffer = false;
 
@@ -85,11 +73,6 @@ add_hook("before_quit_hook",
                              $options = ["y", "n"]));
              yield co_return(result);
          });
-
-//Nicer fonts on ubuntuforums.org
-register_user_stylesheet(
-    make_css_data_uri(["body{font: 12px Helvetica, sans-serif !important;}"],
-                      $url_prefixes = "http://ubuntuforums.org/"));
 
 //To check if this page was successfully loaded
 loaded_init = true;

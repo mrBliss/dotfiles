@@ -19,7 +19,7 @@
 ;; Add subdirs
 (mapcar (lambda (x) (add-to-list 'load-path (expand-file-name x)))
         '("~/.emacs.d" "~/.emacs.d/zencoding" "~/.emacs.d/color-theme"
-          "~/.emacs.d/eproject"))
+          "~/.emacs.d/eproject" "~/.emacs.d/haskell-mode"))
 
 ;; Require some stuff
 (mapcar #'require
@@ -31,6 +31,7 @@
           eproject
           eproject-extras
           functions
+          haskell-mode
           htmlize
           ido
           imenu
@@ -333,8 +334,19 @@
   (look-for "project.clj")
   :relevant-files ("\\.clj"))
 
+;; .conkerorrc eproject
+(define-project-type conkerorrc (generic)
+  (look-for "init.js")
+  :relevant-files ("\\.js"))
+
 ;; Use Conkeror on linux
 (when (eq system-type 'gnu/linux)
   (setq browse-url-browser-function 'browse-url-generic
         browse-url-generic-program "/usr/bin/conkeror"))
 
+;; Haskell-mode
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+
+;; Autoload scheme-mode for ds (devilspie) files
+(add-to-list 'auto-mode-alist '("\\ds$" . scheme-mode))
