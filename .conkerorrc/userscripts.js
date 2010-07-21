@@ -34,7 +34,9 @@ let (github_font = "Inconsolata, monospace !important") {
         make_css_data_uri(
             ["pre,code{font: 12px " + github_font + ";}",
              ".commit-ref {font-family: " + github_font + ";}",
-            "div#browser table td {font: 12px " + github_font + ";}"],
+            "div#browser table td {font: 12px " + github_font + ";}",
+            "div.file div.meta div.info {font-family: " + github_font + ";}",
+            "table#toc td.path a {font-family: " + github_font + ";}"],
             $url_prefixes = "http://github.com/"));
 };
 

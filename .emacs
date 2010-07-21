@@ -19,7 +19,8 @@
 ;; Add subdirs
 (mapcar (lambda (x) (add-to-list 'load-path (expand-file-name x)))
         '("~/.emacs.d" "~/.emacs.d/zencoding" "~/.emacs.d/color-theme"
-          "~/.emacs.d/eproject" "~/.emacs.d/haskell-mode"))
+          "~/.emacs.d/eproject" "~/.emacs.d/haskell-mode"
+          "~/.emacs.d/coffee-mode"))
 
 ;; Require some stuff
 (mapcar #'require
@@ -27,6 +28,7 @@
           cl
           clojure
           color-theme
+          coffee-mode
           custom-themes
           eproject
           eproject-extras
@@ -350,3 +352,16 @@
 
 ;; Autoload scheme-mode for ds (devilspie) files
 (add-to-list 'auto-mode-alist '("\\ds$" . scheme-mode))
+
+;; Load coffee-mode for .coffee and Cakefile files
+(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
+
+;; Coffee-mode hook
+(defun coffee-custom ()
+  "coffee-mode-hoo"
+  ;; Use two spaces
+  (set (make-local-variable 'tab-width) 2))
+  ;; Compile the bufferin coffee-mode
+  (define-key coffee-mode-map (kbd "C-c C-k") 'coffee-compile-buffer)
+(add-hook'coffee-mode-hook '(lambda () (coffee-custom)))

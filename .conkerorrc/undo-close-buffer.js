@@ -17,13 +17,15 @@ if (typeof saved_buffers == "undefined")
 var max_saved_buffers = 30;
 
 function save_buffer(buffer_location) {
-    saved_buffers.push(buffer_location);
-    if (saved_buffers.length > max_saved_buffers)
-        saved_buffers.shift();
+    if (saved_buffers[saved_buffers.length-1] != buffer_location) {
+        saved_buffers.push(buffer_location);
+        if (saved_buffers.length > max_saved_buffers)
+            saved_buffers.shift();
+    }
 }
 
 function get_last_saved_buffer() {
-    if (saved_buffers.length > 1)
+    if (saved_buffers.length > 0)
         return saved_buffers.pop();
     else
         return "about:blank";

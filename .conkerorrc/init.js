@@ -74,5 +74,8 @@ add_hook("before_quit_hook",
              yield co_return(result);
          });
 
+//Default webjump
+read_url_handler_list = [read_url_make_default_webjump_handler("g")];
+
 //To check if this page was successfully loaded
 loaded_init = true;
