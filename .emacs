@@ -59,7 +59,7 @@
 (case system-type
   ('windows-nt
    (add-to-list 'default-frame-alist
-                '(font . "-*-dejavu sans mono-*-*-*-*-12-*-*-*-*-*-iso8859-1")))
+                '(font . "-*-mensch-*-*-*-*-12-*-*-*-*-*-iso8859-1")))
   ('gnu/linux
    (add-to-list 'default-frame-alist
                 '(font . "-*-Monaco-*-*-*-*-11-*-*-*-*-*-iso8859-1"))))

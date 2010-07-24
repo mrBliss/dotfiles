@@ -40,13 +40,19 @@ function valid_rc (window) {
     window.minibuffer.message(msg);
 }
 
-//Del.icio.us
 interactive("valid-rc",
             "Show if the rc file was successfully loaded",
             function (I) {
                 valid_rc(I.window);
             });
 
+interactive("new-frame",
+            "Opens a new frame",
+            function (I) {
+                browser_object_follow(I.buffer, OPEN_NEW_WINDOW, "about:blank");
+            });
+
+//Del.icio.us
 interactive("delicious-post",
             "bookmark the page via delicious",
             function (I) {
