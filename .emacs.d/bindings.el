@@ -112,4 +112,17 @@
 ;; Maximize frame with C-c m
 (global-set-key (kbd "C-c m") 'maximize-frame)
 
+;; Use easier bindings for the most used commands
+(global-set-key (kbd "M-s") 'save-buffer)
+(global-set-key (kbd "M-o") 'ido-find-file)
+
+;; Balance windows with C-c b
+(global-set-key (kbd "C-c b") 'balance-windows)
+
+;; Resize window with C-c j/k and h/l
+(global-set-key (kbd "C-c j") 'enlarge-window)
+(global-set-key (kbd "C-c k") 'shrink-window)
+(global-set-key (kbd "C-c h") 'enlarge-window-horizontally)
+(global-set-key (kbd "C-c l") 'shrink-window-horizontally)
+
 (provide 'bindings)

@@ -18,7 +18,9 @@
 
 ;; Add subdirs
 (mapcar (lambda (x) (add-to-list 'load-path (expand-file-name x)))
-        '("~/.emacs.d" "~/.emacs.d/zencoding" "~/.emacs.d/color-theme"))
+        '("~/.emacs.d" "~/.emacs.d/zencoding" "~/.emacs.d/color-theme"
+          "~/.emacs.d/eproject" "~/.emacs.d/haskell-mode"
+          "~/.emacs.d/coffee-mode"))
 
 ;; Require some stuff
 (mapcar #'require
@@ -26,8 +28,12 @@
           cl
           clojure
           color-theme
+          coffee-mode
           custom-themes
+          eproject
+          eproject-extras
           functions
+          haskell-mode
           htmlize
           ido
           imenu
@@ -53,7 +59,7 @@
 (case system-type
   ('windows-nt
    (add-to-list 'default-frame-alist
-                '(font . "-*-dejavu sans mono-*-*-*-*-12-*-*-*-*-*-iso8859-1")))
+                '(font . "-*-mensch-*-*-*-*-12-*-*-*-*-*-iso8859-1")))
   ('gnu/linux
    (add-to-list 'default-frame-alist
                 '(font . "-*-Monaco-*-*-*-*-11-*-*-*-*-*-iso8859-1"))))
@@ -136,6 +142,9 @@
 
 ;; Allow shell colors
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+
+;; Shell prompt should be ready-only
+(setq comint-prompt-read-only t)
 
 ;; Pretty lambdas
 (pretty-lambda-for-modes)
@@ -252,7 +261,6 @@
 (setq initial-scratch-message
       ";; SCRATCH Buffer
 ;; Commands to learn:
-;;    slime-edit-definition: M-.
 ;;    goto previous macro: C-x C-k C-p
 ;;    insert output for shell command: M-1 M-!
 ;;    search with results: M-s o
@@ -260,12 +268,17 @@
 ;;    make sure the current function is visible: C-M-l
 ;;    wordcount for active region: M-=
 ;;    undo for the active region: C-u C-_
-;;    increment/decrement number: C-c i/o
 ;;    move forward and backward across parens: C-M-n / C-m-p
 ;;    mark the end of the next word: M-@
-;;    newline and indent in comments: M-j
 ;;    apply macro to region: C-x C-k r
 ;;    move between paragraphs: M-{ / M-}
+;;    unload a symbol or function: unload-feature
+;;    view methods for a java object: C-c I
+;;    count lines in region: M-=
+;;    go to previous any location (across files): C-x C-Space
+;;    regex search in all open buffers: multi-occur-in-matching-buffers
+;;    apply shell command on region: M-|
+;;    rename files with dired: wdired-change-to-wdired-mode
 
 ")
 
@@ -310,3 +323,45 @@
 
 ;; Delete to trash
 (setq delete-by-moving-to-trash t)
+
+;; Kill to the clipboard on Linux
+(when (eq system-type 'gnu/linux)
+  (setq x-select-enable-clipboard t))
+
+;; Default method for tramp should be ssh
+(setq tramp-default-method "ssh")
+
+;; Clojure eprojects
+(define-project-type clojure (generic)
+  (look-for "project.clj")
+  :relevant-files ("\\.clj"))
+
+;; .conkerorrc eproject
+(define-project-type conkerorrc (generic)
+  (look-for "init.js")
+  :relevant-files ("\\.js"))
+
+;; Use Conkeror on linux
+(when (eq system-type 'gnu/linux)
+  (setq browse-url-browser-function 'browse-url-generic
+        browse-url-generic-program "/usr/bin/conkeror"))
+
+;; Haskell-mode
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+
+;; Autoload scheme-mode for ds (devilspie) files
+(add-to-list 'auto-mode-alist '("\\ds$" . scheme-mode))
+
+;; Load coffee-mode for .coffee and Cakefile files
+(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
+
+;; Coffee-mode hook
+(defun coffee-custom ()
+  "coffee-mode-hoo"
+  ;; Use two spaces
+  (set (make-local-variable 'tab-width) 2))
+  ;; Compile the bufferin coffee-mode
+  (define-key coffee-mode-map (kbd "C-c C-k") 'coffee-compile-buffer)
+(add-hook'coffee-mode-hook '(lambda () (coffee-custom)))
