@@ -10,7 +10,7 @@ alias history='fc -l 1'
 
 # List direcory contents
 alias l='ls -lAFh'
-alias ll='ls -lAFh'
+alias ll='ls -lAFh | less'
 alias sl='ls -lAFh'
 
 # Directory navigation
@@ -27,6 +27,18 @@ alias cd/='cd /'
 alias md='mkdir -p'
 alias rd=rmdir
 alias rmr='rm -r'
+alias rmrf='rm -r'
+
+# Leiningen
+alias lclean='lein clean'
+alias lcompile='lein compile'
+alias ldeps='lein deps'
+alias ljar='lein jar'
+alias lnew='lein new'
+alias lrepl='lein repl'
+alias lswank='lein swank'
+alias ltest='lein test'
+alias lujar='lein uberjar'
 
 # Emacs
 alias em='emacsclient -t -a ""'
@@ -43,6 +55,8 @@ alias space='find . -maxdepth 1 -mindepth 1 -print0  | xargs -0 -n1 du -ks | sor
 
 # Faster to type
 alias gitgui='git gui'
+alias gits='git status'
+alias gitll='git log -n2'
 
 # Start a nested screen session
 alias screenn='screen -m -c ~/.screenrc.nested'

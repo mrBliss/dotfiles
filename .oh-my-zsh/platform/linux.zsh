@@ -3,6 +3,7 @@
 # I don't like your Aptitude!
 alias apti='sudo aptitude install'
 alias aptrm='sudo aptitude remove'
+alias aptrmf='sudo aptitude remove'
 alias aptut='sudo aptitude update'
 alias aptu='sudo aptitude update'
 alias aptud='sudo aptitude upgrade'
