@@ -18,6 +18,9 @@
 (global-set-key (kbd "C-M-k") 'kill-word)
 (global-set-key (kbd "C-M-h") 'backward-kill-word)
 
+;; js2-mode boinds C-M-h to something else; undo this
+(define-key js2-mode-map (kbd "C-M-h") 'backward-kill-word)
+
 ;; C-M-b doesn't work on OS X, so use C-M-g
 (global-set-key (kbd "C-M-g") 'backward-sexp)
 
@@ -47,10 +50,10 @@
 (global-set-key (kbd "C-c r") 'replace-string)
 
 ;; Open .emacs
-(global-set-key (kbd "C-c e") (lambda () (interactive)(find-file "~/.emacs")))
+(global-set-key (kbd "C-c e") (lambda () (interactive) (find-file "~/.emacs")))
 
 ;; Evaluate the current buffer
-(global-set-key (kbd "C-c E") (lambda () (interactive)(eval-buffer)))
+(global-set-key (kbd "C-c E") (lambda () (interactive) (eval-buffer)))
 
 
 
@@ -61,12 +64,12 @@
 (global-set-key (kbd "C-M-y") 'kill-ring-search)
 
 ;; Check Dutch spelling
-(global-set-key (kbd "C-c C-s n") (lambda() (interactive)
+(global-set-key (kbd "C-c C-s n") (lambda () (interactive)
                                 (ispell-change-dictionary "nederlands")
                                 (flyspell-buffer)))
 
 ;; Check English spelling
-(global-set-key (kbd "C-c C-s e") (lambda() (interactive)
+(global-set-key (kbd "C-c C-s e") (lambda () (interactive)
                                 (ispell-change-dictionary "english")
                                 (flyspell-buffer)))
 
@@ -89,7 +92,7 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 
 ;; Kill emacs when using emacs --daemon
-(global-set-key (kbd "C-x M-c") (lambda() (interactive)
+(global-set-key (kbd "C-x M-c") (lambda () (interactive)
                                   (save-some-buffers t t)
                                   (kill-emacs)))
 
@@ -124,5 +127,8 @@
 (global-set-key (kbd "C-c k") 'shrink-window)
 (global-set-key (kbd "C-c h") 'enlarge-window-horizontally)
 (global-set-key (kbd "C-c l") 'shrink-window-horizontally)
+
+;; Kill the word under the point with C-c C-d
+(global-set-key (kbd "C-c C-d") (lambda () (interactive) (backward-word) (kill-word 1)))
 
 (provide 'bindings)
