@@ -1,4 +1,19 @@
 (1
+ (multi-project .
+		[(0 0 1)
+		 nil "Work with multiple projects" single])
+ (hungry-delete .
+		[(1 0)
+		 nil "hungry delete minor mode" single])
+ (Save-visited-files .
+		     [(1 2)
+		      nil "save opened files across sessions" single])
+ (c-eldoc .
+	  [(0 6)
+	   nil "helpful description of the arguments to C functions" single])
+ (mv-shell .
+	   [(1 0)
+	    nil "keep buffers in sync with filename throughout 'mv'commands in shell-mode." single])
  (diff-git .
 	   [(0 1 1)
 	    nil "Git integration with diff-mode" single])
@@ -18,11 +33,11 @@
 		[(1 1)
 		 nil "electric editing commands for ruby files" single])
  (yari .
-       [(0 2)
+       [(0 3)
 	nil "Yet Another RI interface for Emacs" single])
  (smex .
-       [(1 1)
-	nil "M-x interface with Ido-style lazy matching." single])
+       [(1 1 1)
+	nil "M-x interface with Ido-style fuzzy matching." single])
  (drag-stuff .
 	     [(0 0 3)
 	      nil "Drag stuff (lines, words, region, etc...) around" single])
@@ -88,7 +103,7 @@
 	    [(0 3)
 	     nil "Intelligent tab completion and indentation." single])
  (cssh .
-       [(0 5)
+       [(0 7)
 	nil "clusterssh implementation for emacs" single])
  (relax .
 	[(0 2)

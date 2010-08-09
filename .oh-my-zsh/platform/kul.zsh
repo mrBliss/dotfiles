@@ -12,3 +12,6 @@ alias sicstus="/cw/prolog/sicstus/sicstus-yes.linux/bin/sicstus-3.12.2 --goal ma
 
 # No root access so put $HOME/bin on the path
 export PATH=$HOME/bin:$PATH
+
+# Run zsh
+alias zsh=$HOME/bin/bin.linux/bin/zsh
