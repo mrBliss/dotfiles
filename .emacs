@@ -369,4 +369,7 @@
   (set (make-local-variable 'tab-width) 2))
   ;; Compile the bufferin coffee-mode
   (define-key coffee-mode-map (kbd "C-c C-k") 'coffee-compile-buffer)
-(add-hook'coffee-mode-hook '(lambda () (coffee-custom)))
+(add-hook 'coffee-mode-hook '(lambda () (coffee-custom)))
+
+;; js2-mode binds C-M-h to something else; undo this
+(add-hook 'js2-mode-hook '(lambda () (define-key js2-mode-map (kbd "C-M-h") 'backward-kill-word)))

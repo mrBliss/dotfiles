@@ -18,9 +18,6 @@
 (global-set-key (kbd "C-M-k") 'kill-word)
 (global-set-key (kbd "C-M-h") 'backward-kill-word)
 
-;; js2-mode boinds C-M-h to something else; undo this
-(define-key js2-mode-map (kbd "C-M-h") 'backward-kill-word)
-
 ;; C-M-b doesn't work on OS X, so use C-M-g
 (global-set-key (kbd "C-M-g") 'backward-sexp)
 
@@ -54,8 +51,6 @@
 
 ;; Evaluate the current buffer
 (global-set-key (kbd "C-c E") (lambda () (interactive) (eval-buffer)))
-
-
 
 ;; Open a new frame
 (global-set-key (kbd "C-c f") 'make-frame)
