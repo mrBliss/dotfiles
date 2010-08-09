@@ -131,4 +131,8 @@
 ;; Kill the word under the point with C-c C-d
 (global-set-key (kbd "C-c C-d") (lambda () (interactive) (backward-word) (kill-word 1)))
 
+;; Isearch with regular expressions
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+
 (provide 'bindings)
