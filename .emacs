@@ -46,6 +46,7 @@
           rainbow-mode
           smart-tab
           smex
+          tramp
           typing-speed
           uniquify
           undo-tree
@@ -110,6 +111,16 @@
 
 ;; Mic Paren
 (paren-activate)
+
+;; Aspell
+(setq ispell-program-name
+      (case system-type
+        ('darwin "/opt/local/bin/aspell")
+        ('windows-nt "aspell")
+        ('cygwin "aspell")
+        ('gnu/linux "/usr/bin/aspell")))
+(setq ispell-dictionary "english")
+(add-hook 'text-mode-hook 'turn-on-flyspell)
 
 ;; Only apply the color-theme when emacs is used with a window-system.
 ;; On Linux, running emacsclient, we need the following snippet to do
@@ -182,16 +193,6 @@
 
 ;; Tetris score file
 (setq tetris-score-file "~/.emacs.d/tetris-scores")
-
-;; Aspelll
-(setq ispell-program-name
-      (case system-type
-        ('darwin "/opt/local/bin/aspell")
-        ('windows-nt "aspell")
-        ('cygwin "aspell")
-        ('gnu/linux "/usr/bin/aspell")))
-(setq ispell-dictionary "english")
-(add-hook 'text-mode-hook 'turn-on-flyspell)
 
 ;; Put auto save files in one folder
 (setq backup-directory-alist

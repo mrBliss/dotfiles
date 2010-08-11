@@ -45,6 +45,7 @@
 
 ;; Search & Destroy!
 (global-set-key (kbd "C-c r") 'replace-string)
+(global-set-key (kbd "C-c C-r") 'replace-regexp)
 
 ;; Open .emacs
 (global-set-key (kbd "C-c e") (lambda () (interactive) (find-file "~/.emacs")))
