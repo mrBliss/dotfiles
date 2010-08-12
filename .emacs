@@ -374,3 +374,6 @@
 
 ;; js2-mode binds C-M-h to something else; undo this
 (add-hook 'js2-mode-hook '(lambda () (define-key js2-mode-map (kbd "C-M-h") 'backward-kill-word)))
+
+;; Enable downcase-region
+(put 'downcase-region 'disabled nil)
