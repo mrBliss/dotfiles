@@ -489,7 +489,7 @@ else through unchanged."
 
 (define-minor-mode eproject-mode
   "A minor mode for buffers that are a member of an eproject project."
-  nil " Project"
+  nil " eProj"
   '(("" . eproject-find-file)
     ("" . eproject-ibuffer))
   (when (null eproject-root)

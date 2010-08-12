@@ -315,12 +315,6 @@
      (region ((t (:background "#f8fab7"))))
      (link ((t (:foreground "#5EA6EA" :underline t))))
      (ido-subdir ((t (:foreground "#F1266F"))))
-     (term-blue ((t (:foreground "#C48DFF"))))
-     (term-cyan ((t (:foreground "#67D9F0"))))
-     (term-green ((t (:foreground "#A6E32D"))))
-     (term-magenta ((t (:foreground "#FA2573"))))
-     (term-red ((t (:foreground "#FF0000"))))
-     (term-yellow ((t (:foreground "#FC951E"))))
-     (term-white ((t (:foreground "#F2F2F2")))))))
+     (slime-repl-result-face ((t (:foreground "#a8937a")))))))
 
 (provide 'custom-themes)

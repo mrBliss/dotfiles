@@ -19,8 +19,7 @@
 ;; Add subdirs
 (mapcar (lambda (x) (add-to-list 'load-path (expand-file-name x)))
         '("~/.emacs.d" "~/.emacs.d/zencoding" "~/.emacs.d/color-theme"
-          "~/.emacs.d/eproject" "~/.emacs.d/haskell-mode"
-          "~/.emacs.d/coffee-mode"))
+          "~/.emacs.d/eproject" "~/.emacs.d/coffee-mode"))
 
 ;; Require some stuff
 (mapcar #'require
@@ -33,7 +32,6 @@
           eproject
           eproject-extras
           functions
-          haskell-mode
           htmlize
           ido
           imenu
@@ -100,6 +98,37 @@
 ;; Ignore some buffers when switching buffers
 (setq ido-ignore-buffers '("\\` " "^\*slime-events" "^\*Messages*"
                            "\\*Completions"))
+;; Group buffers in Ibuffer
+(setq ibuffer-saved-filter-groups
+      '(("default"
+         ("Text"
+          (or
+           (name . ".+\\.txt$")
+           (mode . text-mode)))
+         ("Clojure"
+          (or
+           (mode . clojure-mode)
+           (name . "^\\*slime-repl clojure\\*")))
+         ("Elisp"
+          (or
+           (name . "^\\*scratch\\*$")
+           (name . "\\.emacs$")
+           (name . ".+\\.el$")))
+         ("Magit"
+          (name . ".+magit.+"))
+         ("Kill these"
+          (or
+           (name . "\\*Help\\*$")
+           (name . "\\*Disabled.+\\*$")
+           (name . "\\*Apropos\\*$")
+           (name . "\\*sldb.+\\*$")
+           (name . "\\*.*Completions.*\\*$")))
+         ("Stuff"
+          (name . "^\\*.+\\*")))))
+(add-hook 'ibuffer-mode-hook
+          (lambda ()
+            (ibuffer-switch-to-saved-filter-groups "default")))
+
 ;; Ignore .DS_Store files
 (add-to-list 'ido-ignore-files "\\.DS_Store")
 
@@ -121,6 +150,17 @@
         ('gnu/linux "/usr/bin/aspell")))
 (setq ispell-dictionary "english")
 (add-hook 'text-mode-hook 'turn-on-flyspell)
+
+;; Change flyspell faces
+(eval-after-load "flyspell"
+  '(progn (set-face-foreground 'flyspell-incorrect-face "#FA2573"
+                               (selected-frame))
+          (set-face-attribute 'flyspell-incorrect-face (selected-frame)
+                              :underline t :bold t)
+          (set-face-foreground 'flyspell-duplicate-face "#FF8844"
+                               (selected-frame))
+          (set-face-attribute 'flyspell-duplicate-face (selected-frame)
+                              :underline t :bold t)))
 
 ;; Only apply the color-theme when emacs is used with a window-system.
 ;; On Linux, running emacsclient, we need the following snippet to do
@@ -154,7 +194,7 @@
 ;; Allow shell colors
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
-;; Shell prompt should be ready-only
+;; Shell prompt should be read-only
 (setq comint-prompt-read-only t)
 
 ;; Pretty lambdas
@@ -249,7 +289,8 @@
 
 ;; Change .dvi viewer to Skim on Mac OS X
 (setq tex-dvi-view-command
-      '(cond ((eq window-system 'ns) "/Applications/Skim.app/Contents/MacOS/Skim")
+      '(cond ((eq window-system 'ns)
+              "/Applications/Skim.app/Contents/MacOS/Skim")
              ((eq window-system 'x) "xdvi")
              ((eq window-system 'w32) "yap")
              (t "dvi2tty * | cat -s")))
@@ -352,10 +393,6 @@
   (setq browse-url-browser-function 'browse-url-generic
         browse-url-generic-program "/usr/bin/conkeror"))
 
-;; Haskell-mode
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-
 ;; Autoload scheme-mode for ds (devilspie) files
 (add-to-list 'auto-mode-alist '("\\ds$" . scheme-mode))
 
@@ -368,15 +405,23 @@
   "coffee-mode-hoo"
   ;; Use two spaces
   (set (make-local-variable 'tab-width) 2))
-  ;; Compile the bufferin coffee-mode
-  (define-key coffee-mode-map (kbd "C-c C-k") 'coffee-compile-buffer)
+
+;; Compile the buffer in coffee-mode
+(define-key coffee-mode-map (kbd "C-c C-k") 'coffee-compile-buffer)
 (add-hook 'coffee-mode-hook '(lambda () (coffee-custom)))
 
 ;; js2-mode binds C-M-h to something else; undo this
-(add-hook 'js2-mode-hook '(lambda () (define-key js2-mode-map (kbd "C-M-h") 'backward-kill-word)))
+(add-hook 'js2-mode-hook
+          '(lambda () (define-key js2-mode-map (kbd "C-M-h")
+                   'backward-kill-word)))
 
 ;; Enable downcase-region
 (put 'downcase-region 'disabled nil)
 
 ;; Enable rainbow-mode for css files
 (add-hook 'css-mode-hook 'rainbow-mode)
+
+;; Add custom colors to (ansi-)term
+(setq ansi-term-color-vector
+      [unspecified "#000000" "#FF0000" "#A6E32D" "#FC951E" "#C48DFF" "#FA2573"
+                   "#67D9F0" "#F2F2F2"])
