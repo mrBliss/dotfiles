@@ -377,3 +377,6 @@
 
 ;; Enable downcase-region
 (put 'downcase-region 'disabled nil)
+
+;; Enable rainbow-mode for css files
+(add-hook 'css-mode-hook 'rainbow-mode)

@@ -27,7 +27,7 @@ alias cd/='cd /'
 alias md='mkdir -p'
 alias rd=rmdir
 alias rmr='rm -r'
-alias rmrf='rm -r'
+alias rmrf='rm -rf'
 
 # Leiningen
 alias lclean='lein clean'
