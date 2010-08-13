@@ -131,4 +131,7 @@
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
 
+;; Transpose lines with M-T, shorter than C-x C-t
+(global-set-key (kbd "M-T") 'transpose-lines)
+
 (provide 'bindings)

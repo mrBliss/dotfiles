@@ -431,3 +431,4 @@
 
 ;; Enable wrap-region for all buffers
 (wrap-region-global-mode t)
+

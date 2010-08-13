@@ -75,4 +75,33 @@
 (defcljface clojure-special      "#0074e8"   "Clojure special")
 (defcljface clojure-double-quote "#00920A"   "Clojure special")
 
+;; Start a leiningen swank server and connect to it
+(defun lein-swank ()
+  (interactive)
+  (let ((default-directory (locate-dominating-file default-directory
+                                                   "project.clj")))
+    (when (not default-directory)
+      (error "Not in a Leiningen project."))
+    ;; you can customize slime-port using .dir-locals.el
+    (let ((proc (start-process "lein-swank" nil "lein" "swank"
+                               (number-to-string slime-port))))
+      (when proc
+        (process-put proc :output nil)
+        (set-process-sentinel proc
+                              (lambda (proc event)
+                                (message "%s%s: `%S'"
+                                         (process-get proc :output)
+                                         proc (replace-regexp-in-string
+                                               "\n" "" event))))
+        (set-process-filter proc
+                            (lambda (proc output)
+                              (process-put proc :output
+                                           (concat
+                                            (process-get proc :output) output))
+                              (when (string-match "Connection opened on" output)
+                                (slime-connect "localhost" slime-port)
+                                ;; no need to further process output
+                                (set-process-filter proc nil))))
+        (message "Starting swank server...")))))
+
 (provide 'clojure)
