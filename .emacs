@@ -48,6 +48,7 @@
           typing-speed
           uniquify
           undo-tree
+          wrap-region
           zencoding-mode))
 
 ;; Other customizations
@@ -122,7 +123,9 @@
            (name . "\\*Disabled.+\\*$")
            (name . "\\*Apropos\\*$")
            (name . "\\*sldb.+\\*$")
-           (name . "\\*.*Completions.*\\*$")))
+           (name . "\\*.*Completions.*\\*$")
+           (name . "\\*SLIME Compilation\\*$")
+           (name . "\\*Compile-Log\\*$")))
          ("Stuff"
           (name . "^\\*.+\\*")))))
 (add-hook 'ibuffer-mode-hook
@@ -425,3 +428,6 @@
 (setq ansi-term-color-vector
       [unspecified "#000000" "#FF0000" "#A6E32D" "#FC951E" "#C48DFF" "#FA2573"
                    "#67D9F0" "#F2F2F2"])
+
+;; Enable wrap-region for all buffers
+(wrap-region-global-mode t)
