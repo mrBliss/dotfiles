@@ -17,13 +17,15 @@
   (package-initialize))
 
 ;; Add subdirs
-(mapcar (lambda (x) (add-to-list 'load-path (expand-file-name x)))
-        '("~/.emacs.d" "~/.emacs.d/zencoding" "~/.emacs.d/color-theme"
-          "~/.emacs.d/eproject" "~/.emacs.d/coffee-mode"))
+(mapcar (lambda (x) (add-to-list 'load-path
+                            (expand-file-name (concat "~/.emacs.d/" x))))
+        '("" "zencoding" "color-theme" "eproject" "coffee-mode"
+          "auto-complete"))
 
 ;; Require some stuff
 (mapcar #'require
-        '(bindings
+        '(auto-complete-config
+          bindings
           cl
           clojure
           color-theme
@@ -317,13 +319,13 @@
 ;;    mark the end of the next word: M-@
 ;;    apply macro to region: C-x C-k r
 ;;    move between paragraphs: M-{ / M-}
-;;    unload a symbol or function: unload-feature
 ;;    view methods for a java object: C-c I
 ;;    count lines in region: M-=
 ;;    go to previous any location (across files): C-x C-Space
 ;;    regex search in all open buffers: multi-occur-in-matching-buffers
 ;;    apply shell command on region: M-|
 ;;    rename files with dired: wdired-change-to-wdired-mode
+;;    show previous complex command: C-x ESC ESC
 
 ")
 
@@ -432,3 +434,10 @@
 ;; Enable wrap-region for all buffers
 (wrap-region-global-mode t)
 
+;; auto-complete
+(add-to-list 'ac-dictionary-directories
+             (expand-file-name "~/.emacs.d/auto-complete/ac-dict"))
+(ac-config-default)
+(setq ac-use-quick-help t)
+(ac-set-trigger-key "TAB")
+(setq ac-auto-start 1)
