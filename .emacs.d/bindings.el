@@ -134,4 +134,7 @@
 ;; Transpose lines with M-T, shorter than C-x C-t
 (global-set-key (kbd "M-T") 'transpose-lines)
 
+;; Copy a line with C-c c
+(global-set-key (kbd "C-c c") 'copy-line)
+
 (provide 'bindings)

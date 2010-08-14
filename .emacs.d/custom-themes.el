@@ -291,7 +291,7 @@
      (default ((t (nil))))
      (modeline
       ((t (:background "#4c4a41" :foreground "#BAAE9E"
-                       :box (:line-width 1 :style released-button)))))
+                       :box (:line-width 1 :color "#4c4a41" :style nil)))))
      (modeline-buffer-id ((t nil)))
      (mode-line-inactive
       ((t (:background "#1e1915" :foreground "#BAAE9E"
@@ -311,7 +311,7 @@
      (font-lock-warning-face ((t (:bold t :foreground "#F9EE98"))))
      (comint-highlight-prompt ((t (:foreground "#5EA6EA"))))
      (highlight-80+ ((t (:background "#F9EE98"))))
-     (hl-line ((t (:background "#2A2A2A"))))
+     (hl-line ((t (:background "#211B15"))))
      (region ((t (:background "#f8fab7"))))
      (link ((t (:foreground "#5EA6EA" :underline t))))
      (ido-subdir ((t (:foreground "#F1266F"))))

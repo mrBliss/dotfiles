@@ -441,3 +441,6 @@
 (setq ac-use-quick-help t)
 (ac-set-trigger-key "TAB")
 (setq ac-auto-start 1)
+
+;; Enable hl-line-mode
+(global-hl-line-mode 1)
