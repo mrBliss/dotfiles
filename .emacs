@@ -319,13 +319,13 @@
 ;;    mark the end of the next word: M-@
 ;;    apply macro to region: C-x C-k r
 ;;    move between paragraphs: M-{ / M-}
-;;    unload a symbol or function: unload-feature
 ;;    view methods for a java object: C-c I
 ;;    count lines in region: M-=
 ;;    go to previous any location (across files): C-x C-Space
 ;;    regex search in all open buffers: multi-occur-in-matching-buffers
 ;;    apply shell command on region: M-|
 ;;    rename files with dired: wdired-change-to-wdired-mode
+;;    show previous complex command: C-x ESC ESC
 
 ")
 
