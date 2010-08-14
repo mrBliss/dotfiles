@@ -34,6 +34,8 @@ define_webjump("elbow", "http://elbo.ws/mp3s/?q=%s",
                $description = "Search for MP3s on Elbo.ws");
 define_webjump("g", "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8&aq=t",
                $description = "Google Search");
+define_webjump("idiom", "http://www.idiomdictionary.com/search.php?search=%s",
+               $description = "Search for idioms on IdiomDictionary");
 define_webjump("img", "http://images.google.com/images?q=%s",
                $description = "Search for images on Google Images");
 define_webjump("lastfm", "http://last.fm/music/%s",
