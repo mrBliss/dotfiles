@@ -17,13 +17,15 @@
   (package-initialize))
 
 ;; Add subdirs
-(mapcar (lambda (x) (add-to-list 'load-path (expand-file-name x)))
-        '("~/.emacs.d" "~/.emacs.d/zencoding" "~/.emacs.d/color-theme"
-          "~/.emacs.d/eproject" "~/.emacs.d/coffee-mode"))
+(mapcar (lambda (x) (add-to-list 'load-path
+                            (expand-file-name (concat "~/.emacs.d/" x))))
+        '("" "zencoding" "color-theme" "eproject" "coffee-mode"
+          "auto-complete"))
 
 ;; Require some stuff
 (mapcar #'require
-        '(bindings
+        '(auto-complete-config
+          bindings
           cl
           clojure
           color-theme
@@ -432,3 +434,10 @@
 ;; Enable wrap-region for all buffers
 (wrap-region-global-mode t)
 
+;; auto-complete
+(add-to-list 'ac-dictionary-directories
+             (expand-file-name "~/.emacs.d/auto-complete/ac-dict"))
+(ac-config-default)
+(setq ac-use-quick-help t)
+(ac-set-trigger-key "TAB")
+(setq ac-auto-start 1)
