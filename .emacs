@@ -142,7 +142,8 @@
 (eval-after-load "~/.emacs" '(smex-initialize))
 
 ;; Zencoding-mode
-(add-hook 'sgm-mode-hook 'zencoding-mode)
+(add-hook 'sgml-mode-hook 'zencoding-mode)
+(define-key zencoding-mode-keymap (kbd "M-RET") 'zencoding-expand-line)
 
 ;; Mic Paren
 (paren-activate)
