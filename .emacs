@@ -44,6 +44,7 @@
           pretty-lambdada
           recentf
           rainbow-mode
+          save-visited-files
           smart-tab
           smex
           tramp
@@ -141,7 +142,8 @@
 (eval-after-load "~/.emacs" '(smex-initialize))
 
 ;; Zencoding-mode
-(add-hook 'sgm-mode-hook 'zencoding-mode)
+(add-hook 'sgml-mode-hook 'zencoding-mode)
+(define-key zencoding-mode-keymap (kbd "M-RET") 'zencoding-expand-line)
 
 ;; Mic Paren
 (paren-activate)
@@ -439,3 +441,5 @@
 (ac-set-trigger-key "TAB")
 (setq ac-auto-start 1)
 
+;; Auto save a list of visited files
+(turn-on-save-visited-files-mode)
