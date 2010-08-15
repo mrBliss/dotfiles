@@ -42,22 +42,28 @@ Symbols matching the text at point are put first in the completion list."
 
                               ((stringp symbol)
                                (setq name symbol)
-                               (setq position (get-text-property 1 'org-imenu-marker symbol))))
+                               (setq position
+                                     (get-text-property 1 'org-imenu-marker
+                                                        symbol))))
 
                              (unless (or (null position) (null name))
                                (add-to-list 'symbol-names name)
-                               (add-to-list 'name-and-pos (cons name position))))))))
+                               (add-to-list 'name-and-pos
+                                            (cons name position))))))))
       (addsymbols imenu--index-alist))
-    ;; If there are matching symbols at point, put them at the beginning of `symbol-names'.
+    ;; If there are matching symbols at point, put them at the
+    ;; beginning of `symbol-names'.
     (let ((symbol-at-point (thing-at-point 'symbol)))
       (when symbol-at-point
         (let* ((regexp (concat (regexp-quote symbol-at-point) "$"))
-               (matching-symbols (delq nil (mapcar (lambda (symbol)
-                                                     (if (string-match regexp symbol) symbol))
-                                                   symbol-names))))
+               (matching-symbols
+                (delq nil (mapcar (lambda (symbol)
+                                    (if (string-match regexp symbol) symbol))
+                                  symbol-names))))
           (when matching-symbols
             (sort matching-symbols (lambda (a b) (> (length a) (length b))))
-            (mapc (lambda (symbol) (setq symbol-names (cons symbol (delete symbol symbol-names))))
+            (mapc (lambda (symbol)
+                    (setq symbol-names (cons symbol (delete symbol symbol-names))))
                   matching-symbols)))))
     (let* ((selected-symbol (ido-completing-read "Symbol? " symbol-names))
            (position (cdr (assoc selected-symbol name-and-pos))))
@@ -248,5 +254,15 @@ fewer than 80 columns."
   (kill-ring-save (line-beginning-position)
                   (line-beginning-position (+ 1 arg)))
   (message "%d line%s copied" arg (if (= 1 arg) "" "s")))
+
+(defun increase-font-size ()
+  (interactive)
+  (set-face-attribute
+   'default nil :height (ceiling (* 1.10 (face-attribute 'default :height)))))
+
+(defun decrease-font-size ()
+  (interactive)
+  (set-face-attribute
+   'default nil :height (floor (* 0.9 (face-attribute 'default :height)))))
 
 (provide 'functions)

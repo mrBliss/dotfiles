@@ -137,4 +137,11 @@
 ;; Copy a line with C-c c
 (global-set-key (kbd "C-c c") 'copy-line)
 
+;; Kill buffer and window with C-x K
+(global-set-key (kbd "C-x K") 'kill-buffer-and-window)
+
+;; Increase/decrease font size with C-+/C-=
+(global-set-key (kbd "C-+") 'increase-font-size)
+(global-set-key (kbd "C-=") 'decrease-font-size)
+
 (provide 'bindings)
