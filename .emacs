@@ -44,6 +44,7 @@
           pretty-lambdada
           recentf
           rainbow-mode
+          save-visited-files
           smart-tab
           smex
           tramp
@@ -439,3 +440,5 @@
 (ac-set-trigger-key "TAB")
 (setq ac-auto-start 1)
 
+;; Auto save a list of visited files
+(turn-on-save-visited-files-mode)

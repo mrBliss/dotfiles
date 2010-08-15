@@ -12,4 +12,5 @@
 .emacs.d/auto-save-list
 .emacs.d/tramp
 .emacs.d/ac-comphist.dat
+.emacs.d/emacs-visited-files
 .emacs.d/*.elc
