@@ -265,4 +265,13 @@ fewer than 80 columns."
   (set-face-attribute
    'default nil :height (floor (* 0.9 (face-attribute 'default :height)))))
 
+(defun toggle-current-window-dedication ()
+  (interactive)
+  (let* ((window (selected-window))
+         (dedicated (window-dedicated-p window)))
+    (set-window-dedicated-p window (not dedicated))
+    (message "Window %sdedicated to %s"
+             (if dedicated "no longer " "")
+             (buffer-name))))
+
 (provide 'functions)

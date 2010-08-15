@@ -17,42 +17,42 @@
   (package-initialize))
 
 ;; Add subdirs
-(mapcar (lambda (x) (add-to-list 'load-path
-                            (expand-file-name (concat "~/.emacs.d/" x))))
-        '("" "zencoding" "color-theme" "eproject" "coffee-mode"
-          "auto-complete"))
+(mapc (lambda (x) (add-to-list 'load-path
+                          (expand-file-name (concat "~/.emacs.d/" x))))
+      '("" "zencoding" "color-theme" "eproject" "coffee-mode"
+        "auto-complete"))
 
 ;; Require some stuff
-(mapcar #'require
-        '(auto-complete-config
-          bindings
-          cl
-          clojure
-          color-theme
-          coffee-mode
-          custom-themes
-          eproject
-          eproject-extras
-          functions
-          htmlize
-          ido
-          imenu
-          mic-paren
-          minimap
-          nxml-mode
-          php-mode
-          pretty-lambdada
-          recentf
-          rainbow-mode
-          save-visited-files
-          smart-tab
-          smex
-          tramp
-          typing-speed
-          uniquify
-          undo-tree
-          wrap-region
-          zencoding-mode))
+(mapc #'require
+      '(auto-complete-config
+        bindings
+        cl
+        clojure
+        color-theme
+        coffee-mode
+        custom-themes
+        eproject
+        eproject-extras
+        functions
+        htmlize
+        ido
+        imenu
+        mic-paren
+        minimap
+        nxml-mode
+        php-mode
+        pretty-lambdada
+        recentf
+        rainbow-mode
+        save-visited-files
+        smart-tab
+        smex
+        tramp
+        typing-speed
+        uniquify
+        undo-tree
+        wrap-region
+        zencoding-mode))
 
 ;; Other customizations
 (setq transient-mark-mode '(only . t))
@@ -62,7 +62,7 @@
 (case system-type
   ('windows-nt
    (add-to-list 'default-frame-alist
-                '(font . "-*-mensch-*-*-*-*-12-*-*-*-*-*-iso8859-1")))
+                '(font . "-*-Consolas-*-*-*-*-11-*-*-*-*-*-iso8859-1")))
   ('gnu/linux
    (add-to-list 'default-frame-alist
                 '(font . "-*-Monaco-*-*-*-*-11-*-*-*-*-*-iso8859-1"))))
