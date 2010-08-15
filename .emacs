@@ -268,9 +268,6 @@
 (setq compilation-window-height 8)
 (setq compilation-finish-functions nil)
 
-;; Show file size
-(size-indication-mode t)
-
 ;; Use undo-tree-mode
 (global-undo-tree-mode t)
 
@@ -442,5 +439,3 @@
 (ac-set-trigger-key "TAB")
 (setq ac-auto-start 1)
 
-;; Enable hl-line-mode
-(global-hl-line-mode 1)

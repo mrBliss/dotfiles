@@ -290,15 +290,17 @@
       (cursor-color . "#ffffff"))
      (default ((t (nil))))
      (modeline
-      ((t (:background "#4c4a41" :foreground "#BAAE9E"
+      ((t (:background "#433E37" :foreground "#BAAE9E"
                        :box (:line-width 1 :color "#4c4a41" :style nil)))))
      (modeline-buffer-id ((t nil)))
      (mode-line-inactive
       ((t (:background "#1e1915" :foreground "#BAAE9E"
                        :box (:line-width 1 :color "#1e1915")))))
      (minibuffer-prompt ((t (:foreground "#5EA6EA"))))
-     (flyspell-duplicate-face ((t (:foreground "#FF8844" :bold t :underline t))))
-     (flyspell-incorrect-face ((t (:foreground "#FA2573" :bold t :underline t))))
+     (flyspell-duplicate-face
+      ((t (:foreground "#FF8844" :bold t :underline t))))
+     (flyspell-incorrect-face
+      ((t (:foreground "#FA2573" :bold t :underline t))))
      (font-lock-builtin-face ((t (:foreground "#5EA6EA"))))
      (font-lock-comment-face ((t (:italic t :foreground "#666666"))))
      (font-lock-constant-face ((t (:foreground "#DDF2A4"))))
