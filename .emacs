@@ -37,6 +37,7 @@
         htmlize
         ido
         imenu
+        markdown-mode
         mic-paren
         minimap
         nxml-mode
@@ -443,3 +444,13 @@
 
 ;; Auto save a list of visited files
 (turn-on-save-visited-files-mode)
+
+;; Load markdown-mode for .text .markdown and .md files
+(add-to-list 'auto-mode-alist '("\\.text" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md" . markdown-mode))
+
+;; Run a script to suppress locale errors on cygwin
+(when (or (eq system-type 'windows-nt)
+          (eq system-type 'cygwin))
+  (setq markdown-command "/usr/local/bin/run_markdown"))
