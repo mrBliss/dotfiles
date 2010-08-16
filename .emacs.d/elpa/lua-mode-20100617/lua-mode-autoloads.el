@@ -3,7 +3,7 @@
 ;;; Code:
 
 
-;;;### (autoloads (lua-mode) "lua-mode" "lua-mode.el" (19512 36311))
+;;;### (autoloads (lua-mode) "lua-mode" "lua-mode.el" (19560 30370))
 ;;; Generated autoloads from lua-mode.el
 
 (autoload 'lua-mode "lua-mode" "\
@@ -17,7 +17,7 @@ The following keys are bound:
 
 ;;;***
 
-;;;### (autoloads nil nil ("lua-mode-pkg.el") (19512 36311 368453))
+;;;### (autoloads nil nil ("lua-mode-pkg.el") (19560 30370 769000))
 
 ;;;***
 

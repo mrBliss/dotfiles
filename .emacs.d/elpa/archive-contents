@@ -1,4 +1,13 @@
 (1
+ (load-relative .
+		[(0 1)
+		 nil "relative file load (within a multi-file Emacs package)" single])
+ (test-unit .
+	    [(0 1)
+	     nil "Unit Test Framework for Emacs Lisp " single])
+ (zenburn .
+	  [(1 8)
+	   nil "just some alien fruit salad to keep you in the zone" single])
  (multi-project .
 		[(0 0 1)
 		 nil "Work with multiple projects" single])
@@ -27,7 +36,7 @@
 	       [(0 4 1)
 		nil "Parse depend libraries of elisp file." single])
  (perspective .
-	      [(1 1)
+	      [(1 3)
 	       nil "switch between named \"perspectives\" of the editor" single])
  (ruby-electric .
 		[(1 1)
@@ -92,12 +101,12 @@
 	[(0 1)
 	 nil "New TERMinal emulator" single])
  (sass-mode .
-	    [(3 0 13)
+	    [(3 0 14)
 	     ((haml-mode
-	       (3 0 13)))
+	       (3 0 14)))
 	     "Major mode for editing Sass files" single])
  (haml-mode .
-	    [(3 0 13)
+	    [(3 0 14)
 	     nil "Major mode for editing Haml files" single])
  (smart-tab .
 	    [(0 3)
@@ -203,7 +212,7 @@
 		      (2 1)))
 		    "run a ruby process in a compilation buffer" single])
  (gist .
-       [(0 4)
+       [(0 5)
 	nil "Emacs integration for gist.github.com" single])
  (confluence .
 	     [(1 4)
@@ -233,7 +242,7 @@
 			  [(0 2)
 			   nil "set project-local variables from a file" single])
  (lusty-explorer .
-		 [(2 2)
+		 [(2 4)
 		  nil "Dynamic filesystem explorer and buffer switcher" single])
  (tempo-snippets .
 		 [(0 1 5)
@@ -394,7 +403,7 @@
 	   [(4 2)
 	    nil "minor mode to highlight current line in buffer" single])
  (lua-mode .
-	   [(20100404)
+	   [(20100617)
 	    nil "a major-mode for editing Lua scripts" single])
  (css-mode .
 	   [(1 0)
