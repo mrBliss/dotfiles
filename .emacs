@@ -65,7 +65,7 @@
                 '(font . "-*-Consolas-*-*-*-*-11-*-*-*-*-*-iso8859-1")))
   ('gnu/linux
    (add-to-list 'default-frame-alist
-                '(font . "-*-Monaco-*-*-*-*-11-*-*-*-*-*-iso8859-1"))))
+                '(font . "-*-Inconsolata-*-*-*-*-12-*-*-*-*-*-iso8859-1"))))
 
 ;; y/n instead of yes/no
 (fset 'yes-or-no-p 'y-or-n-p)
