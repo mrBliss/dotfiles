@@ -144,4 +144,11 @@
 (global-set-key (kbd "C-+") 'increase-font-size)
 (global-set-key (kbd "C-=") 'decrease-font-size)
 
+;; Move a paragraph backwards/forwards with M-ù/M-µ (good on Azerty)
+(global-set-key (kbd "M-ù") 'backward-paragraph)
+(global-set-key (kbd "M-µ") 'forward-paragraph)
+
+;; C-x M-k kills the buffer in the other window
+(global-set-key (kbd "C-x M-k") 'kill-buffer-in-other-window)
+
 (provide 'bindings)

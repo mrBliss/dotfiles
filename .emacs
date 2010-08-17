@@ -48,6 +48,7 @@
         recentf
         rainbow-mode
         save-visited-files
+        saveplace
         scratch
         smart-tab
         smex
@@ -168,13 +169,13 @@
 
 ;; Change flyspell faces
 (eval-after-load "flyspell"
-  '(progn (set-face-foreground 'flyspell-incorrect-face "#FA2573"
+  '(progn (set-face-foreground 'flyspell-incorrect "#FA2573"
                                (selected-frame))
-          (set-face-attribute 'flyspell-incorrect-face (selected-frame)
+          (set-face-attribute 'flyspell-incorrect (selected-frame)
                               :underline t :bold t)
-          (set-face-foreground 'flyspell-duplicate-face "#FF8844"
+          (set-face-foreground 'flyspell-duplicate "#FF8844"
                                (selected-frame))
-          (set-face-attribute 'flyspell-duplicate-face (selected-frame)
+          (set-face-attribute 'flyspell-duplicate (selected-frame)
                               :underline t :bold t)))
 
 ;; Only apply the color-theme when emacs is used with a window-system.
@@ -472,4 +473,5 @@
 (put 'dired-find-alternate-file 'disabled nil)
 (put 'downcase-region 'disabled nil)
 
-
+;; Save mark location in files
+(setq-default save-place t)

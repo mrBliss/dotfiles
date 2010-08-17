@@ -289,18 +289,25 @@
       (foreground-color . "#BAAE9E")
       (cursor-color . "#ffffff"))
      (default ((t (nil))))
+     (lazy-highlight
+      ((t (:background "#5EA6EA" :foreground "#ffffff"
+                       :box nil))))
+     (highlight
+      ((t (:background "#0074e8" :foreground "#ffffff"))))
      (modeline
       ((t (:background "#433E37" :foreground "#BAAE9E"
                        :box (:line-width 1 :color "#4c4a41" :style nil)))))
      (modeline-buffer-id ((t nil)))
+     (mode-line-highlight
+      ((t (:box (:line-width 1 :color "grey40" :style released-button)))))
      (mode-line-inactive
       ((t (:background "#1e1915" :foreground "#BAAE9E"
                        :box (:line-width 1 :color "#1e1915")))))
      (minibuffer-prompt ((t (:foreground "#5EA6EA"))))
-     (flyspell-duplicate-face
+     (flyspell-duplicate
       ((t (:foreground "#FF8844" :bold t :underline t))))
-     (flyspell-incorrect-face
-      ((t (:foreground "#FA2573" :bold t :underline t))))
+     (flyspell-incorrect
+      ((t (:foreground "#F1266F" :bold t :underline t))))
      (font-lock-builtin-face ((t (:foreground "#5EA6EA"))))
      (font-lock-comment-face ((t (:italic t :foreground "#666666"))))
      (font-lock-constant-face ((t (:foreground "#DDF2A4"))))
@@ -325,17 +332,22 @@
      (diredp-dir-priv
       ((t (:background nil :italic t :foreground "#89BDFF"))))
      (diredp-read-priv ((t (:background nil :foreground "#BAAE9E"))))
-     (diredp-write-priv ((t (:background nil :foreground "#FA2573"))))
+     (diredp-write-priv ((t (:background nil :foreground "#F1266F"))))
      (diredp-exec-priv ((t (:background nil :foreground "#FF8844"))))
      (diredp-no-priv ((t (:background nil :foreground "#BAAE9E"))))
      (diredp-date-time ((t (:foreground "#00920A"))))
      (diredp-flag-mark ((t (:background nil :foreground "#FF8844"))))
      (diredp-flag-mark-line ((t (:background "#F9EE98" :foreground "#666666"))))
-     (diredp-deletion ((t (:background nil :foreground "#FA2573"))))
-     (diredp-deletion-file-name ((t (:background nil :foreground "#FA2573"))))
+     (diredp-deletion ((t (:background nil :foreground "#F1266F"))))
+     (diredp-deletion-file-name ((t (:background nil :foreground "#F1266F"))))
      (diredp-ignored-file-name ((t (:foreground "#666666"))))
      (diredp-compressed-file-suffix ((t (:foreground "#DDF2A4"))))
      (diredp-executable-tag ((t (:foreground "#DDF2A4"))))
+     (erc-notice-face ((t (:foreground "#5EA6EA"))))
+     (erc-timestamp-face ((t (:foreground "#F1266F"))))
+     (erc-direct-msg-face ((t (:foreground "#0074e8"))))
+     (erc-nick-msg-face ((t (:foreground "#0074e8" :bold t))))
+     (erc-current-nick-face ((t (:foreground "#00920A"))))
      (slime-repl-result-face ((t (:foreground "#a8937a")))))))
 
 (provide 'custom-themes)

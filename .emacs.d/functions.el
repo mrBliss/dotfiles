@@ -274,4 +274,17 @@ fewer than 80 columns."
              (if dedicated "no longer " "")
              (buffer-name))))
 
+(defun kill-buffer-in-other-window ()
+  "Kill the buffer in the other window"
+  (interactive)
+  (if (> (count-windows) 1)
+      (progn
+        (other-window 1)
+        (let ((bname (buffer-name)))
+          (when (yes-or-no-p (concat "Kill " bname "? "))
+            (kill-buffer)
+            (message (concat "Killed buffer " bname))))
+        (other-window 1))
+    (message "Only one window open")))
+
 (provide 'functions)
