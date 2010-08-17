@@ -317,6 +317,31 @@
      (region ((t (:background "#f8fab7"))))
      (link ((t (:foreground "#5EA6EA" :underline t))))
      (ido-subdir ((t (:foreground "#F1266F"))))
+     (diredp-dir-heading
+      ((t (:background nil :underline t :foreground "#5EA6EA"))))
+     (diredp-inode+size ((t (:foreground "#A8937A" :italic t))))
+     (diredp-file-name ((t (:foreground "#0074e8"))))
+     (diredp-file-suffix ((t (:foreground "#7587A6"))))
+     (diredp-dir-priv
+      ((t (:background nil :italic t :foreground "#89BDFF"))))
+     (diredp-read-priv ((t (:background nil :foreground "#BAAE9E"))))
+     (diredp-write-priv ((t (:background nil :foreground "#FA2573"))))
+     (diredp-exec-priv ((t (:background nil :foreground "#FF8844"))))
+     (diredp-no-priv ((t (:background nil :foreground "#BAAE9E"))))
+     (diredp-date-time ((t (:foreground "#00920A"))))
+     (diredp-flag-mark ((t (:background nil :foreground "#FF8844"))))
+     (diredp-flag-mark-line ((t (:background "#F9EE98" :foreground "#666666"))))
+     (diredp-deletion ((t (:background nil :foreground "#FA2573"))))
+     (diredp-deletion-file-name ((t (:background nil :foreground "#FA2573"))))
+     (diredp-ignored-file-name ((t (:foreground "#666666"))))
+     (diredp-compressed-file-suffix ((t (:foreground "#DDF2A4"))))
+     (diredp-executable-tag ((t (:foreground "#DDF2A4"))))
      (slime-repl-result-face ((t (:foreground "#a8937a")))))))
 
 (provide 'custom-themes)
+
+;; diredp-display-msg
+;; diredp-symlink
+;; diredp-other-priv
+;; diredp-rare-priv
+;; diredp-link-priv

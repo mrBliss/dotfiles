@@ -31,6 +31,8 @@
         color-theme
         coffee-mode
         custom-themes
+        dired+
+        dired-sort-map
         eproject
         eproject-extras
         functions
@@ -46,6 +48,7 @@
         recentf
         rainbow-mode
         save-visited-files
+        scratch
         smart-tab
         smex
         tramp
@@ -119,6 +122,8 @@
            (name . "^\\*scratch\\*$")
            (name . "\\.emacs$")
            (name . ".+\\.el$")))
+         ("Dired"
+          (mode . dired-mode))
          ("Magit"
           (name . ".+magit.+"))
          ("Kill these"
@@ -128,6 +133,8 @@
            (name . "\\*Apropos\\*$")
            (name . "\\*sldb.+\\*$")
            (name . "\\*.*Completions.*\\*$")
+           (name . "\\*Shell Command Output\\*$")
+           (name . "\\*Marked Files\\*$")
            (name . "\\*SLIME Compilation\\*$")
            (name . "\\*Compile-Log\\*$")))
          ("Stuff"
@@ -420,9 +427,6 @@
           '(lambda () (define-key js2-mode-map (kbd "C-M-h")
                    'backward-kill-word)))
 
-;; Enable downcase-region
-(put 'downcase-region 'disabled nil)
-
 ;; Enable rainbow-mode for css files
 (add-hook 'css-mode-hook 'rainbow-mode)
 
@@ -454,3 +458,18 @@
 (when (or (eq system-type 'windows-nt)
           (eq system-type 'cygwin))
   (setq markdown-command "/usr/local/bin/run_markdown"))
+
+;; Make shells scripts executable
+(add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
+
+;; Move one directory up in Dired with r
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (define-key dired-mode-map (kbd "r")
+              (lambda () (interactive) (find-alternate-file "..")))))
+
+;; Enable some disabled commands
+(put 'dired-find-alternate-file 'disabled nil)
+(put 'downcase-region 'disabled nil)
+
+
