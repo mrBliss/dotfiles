@@ -127,6 +127,6 @@
                               (slime-connect "localhost" slime-port)
                               ;; no need to further process output
                               (set-process-filter proc nil))))
-      (message "Starting cljr swank server...")))))
+      (message "Starting cljr swank server..."))))
 
 (provide 'clojure)
