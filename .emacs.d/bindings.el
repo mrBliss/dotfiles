@@ -34,9 +34,6 @@
 (global-set-key (kbd "C-M-=") 'comment-region)
 (global-set-key (kbd "C-M-+") 'uncomment-region)
 
-;; Self-explanatory
-(global-set-key (kbd "C-x M-o") 'bury-buffer)
-
 ;; Smart-tab knows when to complete/indent
 (global-set-key (kbd "TAB") 'smart-tab)
 
@@ -150,5 +147,8 @@
 
 ;; C-x M-k kills the buffer in the other window
 (global-set-key (kbd "C-x M-k") 'kill-buffer-in-other-window)
+
+;; Use numbers to switch windows
+(global-set-key (kbd "C-x M-o") 'dim:switch-window)
 
 (provide 'bindings)
