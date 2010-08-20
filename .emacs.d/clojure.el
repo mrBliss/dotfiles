@@ -83,7 +83,7 @@
     (when (not default-directory)
       (error "Not in a Leiningen project."))
     ;; you can customize slime-port using .dir-locals.el
-    (let ((proc (start-process "lein-swank" nil "lein" "swank"
+    (let ((proc (start-process "lein-swank" "*lein-swank*" "lein" "swank"
                                (number-to-string slime-port))))
       (when proc
         (process-put proc :output nil)
@@ -102,6 +102,31 @@
                                 (slime-connect "localhost" slime-port)
                                 ;; no need to further process output
                                 (set-process-filter proc nil))))
-        (message "Starting swank server...")))))
+        (message "Starting lein swank server...")))))
+
+(defun cljr-swank ()
+  (interactive)
+  (let ((proc (start-process-shell-command
+               "cljr-swank" "*cljr-swank*"
+               (if (null 'cljr-command) "clj" cljr-command) "swank"
+               (number-to-string slime-port))))
+    (when proc
+      (process-put proc :output nil)
+      (set-process-sentinel proc
+                            (lambda (proc event)
+                              (message "%s%s: `%S'"
+                                       (process-get proc :output)
+                                       proc (replace-regexp-in-string
+                                             "\n" "" event))))
+      (set-process-filter proc
+                          (lambda (proc output)
+                            (process-put proc :output
+                                         (concat
+                                          (process-get proc :output) output))
+                            (when (string-match "Connection opened on" output)
+                              (slime-connect "localhost" slime-port)
+                              ;; no need to further process output
+                              (set-process-filter proc nil))))
+      (message "Starting cljr swank server...")))))
 
 (provide 'clojure)

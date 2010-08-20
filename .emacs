@@ -52,6 +52,7 @@
         scratch
         smart-tab
         smex
+        switch-window
         tramp
         typing-speed
         uniquify
@@ -475,3 +476,12 @@
 
 ;; Save mark location in files
 (setq-default save-place t)
+
+;; ERC preferences
+(setq erc-nick "mrBliss")
+(setq erc-autojoin-channels-alist
+      '(("freenode.net" "#clojure")))
+
+;; Override default cljr command on Windows/Cygwin
+(when (or (eq system-type 'cygwin) (eq system-type 'windows-nt))
+  (setq cljr-command "/home/Thomas/.cljr/bin/cljr"))

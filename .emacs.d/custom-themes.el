@@ -348,6 +348,16 @@
      (erc-direct-msg-face ((t (:foreground "#0074e8"))))
      (erc-nick-msg-face ((t (:foreground "#0074e8" :bold t))))
      (erc-current-nick-face ((t (:foreground "#00920A"))))
+     (nxml-processing-instruction-delimiter-face ((t (:foreground "#0074e8"))))
+     (nxml-tag-delimiter-face ((t (:foreground "#5EA6EA"))))
+     (nxml-element-local-name-face ((t (:foreground "#0074e8"))))
+     (nxml-attribute-local-name-face ((t (:foreground "#5EA6EA"))))
+     (nxml-processing-instruction-target-face ((t (:foreground "#0074e8"))))
+     (nxml-attribute-value-face ((t (:foreground "#00920A"))))
+     (nxml-prolog-literal-content-face ((t (:foreground "#00920A"))))
+     (nxml-prolog-keyword-face ((t (:foreground "#5EA6EA"))))
+     (nxml-namespace-attribute-xmlns-face ((t (:foreground "#5EA6EA"))))
+     (escape-glyph ((t (:foreground "#F1266F"))))
      (slime-repl-result-face ((t (:foreground "#a8937a")))))))
 
 (provide 'custom-themes)
@@ -357,3 +367,6 @@
 ;; diredp-other-priv
 ;; diredp-rare-priv
 ;; diredp-link-priv
+
+
+
