@@ -284,7 +284,7 @@ fewer than 80 columns."
           (when (yes-or-no-p (concat "Kill " bname "? "))
             (kill-buffer)
             (message (concat "Killed buffer " bname))))
-        (other-window 1))
+        (other-window -1))
     (message "Only one window open")))
 
 

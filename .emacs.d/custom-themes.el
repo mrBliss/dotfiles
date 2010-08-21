@@ -348,6 +348,7 @@
      (erc-direct-msg-face ((t (:foreground "#0074e8"))))
      (erc-nick-msg-face ((t (:foreground "#0074e8" :bold t))))
      (erc-current-nick-face ((t (:foreground "#00920A"))))
+     (erc-prompt-face ((t (:background nil :foreground "#F1266F"))))
      (nxml-processing-instruction-delimiter-face ((t (:foreground "#0074e8"))))
      (nxml-tag-delimiter-face ((t (:foreground "#5EA6EA"))))
      (nxml-element-local-name-face ((t (:foreground "#0074e8"))))
@@ -358,6 +359,9 @@
      (nxml-prolog-keyword-face ((t (:foreground "#5EA6EA"))))
      (nxml-namespace-attribute-xmlns-face ((t (:foreground "#5EA6EA"))))
      (escape-glyph ((t (:foreground "#F1266F"))))
+     (markdown-inline-code-face ((t (:foreground "#5EA6EA"))))
+     (markdown-pre-face ((t (:foreground "#5EA6EA"))))
+     (undo-tree-visualizer-current-face ((t (:foreground "#F1266F"))))
      (slime-repl-result-face ((t (:foreground "#a8937a")))))))
 
 (provide 'custom-themes)

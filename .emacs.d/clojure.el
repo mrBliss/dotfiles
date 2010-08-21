@@ -87,46 +87,70 @@
                                (number-to-string slime-port))))
       (when proc
         (process-put proc :output nil)
-        (set-process-sentinel proc
-                              (lambda (proc event)
-                                (message "%s%s: `%S'"
-                                         (process-get proc :output)
-                                         proc (replace-regexp-in-string
-                                               "\n" "" event))))
-        (set-process-filter proc
-                            (lambda (proc output)
-                              (process-put proc :output
-                                           (concat
-                                            (process-get proc :output) output))
-                              (when (string-match "Connection opened on" output)
-                                (slime-connect "localhost" slime-port)
-                                ;; no need to further process output
-                                (set-process-filter proc nil))))
+        (set-process-sentinel
+         proc (lambda (proc event)
+                (message "%s%s: `%S'" (process-get proc :output)
+                         proc (replace-regexp-in-string "\n" "" event))))
+        (set-process-filter
+         proc (lambda (proc output)
+                (process-put proc :output
+                             (concat (process-get proc :output) output))
+                (when (string-match "Connection opened on" output)
+                  (slime-connect "localhost" slime-port)
+                  ;; no need to further process output
+                  (set-process-filter proc nil))))
         (message "Starting lein swank server...")))))
 
 (defun cljr-swank ()
   (interactive)
   (let ((proc (start-process-shell-command
                "cljr-swank" "*cljr-swank*"
-               (if (null 'cljr-command) "clj" cljr-command) "swank"
+               (or cljr-command "cljr") "swank"
                (number-to-string slime-port))))
     (when proc
       (process-put proc :output nil)
-      (set-process-sentinel proc
-                            (lambda (proc event)
-                              (message "%s%s: `%S'"
-                                       (process-get proc :output)
-                                       proc (replace-regexp-in-string
-                                             "\n" "" event))))
-      (set-process-filter proc
-                          (lambda (proc output)
-                            (process-put proc :output
-                                         (concat
-                                          (process-get proc :output) output))
-                            (when (string-match "Connection opened on" output)
-                              (slime-connect "localhost" slime-port)
-                              ;; no need to further process output
-                              (set-process-filter proc nil))))
+      (set-process-sentinel
+       proc (lambda (proc event)
+              (message "%s%s: `%S'" (process-get proc :output)
+                       proc (replace-regexp-in-string "\n" "" event))))
+      (set-process-filter
+       proc (lambda (proc output)
+              (process-put proc :output
+                           (concat (process-get proc :output) output))
+              (when (string-match "Connection opened on" output)
+                (slime-connect "localhost" slime-port)
+                ;; no need to further process output
+                (set-process-filter proc nil))))
       (message "Starting cljr swank server..."))))
+
+;; Completions for lein-task
+(setq lein-task-list '("pom" "help" "install" "jar" "test" "deps"
+                       "classpath" "interactive" "uberjar" "test!" "clean"
+                       "compile" "version" "swank" "run"))
+
+(defun lein-task ()
+  "Runs leiningen with the given task, completes with lein-task-list"
+  (interactive)
+  (let ((default-directory (locate-dominating-file default-directory
+                                                   "project.clj")))
+    (if (not default-directory)
+        (error "Not in a Leiningen project.")
+      (let* ((task (completing-read "Task: " lein-task-list))
+             (proc (start-process "lein" nil "lein" task)))
+        (when proc
+          (process-put proc :output nil)
+          (set-process-sentinel
+           proc (lambda (proc event)
+                  (message "%s" (process-get proc :output)
+                           (replace-regexp-in-string "\n+$" "" event))))
+          (set-process-filter
+           proc (lambda (proc output)
+                  (process-put proc :output
+                               (concat
+                                (process-get proc :output) output))
+                  (when (string-match "Process lein finished" output)
+                    (set-process-filter proc nil)
+                    (delete-process proc))))
+          (message (concat "Running lein " task)))))))
 
 (provide 'clojure)
