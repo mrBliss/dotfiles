@@ -24,8 +24,8 @@
 ;; The dual version of zap-to-char
 (global-set-key (kbd "C-M-z") 'zap-back-to-char)
 
-;; The dual version of C-k
-(global-set-key (kbd "C-c d") 'kill-line-backwards)
+;; The reverse of C-k
+(global-set-key (kbd "M-k") 'kill-line-backwards)
 
 ;; Join multiple lines
 (global-set-key (kbd "C-x j") 'join-line-or-lines-in-region)
@@ -154,5 +154,8 @@
 
 ;; Toggle window dedication with PAUSE
 (global-set-key [pause] 'toggle-current-window-dedication)
+
+;; Use C-j not only for *scratch* but for all elisp buffers
+(define-key emacs-lisp-mode-map (kbd "C-j") 'eval-print-last-sexp)
 
 (provide 'bindings)

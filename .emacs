@@ -33,6 +33,7 @@
         custom-themes
         dired+
         dired-sort-map
+        episode-renamer
         eproject
         eproject-extras
         functions
