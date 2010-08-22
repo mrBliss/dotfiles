@@ -148,11 +148,11 @@
 ;; C-x M-k kills the buffer in the other window
 (global-set-key (kbd "C-x M-k") 'kill-buffer-in-other-window)
 
-;; Use numbers to switch windows
-(global-set-key (kbd "C-x M-o") 'dim:switch-window)
-
 ;; Slime-selector with C-c s
 (global-set-key (kbd "C-c s")
                 (lambda () (interactive) (switch-to-buffer "*scratch*")))
+
+;; Toggle window dedication with PAUSE
+(global-set-key [pause] 'toggle-current-window-dedication)
 
 (provide 'bindings)

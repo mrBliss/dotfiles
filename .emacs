@@ -52,11 +52,11 @@
         scratch
         smart-tab
         smex
-        switch-window
         tramp
         typing-speed
         uniquify
         undo-tree
+        window-numbering
         wrap-region
         zencoding-mode))
 
@@ -520,3 +520,6 @@
 
 ;; Enable winner-mode
 (winner-mode 1)
+
+;; Enable window numbering mode
+(window-numbering-mode t)
