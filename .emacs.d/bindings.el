@@ -151,4 +151,8 @@
 ;; Use numbers to switch windows
 (global-set-key (kbd "C-x M-o") 'dim:switch-window)
 
+;; Slime-selector with C-c s
+(global-set-key (kbd "C-c s")
+                (lambda () (interactive) (switch-to-buffer "*scratch*")))
+
 (provide 'bindings)

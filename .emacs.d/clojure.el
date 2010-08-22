@@ -44,7 +44,9 @@
 ;; beyond the 80 char limit
 (eval-after-load "clojure-mode"
   '(progn
-     (add-hook 'clojure-mode-hook 'highlight-80+-mode)))
+     (add-hook 'clojure-mode-hook 'highlight-80+-mode)
+     (define-key clojure-mode-map (kbd "C-j")
+       'slime-eval-print-last-expression)))
 (tweak-clojure-syntax 'clojure-mode)
 
 ;; Beter REPL behaviour

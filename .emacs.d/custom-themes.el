@@ -347,6 +347,7 @@
      (erc-timestamp-face ((t (:foreground "#F1266F"))))
      (erc-direct-msg-face ((t (:foreground "#0074e8"))))
      (erc-nick-msg-face ((t (:foreground "#0074e8" :bold t))))
+     (erc-pal-face ((t (:foreground "#0074e8"))))
      (erc-current-nick-face ((t (:foreground "#00920A"))))
      (erc-prompt-face ((t (:background nil :foreground "#F1266F"))))
      (nxml-processing-instruction-delimiter-face ((t (:foreground "#0074e8"))))

@@ -317,24 +317,50 @@
 (setq initial-scratch-message
       ";; SCRATCH Buffer
 ;; Commands to learn:
-;;    goto previous macro: C-x C-k C-p
-;;    insert output for shell command: M-1 M-!
-;;    search with results: M-s o
-;;    move point to center/top/bottom: M-r
-;;    make sure the current function is visible: C-M-l
-;;    wordcount for active region: M-=
-;;    undo for the active region: C-u C-_
-;;    move forward and backward across parens: C-M-n / C-m-p
-;;    mark the end of the next word: M-@
-;;    apply macro to region: C-x C-k r
-;;    move between paragraphs: M-{ / M-}
-;;    view methods for a java object: C-c I
-;;    count lines in region: M-=
-;;    go to previous any location (across files): C-x C-Space
-;;    regex search in all open buffers: multi-occur-in-matching-buffers
-;;    apply shell command on region: M-|
-;;    rename files with dired: wdired-change-to-wdired-mode
-;;    show previous complex command: C-x ESC ESC
+;;  goto previous macro: C-x C-k C-p
+;;  insert output for shell command: M-1 M-!
+;;  search with results: M-s o
+;;  move point to center/top/bottom: M-r
+;;  make sure the current function is visible: C-M-l
+;;  wordcount for active region: M-=
+;;  undo for the active region: C-u C-_
+;;  mark the end of the next word: M-@
+;;  apply macro to region: C-x C-k r
+;;  count lines in region: M-=
+;;  go to previous any location (across files): C-x C-Space
+;;  regex search in all open buffers: multi-occur-in-matching-buffers
+;;  apply shell command on region: M-|
+;;  rename files with dired: wdired-change-to-wdired-mode
+;;  show previous complex command: C-x ESC ESC
+;;  Narrow to region/defun: C-x n n/d
+;;  Undo narrow: C-x n w
+;;  Correct word: C-.
+;;  SLIME COMMANDS
+;;  ------------------------------
+;;  COMPILATION & EVALUATION:
+;;  Compile current function: C-c C-c
+;;  Evaluate current function: C-M-x
+;;  Evaluate minibuffer expression: C-c :
+;;  Evaluate and print last sexp: C-j
+;;  SLDB COMMANDS:
+;;  Eval sexp in minibuffer: :
+;;  Move between frames: p/n
+;;  INSPECTOR:
+;;  Launch SLIME Inspector: C-c I
+;;  Inspect: RET
+;;  Return: l
+;;  DOCUMENTATION:
+;;  Documentation: C-C C-d d
+;;  Who calls: C-c C-w c
+;;  Go to definition: M-.
+;;  Return from definition: M-,
+;;  MACROS:
+;;  Macro expand 1: C-c C-m
+;;  Macro expannd all: C-c M-m
+;;  REPL:
+;;  Set current package: C-c M-p
+;;  Close parens and eval: M-RET
+;;  Previous/next prompt: C-c C-p/C-n
 
 ")
 
@@ -416,7 +442,7 @@
 
 ;; Coffee-mode hook
 (defun coffee-custom ()
-  "coffee-mode-hoo"
+  "coffee-mode-hook"
   ;; Use two spaces
   (set (make-local-variable 'tab-width) 2))
 
@@ -481,6 +507,12 @@
 (setq erc-nick "mrBliss")
 (setq erc-autojoin-channels-alist
       '(("freenode.net" "#clojure")))
+;; Not my pals, but 'wise' guys or bots in #clojure
+(setq erc-pals '("LauJensen" "cemerick" "cgrand" "chouser" "clojurebot"
+                 "danlarkin" "dnolen" "fogus_" "rhickey" "sexpbot"
+                 "stuartsierra" "technomancy"))
+(erc-spelling-mode 1)
+(setq erc-spelling-dictionaries '(("#clojure" "english")))
 
 ;; Override default cljr command on Windows/Cygwin
 (when (or (eq system-type 'cygwin) (eq system-type 'windows-nt))
