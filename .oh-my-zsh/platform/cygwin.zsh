@@ -16,6 +16,7 @@ eval `keychain --eval --nogui -Q -q id_rsa`
 # Git pull from other repositories
 alias gitpulllin='git pull ssh://thomas@lucy/~ master'
 alias gitpullwin='git pull file:///cygdrive/c/Users/Thomas/AppData/Roaming master'
+alias gitpullcyg='git pull file:///home/Thomas/ master'
 
 # Disable JLine for cljr
 export DISABLE_JLINE="true"
