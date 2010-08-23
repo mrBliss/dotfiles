@@ -30,10 +30,6 @@
 ;; Join multiple lines
 (global-set-key (kbd "C-x j") 'join-line-or-lines-in-region)
 
-;; (Un)comment region (Eclipse style)
-(global-set-key (kbd "C-M-=") 'comment-region)
-(global-set-key (kbd "C-M-+") 'uncomment-region)
-
 ;; Smart-tab knows when to complete/indent
 (global-set-key (kbd "TAB") 'smart-tab)
 
@@ -53,23 +49,23 @@
 ;; Open a new frame
 (global-set-key (kbd "C-c f") 'make-frame)
 
-;; Like C-r in the bash/zsh
+;; Search for text in the kill ring
 (global-set-key (kbd "C-M-y") 'kill-ring-search)
 
 ;; Check Dutch spelling
 (global-set-key (kbd "C-c C-s n") (lambda () (interactive)
-                                (ispell-change-dictionary "nederlands")
-                                (flyspell-buffer)))
+                                    (ispell-change-dictionary "nederlands")
+                                    (flyspell-buffer)))
 
 ;; Check English spelling
 (global-set-key (kbd "C-c C-s e") (lambda () (interactive)
-                                (ispell-change-dictionary "english")
-                                (flyspell-buffer)))
+                                    (ispell-change-dictionary "english")
+                                    (flyspell-buffer)))
 
 ;; Shorter than M-g (M-)g
 (global-set-key (kbd "M-g") 'goto-line)
 
-;; Smart command completion with history 
+;; Smart command completion with history
 (global-set-key (kbd "M-x") 'smex)
 
 ;; Variant of the previous without the meta key
@@ -95,12 +91,6 @@
 ;; Untabifies the buffer and deletes trailing whitespace
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
 
-;; Resize windows
-(global-set-key (kbd "C-c <left>") 'shrink-window-horizontally)
-(global-set-key (kbd "C-c <right>") 'enlarge-window-horizontally)
-(global-set-key (kbd "C-c <up>") 'shrink-window)
-(global-set-key (kbd "C-c <down>") 'enlarge-window)
-
 ;; Increment or decrement number at point
 (global-set-key (kbd "C-c i") 'increment-number-at-point)
 (global-set-key (kbd "C-c o") 'decrement-number-at-point)
@@ -121,8 +111,9 @@
 (global-set-key (kbd "C-c h") 'enlarge-window-horizontally)
 (global-set-key (kbd "C-c l") 'shrink-window-horizontally)
 
-;; Kill the word under the point with C-c C-d
-(global-set-key (kbd "C-c C-d") (lambda () (interactive) (backward-word) (kill-word 1)))
+;; Kill the word under the point with C-c d
+(global-set-key (kbd "C-c d") (lambda () (interactive)
+                                (backward-word) (kill-word 1)))
 
 ;; Isearch with regular expressions
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)

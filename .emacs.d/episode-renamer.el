@@ -94,15 +94,12 @@ coll, else nil."
                     (rename-file
                      (concat cd (second x))
                      (concat cd (third x) "." (file-name-extension (second x)))))
-                  (message (concat "Successfully renamed "
-                                   (number-to-string (length vids)) " files"))
+                  (message "Successfully renamed %d files" (length vids))
                   (revert-buffer))
-              (message (concat "Number of files (" (number-to-string (length vids))
-                               ") does not match number of episodes ("
-                               (number-to-string (length episode-titles)) ")")))))
-      (message (concat "Number of files (" (number-to-string (length vids))
-                       ") does not match number of subtitles ("
-                               (number-to-string (length subs)) ")")))))
+              (message "Number of files (%d) does not match number of episodes (%d)"
+                       (length vids) (length episode-titles)))))
+      (message "Number of files (%d) does not match number of subtitles (%d)"
+                       (length vids) (length subs)))))
 
 ;; Unnecessary function, but I couldn't just delete it ;-)
 (defun get-tvshow-tvdbid ()
@@ -125,6 +122,6 @@ the TV Show folder"
                                (concat "egrep '<tvdbid>([0-9]+)</tvdbid>' '" nfo "'"))))
             (string-match "[0-9]+" tvdbid-line)
             (message (match-string 0 tvdbid-line)))
-        (message (concat "tvshow.nfo not found for " tv-show))))))
+        (message "tvshow.nfo not found for %s" tv-show)))))
 
 (provide 'episode-renamer)

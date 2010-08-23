@@ -515,10 +515,6 @@
 (erc-spelling-mode 1)
 (setq erc-spelling-dictionaries '(("#clojure" "english")))
 
-;; Override default cljr command on Windows/Cygwin
-(when (or (eq system-type 'cygwin) (eq system-type 'windows-nt))
-  (setq cljr-command "/home/Thomas/.cljr/bin/cljr"))
-
 ;; Enable winner-mode
 (winner-mode 1)
 

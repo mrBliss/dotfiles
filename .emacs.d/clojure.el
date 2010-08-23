@@ -107,7 +107,7 @@
   (interactive)
   (let ((proc (start-process-shell-command
                "cljr-swank" "*cljr-swank*"
-               (or cljr-command "cljr") "swank"
+               "cljr" "swank"
                (number-to-string slime-port))))
     (when proc
       (process-put proc :output nil)
