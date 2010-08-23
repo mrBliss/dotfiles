@@ -88,7 +88,7 @@
 ;; Instead of newline
 (global-set-key (kbd "RET") 'newline-and-indent)
 
-;; Untabifies the buffer and deletes trailing whitespace
+;; Untabifies the buffer and deletes trailing white space
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
 
 ;; Increment or decrement number at point
@@ -148,5 +148,25 @@
 
 ;; Use C-j not only for *scratch* but for all elisp buffers
 (define-key emacs-lisp-mode-map (kbd "C-j") 'eval-print-last-sexp)
+
+;; Switch between source and test file with C-c t in clojure-mode
+(define-key clojure-mode-map (kbd "C-c t") 'switch-to-tests-clojure)
+
+;; Expanding in zencoding is triggered with M-RET
+(define-key zencoding-mode-keymap (kbd "M-RET") 'zencoding-expand-line)
+
+;; Same shortcut for compiling a buffer in coffee-mode as in Slime
+(define-key coffee-mode-map (kbd "C-c C-k") 'coffee-compile-buffer)
+
+;; js2-mode binds C-M-h to something else; undo this
+(add-hook 'js2-mode-hook
+          '(lambda () (define-key js2-mode-map (kbd "C-M-h")
+                   'backward-kill-word)))
+
+;; Move one directory up in Dired with r
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (define-key dired-mode-map (kbd "r")
+              (lambda () (interactive) (find-alternate-file "..")))))
 
 (provide 'bindings)
