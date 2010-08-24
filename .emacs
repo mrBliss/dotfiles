@@ -56,6 +56,7 @@
         tramp
         typing-speed
         uniquify
+        unbound
         undo-tree
         window-numbering
         wrap-region

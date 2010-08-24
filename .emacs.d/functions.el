@@ -287,4 +287,9 @@ fewer than 80 columns."
         (other-window -1))
     (message "Only one window open")))
 
+(defun show-non-ascii ()
+  "Find any non-ascii characters in the current buffer."
+  (interactive)
+  (occur "[^[:ascii:]]"))
+
 (provide 'functions)

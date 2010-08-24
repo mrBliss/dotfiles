@@ -46,7 +46,8 @@
   '(progn
      (add-hook 'clojure-mode-hook 'highlight-80+-mode)
      (define-key clojure-mode-map (kbd "C-j")
-       'slime-eval-print-last-expression)))
+       'slime-eval-print-last-expression)
+     (white-space-mode 1)))
 (tweak-clojure-syntax 'clojure-mode)
 
 ;; Beter REPL behaviour
@@ -157,21 +158,23 @@
 
 (defun switch-to-tests-clojure ()
   "Switches to the corresponding unit test file or source file
-according to the file in the current buffer. Source files should
-be in (a subdirectory of) 'src' and unit test files should be in
-(the same subdirectory under) 'test'. 'test' and 'src' should both be in the project root. The filename of a unit test file should be
-that of the source file with _test appended (ignoring the
-extension.
-
-E.g. Project/src/subfolder/file.clj
-  Project/test/subfolder/file_test.clj"
+   according to the file in the current buffer. Source files should
+   be in (a subdirectory of) 'src' and unit test files should be in
+   (the same subdirectory under) 'test'. 'test' and 'src' should
+   both be in the project root. The filename of a unit test file
+   should be that of the source file with _test appended (ignoring
+   the extension.  E.g. Project/src/subfolder/file.clj
+   Project/test/subfolder/file_test.clj"
   (interactive)
   (let* ((bfn (buffer-file-name))
-        (bfnse (file-name-sans-extension bfn)))
-    (if (string-match "_test$" bfnse)
-        (find-file (replace-in-string (replace-in-string bfn "_test" "")
-                                      "/test/" "/src/"))
-      (find-file (replace-in-string (concat bfnse "_test.clj")
-                                    "/src/" "/test/")))))
+         (bfnse (file-name-sans-extension bfn))
+         (f (if (string-match "_test$" bfnse)
+                (replace-in-string (replace-in-string bfn "_test" "")
+                                   "/test/" "/src/")
+              (replace-in-string (concat bfnse "_test.clj")
+                                 "/src/" "/test/"))))
+    (if (file-readable-p f)
+        (find-file f)
+      (message "Couldn't find %s" f))))
 
 (provide 'clojure)
