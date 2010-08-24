@@ -1,6 +1,7 @@
 ;; Custom Themes
 (defun color-theme-twilighter ()
-  "Color theme by Marcus Crafter, based off the TextMate Twilight theme, created 2008-04-18; modded bny Kieran Healy"
+  "Color theme by Marcus Crafter, based off the TextMate Twilight
+theme, created 2008-04-18; modded bny Kieran Healy"
   (interactive)
   (color-theme-install
    '(color-theme-twilight
@@ -24,10 +25,8 @@
      (font-lock-keyword-face ((t (:foreground "#CDA869"))))
      (font-lock-preprocessor-face ((t (:foreground "Aquamarine"))))
      (font-lock-reference-face ((t (:foreground "SlateBlue"))))
-
      (font-lock-regexp-grouping-backslash ((t (:foreground "#E9C062"))))
      (font-lock-regexp-grouping-construct ((t (:foreground "red"))))
-
      (font-lock-string-face ((t (:foreground "#8F9D6A"))))
      (font-lock-type-face ((t (:foreground "#9B703F"))))
      (font-lock-variable-name-face ((t (:foreground "#7587A6"))))
@@ -72,7 +71,8 @@
      (font-lock-string-face ((t (:foreground "#65b042"))))
      (font-lock-type-face ((t (:foreground "#c5af75"))))
      (font-lock-variable-name-face ((t (:foreground "#3387cc"))))
-     (font-lock-warning-face ((t (:bold t :background "#420e09" :foreground "#eeeeee"))))
+     (font-lock-warning-face
+      ((t (:bold t :background "#420e09" :foreground "#eeeeee"))))
      (erc-current-nick-face ((t (:foreground "#aeaeae"))))
      (erc-default-face ((t (:foreground "#ddd"))))
      (erc-keyword-face ((t (:foreground "#cf6a4c"))))
@@ -108,7 +108,8 @@
      (underline ((nil (:underline nil)))))))
 
 (defun color-theme-blackboard ()
-  "Color theme by JD Huntington, based off the TextMate Blackboard theme, created 2008-11-27"
+  "Color theme by JD Huntington, based off the TextMate
+Blackboard theme, created 2008-11-27"
   (interactive)
   (color-theme-install
    '(color-theme-blackboard
@@ -132,10 +133,8 @@
      (font-lock-keyword-face ((t (:foreground "#FBDE2D"))))
      (font-lock-preprocessor-face ((t (:foreground "Aquamarine"))))
      (font-lock-reference-face ((t (:foreground "SlateBlue"))))
-
      (font-lock-regexp-grouping-backslash ((t (:foreground "#E9C062"))))
      (font-lock-regexp-grouping-construct ((t (:foreground "red"))))
-
      (font-lock-string-face ((t (:foreground "#61CE3C"))))
      (font-lock-type-face ((t (:foreground "#8DA6CE"))))
      (font-lock-variable-name-face ((t (:foreground "#FF6400"))))
@@ -153,7 +152,7 @@
      (zmacs-region ((t (:background "snow" :foreground "ble")))))))
 
 (defun color-theme-gentooish ()
-  "Mostly green and purple color theme"
+  "Mostly green and purple color theme by Brian Carper"
   (interactive)
   (color-theme-install
    '(color-theme-gentooish
@@ -163,26 +162,47 @@
       (cursor-color . "green")
       (background-mode . dark))
      (bold ((t (:foreground "white" :weight normal))))
-     (font-lock-builtin-face ((((class color) (min-colors 88) (background dark)) (:foreground "#c476f1"))))
-     (font-lock-comment-face ((((class color) (min-colors 88) (background dark)) (:foreground "grey30" :slant italic))))
-     (font-lock-function-name-face ((((class color) (min-colors 88) (background dark)) (:foreground "#4cbbd1"))))
-     (font-lock-keyword-face ((((class color) (min-colors 88) (background dark)) (:foreground "#9a383a"))))
-     (font-lock-string-face ((((class color) (min-colors 88) (background dark)) (:background "#0f291a" :foreground "#5dff9e"))))
+     (font-lock-builtin-face
+      ((((class color) (min-colors 88) (background dark))
+        (:foreground "#c476f1"))))
+     (font-lock-comment-face
+      ((((class color) (min-colors 88) (background dark))
+        (:foreground "grey30" :slant italic))))
+     (font-lock-function-name-face
+      ((((class color) (min-colors 88) (background dark))
+        (:foreground "#4cbbd1"))))
+     (font-lock-keyword-face
+      ((((class color) (min-colors 88) (background dark))
+        (:foreground "#9a383a"))))
+     (font-lock-string-face
+      ((((class color) (min-colors 88) (background dark))
+        (:background "#0f291a" :foreground "#5dff9e"))))
      (hi-blue ((((background dark)) (:background "grey20"))))
-     (ido-first-match ((t (:background "#361d45" :foreground "#cf7dff" :weight bold))))
-     (ido-only-match ((((class color)) (:background "#361d45" :foreground "#cf7dff" :weight bold))))
+     (ido-first-match
+      ((t (:background "#361d45" :foreground "#cf7dff" :weight bold))))
+     (ido-only-match
+      ((((class color)) (:background "#361d45" :foreground "#cf7dff"
+                                     :weight bold))))
      (ido-subdir ((((min-colors 88) (class color)) (:foreground "#7dcfff"))))
      (linum ((t (:inherit shadow :background "grey12"))))
      (minibuffer-prompt ((((background dark)) (:foreground "#863335"))))
-     (mode-line ((((class color) (min-colors 88)) (:background "#333333" :foreground "#ffffff" :box (:line-width -1 :color "#333333")))))
+     (mode-line
+      ((((class color) (min-colors 88))
+        (:background "#333333" :foreground "#ffffff"
+                     :box (:line-width -1 :color "#333333")))))
      (mode-line-highlight ((((class color) (min-colors 88)) nil)))
-     (mode-line-inactive ((default (:inherit mode-line)) (((class color) (min-colors 88) (background dark)) (:foreground "#8b8b8b" :weight light))))
-     (show-paren-match ((((class color) (background dark)) (:background "#005500"))))
-     (tool-bar ((default (:foreground "black")) (((type x w32 ns) (class color)) (:background "grey75")))))))
-
+     (mode-line-inactive
+      ((default (:inherit mode-line))
+       (((class color) (min-colors 88) (background dark))
+        (:foreground "#8b8b8b" :weight light))))
+     (show-paren-match
+      ((((class color) (background dark)) (:background "#005500"))))
+     (tool-bar
+      ((default (:foreground "black")) (((type x w32 ns) (class color))
+                                        (:background "grey75")))))))
 
 (defun color-theme-molokai ()
-  "Color theme based on the Molokai color scheme for vim."
+  "Color theme based on the Molokai color scheme for vim. By alloy-d"
   (interactive)
   (color-theme-install
    '(color-theme-molokai
@@ -210,16 +230,22 @@
      (diff-removed ((t (:foreground "#F92672" :weight bold))))
      (escape-glyph ((t (:foreground "#E6DB74"))))
      (minibuffer-prompt ((t (:foreground "#66D9EF"))))
-     (mode-line ((t (:foreground "#F8F8F2" :background "#000000"
-                                 :box (:line-width 1 :color "#000000" :style released-button)))))
-     (mode-line-buffer-id ((t (:foreground nil :background "#000000" :weight semi-bold))))
-     (mode-line-inactive ((t (:foreground "#BCBCBC" :background "#000000"
-                                          :box (:line-width 1 :color "#232526")))))
+     (mode-line
+      ((t (:foreground "#F8F8F2" :background "#000000"
+                       :box (:line-width 1 :color "#000000"
+                                         :style released-button)))))
+     (mode-line-buffer-id
+      ((t (:foreground nil :background "#000000" :weight semi-bold))))
+     (mode-line-inactive
+      ((t (:foreground "#BCBCBC" :background "#000000"
+                       :box (:line-width 1 :color "#232526")))))
      (mode-line-mousable ((t (:foreground "#BCBCBC" :background "#000000"))))
-     (mode-line-mousable-minor-mode ((t (:foreground "#BCBCBC" :background "#000000"))))
+     (mode-line-mousable-minor-mode
+      ((t (:foreground "#BCBCBC" :background "#000000"))))
      (font-lock-builtin-face ((t (:foreground "#A6E22E"))))
      (font-lock-comment-face ((t (:foreground "#465457" :slant italic))))
-     (font-lock-comment-delimiter-face ((t (:foreground "#465457" :slant italic))))
+     (font-lock-comment-delimiter-face
+      ((t (:foreground "#465457" :slant italic))))
      (font-lock-constant-face ((t (:foreground "#AE81FF"))))
      (font-lock-doc-face ((t (:foreground "#E6DB74" :slant italic))))
      (font-lock-function-name-face ((t (:foreground "#F92672" :slant italic))))
@@ -274,7 +300,8 @@
      (outline-8 ((t (:foreground "#A6E22E"))))
      (secondary-selection ((t (:background "#272822"))))
      (show-paren-match-face ((t (:foreground "#000000" :background "#FD971F"))))
-     (show-paren-mismatch-face ((t (:foreground "#960050" :background "#1E0010"))))
+     (show-paren-mismatch-face
+      ((t (:foreground "#960050" :background "#1E0010"))))
      (widget-inactive-face ((t (:background "#ff0000"))))
      (woman-addition ((t (:foreground "#AE81FF"))))
      (woman-bold ((t (:foreground "#F92672"))))
@@ -345,8 +372,10 @@ created 2009-06-23."
      (escape-glyph ((t (:foreground "cyan"))))
      (file-name-shadow ((t (:foreground "grey70"))))
      (font-lock-builtin-face ((t (:foreground "#8ac6f2"))))
-     (font-lock-comment-delimiter-face ((t (:italic t :slant italic :foreground "#99968b"))))
-     (font-lock-comment-face ((t (:italic t :foreground "#99968b" :slant italic))))
+     (font-lock-comment-delimiter-face
+      ((t (:italic t :slant italic :foreground "#99968b"))))
+     (font-lock-comment-face
+      ((t (:italic t :foreground "#99968b" :slant italic))))
      (font-lock-constant-face ((t (:foreground "#e5786d"))))
      (font-lock-doc-face ((t (:italic t :foreground "#99968b" :slant italic))))
      (font-lock-function-name-face ((t (:foreground "#cae682"))))
@@ -355,7 +384,8 @@ created 2009-06-23."
      (font-lock-preprocessor-face ((t (:foreground "#e5786d"))))
      (font-lock-regexp-grouping-backslash ((t (:bold t :weight bold))))
      (font-lock-regexp-grouping-construct ((t (:bold t :weight bold))))
-     (font-lock-string-face ((t (:italic t :foreground "#95e454" :slant italic))))
+     (font-lock-string-face
+      ((t (:italic t :foreground "#95e454" :slant italic))))
      (font-lock-type-face ((t (:foreground "#cae682"))))
      (font-lock-variable-name-face ((t (:foreground "#cae682"))))
      (font-lock-warning-face ((t (:bold t :foreground "#cc0000" :weight bold))))
@@ -368,13 +398,16 @@ created 2009-06-23."
      (isearch ((t (:background "#f57900" :foreground "#2e3436"))))
      (isearch-fail ((t (:background "red4"))))
      (iswitchb-current-match ((t (:foreground "#cae682"))))
-     (iswitchb-invalid-regexp ((t (:bold t :weight bold :foreground "#cc0000"))))
-     (iswitchb-single-match ((t (:italic t :slant italic :foreground "#99968b"))))
+     (iswitchb-invalid-regexp
+      ((t (:bold t :weight bold :foreground "#cc0000"))))
+     (iswitchb-single-match
+      ((t (:italic t :slant italic :foreground "#99968b"))))
      (iswitchb-virtual-matches ((t (:foreground "#8ac6f2"))))
      (italic ((t (:italic t :slant italic))))
      (lazy-highlight ((t (:background "yellow" :foreground "black"))))
      (link ((t (:bold t :foreground "#8ac6f2" :underline t :weight bold))))
-     (link-visited ((t (:bold t :weight bold :underline t :foreground "violet"))))
+     (link-visited
+      ((t (:bold t :weight bold :underline t :foreground "violet"))))
      (match ((t (:background "RoyalBlue3"))))
      (menu ((t (:foreground "systemmenu" :background "systemmenutext"))))
      (minibuffer-noticeable-prompt ((t (nil))))
@@ -397,7 +430,8 @@ created 2009-06-23."
      (org-level-5 ((t (:foreground "#e5786d"))))
      (org-todo ((t (:bold t :foreground "#8ac6f2" :weight bold))))
      (paren-face-match ((t (:foreground "#eeeeec" :background "#729fcf"))))
-     (paren-face-match-light ((t (:foreground "#eeeeec" :background "#729fcf"))))
+     (paren-face-match-light
+      ((t (:foreground "#eeeeec" :background "#729fcf"))))
      (paren-face-mismatch ((t (:foreground "#2e3436" :background "#ad7fa8"))))
      (persp-selected-face ((t (:foreground "#729fcf"))))
      (query-replace ((t (:foreground "#2e3436" :background "#f57900"))))
@@ -412,7 +446,8 @@ created 2009-06-23."
      (tool-bar
       ((t (:background "systembuttonface" :foreground "systembuttontext"
                        :box (:line-width 1 :style released-button)))))
-     (tooltip ((t (:background "systeminfowindow" :foreground "systeminfotext"))))
+     (tooltip
+      ((t (:background "systeminfowindow" :foreground "systeminfotext"))))
      (trailing-whitespace ((t (:background "red1"))))
      (underline ((t (:underline t))))
      (vertical-border ((t (nil))))
@@ -491,7 +526,55 @@ created 2009-06-23."
          (bold-italic ((t (:bold t))))
          (underline ((nil (:underline nil)))))))))
 
+
+(defun color-theme-railscasts ()
+  "MIT License Copyright (c) 2009 Oleg Shaldybin
+ <oleg.shaldybin@gmail.com> Inspired by the brilliant Railscasts
+ theme for TextMate."
+  (interactive)
+  (color-theme-install
+   '(color-theme-railscasts
+     ((background-color . "#232323")
+      (background-mode . dark)
+      (cursor-color . "#5A647E")
+      (foreground-color . "#E6E1DC"))
+     (default ((t (nil))))
+     (bold ((t (:bold t))))
+     (bold-italic ((t (:italic t :bold t))))
+     (fringe ((t (:background "#232323"))))
+     (font-lock-builtin-face ((t (:foreground "#D0D0FF"))))
+     (font-lock-comment-face ((t (:foreground "#BC9458" :italic t))))
+     (font-lock-constant-face ((t (:foreground "#6D9CBE"))))
+     (font-lock-doc-string-face ((t (:foreground "#A5C261"))))
+     (font-lock-function-name-face ((t (:foreground "#FFC66D"))))
+     (font-lock-keyword-face ((t (:foreground "#CC7833"))))
+     (font-lock-preprocessor-face ((t (:foreground "#CC7833"))))
+     (font-lock-reference-face ((t (:foreground "LightSteelBlue"))))
+     (font-lock-string-face ((t (:foreground "#A5C261"))))
+     (font-lock-type-face ((t (:foreground "white"))))
+     (font-lock-variable-name-face ((t (:foreground "LightSteelBlue"))))
+     (font-lock-warning-face ((t (:foreground "Pink"))))
+     (paren-face-match-light
+      ((t (:foreground "#FFC66D" :background "#555577"))))
+     (highlight ((t (:background "darkolivegreen"))))
+     (italic ((t (:italic t))))
+     (modeline ((t (:background "#A5BAF1" :foreground "black"))))
+     (modeline-buffer-id ((t (:background "#A5BAF1" :foreground "black"))))
+     (modeline-mousable ((t (:background "#A5BAF1" :foreground "black"))))
+     (modeline-mousable-minor-mode
+      ((t (:background "#A5BAF1" :foreground "black"))))
+     (region ((t (:background "#555577"))))
+     (primary-selection ((t (:background "#555577"))))
+     (isearch ((t (:background "#555555"))))
+     (zmacs-region ((t (:background "#555577"))))
+     (secondary-selection ((t (:background "darkslateblue"))))
+     (flymake-errline ((t (:background "LightSalmon" :foreground "black"))))
+     (flymake-warnline ((t (:background "LightSteelBlue" :foreground "black"))))
+     (underline ((t (:underline t))))
+     (minibuffer-prompt ((t (:bold t :foreground "#FF6600")))))))
+
 (defun color-theme-bespin ()
+  "Based on Mozilla's Bespin. By mrBliss"
   (interactive)
   (color-theme-install
    '(color-theme-bespin
@@ -576,12 +659,4 @@ created 2009-06-23."
      (slime-repl-result-face ((t (:foreground "#a8937a")))))))
 
 (provide 'custom-themes)
-
-;; diredp-display-msg
-;; diredp-symlink
-;; diredp-other-priv
-;; diredp-rare-priv
-;; diredp-link-priv
-
-
 
