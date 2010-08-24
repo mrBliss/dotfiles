@@ -150,13 +150,16 @@
 (define-key emacs-lisp-mode-map (kbd "C-j") 'eval-print-last-sexp)
 
 ;; Switch between source and test file with C-c t in clojure-mode
-(define-key clojure-mode-map (kbd "C-c t") 'switch-to-tests-clojure)
+(eval-after-load "clojure-mode"
+  '(define-key clojure-mode-map (kbd "C-c t") 'switch-to-tests-clojure))
 
 ;; Expanding in zencoding is triggered with M-RET
-(define-key zencoding-mode-keymap (kbd "M-RET") 'zencoding-expand-line)
+(eval-after-load "zencoding-mode"
+  '(define-key zencoding-mode-keymap (kbd "M-RET") 'zencoding-expand-line))
 
 ;; Same shortcut for compiling a buffer in coffee-mode as in Slime
-(define-key coffee-mode-map (kbd "C-c C-k") 'coffee-compile-buffer)
+(eval-after-load "coffee-mode"
+  '(define-key coffee-mode-map (kbd "C-c C-k") 'coffee-compile-buffer))
 
 ;; js2-mode binds C-M-h to something else; undo this
 (add-hook 'js2-mode-hook

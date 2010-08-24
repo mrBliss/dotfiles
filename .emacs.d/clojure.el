@@ -47,7 +47,7 @@
      (add-hook 'clojure-mode-hook 'highlight-80+-mode)
      (define-key clojure-mode-map (kbd "C-j")
        'slime-eval-print-last-expression)
-     (white-space-mode 1)))
+     (whitespace-mode 1)))
 (tweak-clojure-syntax 'clojure-mode)
 
 ;; Beter REPL behaviour

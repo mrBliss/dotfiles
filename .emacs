@@ -31,6 +31,7 @@
         color-theme
         coffee-mode
         custom-themes
+        cygwin
         dired+
         dired-sort-map
         episode-renamer

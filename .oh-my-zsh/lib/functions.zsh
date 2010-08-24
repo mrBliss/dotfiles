@@ -39,3 +39,10 @@ extract () {
 bu () {
     cp $1 ${1}-`date +%Y%m%d%H%M`.backup
 }
+
+# grep for a process
+function psg {
+    FIRST=`echo $1 | sed -e 's/^\(.\).*/\1/'`
+    REST=`echo $1 | sed -e 's/^.\(.*\)/\1/'`
+    ps aux | grep "[$FIRST]$REST"
+}

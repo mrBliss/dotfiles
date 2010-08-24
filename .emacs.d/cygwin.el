@@ -11,8 +11,9 @@
              (file-readable-p cygwin-root))
 
     ;; Cygwin path conversion
-    (require 'cygwin-mount)
-    (cygwin-mount-activate)
+    (when (eq system-type 'cygwin)
+      (require 'cygwin-mount)
+      (cygwin-mount-activate))
         
     (setq exec-path (cons cygwin-bin exec-path))
     (setenv "PATH" (concat cygwin-bin ";" (getenv "PATH")))
