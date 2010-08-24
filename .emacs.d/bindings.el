@@ -162,14 +162,12 @@
   '(define-key coffee-mode-map (kbd "C-c C-k") 'coffee-compile-buffer))
 
 ;; js2-mode binds C-M-h to something else; undo this
-(add-hook 'js2-mode-hook
-          '(lambda () (define-key js2-mode-map (kbd "C-M-h")
-                   'backward-kill-word)))
+(eval-after-load "js2-mode"
+  '(define-key js2-mode-map (kbd "C-M-h") 'backward-kill-word))
 
 ;; Move one directory up in Dired with r
-(add-hook 'dired-mode-hook
-          (lambda ()
-            (define-key dired-mode-map (kbd "r")
-              (lambda () (interactive) (find-alternate-file "..")))))
+(eval-after-load "dired-mode"
+  '(define-key dired-mode-map (kbd "r")
+     (lambda () (interactive) (find-alternate-file ".."))))
 
 (provide 'bindings)
