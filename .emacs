@@ -509,3 +509,11 @@
 
 ;; Enable window numbering mode
 (window-numbering-mode t)
+
+;; Weeks start on Mondays
+(setq calendar-week-start-day 1)
+
+;; Sometimes this is will be void and C-h k stops working
+(setq help-xref-following nil)
+
+

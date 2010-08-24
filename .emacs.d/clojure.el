@@ -1,11 +1,8 @@
 ;; Clojure
 
 ;; Load files
-(mapcar #'require
-        '(clojure-mode
-          slime
-          swank-clojure
-          swank-clojure-autoloads))
+(require 'clojure-mode)
+(require 'slime)
 
 ;; Hide slime version mismatches
 (setq slime-protocol-version 'ignore)
@@ -34,9 +31,8 @@
      (setq slime-highlight-compiler-notes nil)))
 
 ;; Slime-REPL tweaks
-(eval-after-load "swank-clojure"
+(eval-after-load "slime-repl"
   '(progn
-     (add-hook 'slime-repl-mode-hook 'swank-clojure-slime-repl-modify-syntax t)
      (add-hook 'slime-repl-mode-hook 'slime-clojure-repl-setup)
      (tweak-clojure-syntax 'slime-repl-mode)))
 
