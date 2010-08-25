@@ -8,6 +8,7 @@
 !.screenrc.nested
 !.ssh/config
 !.conkerorrc
+!README.md
 *~
 .emacs.d/auto-save-list
 .emacs.d/tramp
