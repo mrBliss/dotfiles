@@ -516,4 +516,6 @@
 ;; Sometimes this is will be void and C-h k stops working
 (setq help-xref-following nil)
 
-
+;; Run a server on Windows
+(when (eq system-type 'windows-nt)
+  (server-start))
