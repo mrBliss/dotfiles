@@ -41,8 +41,14 @@ bu () {
 }
 
 # grep for a process
-function psg {
+psg () {
     FIRST=`echo $1 | sed -e 's/^\(.\).*/\1/'`
     REST=`echo $1 | sed -e 's/^.\(.*\)/\1/'`
     ps aux | grep "[$FIRST]$REST"
+}
+
+# cd, then ls
+cl () {
+    cd $1
+    ls
 }

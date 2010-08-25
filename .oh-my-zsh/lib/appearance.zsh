@@ -10,7 +10,7 @@ then
   ls --color -d . &>/dev/null 2>&1 && alias ls='ls --color=tty' || alias ls='ls -G'
 fi
 
-#setopt no_beep
+setopt no_beep
 setopt auto_cd
 setopt multios
 setopt cdablevarS
