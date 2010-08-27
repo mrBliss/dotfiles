@@ -320,6 +320,7 @@
       ";; SCRATCH Buffer
 ;; Commands to learn:
 ;;  goto previous macro: C-x C-k C-p
+;;  Insert/set macro counter: C-x C-k C-i/c
 ;;  insert output for shell command: M-1 M-!
 ;;  search with results: M-s o
 ;;  move point to center/top/bottom: M-r
@@ -413,7 +414,10 @@
   (setq x-select-enable-clipboard t))
 
 ;; Default method for tramp should be ssh
-(setq tramp-default-method "ssh")
+(if (or (eq system-type 'windows-nt)
+        (eq system-type 'cygwin))
+    (setq tramp-default-method "sshx")
+  (setq tramp-default-method "ssh"))
 
 ;; Clojure eprojects
 (define-project-type clojure (generic)
@@ -519,3 +523,10 @@
 ;; Run a server on Windows
 (when (eq system-type 'windows-nt)
   (server-start))
+
+;; Treat CamelCaseWords as distinct words
+(global-subword-mode 1)
+
+;; List ELPA packages with elpa command
+(defalias 'elpa 'package-list-packages)
+

@@ -120,7 +120,7 @@
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
 
 ;; Transpose lines with M-T, shorter than C-x C-t
-(global-set-key (kbd "M-T") 'transpose-lines)
+(global-set-key (kbd "M-T") 'transpose-paragraphs)
 
 ;; Copy a line with C-c c
 (global-set-key (kbd "C-c c") 'copy-line)
