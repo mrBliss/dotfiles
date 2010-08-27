@@ -198,7 +198,8 @@
       ((window-system)
        (progn (color-theme-bespin)
               (tool-bar-mode -1)
-              (set-scroll-bar-mode nil))))
+              (set-scroll-bar-mode nil)))
+      (t (color-theme-blissterm)))
 
 ;; Cygwin as shell on Windows
 (if (eq system-type 'windows-nt)

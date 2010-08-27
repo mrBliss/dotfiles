@@ -573,6 +573,21 @@ created 2009-06-23."
      (underline ((t (:underline t))))
      (minibuffer-prompt ((t (:bold t :foreground "#FF6600")))))))
 
+(defun color-theme-blissterm ()
+  "Terminal color theme by mrBliss"
+  (interactive)
+  (color-theme-install
+   '(color-theme-blissterm
+     ((background-color . "black")
+      (background-mode . dark)
+      (foreground-color . "white")
+      (cursor-color . "white"))
+     (default ((t (nil))))
+     (font-lock-comment-face ((t (:foreground "magenta"))))
+     (font-lock-comment-delimiter-face ((t (:foreground "magenta"))))
+     (clojure-parens ((t (:foreground "cyan"))))
+     (clojure-braces ((t (:foreground "yellow")))))))
+
 (defun color-theme-bespin ()
   "Based on Mozilla's Bespin. By mrBliss"
   (interactive)
