@@ -150,8 +150,16 @@
 (define-key emacs-lisp-mode-map (kbd "C-j") 'eval-print-last-sexp)
 
 ;; Switch between source and test file with C-c t in clojure-mode
+;; Look up a Java Class in the JDK Docs (local files) with C-c C-d j
 (eval-after-load "clojure-mode"
-  '(define-key clojure-mode-map (kbd "C-c t") 'switch-to-tests-clojure))
+  '(progn
+     (define-key slime-mode-map (kbd "C-c C-d j") 'slime-browse-local-javadoc)
+     (define-key clojure-mode-map (kbd "C-c t") 'switch-to-tests-clojure)))
+
+;; Look up a Java Class in the JDK Docs (local files) with C-c C-d j
+(eval-after-load "slime-repl-mode"
+  '(define-key slime-repl-mode-map (kbd "C-c C-d j")
+     'slime-browse-local-javadoc))
 
 ;; Expanding in zencoding is triggered with M-RET
 (eval-after-load "zencoding-mode"
@@ -169,5 +177,8 @@
 (eval-after-load "dired-mode"
   '(define-key dired-mode-map (kbd "r")
      (lambda () (interactive) (find-alternate-file ".."))))
+
+;; C-z is only useful for emacs in a terminal window
+(when window-system (global-unset-key "\C-z"))
 
 (provide 'bindings)

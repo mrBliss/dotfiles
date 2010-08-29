@@ -118,6 +118,8 @@
           (or
            (name . ".+\\.txt$")
            (mode . text-mode)))
+         ("ERC"
+          (mode . erc-mode))
          ("Clojure"
           (or
            (mode . clojure-mode)
@@ -531,3 +533,8 @@
 ;; List ELPA packages with elpa command
 (defalias 'elpa 'package-list-packages)
 
+;; Copy file to the other open dired folder by default
+(setq dired-dwim-target t)
+
+;; My sentences end with a dot, not with two spaces
+(setq sentence-end-double-space nil)

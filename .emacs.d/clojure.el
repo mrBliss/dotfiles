@@ -21,7 +21,7 @@
             (("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 'font-lock-warning-face t))
             (("(\\(fn\\>\\)" 0 (progn (compose-region (match-beginning 1)
                                                       (match-end 1) "ƒ") nil)))
-            (("^[a-zA-Z-.*+!_?]+?>" . 'slime-repl-prompt-face)))))
+            (("^[a-zA-Z0-9-.*+!_?]+?>" . 'slime-repl-prompt-face)))))
 
 ;; Slime
 (eval-after-load "slime"
@@ -172,5 +172,36 @@
     (if (file-readable-p f)
         (find-file f)
       (message "Couldn't find %s" f))))
+
+;; Location of the JDK docs
+(setq javadoc-root "d:/Documents/Java/JDK6-Docs")
+
+(defun slime-browse-local-javadoc (ci-name)
+  "Browse local JavaDoc documentation on Java class/Interface at point."
+  (interactive (list (slime-read-symbol-name "Class/Interface name: ")))
+  (when (not ci-name)
+    (error "No name given"))
+  (let ((name (replace-regexp-in-string "\\$" "." ci-name))
+        (path (concat (expand-file-name javadoc-root)
+                      "/api/")))
+    (with-temp-buffer
+      (insert-file-contents (concat path "allclasses-noframe.html"))
+      (let ((l
+             (delq nil
+                   (mapcar #'(lambda (rgx)
+                               (let* ((r (concat "\\.?\\(" rgx
+                                                 "[^./]+\\)[^.]*\\.?$"))
+                                      (n (if (string-match r name)
+                                             (match-string 1 name)
+                                           name)))
+                                 (if (re-search-forward
+                                      (concat "<A HREF=\"\\(.+\\)\" +.*>" n
+                                              "<.*/A>") nil t)
+                                     (match-string 1)
+                                   nil)))
+                           '("[^.]+\\." "")))))
+        (if l
+            (browse-url (concat "file://" path (car l)))
+          (error (concat "Not found: " ci-name)))))))
 
 (provide 'clojure)
