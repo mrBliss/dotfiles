@@ -35,18 +35,21 @@
 (defun get-tvdbid-and-season-and-lang ()
   "Returns of list containing the tvdb, season and language for
 the season currently displayed in the dired buffer"
-  (let* ((season (progn  (string-match "Season \\([0-9]+\\)" (dired-current-directory))
+  (let* ((season (progn  (string-match "Season \\([0-9]+\\)"
+                                       (dired-current-directory))
                          (match-string 1 (dired-current-directory))))
          (tv-show-folder (locate-dominating-file (dired-current-directory)
                                                  "tvshow.nfo"))
          (nfo (concat tv-show-folder "tvshow.nfo")))
     (if (file-readable-p nfo)
         (let* ((tvdbid-line (shell-command-to-string
-                             (concat "egrep '<tvdbid>([0-9]+)</tvdbid>' '" nfo "'")))
+                             (concat "egrep '<tvdbid>([0-9]+)</tvdbid>' '"
+                                     nfo "'")))
                (tvdbid (progn (string-match "[0-9]+" tvdbid-line)
                               (match-string 0 tvdbid-line)))
                (lang-line (shell-command-to-string
-                           (concat "egrep '<language>([a-z]+)</language>' '" nfo "'")))
+                           (concat "egrep '<language>([a-z]+)</language>' '"
+                                   nfo "'")))
                (lang (progn (string-match ">[a-z]+" lang-line)
                             (substring (match-string 0 lang-line) 1))))
           (list tvdbid season lang)))))
@@ -55,7 +58,8 @@ the season currently displayed in the dired buffer"
   "Returns a list of the items in coll for which (pred item)
 returns true. pred must be free of side-effects."
   (cond ((null list) list)
-        ((apply pred (list (car list))) (cons (car list) (filter pred (cdr list))))
+        ((apply pred (list (car list)))
+         (cons (car list) (filter pred (cdr list))))
         (t (filter pred (cdr list)))))
 
 (defun some (pred coll)
@@ -70,13 +74,16 @@ coll, else nil."
          (sub-exts '("srt" "sub"))
          (cd (dired-current-directory))
          (files (directory-files cd))
-         (vids (filter (lambda (f) (some (lambda (ext) (string-match ext f)) vid-exts))
-                       files))
-         (subs (filter (lambda (f) (some (lambda (ext) (string-match ext f)) sub-exts))
-                       files)))
+         (vids (filter
+                (lambda (f) (some (lambda (ext) (string-match ext f)) vid-exts))
+                files))
+         (subs (filter
+                (lambda (f) (some (lambda (ext) (string-match ext f)) sub-exts))
+                files)))
     (if (or (null subs)
             (= (length vids) (length subs)))
-        (destructuring-bind (tvdbid season lang) (get-tvdbid-and-season-and-lang)
+        (destructuring-bind (tvdbid season lang)
+            (get-tvdbid-and-season-and-lang)
           (message "Downloading episode titles from TheTVDB...")
           (let ((episode-titles
                  (butlast
@@ -99,7 +106,7 @@ coll, else nil."
               (message "Number of files (%d) does not match number of episodes (%d)"
                        (length vids) (length episode-titles)))))
       (message "Number of files (%d) does not match number of subtitles (%d)"
-                       (length vids) (length subs)))))
+               (length vids) (length subs)))))
 
 ;; Unnecessary function, but I couldn't just delete it ;-)
 (defun get-tvshow-tvdbid ()
@@ -119,7 +126,8 @@ the TV Show folder"
                       ((file-readable-p info) info))))
       (if nfo
           (let* ((tvdbid-line (shell-command-to-string
-                               (concat "egrep '<tvdbid>([0-9]+)</tvdbid>' '" nfo "'"))))
+                               (concat "egrep '<tvdbid>([0-9]+)</tvdbid>' '"
+                                       nfo "'"))))
             (string-match "[0-9]+" tvdbid-line)
             (message (match-string 0 tvdbid-line)))
         (message "tvshow.nfo not found for %s" tv-show)))))
