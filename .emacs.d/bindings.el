@@ -53,14 +53,18 @@
 (global-set-key (kbd "C-M-y") 'kill-ring-search)
 
 ;; Check Dutch spelling
-(global-set-key (kbd "C-c C-s n") (lambda () (interactive)
-                                    (ispell-change-dictionary "nederlands")
-                                    (flyspell-buffer)))
+(global-set-key (kbd "C-c C-s n")
+                (lambda () (interactive)
+                  (ispell-change-dictionary "nederlands")
+                  (flyspell-buffer)
+                  (flyspell-mode)))
 
 ;; Check English spelling
-(global-set-key (kbd "C-c C-s e") (lambda () (interactive)
-                                    (ispell-change-dictionary "english")
-                                    (flyspell-buffer)))
+(global-set-key (kbd "C-c C-s e")
+                (lambda () (interactive)
+                  (ispell-change-dictionary "english")
+                  (flyspell-buffer)
+                  (flyspell-mode)))
 
 ;; Shorter than M-g (M-)g
 (global-set-key (kbd "M-g") 'goto-line)
@@ -181,5 +185,8 @@
 
 ;; C-z is only useful for emacs in a terminal window
 (when window-system (global-unset-key "\C-z"))
+
+;; Insert a Unicode character with C-c u
+(global-set-key (kbd "C-c u") 'ucs-insert)
 
 (provide 'bindings)

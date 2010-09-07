@@ -416,10 +416,10 @@
 (when (eq system-type 'gnu/linux)
   (setq x-select-enable-clipboard t))
 
-;; Default method for tramp should be ssh
+;; Default method for tramp should be ssh or plink on cygwin
 (if (or (eq system-type 'windows-nt)
         (eq system-type 'cygwin))
-    (setq tramp-default-method "sshx")
+    (setq tramp-default-method "plink")
   (setq tramp-default-method "ssh"))
 
 ;; Clojure eprojects
@@ -538,3 +538,10 @@
 
 ;; My sentences end with a dot, not with two spaces
 (setq sentence-end-double-space nil)
+
+;; Moves the mouse pointer to the corner of the screen when typing
+(mouse-avoidance-mode 'banish)
+
+;; completion in M-:
+(when (keymapp read-expression-map)
+  (define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol))
