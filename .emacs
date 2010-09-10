@@ -69,21 +69,22 @@
 
 ;; Set font
 (case system-type
-  ('windows-nt
-   (add-to-list 'default-frame-alist
-                '(font . "-*-Consolas-*-*-*-*-11-*-*-*-*-*-iso8859-1")))
-  ('gnu/linux
-   (add-to-list 'default-frame-alist
-                '(font . "-*-Inconsolata-*-*-*-*-12-*-*-*-*-*-iso8859-1"))))
+  ('windows-nt (set-default-font "Consolas-8"))
+  ('gnu/linux (set-default-font "Inconsolata-11"))
+  ('darwin (set-default-font "Inconsolata-11")))
 
 ;; y/n instead of yes/no
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; Better whitespace settings
 (setq whitespace-style
-      '(trailing lines space-before-tab indentation space-after-tab)
-      whitespace-line-column 80
+      '(trailing space-before-tab indentation space-after-tab)
       show-trailing-whitespace t)
+
+;; Show whitespace when coding
+(defun turn-on-whitespace ()
+  (whitespace-mode t))
+(add-hook 'coding-hook 'turn-on-whitespace)
 
 ;; Always use spaces for indentation
 (setq-default indent-tabs-mode nil)
@@ -146,9 +147,9 @@
            (name . "\\*Compile-Log\\*$")))
          ("Stuff"
           (name . "^\\*.+\\*")))))
-(add-hook 'ibuffer-mode-hook
-          (lambda ()
-            (ibuffer-switch-to-saved-filter-groups "default")))
+(defun turn-on-ibuffer-filter-groups ()
+  (ibuffer-switch-to-saved-filter-groups "default"))
+(add-hook 'ibuffer-mode-hook 'turn-on-ibuffer-filter-groups)
 
 ;; Ignore .DS_Store files
 (add-to-list 'ido-ignore-files "\\.DS_Store")
@@ -295,8 +296,9 @@
       kill-do-not-save-duplicates t)
 
 ;; Display el instead of Emacs Lisp in the mode-line
-(add-hook 'emacs-lisp-mode-hook
-          (lambda () (setq mode-name "el")))
+(defun shorten-emacs-lisp-mode-name ()
+  (setq mode-name "el"))
+(add-hook 'emacs-lisp-mode-hook 'shorten-emacs-lisp-mode-name)
 
 ;; Add MacPorts to path on OS X
 (when (eq system-type 'darwin)
@@ -387,7 +389,9 @@
 (setq line-move-visual t)
 
 ;; Fill text to 74 chars in text-mode
-(add-hook 'text-mode-hook (lambda () (setq fill-column 74)))
+(defun turn-on-fill-column ()
+  (setq fill-column 74))
+(add-hook 'text-mode-hook 'turn-on-fill-column)
 
 ;; Make scripts executable on save
 (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
@@ -396,11 +400,11 @@
 (setq backup-by-copying t)
 
 ;; Highlight FIXME/TODO/BUG in C/C++/Java etc modes
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (font-lock-add-keywords nil
-                                    '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1
-                                       font-lock-warning-face t)))))
+(defun turn-on-special-keywords ()
+  (font-lock-add-keywords nil
+                          '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1
+                             font-lock-warning-face t))))
+(add-hook 'c-mode-common-hook 'turn-on-special-keywords)
 
 ;; Dired ls switches and search option
 (setq dired-listing-switches "-alhF"
@@ -456,7 +460,7 @@
   (set (make-local-variable 'tab-width) 2))
 
 ;; Compile the buffer in coffee-mode
-(add-hook 'coffee-mode-hook '(lambda () (coffee-custom)))
+(add-hook 'coffee-mode-hook 'coffee-custom)
 
 ;; Enable rainbow-mode for css files
 (add-hook 'css-mode-hook 'rainbow-mode)
@@ -540,7 +544,7 @@
 (setq sentence-end-double-space nil)
 
 ;; Moves the mouse pointer to the corner of the screen when typing
-(mouse-avoidance-mode 'banish)
+(mouse-avoidance-mode 'jump)
 
 ;; completion in M-:
 (when (keymapp read-expression-map)
