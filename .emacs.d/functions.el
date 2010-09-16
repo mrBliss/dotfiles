@@ -113,22 +113,21 @@ Symbols matching the text at point are put first in the completion list."
   (kill-region (region-beginning) (region-end)))
 
 (defun swap-windows ()
-  "If you have 2 windows, it swaps them."
+  "Swap two windows, leaving the cursor in the current window."
   (interactive)
-  (cond ((/= (count-windows) 2)
-         (message "You need exactly 2 windows to do this."))
-        (t
-         (let* ((w1 (first (window-list)))
-                (w2 (second (window-list)))
-                (b1 (window-buffer w1))
-                (b2 (window-buffer w2))
-                (s1 (window-start w1))
-                (s2 (window-start w2)))
-           (set-window-buffer w1 b2)
-           (set-window-buffer w2 b1)
-           (set-window-start w1 s2)
-           (set-window-start w2 s1))))
-  (other-window 1))
+  (let ((thiswin (selected-window))
+        (nextbuf (window-buffer (next-window))))
+    (set-window-buffer (next-window) (window-buffer))
+    (set-window-buffer thiswin nextbuf)))
+
+(defun swap-windows-with-cursor ()
+  "Swap two windows, with cursor in the same buffer."
+  (interactive)
+  (let ((thiswin (selected-window))
+        (thisbuf (window-buffer)))
+    (other-window 1)
+    (set-window-buffer thiswin (window-buffer))
+    (set-window-buffer (selected-window) thisbuf)))
 
 (defun join-line-or-lines-in-region ()
   "Join this line or the lines in the selected region."

@@ -8,6 +8,7 @@
 
 ;; Swap windows
 (global-set-key (kbd "C-c x") 'swap-windows)
+(global-set-key (kbd "C-c X") 'swap-windows-with-cursor)
 
 ;; Ido binds
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file)

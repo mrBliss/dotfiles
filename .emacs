@@ -71,7 +71,7 @@
 (case system-type
   ('windows-nt (set-default-font "Consolas-8"))
   ('gnu/linux (set-default-font "Inconsolata-11"))
-  ('darwin (set-default-font "Inconsolata-11")))
+  ('darwin (set-default-font "Inconsolata-12")))
 
 ;; y/n instead of yes/no
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -511,9 +511,11 @@
 ;; Not my pals, but 'wise' guys or bots in #clojure
 (setq erc-pals '("LauJensen" "cemerick" "cgrand" "chouser" "clojurebot"
                  "danlarkin" "dnolen" "fogus_" "rhickey" "sexpbot"
-                 "stuartsierra" "technomancy"))
+                 "stuartsierra" "stuarthalloway" "technomancy"))
 (erc-spelling-mode 1)
 (setq erc-spelling-dictionaries '(("#clojure" "english")))
+(setq erc-server-reconnect-timeout 30)
+;;(setq erc-server-send-ping-timeout nil)
 
 ;; Enable winner-mode
 (winner-mode 1)

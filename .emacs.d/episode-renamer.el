@@ -70,8 +70,9 @@ coll, else nil."
 
 (defun rename-episodes ()
   (interactive)
-  (let* ((vid-exts '("avi" "mkv" "mp4" "wmv" "flv" "divx" "mpg"))
-         (sub-exts '("srt" "sub"))
+  (let* ((vid-exts (mapcar (lambda (e) (concat e "$"))
+                           '("avi" "mkv" "mp4" "wmv" "flv" "divx" "mpg")))
+         (sub-exts (mapcar (lambda (e) (concat e "$")) '("srt" "sub")))
          (cd (dired-current-directory))
          (files (directory-files cd))
          (vids (filter
