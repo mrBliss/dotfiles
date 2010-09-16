@@ -4,7 +4,7 @@
 export EDITOR='emacsclient -t -a ""'
 export ALTERNATE_EDITOR='emacs --daemon; emacsclient -t'
 
-# I don't like your Aptitude!
+# Aptitude aliases
 alias apti='sudo aptitude install'
 alias aptrm='sudo aptitude remove'
 alias aptrmf='sudo aptitude remove'
@@ -16,6 +16,9 @@ alias apts='aptitude search'
 # Git pull from other repositories
 alias gitpullwin='git pull file:///mnt/dotfiles/ master'
 alias gitpullosx='git pull file:///mnt/dotfiles2/ master'
+
+# Put cljr on the PATH
+export PATH=~/.cljr/bin:$PATH
 
 # Easy way to mount the OS X samba share on 192.168.1.9
 mnt_osx () {
