@@ -233,8 +233,8 @@
 
 ;; Completion in minibuffer (only 1 line)
 (icomplete-mode t)
-(setq  icomplete-prospects-height 1
-       icomplete-compute-delay 0)
+(setq icomplete-prospects-height 1
+      icomplete-compute-delay 0)
 
 ;; Show column numbers
 (column-number-mode 1)
@@ -437,7 +437,7 @@
   :relevant-files ("\\.js"))
 
 ;; Java (Eclipse) eproject
-(define-project-type conkerorrc (generic)
+(define-project-type eclipse (generic)
   (look-for ".project")
   :relevant-files ("\\.java"))
 
@@ -470,9 +470,6 @@
       [unspecified "#000000" "#FF0000" "#A6E32D" "#FC951E" "#C48DFF" "#FA2573"
                    "#67D9F0" "#F2F2F2"])
 
-;; Enable wrap-region for all buffers
-(wrap-region-global-mode t)
-
 ;; auto-complete
 (add-to-list 'ac-dictionary-directories
              (expand-file-name "~/.emacs.d/auto-complete/ac-dict"))
@@ -480,9 +477,6 @@
 (setq ac-use-quick-help t)
 (ac-set-trigger-key "TAB")
 (setq ac-auto-start 1)
-
-;; Auto save a list of visited files
-(turn-on-save-visited-files-mode)
 
 ;; Load markdown-mode for .text .markdown and .md files
 (add-to-list 'auto-mode-alist '("\\.text" . markdown-mode))
@@ -534,9 +528,6 @@
           (eq system-type 'darwin))
   (server-start))
 
-;; Treat CamelCaseWords as distinct words
-(global-subword-mode 1)
-
 ;; List ELPA packages with elpa command
 (defalias 'elpa 'package-list-packages)
 
@@ -552,3 +543,16 @@
 ;; completion in M-:
 (when (keymapp read-expression-map)
   (define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol))
+
+;; Only available in Emacs 23.2 and higher
+(when (or (> emacs-major-version 23)
+          (and (= emacs-major-version 23) (>= emacs-minor-version 2)))
+
+  ;; Enable wrap-region for all buffers
+  (wrap-region-global-mode t)
+
+  ;; Auto save a list of visited files
+  (turn-on-save-visited-files-mode)
+
+  ;; Treat CamelCaseWords as distinct words
+  (global-subword-mode 1))
