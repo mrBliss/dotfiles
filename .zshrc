@@ -5,14 +5,8 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 export ZSH_THEME="thomas"
 
-# Set to this to use case-sensitive completion
-# export CASE_SENSITIVE="true"
-
 # Comment this out to disable weekly auto-update checks
 export DISABLE_AUTO_UPDATE="true"
-
-# Uncomment following line if you want to disable colors in ls
-# export DISABLE_LS_COLORS="true"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -21,9 +15,10 @@ source $ZSH/oh-my-zsh.sh
 # Better support of Zsh in Emacs shell-mode
 [[ $EMACS = t ]] && unsetopt zle
 
-# Set Emacs as default editor
-export EDITOR="em"
-export ALTERNATE_EDITOR='emacs --daemon; emacsclient -t'
+# Use nano as default editor, since it's always present. In the
+# platform specific configuration files these variables will be
+# changed to the Emacs flavour present on that platform.
+export EDITOR="nano"
 
 # Load platform depedent options
 if [ -e /cygdrive ]; then

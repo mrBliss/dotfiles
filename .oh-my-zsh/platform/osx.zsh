@@ -1,8 +1,12 @@
 # Mac OS X specific options
 
-# Use cocoa Emacs
+# Use Cocoa Emacs
 alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs'
 alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
+
+# Use emacsclient in a terminal window or nano
+export EDITOR='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t -a ""'
+export ALTERNATE_EDITOR='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
 
 # Environment variables
 export M2_HOME=/usr/local/apache-maven-2.2.1

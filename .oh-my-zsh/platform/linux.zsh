@@ -1,5 +1,9 @@
 # Linux specific options
 
+# Use emacsclient
+export EDITOR='emacsclient -t -a ""'
+export ALTERNATE_EDITOR='emacs --daemon; emacsclient -t'
+
 # I don't like your Aptitude!
 alias apti='sudo aptitude install'
 alias aptrm='sudo aptitude remove'

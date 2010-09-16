@@ -529,8 +529,9 @@
 ;; Sometimes this is will be void and C-h k stops working
 (setq help-xref-following nil)
 
-;; Run a server on Windows
-(when (eq system-type 'windows-nt)
+;; Run a server on Windows and OS X, a daemon is started on Linux
+(when (or (eq system-type 'windows-nt)
+          (eq system-type 'darwin))
   (server-start))
 
 ;; Treat CamelCaseWords as distinct words

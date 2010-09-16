@@ -1,5 +1,9 @@
 # Cygwin specific options
 
+# Use emacsclient
+export EDITOR='emacsclient -t -a ""'
+export ALTERNATE_EDITOR='emacs --daemon; emacsclient -t'
+
 # Change colours
 echo -e "\e]P0000000"
 echo -e "\e]P1FF0000"
