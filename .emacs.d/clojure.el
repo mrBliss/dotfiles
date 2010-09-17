@@ -205,4 +205,18 @@
             (browse-url (concat "file://" path (car l)))
           (error (concat "Not found: " ci-name)))))))
 
+(defun durendal-dim-sldb-font-lock ()
+  "Dim irrelevant lines in Clojure debugger buffers."
+  (if (string-match "clojure" (buffer-name))
+      (font-lock-add-keywords
+       nil `((,(concat " [0-9]+: " (regexp-opt '("clojure.core"
+                                                 "clojure.lang"
+                                                 "swank." "java."))
+                       ;; TODO: regexes ending in .* are ignored by
+                       ;; font-lock; what gives?
+                       "[a-zA-Z0-9\\._$]*")
+              . font-lock-comment-face)) t)))
+
+(add-hook 'sldb-mode-hook 'durendal-dim-sldb-font-lock)
+
 (provide 'clojure)
