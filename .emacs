@@ -300,10 +300,12 @@
   (setq mode-name "el"))
 (add-hook 'emacs-lisp-mode-hook 'shorten-emacs-lisp-mode-name)
 
-;; Add MacPorts to path on OS X
+;; Add some folders to the PATH on OS X
 (when (eq system-type 'darwin)
-  (setenv "PATH" (concat (getenv "PATH") ":/opt/local/bin/"))
-  (setq exec-path (append exec-path '("/opt/local/bin/"))))
+  (setenv "PATH" (concat (getenv "PATH")
+                         ":/opt/local/bin/:/Users/Thomas/.cljr/bin"))
+  (setq exec-path (append exec-path
+                          '("/opt/local/bin/" "/Users/Thomas/.cljr/bin"))))
 
 ;; Saved by the bell -NOT!
 (setq ring-bell-function 'ignore)
