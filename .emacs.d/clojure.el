@@ -2,6 +2,7 @@
 
 ;; Load files
 (require 'clojure-mode)
+(require 'clojure-test-mode)
 (require 'slime)
 
 ;; Hide slime version mismatches

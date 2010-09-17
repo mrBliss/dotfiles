@@ -20,7 +20,7 @@
 (mapc (lambda (x) (add-to-list 'load-path
                           (expand-file-name (concat "~/.emacs.d/" x))))
       '("" "zencoding" "color-theme" "eproject" "coffee-mode"
-        "auto-complete"))
+        "auto-complete" "clojure-mode"))
 
 ;; Require some stuff
 (mapc #'require
