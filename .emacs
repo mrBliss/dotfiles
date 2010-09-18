@@ -33,6 +33,7 @@
         custom-themes
         cygwin
         dired+
+        dired-details
         dired-sort-map
         episode-renamer
         eproject

@@ -179,10 +179,12 @@
 (eval-after-load "js2-mode"
   '(define-key js2-mode-map (kbd "C-M-h") 'backward-kill-word))
 
-;; Move one directory up in Dired with r
-(eval-after-load "dired-mode"
-  '(define-key dired-mode-map (kbd "r")
-     (lambda () (interactive) (find-alternate-file ".."))))
+;; Move one directory up in Dired with r and toggle details with (
+(eval-after-load "dired"
+  '(progn
+     (define-key dired-mode-map (kbd "r")
+       (lambda () (interactive) (find-alternate-file "..")))
+     (define-key dired-mode-map (kbd "(") 'dired-details-toggle)))
 
 ;; C-z is only useful for emacs in a terminal window
 (when window-system (global-unset-key "\C-z"))
