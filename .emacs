@@ -507,11 +507,15 @@
       '(("freenode.net" "#clojure")))
 ;; Not my pals, but 'wise' guys or bots in #clojure
 (setq erc-pals '("LauJensen" "cemerick" "cgrand" "chouser" "clojurebot"
-                 "danlarkin" "dnolen" "fogus_" "rhickey" "sexpbot"
+                 "danlarkin" "dnolen" "fogus" "rhickey" "sexpbot"
                  "stuartsierra" "stuarthalloway" "technomancy"))
 (erc-spelling-mode 1)
-(setq erc-spelling-dictionaries '(("#clojure" "english")))
-(setq erc-server-reconnect-timeout 30)
+(setq erc-spelling-dictionaries '(("#clojure" "english"))
+      erc-server-reconnect-timeout 30
+      erc-smiley-mode t
+      erc-kill-buffer-on-part t
+      erc-kill-server-buffer-on-quit t)
+
 ;;(setq erc-server-send-ping-timeout nil)
 
 ;; Enable winner-mode
@@ -547,6 +551,9 @@
 (when (keymapp read-expression-map)
   (define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol))
 
+;; Always rescan the file before displaying imenu
+(setq imenu-auto-rescan t)
+
 ;; Only available in Emacs 23.2 and higher
 (when (or (> emacs-major-version 23)
           (and (= emacs-major-version 23) (>= emacs-minor-version 2)))
@@ -554,8 +561,12 @@
   ;; Enable wrap-region for all buffers
   (wrap-region-global-mode t)
 
+  ;; Also enable wrap-region for earmuffs
+  (wrap-region-add-punctuation "*" "*")
+
   ;; Auto save a list of visited files
   (turn-on-save-visited-files-mode)
 
   ;; Treat CamelCaseWords as distinct words
   (global-subword-mode 1))
+
