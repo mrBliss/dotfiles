@@ -94,5 +94,9 @@ define_key(default_global_keymap, "C-c f", "new-frame");
 //Unbind bookmark to b
 undefine_key(content_buffer_normal_keymap, "b");
 
+//Use C-M-h and C-M-k to kill a word (backwards)
+define_key(text_keymap, 'C-M-h', 'cmd_deleteWordBackward');
+define_key(text_keymap, 'C-M-k', 'cmd_deleteWordForward');
+
 //To check if this page was successfully loaded
 loaded_bindings = true;
