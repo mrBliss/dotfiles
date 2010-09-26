@@ -50,6 +50,7 @@
         pretty-lambdada
         recentf
         rainbow-mode
+        regex-tool
         save-visited-files
         saveplace
         scratch
