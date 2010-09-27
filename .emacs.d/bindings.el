@@ -160,7 +160,8 @@
   '(progn
      (define-key clojure-mode-map (kbd "C-c C-d j")
        'slime-browse-local-javadoc)
-     (define-key clojure-mode-map (kbd "C-c t") 'switch-to-tests-clojure)))
+     (define-key clojure-mode-map (kbd "C-c t") 'switch-to-tests-clojure)
+     (define-key clojure-mode-map (kbd "M-RET") 'close-matching)))
 
 ;; Look up a Java Class in the JDK Docs (local files) with C-c C-d j
 (eval-after-load "slime-repl"

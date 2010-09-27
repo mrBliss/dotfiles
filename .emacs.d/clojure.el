@@ -219,4 +219,24 @@
 
 (add-hook 'sldb-mode-hook 'durendal-dim-sldb-font-lock)
 
+
+
+(defvar close-matching-chars
+  '( (?( . ?))
+     (?[ . ?])
+     (?{ . ?})
+     (?< . >})
+     ))
+
+(defun close-matching ()
+  "Close with the most appropriate matching balanced character."
+  (interactive)
+  ;; Scan backwards until it stops.
+  (let ((c (save-excursion
+             (while (ignore-errors (forward-sexp -1) (not (<= (point) 1))))
+             (backward-char 1)
+             (string-to-char (thing-at-point 'char)))))
+    (insert-char (cdr (assoc c close-matching-chars)) 1)))
+
+
 (provide 'clojure)
