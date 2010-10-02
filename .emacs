@@ -516,7 +516,6 @@
       erc-smiley-mode t
       erc-kill-buffer-on-part t
       erc-kill-server-buffer-on-quit t)
-
 ;;(setq erc-server-send-ping-timeout nil)
 
 ;; Enable winner-mode
