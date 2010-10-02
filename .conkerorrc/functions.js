@@ -7,7 +7,7 @@ interactive("duplicate-buffer", "Duplicate buffer",
                 browser_object_follow(I.buffer, OPEN_NEW_BUFFER, I.buffer.current_uri.spec);
             });
 
-//Got the to root of a URL
+//Go to the root of a URL
 define_browser_object_class("root-url",
                             "Browser object which returns the root of a URL.",
                             function(I, prompt) {
@@ -51,6 +51,14 @@ interactive("new-frame",
             function (I) {
                 browser_object_follow(I.buffer, OPEN_NEW_WINDOW, "about:blank");
             });
+
+interactive("view-image", "View the image in a buffer",
+    function (I) {
+        var image = yield read_browser_object(I);
+        browser_object_follow(I.buffer, OPEN_NEW_BUFFER, image.src);
+    },
+    $browser_object = browser_object_images,
+    $prompt = "View image:");
 
 //Del.icio.us
 interactive("delicious-post",

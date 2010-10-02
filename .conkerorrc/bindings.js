@@ -23,6 +23,7 @@ loaded_bindings = false;
  * g = find-url
  * G = find-alternate-url
  * h = cmd_scrollLeft*
+ * I = view-image
  * j = cmd_scrollLineDown*
  * k = cmd_scrollLineUp*
  * l = cmd_scrollRight*
@@ -95,8 +96,11 @@ define_key(default_global_keymap, "C-c f", "new-frame");
 undefine_key(content_buffer_normal_keymap, "b");
 
 //Use C-M-h and C-M-k to kill a word (backwards)
-define_key(text_keymap, 'C-M-h', 'cmd_deleteWordBackward');
-define_key(text_keymap, 'C-M-k', 'cmd_deleteWordForward');
+define_key(text_keymap, "C-M-h", "cmd_deleteWordBackward");
+define_key(text_keymap, "C-M-k", "cmd_deleteWordForward");
+
+//View an image in a new buffer with I
+define_key(content_buffer_normal_keymap, "I", "view-image");
 
 //To check if this page was successfully loaded
 loaded_bindings = true;
