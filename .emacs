@@ -48,6 +48,7 @@
         nxml-mode
         php-mode
         pretty-lambdada
+        prolog
         recentf
         rainbow-mode
         regex-tool
@@ -72,7 +73,7 @@
 ;; Set font
 (case system-type
   ('windows-nt (set-default-font "Consolas-8"))
-  ('gnu/linux (set-default-font "Inconsolata-11"))
+  ('gnu/linux (set-default-font "Inconsolata-9"))
   ('darwin (set-default-font "Inconsolata-12")))
 
 ;; y/n instead of yes/no
@@ -547,12 +548,15 @@
 ;; Moves the mouse pointer to the corner of the screen when typing
 (mouse-avoidance-mode 'jump)
 
-;; completion in M-:
+;; Completion in M-:
 (when (keymapp read-expression-map)
   (define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol))
 
 ;; Always rescan the file before displaying imenu
 (setq imenu-auto-rescan t)
+
+;; Use SWI Prolog by default
+(setq prolog-system 'swi)
 
 ;; Only available in Emacs 23.2 and higher
 (when (or (> emacs-major-version 23)

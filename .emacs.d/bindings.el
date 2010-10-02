@@ -187,6 +187,11 @@
        (lambda () (interactive) (find-alternate-file "..")))
      (define-key dired-mode-map (kbd "(") 'dired-details-toggle)))
 
+;; Consult a file with C-c C-k in Prolog-mode
+(defun prolog-bindings ()
+  (define-key prolog-mode-map (kbd "C-c C-k") 'prolog-consult-file))
+(add-hook 'prolog-mode-hook 'prolog-bindings)
+
 ;; C-z is only useful for emacs in a terminal window
 (when window-system (global-unset-key "\C-z"))
 
