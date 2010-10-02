@@ -21,6 +21,9 @@ markkeys ^B=Y:^F=V:h=^B:l=^F:0=^A:$=^E
 # C-g and other keys quit copy mode
 markkeys \033=\015=^G=^D
 
+# Stop C-o C-g from toggling the bell style
+bind ^g
+
 # C-space sets mark.
 markkeys ' '=^@
 

@@ -57,6 +57,7 @@ alias space='find . -maxdepth 1 -mindepth 1 -print0  | xargs -0 -n1 du -ks | sor
 alias gitgui='git gui'
 alias gits='git status'
 alias gitll='git log -n2'
+alias gitpullorig='git pull origin master'
 
 # Start a nested screen session
 alias screenn='screen -m -c ~/.screenrc.nested'
