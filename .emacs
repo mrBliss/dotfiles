@@ -52,7 +52,6 @@
         recentf
         rainbow-mode
         regex-tool
-        save-visited-files
         saveplace
         scratch
         smart-tab
@@ -96,7 +95,7 @@
 (add-to-list 'kill-buffer-query-functions
              'prevent-killing-scratch)
 
-;; Enable deleting selections with del or ctrl-d
+;; Enable deleting selections with delete or ctrl-d
 (delete-selection-mode t)
 
 ;; Keep track of recent files
@@ -187,25 +186,30 @@
           (set-face-attribute 'flyspell-duplicate (selected-frame)
                               :underline t :bold t)))
 
-;; Only apply the color-theme when emacs is used with a window-system.
-;; On Linux, running emacsclient, we need the following snippet to do
-;; the same work.
-(cond ((eq system-type 'gnu/linux)
-       (progn
-         (add-hook 'after-make-frame-functions
-                   '(lambda (f)
-                      (with-selected-frame f
-                        (when (window-system f)
-                          (tool-bar-mode -1)
-                          (set-scroll-bar-mode nil)
-                          (color-theme-bespin)))))
-         (setq color-theme-is-global nil)))
-      ;;No emacsclient:
-      ((window-system)
-       (progn (color-theme-bespin)
-              (tool-bar-mode -1)
-              (set-scroll-bar-mode nil)))
-      (t (color-theme-blissterm)))
+;; Apply color-theme-bespin when emacs is used in a window-system,
+;; else apply color-theme-blissterm. In my Linux VM, running emacs
+;; daemon and emacsclient, we need the following snippet to do the
+;; same work.
+(cond
+ ;; In my Linux VM with emacsclient
+ ((and (eq system-type 'gnu/linux)
+       (string= user-login-name "thomas"))
+  (progn
+    (add-hook 'after-make-frame-functions
+              '(lambda (f)
+                 (with-selected-frame f
+                   (when (window-system f)
+                     (tool-bar-mode -1)
+                     (set-scroll-bar-mode nil)
+                     (color-theme-bespin)))))
+    (setq color-theme-is-global nil)))
+ ;; No emacsclient
+ ((window-system)
+  (progn (color-theme-bespin)
+         (tool-bar-mode -1)
+         (set-scroll-bar-mode nil)))
+ ;; In a terminal
+ (t (color-theme-blissterm)))
 
 ;; Cygwin as shell on Windows
 (if (eq system-type 'windows-nt)
@@ -286,14 +290,12 @@
 (add-hook 'kill-emacs-hook 'write-abbrev-file)
 
 ;; Autoclose successfull compilations
-(setq compilation-window-height 8)
 (setq compilation-finish-functions nil)
 
-;; Use undo-tree-mode
+;; Always use the cool undo-tree-mode
 (global-undo-tree-mode t)
 
-;; Increase kill ring size, save interprogram-pastes to kill ring,
-;; do not save duplicate kills
+;; Kill ring tweaks
 (setq kill-ring-max 1000
       save-interprogram-paste-before-kill t
       kill-do-not-save-duplicates t)
@@ -390,12 +392,12 @@
         (clojure-mode . slime-complete-symbol)
         (slime-repl-mode . slime-complete-symbol)))
 
-;; Make sure this is on
+;; C-p/C-n move the cursor one line down/up, even when lines are wrapped
 (setq line-move-visual t)
 
-;; Fill text to 74 chars in text-mode
+;; Fill text to 78 chars in text-mode
 (defun turn-on-fill-column ()
-  (setq fill-column 74))
+  (setq fill-column 78))
 (add-hook 'text-mode-hook 'turn-on-fill-column)
 
 ;; Make scripts executable on save
@@ -507,7 +509,7 @@
 (setq erc-nick "mrBliss")
 (setq erc-autojoin-channels-alist
       '(("freenode.net" "#clojure")))
-;; Not my pals, but 'wise' guys or bots in #clojure
+;; Not pals, but 'wise' guys or bots in #clojure
 (setq erc-pals '("LauJensen" "cemerick" "cgrand" "chouser" "clojurebot"
                  "danlarkin" "dnolen" "fogus" "rhickey" "sexpbot"
                  "stuartsierra" "stuarthalloway" "technomancy"))
@@ -557,6 +559,10 @@
 
 ;; Use SWI Prolog by default
 (setq prolog-system 'swi)
+
+;; Bloody save-visited-files doesn't load on Linux
+(when (not (eq system-type 'gnu/linux))
+  (require 'save-visited-files))
 
 ;; Only available in Emacs 23.2 and higher
 (when (or (> emacs-major-version 23)
