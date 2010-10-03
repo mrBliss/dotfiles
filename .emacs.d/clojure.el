@@ -153,27 +153,6 @@
                     (delete-process proc))))
           (message (concat "Running lein " task)))))))
 
-(defun switch-to-tests-clojure ()
-  "Switches to the corresponding unit test file or source file
-   according to the file in the current buffer. Source files should
-   be in (a subdirectory of) 'src' and unit test files should be in
-   (the same subdirectory under) 'test'. 'test' and 'src' should
-   both be in the project root. The filename of a unit test file
-   should be that of the source file with _test appended (ignoring
-   the extension.  E.g. Project/src/subfolder/file.clj
-   Project/test/subfolder/file_test.clj"
-  (interactive)
-  (let* ((bfn (buffer-file-name))
-         (bfnse (file-name-sans-extension bfn))
-         (f (if (string-match "_test$" bfnse)
-                (replace-in-string (replace-in-string bfn "_test" "")
-                                   "/test/" "/src/")
-              (replace-in-string (concat bfnse "_test.clj")
-                                 "/src/" "/test/"))))
-    (if (file-readable-p f)
-        (find-file f)
-      (message "Couldn't find %s" f))))
-
 ;; Location of the JDK docs
 (setq javadoc-root "d:/Documents/Java/JDK6-Docs")
 

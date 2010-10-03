@@ -45,5 +45,19 @@ register_user_stylesheet(
     make_css_data_uri(["div#p-personal{display:none !important;}"],
                       $url_prefixes = "http://en.wikipedia.org/"));
 
+//Remove crap from engadget.com
+register_user_stylesheet(
+    make_css_data_uri(["div#adslice-logo {display:none !important;}",
+                       "div#fb_container {display:none !important;}",
+                       "div#GH_ {display:none !important;}",
+                       "div#outerslice {display:none !important;}"],
+                      $url_prefixes = "http://www.engadget.com/"));
+
+//Remove Ads from Instapaper.com
+register_user_stylesheet(
+    make_css_data_uri(["div#bookmarkListDeckAdPlaceholder"
+                       + " {display: none !important;}"],
+                      $url_prefixes = "http://www.instapaper.com"));
+
 //To check if this page was successfully loaded
 loaded_userscripts = true;
