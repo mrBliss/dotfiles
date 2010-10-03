@@ -39,6 +39,7 @@
         eproject
         eproject-extras
         functions
+        goto-last-change
         htmlize
         ido
         imenu

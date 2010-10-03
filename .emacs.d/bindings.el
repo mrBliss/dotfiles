@@ -198,4 +198,7 @@
 ;; Insert a Unicode character with C-c u
 (global-set-key (kbd "C-c u") 'ucs-insert)
 
+;; Go to last change with C-c SPC
+(global-set-key (kbd "C-c SPC") 'goto-last-change)
+
 (provide 'bindings)
