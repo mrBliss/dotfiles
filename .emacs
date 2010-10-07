@@ -558,8 +558,9 @@
 ;; Always rescan the file before displaying imenu
 (setq imenu-auto-rescan t)
 
-;; Use SWI Prolog by default
+;; Use SWI Prolog by default and .pl files are prolog files
 (setq prolog-system 'swi)
+(add-to-list 'auto-mode-alist '("\\.pl" . prolog-mode))
 
 ;; Bloody save-visited-files doesn't load on Linux
 (when (not (eq system-type 'gnu/linux))
