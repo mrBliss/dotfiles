@@ -1,9 +1,8 @@
 # KULeuven specific options (ssh'ed into a linux workstation)
 
-# Only emacs 22.1.1, so no daemon/emacsclient
-alias em="emacs"
-export EDITOR="emacs"
-export ALTERNATE_EDITOR="nano"
+# Use emacsclient
+export EDITOR='emacsclient -t -a ""'
+export ALTERNATE_EDITOR='emacs --daemon; emacsclient -t'
 
 # Pull latest repository (linux vm only)
 alias gitpulllin='git pull ssh://thomas@dewinant.mine.nu/~ master'
