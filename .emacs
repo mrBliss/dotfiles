@@ -210,7 +210,7 @@
          (tool-bar-mode -1)
          (set-scroll-bar-mode nil)))
  ;; In a terminal
- (t (color-theme-blissterm)))
+ (t (color-theme-ir-black)))
 
 ;; Cygwin as shell on Windows
 (if (eq system-type 'windows-nt)
