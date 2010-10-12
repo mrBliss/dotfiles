@@ -178,14 +178,24 @@
 
 ;; Change flyspell faces
 (eval-after-load "flyspell"
-  '(progn (set-face-foreground 'flyspell-incorrect "#FA2573"
-                               (selected-frame))
-          (set-face-attribute 'flyspell-incorrect (selected-frame)
-                              :underline t :bold t)
-          (set-face-foreground 'flyspell-duplicate "#FF8844"
-                               (selected-frame))
-          (set-face-attribute 'flyspell-duplicate (selected-frame)
-                              :underline t :bold t)))
+  ;; The faces in my color-themes are ignored :-(
+  '(if window-system
+       (progn (set-face-foreground 'flyspell-incorrect "#FA2573"
+                                   (selected-frame))
+              (set-face-attribute 'flyspell-incorrect (selected-frame)
+                                  :underline t :bold t)
+              (set-face-foreground 'flyspell-duplicate "#FF8844"
+                                   (selected-frame))
+              (set-face-attribute 'flyspell-duplicate (selected-frame)
+                                  :underline t :bold t))
+     (progn (set-face-foreground 'flyspell-incorrect "#FFA560"
+                                   (selected-frame))
+              (set-face-attribute 'flyspell-incorrect (selected-frame)
+                                  :underline nil :bold nil)
+              (set-face-foreground 'flyspell-duplicate "#F1266F"
+                                   (selected-frame))
+              (set-face-attribute 'flyspell-duplicate (selected-frame)
+                                  :underline nil :bold nil))))
 
 ;; Apply color-theme-bespin when emacs is used in a window-system,
 ;; else apply color-theme-blissterm. In my Linux VM, running emacs
@@ -210,7 +220,7 @@
          (tool-bar-mode -1)
          (set-scroll-bar-mode nil)))
  ;; In a terminal
- (t (color-theme-blissterm)))
+ (t (color-theme-ir-black)))
 
 ;; Cygwin as shell on Windows
 (if (eq system-type 'windows-nt)
@@ -372,7 +382,7 @@
 ;;  Return from definition: M-,
 ;;  MACROS:
 ;;  Macro expand 1: C-c C-m
-;;  Macro expannd all: C-c M-m
+;;  Macro expand all: C-c M-m
 ;;  REPL:
 ;;  Set current package: C-c M-p
 ;;  Close parens and eval: M-RET
@@ -509,7 +519,8 @@
 ;; ERC preferences
 (setq erc-nick "mrBliss")
 (setq erc-autojoin-channels-alist
-      '(("freenode.net" "#clojure")))
+      '(("freenode.net" "#clojure")
+        ("blinkenshell.org" "#blinkenshell")))
 ;; Not pals, but 'wise' guys or bots in #clojure
 (setq erc-pals '("LauJensen" "cemerick" "cgrand" "chouser" "clojurebot"
                  "danlarkin" "dnolen" "fogus" "rhickey" "sexpbot"
@@ -518,8 +529,9 @@
 (setq erc-spelling-dictionaries '(("#clojure" "english"))
       erc-server-reconnect-timeout 30
       erc-smiley-mode t
-      erc-kill-buffer-on-part t
-      erc-kill-server-buffer-on-quit t)
+      erc-kill-buffer-on-part nil
+      erc-kill-server-buffer-on-quit t
+      erc-header-line-face-method t)
 ;;(setq erc-server-send-ping-timeout nil)
 
 ;; Enable winner-mode

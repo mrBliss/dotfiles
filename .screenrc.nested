@@ -36,7 +36,7 @@ markkeys ' '=^@
 activity "<%n>"
 
 # Always open Emacs and a standard zsh window
-screen -t Anna 0 zsh
+screen 0 zsh
 
 # Don't flash
 vbell off

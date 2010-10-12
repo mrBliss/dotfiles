@@ -58,7 +58,7 @@ the season currently displayed in the dired buffer"
   "Returns a list of the items in coll for which (pred item)
 returns true. pred must be free of side-effects."
   (cond ((null list) list)
-        ((apply pred (list (car list)))
+        ((funcall pred (car list))
          (cons (car list) (filter pred (cdr list))))
         (t (filter pred (cdr list)))))
 
