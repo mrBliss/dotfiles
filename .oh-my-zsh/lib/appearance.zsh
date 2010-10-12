@@ -1,7 +1,9 @@
+# Enable 256 colors
+export TERM=xterm-256color
+
 # ls colors
 autoload colors; colors;
 export LSCOLORS="Gxfxcxdxbxegedabagacad"
-#export LS_COLORS
 
 # Enable ls colors
 if [ "$DISABLE_LS_COLORS" != "true" ]

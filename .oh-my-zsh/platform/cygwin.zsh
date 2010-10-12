@@ -14,8 +14,8 @@ echo -e "\e]P5F92672"
 echo -e "\e]P666D9EF"
 echo -e "\e]P7F8F8F0"
 echo -e "\e]P875715E"
-echo -e "\e]P949483E"
-echo -e "\e]PaE6DB74"
+# echo -e "\e]P949483E"
+# echo -e "\e]PaE6DB74"
 
 # Keychain
 eval `keychain --eval --nogui -Q -q id_rsa`
