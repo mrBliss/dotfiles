@@ -509,7 +509,8 @@
 ;; ERC preferences
 (setq erc-nick "mrBliss")
 (setq erc-autojoin-channels-alist
-      '(("freenode.net" "#clojure")))
+      '(("freenode.net" "#clojure")
+        ("blinkenshell.org" "#blinkenshell")))
 ;; Not pals, but 'wise' guys or bots in #clojure
 (setq erc-pals '("LauJensen" "cemerick" "cgrand" "chouser" "clojurebot"
                  "danlarkin" "dnolen" "fogus" "rhickey" "sexpbot"
@@ -518,8 +519,9 @@
 (setq erc-spelling-dictionaries '(("#clojure" "english"))
       erc-server-reconnect-timeout 30
       erc-smiley-mode t
-      erc-kill-buffer-on-part t
-      erc-kill-server-buffer-on-quit t)
+      erc-kill-buffer-on-part nil
+      erc-kill-server-buffer-on-quit t
+      erc-header-line-face-method t)
 ;;(setq erc-server-send-ping-timeout nil)
 
 ;; Enable winner-mode

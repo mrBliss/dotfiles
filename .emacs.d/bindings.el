@@ -103,10 +103,6 @@
 ;; Maximize frame with C-c m
 (global-set-key (kbd "C-c m") 'maximize-frame)
 
-;; Use easier bindings for the most used commands
-(global-set-key (kbd "M-s") 'save-buffer)
-(global-set-key (kbd "M-o") 'ido-find-file)
-
 ;; Balance windows with C-c b
 (global-set-key (kbd "C-c b") 'balance-windows)
 
@@ -161,6 +157,10 @@
      (define-key clojure-mode-map (kbd "C-c C-d j")
        'slime-browse-local-javadoc)
      (define-key clojure-mode-map (kbd "C-c t") 'clojure-jump-to-test)
+     (define-key clojure-mode-map (kbd "M-s") 'paredit-splice-sexp)
+     (define-key clojure-mode-map (kbd "M-(") 'paredit-wrap-sexp)
+     (define-key clojure-mode-map (kbd "M-J") 'paredit-join-sexps)
+     (define-key clojure-mode-map (kbd "C-)") 'paredit-forward-slurp-sexp)
      (define-key clojure-mode-map (kbd "M-RET") 'close-all-matching)))
 
 ;; Look up a Java Class in the JDK Docs (local files) with C-c C-d j
