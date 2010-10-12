@@ -178,14 +178,24 @@
 
 ;; Change flyspell faces
 (eval-after-load "flyspell"
-  '(progn (set-face-foreground 'flyspell-incorrect "#FA2573"
-                               (selected-frame))
-          (set-face-attribute 'flyspell-incorrect (selected-frame)
-                              :underline t :bold t)
-          (set-face-foreground 'flyspell-duplicate "#FF8844"
-                               (selected-frame))
-          (set-face-attribute 'flyspell-duplicate (selected-frame)
-                              :underline t :bold t)))
+  ;; The faces in my color-themes are ignored :-(
+  '(if window-system
+       (progn (set-face-foreground 'flyspell-incorrect "#FA2573"
+                                   (selected-frame))
+              (set-face-attribute 'flyspell-incorrect (selected-frame)
+                                  :underline t :bold t)
+              (set-face-foreground 'flyspell-duplicate "#FF8844"
+                                   (selected-frame))
+              (set-face-attribute 'flyspell-duplicate (selected-frame)
+                                  :underline t :bold t))
+     (progn (set-face-foreground 'flyspell-incorrect "#FFA560"
+                                   (selected-frame))
+              (set-face-attribute 'flyspell-incorrect (selected-frame)
+                                  :underline nil :bold nil)
+              (set-face-foreground 'flyspell-duplicate "#F1266F"
+                                   (selected-frame))
+              (set-face-attribute 'flyspell-duplicate (selected-frame)
+                                  :underline nil :bold nil))))
 
 ;; Apply color-theme-bespin when emacs is used in a window-system,
 ;; else apply color-theme-blissterm. In my Linux VM, running emacs
@@ -372,7 +382,7 @@
 ;;  Return from definition: M-,
 ;;  MACROS:
 ;;  Macro expand 1: C-c C-m
-;;  Macro expannd all: C-c M-m
+;;  Macro expand all: C-c M-m
 ;;  REPL:
 ;;  Set current package: C-c M-p
 ;;  Close parens and eval: M-RET
