@@ -301,7 +301,7 @@ fewer than 80 columns."
   "Connect to the IRC servers and open some channels."
   (interactive)
   (let ((pwd (read-passwd "Password: ")))
-    (erc :server "irc.freenode.net" :port :nick "mrBliss" :password pwd)
+    (erc :server "irc.freenode.net" :port 6667 :nick "mrBliss" :password pwd)
     (erc-tls :server "irc.blinkenshell.org" :port 6697 :nick "mrBliss"
              :password pwd)))
 
