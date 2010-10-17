@@ -189,9 +189,8 @@
 
 ;; Consult a file with C-c C-k in Prolog-mode
 (defun prolog-bindings ()
-  '(progn
-     (define-key prolog-mode-map (kbd "C-c C-k") 'prolog-consult-file)
-     (define-key prolog-mode-map (kbd "C-M-h") 'backward-kill-word)))
+  (define-key prolog-mode-map (kbd "C-c C-k") 'prolog-consult-file)
+  (define-key prolog-mode-map (kbd "C-M-h") 'backward-kill-word))
 (add-hook 'prolog-mode-hook 'prolog-bindings)
 
 ;; C-z is only useful for emacs in a terminal window
