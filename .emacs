@@ -43,6 +43,7 @@
         htmlize
         ido
         imenu
+        latex-custom
         markdown-mode
         mic-paren
         minimap
@@ -330,7 +331,7 @@
 (setq tex-dvi-view-command
       '(cond ((eq window-system 'ns)
               "/Applications/Skim.app/Contents/MacOS/Skim")
-             ((eq window-system 'x) "xdvi")
+             ((eq window-system 'x) "evince")
              ((eq window-system 'w32) "yap")
              (t "dvi2tty * | cat -s")))
 
