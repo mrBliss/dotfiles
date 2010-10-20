@@ -43,7 +43,6 @@
         htmlize
         ido
         imenu
-        latex-custom
         markdown-mode
         mic-paren
         minimap
@@ -578,6 +577,10 @@
 ;; Bloody save-visited-files doesn't load on Linux
 (when (not (eq system-type 'gnu/linux))
   (require 'save-visited-files))
+
+;; Only using AUCTeX on Linux
+(when (eq system-type 'gnu/linux)
+  (require 'latex-custom))
 
 ;; Only available in Emacs 23.2 and higher
 (when (or (> emacs-major-version 23)
