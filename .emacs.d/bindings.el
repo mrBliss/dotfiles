@@ -193,6 +193,11 @@
   (define-key prolog-mode-map (kbd "C-M-h") 'backward-kill-word))
 (add-hook 'prolog-mode-hook 'prolog-bindings)
 
+;; java-mode rebinds C-M-h to something else than backward-kill-word
+(defun java-bindings ()
+  (define-key java-mode-map (kbd "C-M-h") 'backward-kill-word))
+(add-hook 'java-mode-hook 'java-bindings)
+
 ;; C-z is only useful for emacs in a terminal window
 (when window-system (global-unset-key "\C-z"))
 

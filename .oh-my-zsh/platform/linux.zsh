@@ -20,6 +20,9 @@ alias gitpullosx='git pull file:///mnt/dotfiles2/ master'
 # Put cljr on the PATH
 export PATH=~/.cljr/bin:$PATH
 
+# Put gems (Cake) on the PATH
+export PATH=~/.gem/ruby/1.8/bin:$PATH
+
 # Easy way to mount the OS X samba share on 192.168.1.9
 mnt_osx () {
     echo -n "Password for the OS X share: "
