@@ -169,7 +169,7 @@
 ;; Aspell
 (setq ispell-program-name
       (case system-type
-        ('darwin "/opt/local/bin/aspell")
+        ('darwin "/usr/local/bin/aspell")
         ('windows-nt "aspell")
         ('cygwin "aspell")
         ('gnu/linux "/usr/bin/aspell")))
@@ -319,9 +319,9 @@
 ;; Add some folders to the PATH on OS X
 (when (eq system-type 'darwin)
   (setenv "PATH" (concat (getenv "PATH")
-                         ":/opt/local/bin/:/Users/Thomas/.cljr/bin"))
+                         ":/usr/local/bin/:/Users/Thomas/.cljr/bin"))
   (setq exec-path (append exec-path
-                          '("/opt/local/bin/" "/Users/Thomas/.cljr/bin"))))
+                          '("/usr/local/bin/" "/Users/Thomas/.cljr/bin"))))
 
 ;; Saved by the bell -NOT!
 (setq ring-bell-function 'ignore)
