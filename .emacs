@@ -319,7 +319,7 @@
 ;; Add some folders to the PATH on OS X
 (when (eq system-type 'darwin)
   (setenv "PATH" (concat (getenv "PATH")
-                         ":/usr/local/bin/:/Users/Thomas/.cljr/bin"))
+                         ":/usr/local/bin/:/Users/Thomas/.cljr/bin:/usr/texbin/"))
   (setq exec-path (append exec-path
                           '("/usr/local/bin/" "/Users/Thomas/.cljr/bin"))))
 
@@ -578,8 +578,9 @@
 (when (not (eq system-type 'gnu/linux))
   (require 'save-visited-files))
 
-;; Only using AUCTeX on Linux
-(when (eq system-type 'gnu/linux)
+;; AUCTeX is only installed on Linux and Mac OS X
+(when (or (eq system-type 'gnu/linux)
+          (eq system-type 'darwin))
   (require 'latex-custom))
 
 ;; Only available in Emacs 23.2 and higher
