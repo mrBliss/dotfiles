@@ -723,6 +723,9 @@ created 2009-06-23."
      (erc-current-nick-face ((t (:foreground "#F1266F"))))
      (erc-my-nick-face ((t (:foreground "#A8937A" :italic t))))
      (erc-prompt-face ((t (:background nil :foreground "#F1266F"))))
+     (font-latex-warning-face ((t (:foreground "#F9EE98"))))
+     (font-latex-italic-face
+      ((t (:foreground "#BAAE9E" :italic t :underline nil))))
      (nxml-processing-instruction-delimiter-face ((t (:foreground "#0074e8"))))
      (nxml-tag-delimiter-face ((t (:foreground "#5EA6EA"))))
      (nxml-element-local-name-face ((t (:foreground "#0074e8"))))

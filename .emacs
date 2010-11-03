@@ -20,7 +20,7 @@
 (mapc (lambda (x) (add-to-list 'load-path
                           (expand-file-name (concat "~/.emacs.d/" x))))
       '("" "zencoding" "color-theme" "eproject" "coffee-mode"
-        "auto-complete" "clojure-mode"))
+        "auto-complete" "clojure-mode" "haskell-mode/haskell-site-file"))
 
 ;; Require some stuff
 (mapc #'require
@@ -581,6 +581,9 @@
 ;; Only using AUCTeX on Linux
 (when (eq system-type 'gnu/linux)
   (require 'latex-custom))
+
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
 ;; Only available in Emacs 23.2 and higher
 (when (or (> emacs-major-version 23)
