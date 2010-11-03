@@ -1,0 +1,27 @@
+(1
+ (clojure-mode .
+               [(1 8 0)
+                nil "Major mode for Clojure code" single])
+ (clojure-test-mode .
+		    [(1 5)
+		     ((slime
+		       (20100404.1))
+		      (clojure-mode
+		       (1 7)))
+		     "Minor mode for Clojure tests" single])
+ (durendal .
+          [(0 1)
+		     ((slime
+		       (20100404.1))
+		      (clojure-mode
+		       (1 8)))
+		     "Bucket of Clojure tricks" single])
+ (slime-repl .
+	     [(20100404)
+	      ((slime
+		(20100404.1)))
+	      "Read-Eval-Print Loop written in Emacs Lisp" single])
+ (slime .
+	[(20100404.1)
+	 nil "Superior Lisp Interaction Mode for Emacs" single]))
+

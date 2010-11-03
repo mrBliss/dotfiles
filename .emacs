@@ -79,6 +79,12 @@
 ;; y/n instead of yes/no
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;; Add technomancy's and tromey's repo to ELPA
+(add-to-list 'package-archives
+             '("technomancy" . "http://repo.technomancy.us/emacs/"))
+(add-to-list 'package-archives
+             '("elpa" . "http://tromey.com/elpa/"))
+
 ;; Better whitespace settings
 (setq whitespace-style
       '(trailing space-before-tab indentation space-after-tab)
@@ -189,13 +195,13 @@
               (set-face-attribute 'flyspell-duplicate (selected-frame)
                                   :underline t :bold t))
      (progn (set-face-foreground 'flyspell-incorrect "#FFA560"
-                                   (selected-frame))
-              (set-face-attribute 'flyspell-incorrect (selected-frame)
-                                  :underline nil :bold nil)
-              (set-face-foreground 'flyspell-duplicate "#F1266F"
-                                   (selected-frame))
-              (set-face-attribute 'flyspell-duplicate (selected-frame)
-                                  :underline nil :bold nil))))
+                                 (selected-frame))
+            (set-face-attribute 'flyspell-incorrect (selected-frame)
+                                :underline nil :bold nil)
+            (set-face-foreground 'flyspell-duplicate "#F1266F"
+                                 (selected-frame))
+            (set-face-attribute 'flyspell-duplicate (selected-frame)
+                                :underline nil :bold nil))))
 
 ;; Apply color-theme-bespin when emacs is used in a window-system,
 ;; else apply color-theme-blissterm. In my Linux VM, running emacs
