@@ -9,13 +9,8 @@ export EDITOR='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t -a ""'
 export ALTERNATE_EDITOR='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
 
 # Environment variables
-export M2_HOME=/usr/local/apache-maven-2.2.1
-export M2=$M2_HOME/bin
 export JAVA_HOME=/Library/Java/Home/
-export PATH=$PATH:$M2
-export PATH=/opt/local/sbin:$PATH
-export PATH=~/.cljr/bin:$PATH
-export MANPATH=/opt/local/share/man:$MANPATH
+export PATH=/usr/local/bin:/usr/local/sbin:~/.cljr/bin:$PATH
 
 # Git pull from other repositories
 alias gitpulllin='git pull ssh://thomas@lucy/~ master'
