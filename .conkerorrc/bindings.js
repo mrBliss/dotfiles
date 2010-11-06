@@ -25,7 +25,9 @@ loaded_bindings = false;
  * h = cmd_scrollLeft*
  * I = view-image
  * j = cmd_scrollLineDown*
+ * J = scrollDownMore*
  * k = cmd_scrollLineUp*
+ * K = scrollUpMore*
  * l = cmd_scrollRight*
  * m = browser-object-frames
  * c = copy
@@ -44,6 +46,10 @@ define_key(content_buffer_normal_keymap, "j", "cmd_scrollLineDown");
 define_key(content_buffer_normal_keymap, "k", "cmd_scrollLineUp");
 define_key(content_buffer_normal_keymap, "h", "cmd_scrollLeft");
 define_key(content_buffer_normal_keymap, "l", "cmd_scrollRight");
+
+//J/K is scroll down/up 10 lines
+define_key(content_buffer_normal_keymap, "J", "scrollDownMore");
+define_key(content_buffer_normal_keymap, "K", "scrollUpMore");
 
 //C-x f is the same as C-x C-f
 define_key(default_global_keymap, "C-x f", "find-url-new-buffer");

@@ -52,6 +52,7 @@ interactive("new-frame",
                 browser_object_follow(I.buffer, OPEN_NEW_WINDOW, "about:blank");
             });
 
+//Opens a new buffer with the selected image
 interactive("view-image", "View the image in a buffer",
     function (I) {
         var image = yield read_browser_object(I);
@@ -59,6 +60,20 @@ interactive("view-image", "View the image in a buffer",
     },
     $browser_object = browser_object_images,
     $prompt = "View image:");
+
+interactive("scrollDownMore",
+            "Scroll down more than one line, less than a page",
+            function (I) {
+                for (var i = 1; i <= 10; i++)
+                call_builtin_command(I.window, "cmd_scrollLineDown");
+            });
+
+interactive("scrollUpMore",
+            "Scroll up more than one line, less than a page",
+            function (I) {
+                for (var i = 1; i <= 10; i++)
+                call_builtin_command(I.window, "cmd_scrollLineUp");
+            });
 
 //Del.icio.us
 interactive("delicious-post",
