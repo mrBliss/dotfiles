@@ -4,6 +4,10 @@
 (load "auctex.el" nil t t)
 (load "preview-latex.el" nil t t)
 
+;; Use flymake with chktex
+(defun flymake-get-tex-args (file-name)
+     (list "chktex" (list "-q" "-v0" file-name)))
+
 ;; Enable Document parsing
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
@@ -13,10 +17,6 @@
 
 ;; Use PDF mode by default
 (setq TeX-PDF-mode t)
-
-;; Use flymake with chktex
-(defun flymake-get-tex-args (file-name)
-  (list "chktex" (list "-q" "-v0" file-name)))
 
 ;; ;; On Mac OS X?
 ;; (defun flymake-get-tex-args (file-name)

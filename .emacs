@@ -38,6 +38,7 @@
         episode-renamer
         eproject
         eproject-extras
+        flymake
         flymake-cursor
         functions
         goto-last-change
@@ -601,6 +602,7 @@
           (eq system-type 'darwin))
   (require 'latex-custom))
 
+;; Haskell-mode
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
