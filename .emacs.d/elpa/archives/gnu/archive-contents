@@ -9,7 +9,7 @@
        [(3 20)
 	nil "Authoring and publishing tool" tar])
  (org .
-      [(20101103)
+      [(20101101)
        nil "Outline-based notes management and organizer" tar])
  (js2-mode .
 	   [(20090814)

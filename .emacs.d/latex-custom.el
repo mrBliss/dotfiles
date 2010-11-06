@@ -1,9 +1,5 @@
 ;; LaTeX and AUCTeX settings
 
-;; Activate AUCTeX
-(load "auctex.el" nil t t)
-(load "preview-latex.el" nil t t)
-
 ;; Use flymake with chktex
 (defun flymake-get-tex-args (file-name)
      (list "chktex" (list "-q" "-v0" file-name)))
@@ -17,12 +13,6 @@
 
 ;; Use PDF mode by default
 (setq TeX-PDF-mode t)
-
-;; ;; On Mac OS X?
-;; (defun flymake-get-tex-args (file-name)
-;;   (list "pdflatex"
-;;         (list "-file-line-error" "-draftmode"
-;;               "-interaction=nonstopmode" file-name)))
 
 ;; Enable TeX-fold-mode
 (defun latex-hook ()
