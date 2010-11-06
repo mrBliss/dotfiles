@@ -42,8 +42,6 @@
 (eval-after-load "clojure-mode"
   '(progn
      (add-hook 'clojure-mode-hook 'highlight-80+-mode)
-     (define-key clojure-mode-map (kbd "C-j")
-       'slime-eval-print-last-expression)
      (whitespace-mode 1)))
 (tweak-clojure-syntax 'clojure-mode)
 
@@ -152,37 +150,6 @@
                     (set-process-filter proc nil)
                     (delete-process proc))))
           (message (concat "Running lein " task)))))))
-
-;; Location of the JDK docs
-(setq javadoc-root "d:/Documents/Java/JDK6-Docs")
-
-(defun slime-browse-local-javadoc (ci-name)
-  "Browse local JavaDoc documentation on Java class/Interface at point."
-  (interactive (list (slime-read-symbol-name "Class/Interface name: ")))
-  (when (not ci-name)
-    (error "No name given"))
-  (let ((name (replace-regexp-in-string "\\$" "." ci-name))
-        (path (concat (expand-file-name javadoc-root)
-                      "/api/")))
-    (with-temp-buffer
-      (insert-file-contents (concat path "allclasses-noframe.html"))
-      (let ((l
-             (delq nil
-                   (mapcar #'(lambda (rgx)
-                               (let* ((r (concat "\\.?\\(" rgx
-                                                 "[^./]+\\)[^.]*\\.?$"))
-                                      (n (if (string-match r name)
-                                             (match-string 1 name)
-                                           name)))
-                                 (if (re-search-forward
-                                      (concat "<A HREF=\"\\(.+\\)\" +.*>" n
-                                              "<.*/A>") nil t)
-                                     (match-string 1)
-                                   nil)))
-                           '("[^.]+\\." "")))))
-        (if l
-            (browse-url (concat "file://" path (car l)))
-          (error (concat "Not found: " ci-name)))))))
 
 (defun durendal-dim-sldb-font-lock ()
   "Dim irrelevant lines in Clojure debugger buffers."

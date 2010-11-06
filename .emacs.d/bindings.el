@@ -140,7 +140,7 @@
 ;; C-x M-k kills the buffer in the other window
 (global-set-key (kbd "C-x M-k") 'kill-buffer-in-other-window)
 
-;; Slime-selector with C-c s
+;; Switch to the scratch buffer with C-c s
 (global-set-key (kbd "C-c s")
                 (lambda () (interactive) (switch-to-buffer "*scratch*")))
 
@@ -150,23 +150,19 @@
 ;; Use C-j not only for *scratch* but for all elisp buffers
 (define-key emacs-lisp-mode-map (kbd "C-j") 'eval-print-last-sexp)
 
-;; Switch between source and test file with C-c t in clojure-mode
-;; Look up a Java Class in the JDK Docs (local files) with C-c C-d j
+;; Look up a Java Class in the JDK Docs with C-c C-d j
+(global-set-key (kbd "C-c C-d j") 'javadoc-lookup)
+
+;; Extra bindings for clojure-mode
 (eval-after-load "clojure-mode"
   '(progn
-     (define-key clojure-mode-map (kbd "C-c C-d j")
-       'slime-browse-local-javadoc)
      (define-key clojure-mode-map (kbd "C-c t") 'clojure-jump-to-test)
+     (define-key clojure-mode-map (kbd "C-j") 'slime-eval-print-last-expression)
      (define-key clojure-mode-map (kbd "M-s") 'paredit-splice-sexp)
      (define-key clojure-mode-map (kbd "M-(") 'paredit-wrap-sexp)
      (define-key clojure-mode-map (kbd "M-J") 'paredit-join-sexps)
      (define-key clojure-mode-map (kbd "C-)") 'paredit-forward-slurp-sexp)
      (define-key clojure-mode-map (kbd "M-RET") 'close-all-matching)))
-
-;; Look up a Java Class in the JDK Docs (local files) with C-c C-d j
-(eval-after-load "slime-repl"
-  '(define-key slime-repl-mode-map (kbd "C-c C-d j")
-     'slime-browse-local-javadoc))
 
 ;; Expanding in zencoding is triggered with M-RET
 (eval-after-load "zencoding-mode"

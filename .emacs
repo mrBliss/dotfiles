@@ -38,11 +38,13 @@
         episode-renamer
         eproject
         eproject-extras
+        flymake-cursor
         functions
         goto-last-change
         htmlize
         ido
         imenu
+        javadoc-help
         markdown-mode
         mic-paren
         minimap
@@ -465,6 +467,12 @@
   (look-for ".project")
   :relevant-files ("\\.java"))
 
+;; Latex eproject
+(define-project-type latex (generic)
+  (look-for "_region_.tex")
+  :relevant-files ("\\.tex")
+  :irrelevant-files ("auto" "_region_.tex"))
+
 ;; Use Conkeror on linux
 (when (eq system-type 'gnu/linux)
   (setq browse-url-browser-function 'browse-url-generic
@@ -579,6 +587,10 @@
 ;; Use SWI Prolog by default and .pl files are prolog files
 (setq prolog-system 'swi)
 (add-to-list 'auto-mode-alist '("\\.pl" . prolog-mode))
+
+;; Use javadoc
+(javadoc-set-predefined-urls
+ '("http://download.oracle.com/javase/6/docs/api"))
 
 ;; Bloody save-visited-files doesn't load on Linux
 (when (not (eq system-type 'gnu/linux))
