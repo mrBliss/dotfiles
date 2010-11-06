@@ -32,6 +32,8 @@ define_webjump("dict", "http://www.google.com/dictionary?q=%s&hl=en&langpair=en|
                $description = "Look up a word in Google's dictionary");
 define_webjump("elbow", "http://elbo.ws/mp3s/?q=%s",
                $description = "Search for MP3s on Elbo.ws");
+define_webjump("emw", "http://www.google.com/cse?cx=004774160799092323420%3A6-ff2s0o6yi&q=%s&sa=Search&siteurl=www.emacswiki.org%2F",
+               $description = "Search on the Emacs Wiki");
 define_webjump("g", "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8&aq=t",
                $description = "Google Search");
 define_webjump("idiom", "http://www.idiomdictionary.com/search.php?search=%s",
@@ -58,8 +60,6 @@ define_webjump("wolf", "http://www.wolframalpha.com/input/?i=%s",
                $description = "Calculate something with WolframAlpha");
 
 add_delicious_webjumps("dewinant");
-
-
 
 //Add missing descriptions
 webjumps['conkerorwiki'].description = "Search the Conkeror Wiki";

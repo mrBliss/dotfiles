@@ -99,7 +99,7 @@ define_key(default_global_keymap, "C-x l",
 define_key(default_global_keymap, "C-c f", "new-frame");
 
 //Also bind b to back 
-define_key(default_global_keymap, "b", "back");
+define_key(content_buffer_normal_keymap, "b", "back");
 
 //Use C-M-h and C-M-k to kill a word (backwards)
 define_key(text_keymap, "C-M-h", "cmd_deleteWordBackward");
