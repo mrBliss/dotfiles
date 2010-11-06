@@ -100,17 +100,6 @@ Symbols matching the text at point are put first in the completion list."
   (interactive)
   (insert (format-time-string "%d-%m-%Y")))
 
-(defun zap-back-to-char (arg char)
-  "No need to enter C-- to zap back."
-  (interactive "p\ncZap back to char: ")
-  (zap-to-char (- arg) char))
-
-(defadvice zap-to-char (after dont-zap-char (arg char))
-  "Doesn't include the char - zaps to the char before it (like vim)."
-  (insert char)
-  (backward-char))
-(ad-activate 'zap-to-char)
-
 (defun kill-line-backwards ()
   "Removes everything between the start of the line and the point"
   (interactive)

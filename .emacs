@@ -38,6 +38,7 @@
         episode-renamer
         eproject
         eproject-extras
+        fastnav
         flymake
         flymake-cursor
         functions

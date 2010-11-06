@@ -22,8 +22,11 @@
 ;; C-M-b doesn't work on OS X, so use C-M-g
 (global-set-key (kbd "C-M-g") 'backward-sexp)
 
-;; The dual version of zap-to-char
-(global-set-key (kbd "C-M-z") 'zap-back-to-char)
+;; FastNav
+(global-set-key (kbd "M-z") 'zap-up-to-char-forward)
+(global-set-key (kbd "C-M-z") 'zap-up-to-char-backward)
+(global-set-key (kbd "M-s") 'jump-to-char-forward)
+(global-set-key (kbd "M-S") 'jump-to-char-backward)
 
 ;; The reverse of C-k
 (global-set-key (kbd "M-k") 'kill-line-backwards)
@@ -176,11 +179,13 @@
 (eval-after-load "js2-mode"
   '(define-key js2-mode-map (kbd "C-M-h") 'backward-kill-word))
 
-;; Move one directory up in Dired with r and toggle details with (
+;; Move one directory up in Dired with r, toggle details with ( and
+;; start wdired-change-to-wdired-mode with C-c C-e
 (eval-after-load "dired"
   '(progn
      (define-key dired-mode-map (kbd "r")
-       (lambda () (interactive) (find-alternate-file "..")))
+       (lambda () (interactive) (find-alternate-file "../")))
+     (define-key dired-mode-map (kbd "C-c C-e") 'wdired-change-to-wdired-mode)
      (define-key dired-mode-map (kbd "(") 'dired-details-toggle)))
 
 ;; Consult a file with C-c C-k in Prolog-mode
