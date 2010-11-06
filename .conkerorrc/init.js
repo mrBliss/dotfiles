@@ -11,10 +11,14 @@ require("page-modes/wikipedia.js");
 //Homepage
 homepage = "http://www.google.be";
 
+//Correct the path on Windows
 if (get_os() == "WINNT" && cwd.path.indexOf("Roaming") < 0) {
     cwd.append("AppData");
     cwd.append("Roaming");
 }
+
+//Use the home row as base for the hint numbers
+hint_digits = "jklmqsdf";
 
 //Complete new urls with history
 url_completion_use_history = true;
