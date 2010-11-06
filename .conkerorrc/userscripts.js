@@ -37,7 +37,7 @@ let (github_font = "Inconsolata, monospace !important") {
             "div#browser table td {font: 12px " + github_font + ";}",
             "div.file div.meta div.info {font-family: " + github_font + ";}",
             "table#toc td.path a {font-family: " + github_font + ";}"],
-            $url_prefixes = "http://github.com/"));
+            $url_prefixes = "https://github.com/"));
 };
 
 //Tweak wikipedia

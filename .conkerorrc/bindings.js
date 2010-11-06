@@ -32,7 +32,7 @@ loaded_bindings = false;
  * m = browser-object-frames
  * c = copy
  * v = view-as-mime-type
- * b = bookmark
+ * b = back*
  * B = back
  * n = browser-object-links
  */
@@ -98,8 +98,8 @@ define_key(default_global_keymap, "C-x l",
 //Open a new frame with C-c f
 define_key(default_global_keymap, "C-c f", "new-frame");
 
-//Unbind bookmark to b
-undefine_key(content_buffer_normal_keymap, "b");
+//Also bind b to back 
+define_key(default_global_keymap, "b", "back");
 
 //Use C-M-h and C-M-k to kill a word (backwards)
 define_key(text_keymap, "C-M-h", "cmd_deleteWordBackward");
