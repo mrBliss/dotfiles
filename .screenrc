@@ -16,10 +16,44 @@ defutf8 on
 escape ^oo
 
 # Emacs movement keys in copy mode
-markkeys ^B=Y:^F=V:h=^B:l=^F:0=^A:$=^E
 
 # C-g and other keys quit copy mode
-markkeys \033=\015=^G=^D
+# markkeys \033=\015=^G=^D
+
+# C-a and C-e for start/end of line
+markkeys "0=^a:\$=^e"
+
+# Special hack for C-e, since it should go *past* the last char. -m
+# means this is for copy mode only.
+bindkey -m ^e stuff "$^f"
+
+# C-z and C-v for page up/down (C-z is just used as a destination for
+#  the M-v binding below)
+markkeys "^b=^z:^f=^v"
+
+# Update the page up/down key binding for the new keys
+bindkey -m -k kN stuff "^v"
+bindkey -m -k kP stuff "^z"
+
+# M-v link to the C-z for page down
+bindkey -m "^[v" stuff "^z"
+
+# M-< and M-> for start/end of buffer
+bindkey -m "^[<" stuff "g"
+bindkey -m "^[>" stuff "G"
+
+# C-p and C-n for up/down single line
+markkeys "j=^n:k=^p"
+
+# C-b and C-f for back/forward single char
+markkeys "h=^b:l=^f"
+
+# M-b and M-f for back/forward a word at a time
+bindkey -m "^[f" stuff "e"
+bindkey -m "^[b" stuff "b"
+
+# Start/end marking with C-space
+markkeys " =^ "
 
 # Stop C-o C-g from toggling the bell style
 bind ^g
