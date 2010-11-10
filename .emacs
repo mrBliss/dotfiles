@@ -73,6 +73,8 @@
 ;; Other customizations
 (setq transient-mark-mode '(only . t))
 (show-paren-mode t)
+(tooltip-mode -1)
+(setq tooltip-use-echo-area t)
 
 ;; Set font
 (case system-type

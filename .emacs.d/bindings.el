@@ -194,6 +194,12 @@
   (define-key prolog-mode-map (kbd "C-M-h") 'backward-kill-word))
 (add-hook 'prolog-mode-hook 'prolog-bindings)
 
+;; Add bindings to disable tracing and debugging in a Prolog REPL
+(defun prolog-repl-bindings ()
+  (define-key prolog-inferior-mode-map (kbd "C-c M-d") 'prolog-debug-off)
+  (define-key prolog-inferior-mode-map (kbd "C-c M-t") 'prolog-trace-off))
+(add-hook 'prolog-inferior-mode-hook 'prolog-bindings)
+
 ;; java-mode rebinds C-M-h to something else than backward-kill-word
 (defun java-bindings ()
   (define-key java-mode-map (kbd "C-M-h") 'backward-kill-word))
