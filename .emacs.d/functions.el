@@ -294,4 +294,16 @@ fewer than 80 columns."
     (erc-tls :server "irc.blinkenshell.org" :port 6697 :nick "mrBliss"
              :password pwd)))
 
+(defun isearch-forward-regexp-other-window ()
+  (interactive)
+  (save-selected-window
+    (other-window 1)
+    (isearch-forward-regexp)))
+
+(defun isearch-backward-regexp-other-window ()
+  (interactive)
+  (save-selected-window
+    (other-window 1)
+    (isearch-backward-regexp)))
+
 (provide 'functions)

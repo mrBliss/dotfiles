@@ -123,6 +123,10 @@
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
 
+;; Isearch in the other window
+(global-set-key (kbd "C-M-s") 'isearch-forward-regexp-other-window)
+(global-set-key (kbd "C-M-r") 'isearch-backward-regexp-other-window)
+
 ;; Transpose lines with M-T, shorter than C-x C-t
 (global-set-key (kbd "M-T") 'transpose-paragraphs)
 
@@ -198,7 +202,15 @@
 (defun prolog-repl-bindings ()
   (define-key prolog-inferior-mode-map (kbd "C-c M-d") 'prolog-debug-off)
   (define-key prolog-inferior-mode-map (kbd "C-c M-t") 'prolog-trace-off))
-(add-hook 'prolog-inferior-mode-hook 'prolog-bindings)
+(add-hook 'prolog-inferior-mode-hook 'prolog-repl-bindings)
+
+;; Use C-c C-k to load Haskell files
+(defun haskell-bindings ()
+  (define-key haskell-mode-map (kbd "C-c C-k")
+    (lambda () (interactive)
+      (inferior-haskell-load-file)
+      (switch-to-haskell))))
+(add-hook 'haskell-mode-hook 'haskell-bindings)
 
 ;; java-mode rebinds C-M-h to something else than backward-kill-word
 (defun java-bindings ()

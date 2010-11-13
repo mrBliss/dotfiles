@@ -686,7 +686,7 @@ created 2009-06-23."
      (font-lock-string-face ((t (:foreground "#00920A"))))
      (font-lock-function-name-face ((t (:foreground "#A8937A" :italic t))))
      (font-lock-keyword-face ((t (:foreground "#0074e8"))))
-     (font-lock-type-face ((t (:underline t :foreground "#89BDFF"))))
+     (font-lock-type-face ((t (:foreground "#89BDFF"))))
      (font-lock-variable-name-face ((t (:foreground "#7587A6" :bold t))))
      (font-lock-warning-face ((t (:bold t :foreground "#F9EE98"))))
      (comint-highlight-prompt ((t (:foreground "#5EA6EA"))))
