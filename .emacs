@@ -20,7 +20,7 @@
 (mapc (lambda (x) (add-to-list 'load-path
                           (expand-file-name (concat "~/.emacs.d/" x))))
       '("" "zencoding" "color-theme" "eproject" "coffee-mode"
-        "auto-complete" "clojure-mode" "haskell-mode/haskell-site-file"))
+        "auto-complete" "clojure-mode" "haskell-mode"))
 
 ;; Require some stuff
 (mapc #'require
@@ -41,6 +41,7 @@
         fastnav
         flymake
         flymake-cursor
+        flymake-haskell
         functions
         goto-last-change
         htmlize
@@ -221,10 +222,12 @@
     (add-hook 'after-make-frame-functions
               '(lambda (f)
                  (with-selected-frame f
-                   (when (window-system f)
-                     (tool-bar-mode -1)
-                     (set-scroll-bar-mode nil)
-                     (color-theme-bespin)))))
+                   (if (window-system f)
+                       (progn
+                         (tool-bar-mode -1)
+                         (set-scroll-bar-mode nil)
+                         (color-theme-bespin))
+                     (color-theme-ir-black)))))
     (setq color-theme-is-global nil)))
  ;; No emacsclient
  ((window-system)
@@ -606,6 +609,7 @@
   (require 'latex-custom))
 
 ;; Haskell-mode
+(load "~/.emacs.d/haskell-mode/haskell-site-file.el")
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
