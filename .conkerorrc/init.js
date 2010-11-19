@@ -1,3 +1,4 @@
+
 //To check if this page was successfully loaded
 loaded_init = false;
 
@@ -80,6 +81,9 @@ add_hook("before_quit_hook",
 
 //Default webjump
 read_url_handler_list = [read_url_make_default_webjump_handler("g")];
+
+//Don't change the title (in the title bar)
+title_format_fn = function(window) {return "conkeror";};
 
 //To check if this page was successfully loaded
 loaded_init = true;

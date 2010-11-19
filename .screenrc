@@ -1,10 +1,10 @@
 startup_message off
 
 # Status line
-hardstatus alwayslastline "%{.kW}%-w%{.mW}%n %t%{-}%+w %=%{..c} %H %{..g} %d/%m/%y %c "
+hardstatus alwayslastline "%{=} %-w%{+b c}%n*%t%{-b m}%{w}%+w %= %{b}%H %{= G} %D %d %M %c "
 
 # Use zsh instead of bash
-shell -zsh
+shell zsh
 
 # More than 100 lines scrollback please
 defscrollback 10000
@@ -69,3 +69,6 @@ screen 0 zsh
 
 # Don't flash
 vbell off
+
+# Shift PgUp/PgDn scrolling
+termcapinfo rxvt-unicode ti@:te@

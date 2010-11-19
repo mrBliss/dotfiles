@@ -3,12 +3,12 @@ if [ "${TERM}" = "dumb" ];
 then
     unsetopt zle
     unsetopt prompt_cr
-    unsetopt prompt_substr
+    unsetopt prompt_subst
     PS1='$ '
 else
     # Enable 256 colors
     export TERM=xterm-256color
-
+    
     # ls colors
     autoload colors; colors;
     export LSCOLORS="Gxfxcxdxbxegedabagacad"

@@ -25,7 +25,7 @@ alias cd/='cd /'
 
 # Directory creation and deletion
 alias md='mkdir -p'
-alias rd=rmdir
+alias rd='rmdir'
 alias rmr='rm -r'
 alias rmrf='rm -rf'
 
@@ -42,7 +42,7 @@ alias lujar='lein uberjar'
 
 # Emacs
 alias em='emacsclient -t -a ""'
-alias emg='emacsclient -c -a ""'
+alias emg='emacsclient -cn -a ""'
 alias emsudo='sudo emacs -nw -q'
 
 # Make things safer with these aliases
@@ -63,6 +63,9 @@ alias gitpullorig='git pull origin master'
 
 # Start a nested screen session
 alias screenn='screen -m -c ~/.screenrc.nested'
+alias scr='screen'
+alias scrr='screen -R'
+alias scrrf='screen -dRR'
 
 # Corrections
 setopt correct_all
