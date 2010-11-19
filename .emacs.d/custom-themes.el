@@ -542,6 +542,7 @@ created 2009-06-23."
          (erc-header-line ((t (:underline nil))))
          (flyspell-duplicate ((t (:underline nil :foreground ,*cursor*))))
          (flyspell-incorrect ((t (:underline nil :foreground ,*red*))))
+         (comint-highlight-prompt ,(color *builtin*))
          (diredp-dir-heading ,(color *builtin* *background*))
          (diredp-inode+size ,(color *method*))
          (diredp-file-name ,(color *keyword*))

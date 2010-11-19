@@ -612,6 +612,8 @@
 (load "~/.emacs.d/haskell-mode/haskell-site-file.el")
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+;; Pretty unicode symbols
+(setq haskell-font-lock-symbols t)
 
 ;; Only available in Emacs 23.2 and higher
 (when (or (> emacs-major-version 23)
