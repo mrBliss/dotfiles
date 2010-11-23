@@ -7,6 +7,7 @@ require("new-tabs.js");
 require("session.js");
 require("content-buffer.js");
 require("page-modes/google-images.js");
+require("page-modes/google-reader.js");
 require("page-modes/wikipedia.js");
 
 //Homepage

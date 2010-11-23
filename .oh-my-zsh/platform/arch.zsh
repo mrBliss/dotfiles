@@ -4,7 +4,7 @@
 fortune chucknorris futurama himym tbbt | cowsay
 
 # Keychain (for SSH keys)
-eval `keychain --eval -q --agents ssh id_dsa`
+eval `keychain --eval -q --agents ssh id_rsa`
 
 # Use emacsclient
 export EDITOR='emacsclient -t -a ""'
