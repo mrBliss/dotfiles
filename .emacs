@@ -74,7 +74,6 @@
 ;; Other customizations
 (setq transient-mark-mode '(only . t))
 (show-paren-mode t)
-(tooltip-mode -1)
 (setq tooltip-use-echo-area t)
 
 ;; Set font
@@ -236,16 +235,6 @@
          (set-scroll-bar-mode nil)))
  ;; In a terminal
  (t (color-theme-ir-black)))
-
-;; Cygwin as shell on Windows
-(if (eq system-type 'windows-nt)
-    (require 'cygwin))
-
-;; Mac: use Cmd as Meta and Option as modifier key
-(when (eq system-type 'darwin)
-  (setq mac-command-modifier 'meta)
-  (setq ns-alternate-modifier ' none)
-  (setq ns-command-modifier ' meta))
 
 ;; Allow shell colors
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
@@ -449,16 +438,6 @@
 ;; Delete to trash
 (setq delete-by-moving-to-trash t)
 
-;; Kill to the clipboard on Linux
-(when (eq system-type 'gnu/linux)
-  (setq x-select-enable-clipboard t))
-
-;; Default method for tramp should be ssh or plink on cygwin
-(if (or (eq system-type 'windows-nt)
-        (eq system-type 'cygwin))
-    (setq tramp-default-method "plink")
-  (setq tramp-default-method "ssh"))
-
 ;; Clojure eprojects
 (define-project-type clojure (generic)
   (look-for "project.clj")
@@ -479,11 +458,6 @@
   (look-for "_region_.tex")
   :relevant-files ("\\.tex")
   :irrelevant-files ("auto" "_region_.tex"))
-
-;; Use Conkeror on linux
-(when (eq system-type 'gnu/linux)
-  (setq browse-url-browser-function 'browse-url-generic
-        browse-url-generic-program "/usr/bin/conkeror"))
 
 ;; Autoload scheme-mode for ds (devilspie) files
 (add-to-list 'auto-mode-alist '("\\ds$" . scheme-mode))
@@ -522,10 +496,8 @@
 (add-to-list 'auto-mode-alist '("\\.markdown" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md" . markdown-mode))
 
-;; Run a script to suppress locale errors on cygwin
-(when (or (eq system-type 'windows-nt)
-          (eq system-type 'cygwin))
-  (setq markdown-command "/usr/local/bin/run_markdown"))
+;; Markdown command
+(setq markdown-command "/usr/local/bin/run_markdown")
 
 ;; Make shells scripts executable
 (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
@@ -553,7 +525,6 @@
       erc-kill-buffer-on-part nil
       erc-kill-server-buffer-on-quit t
       erc-header-line-face-method t)
-;;(setq erc-server-send-ping-timeout nil)
 
 ;; Enable winner-mode
 (winner-mode 1)
@@ -564,13 +535,8 @@
 ;; Weeks start on Mondays
 (setq calendar-week-start-day 1)
 
-;; Sometimes this is will be void and C-h k stops working
+;; Sometimes this is void and C-h k stops working
 (setq help-xref-following nil)
-
-;; Run a server on Windows and OS X, a daemon is started on Linux
-(when (or (eq system-type 'windows-nt)
-          (eq system-type 'darwin))
-  (server-start))
 
 ;; List ELPA packages with elpa command
 (defalias 'elpa 'package-list-packages)
@@ -599,21 +565,57 @@
 (javadoc-set-predefined-urls
  '("http://download.oracle.com/javase/6/docs/api"))
 
-;; Bloody save-visited-files doesn't load on Linux
-(when (not (eq system-type 'gnu/linux))
-  (require 'save-visited-files))
-
-;; AUCTeX is only installed on Linux and Mac OS X
-(when (or (eq system-type 'gnu/linux)
-          (eq system-type 'darwin))
-  (require 'latex-custom))
-
 ;; Haskell-mode
 (load "~/.emacs.d/haskell-mode/haskell-site-file.el")
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 ;; Pretty unicode symbols
 (setq haskell-font-lock-symbols t)
+
+
+;;; Platform or version dependent sutff
+
+;; Cygwin as shell on Windows
+(when (eq system-type 'windows-nt)
+  (require 'cygwin))
+
+;; Default method for tramp should be ssh or plink on cygwin
+(if (or (eq system-type 'windows-nt)
+        (eq system-type 'cygwin))
+    (setq tramp-default-method "plink")
+  (setq tramp-default-method "ssh"))
+
+;; Disabling this on cygwin gives an error
+(when (not (eq system-type 'cygwin))
+  (tooltip-mode -1))
+
+;; Mac: use Cmd as Meta and Option as modifier key
+(when (eq system-type 'darwin)
+  (setq mac-command-modifier 'meta)
+  (setq ns-alternate-modifier 'none)
+  (setq ns-command-modifier 'meta))
+
+;; Linux specific
+(when (eq system-type 'gnu/linux)
+  ;; Kill to the clipboard on Linux
+  (setq x-select-enable-clipboard t)
+  ;; Use Conkeror on linux
+  (setq browse-url-browser-function 'browse-url-generic
+        browse-url-generic-program "/usr/bin/conkeror"))
+
+;; Bloody save-visited-files doesn't load on Linux
+(when (not (eq system-type 'gnu/linux))
+  (require 'save-visited-files))
+
+;; Run a server on Windows and OS X, a daemon is started on Linux
+(when (or (eq system-type 'windows-nt)
+          (eq system-type 'darwin))
+  (server-start))
+
+;; AUCTeX is only installed on Linux and Mac OS X
+(when (or (eq system-type 'gnu/linux)
+          (eq system-type 'darwin))
+  (require 'latex-custom))
 
 ;; Only available in Emacs 23.2 and higher
 (when (or (> emacs-major-version 23)
