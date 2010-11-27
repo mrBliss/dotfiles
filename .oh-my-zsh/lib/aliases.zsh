@@ -42,7 +42,7 @@ alias lujar='lein uberjar'
 
 # Emacs
 alias em='emacsclient -t -a ""'
-alias emg='emacsclient -cn -a ""'
+alias emg='emacsclient -c -n -a ""'
 alias emsudo='sudo emacs -nw -q'
 
 # Make things safer with these aliases

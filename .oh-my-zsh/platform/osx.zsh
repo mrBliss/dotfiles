@@ -6,7 +6,7 @@ alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
 
 # Use emacsclient in a terminal window or nano
 export EDITOR='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t -a ""'
-export ALTERNATE_EDITOR='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
+export ALTERNATE_EDITOR='/Applications/Emacs.app/Contents/MacOS/bin/emacs --daemon; emacsclient -t'
 
 # Environment variables
 export JAVA_HOME=/Library/Java/Home/

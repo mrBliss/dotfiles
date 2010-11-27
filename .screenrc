@@ -1,7 +1,7 @@
 startup_message off
 
 # Status line
-hardstatus alwayslastline "%{=} %-w%{+b c}%n*%t%{-b m}%{w}%+w %= %{b}%H %{= G} %D %d %M %c "
+hardstatus alwayslastline "%{=} %-w%{+b c}%n*%t%{-b m}%{w}%+w %= %{b}%H %{= G} %D %d %M %c   "
 
 # Use zsh instead of bash
 shell zsh

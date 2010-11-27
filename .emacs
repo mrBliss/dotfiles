@@ -76,12 +76,6 @@
 (show-paren-mode t)
 (setq tooltip-use-echo-area t)
 
-;; Set font
-(case system-type
-  ('windows-nt (set-default-font "Consolas-8"))
-  ('gnu/linux (set-default-font "Inconsolata-9"))
-  ('darwin (set-default-font "Inconsolata-12")))
-
 ;; y/n instead of yes/no
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -209,32 +203,25 @@
             (set-face-attribute 'flyspell-duplicate (selected-frame)
                                 :underline nil :bold nil))))
 
-;; Apply color-theme-bespin when emacs is used in a window-system,
-;; else apply color-theme-blissterm. In my Linux VM, running emacs
-;; daemon and emacsclient, we need the following snippet to do the
-;; same work.
-(cond
- ;; In my Linux VM with emacsclient
- ((and (eq system-type 'gnu/linux)
-       (string= user-login-name "thomas"))
-  (progn
-    (add-hook 'after-make-frame-functions
-              '(lambda (f)
-                 (with-selected-frame f
-                   (if (window-system f)
-                       (progn
-                         (tool-bar-mode -1)
-                         (set-scroll-bar-mode nil)
-                         (color-theme-bespin))
-                     (color-theme-ir-black)))))
-    (setq color-theme-is-global nil)))
- ;; No emacsclient
- ((window-system)
-  (progn (color-theme-bespin)
-         (tool-bar-mode -1)
-         (set-scroll-bar-mode nil)))
- ;; In a terminal
- (t (color-theme-ir-black)))
+;; Not global, because terminal and graphical windows have different
+;; themes.
+(setq color-theme-is-global nil)
+
+(defun appearance (f)
+  "Applies the color-theme (ir-black in a terminal or bespin in a
+   GUI. Disables the scroll and tool bar. Also sets the font."
+  (with-selected-frame f
+    (if (window-system f)
+        (progn 
+          (case system-type
+            ('windows-nt (set-default-font "Consolas-8"))
+            ('gnu/linux (set-default-font "Inconsolata-9"))
+            ('darwin (set-default-font "Inconsolata-12")))
+          (tool-bar-mode -1)
+          (set-scroll-bar-mode nil)
+          (color-theme-bespin))
+      (color-theme-ir-black))))
+(add-hook 'after-make-frame-functions 'appearance)
 
 ;; Allow shell colors
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
