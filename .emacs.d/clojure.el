@@ -22,6 +22,8 @@
             (("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 'font-lock-warning-face t))
             (("(\\(fn\\>\\)" 0 (progn (compose-region (match-beginning 1)
                                                       (match-end 1) "ƒ") nil)))
+            (("(\\(complement\\>\\)" 0 (progn (compose-region (match-beginning 1)
+                                                      (match-end 1) "¬") nil)))
             (("^[a-zA-Z0-9-.*+!_?]+?>" . 'slime-repl-prompt-face)))))
 
 ;; Slime

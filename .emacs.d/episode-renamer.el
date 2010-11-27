@@ -34,7 +34,7 @@
 
 (defun get-tvdbid-and-season-and-lang ()
   "Returns of list containing the tvdb, season and language for
-the season currently displayed in the dired buffer"
+the season currently displayed in the dired buffer."
   (let* ((season (progn  (string-match "Season \\([0-9]+\\)"
                                        (dired-current-directory))
                          (match-string 1 (dired-current-directory))))
@@ -68,69 +68,47 @@ coll, else nil."
   (when (not (null coll))
     (or (apply pred (list (car coll))) (some pred (cdr coll)))))
 
+(defun filter-files (exts files)
+  "Filters out the files having an extension that is listed in exts."
+  (let ((ends-with-exts (mapcar (lambda (e) (concat e "$")) exts)))
+    (filter (lambda (f) (some (lambda (ext) (string-match ext f)) ends-with-exts)) files)))
+
+(defun repeat-nil (n)
+  "Returns a list of n nils."
+  (when (> n 0) (cons nil (repeat-nil (- n 1)))))
+
 (defun rename-episodes ()
   (interactive)
-  (let* ((vid-exts (mapcar (lambda (e) (concat e "$"))
-                           '("avi" "mkv" "mp4" "wmv" "flv" "divx" "mpg")))
-         (sub-exts (mapcar (lambda (e) (concat e "$")) '("srt" "sub")))
-         (cd (dired-current-directory))
+  (let* ((cd (dired-current-directory))
          (files (directory-files cd))
-         (vids (filter
-                (lambda (f) (some (lambda (ext) (string-match ext f)) vid-exts))
-                files))
-         (subs (filter
-                (lambda (f) (some (lambda (ext) (string-match ext f)) sub-exts))
-                files)))
-    (if (or (null subs)
-            (= (length vids) (length subs)))
+         (vids (filter-files '("avi" "mkv" "mp4" "wmv" "flv" "divx") files))
+         (subs (filter-files '("srt") files)))
+    (if (or (null subs) (= (length vids) (length subs)))
         (destructuring-bind (tvdbid season lang)
             (get-tvdbid-and-season-and-lang)
           (message "Downloading episode titles from TheTVDB...")
-          (let ((episode-titles
-                 (butlast
-                  (split-string
-                   (shell-command-to-string
-                    (concat "/usr/local/bin/episodetitles "
-                            tvdbid " " season " " lang))
-                   "\n"))))
+          (let* ((output (shell-command-to-string
+                         (format "/usr/local/bin/episodetitles %s %s %s"
+                                 tvdbid season lang)))
+                (episode-titles (butlast (split-string output "\n"))))
             (if (= (length vids) (length episode-titles))
                 (progn
-                  (dolist (x (mapcar* 'list vids subs episode-titles))
+                  (dolist (x (mapcar* 'list vids
+                                      (or subs (repeat-nil (length vids)))
+                                      episode-titles))
                     (rename-file
                      (concat cd (first x))
                      (concat cd (third x) "." (file-name-extension (first x))))
-                    (rename-file
-                     (concat cd (second x))
-                     (concat cd (third x) "." (file-name-extension (second x)))))
+                    (when (second x)
+                      (rename-file
+                       (concat cd (second x))
+                       (concat cd (third x) "."
+                               (file-name-extension (second x))))))
                   (message "Successfully renamed %d files" (length vids))
                   (revert-buffer))
               (message "Number of files (%d) does not match number of episodes (%d)"
                        (length vids) (length episode-titles)))))
       (message "Number of files (%d) does not match number of subtitles (%d)"
                (length vids) (length subs)))))
-
-;; Unnecessary function, but I couldn't just delete it ;-)
-(defun get-tvshow-tvdbid ()
-  "Prompts for TV Show and extracts its tvdbid from tvshow.nfo in
-the TV Show folder"
-  (interactive)
-  (flet ((list-tv-shows
-          (dir) (delete ".."
-                        (delete "folder.jpg"
-                                (delete "." (directory-files dir))))))
-    (let* ((tv-shows (nconc (list-tv-shows "d:/TV Shows/")
-                            (list-tv-shows "i:/TV Shows/")))
-           (tv-show (ido-completing-read "TV Show? " tv-shows))
-           (dnfo (concat "d:/TV Shows/" tv-show "/tvshow.nfo"))
-           (info (concat "i:/TV Shows/" tv-show "/tvshow.nfo"))
-           (nfo (cond ((file-readable-p dnfo) dnfo)
-                      ((file-readable-p info) info))))
-      (if nfo
-          (let* ((tvdbid-line (shell-command-to-string
-                               (concat "egrep '<tvdbid>([0-9]+)</tvdbid>' '"
-                                       nfo "'"))))
-            (string-match "[0-9]+" tvdbid-line)
-            (message (match-string 0 tvdbid-line)))
-        (message "tvshow.nfo not found for %s" tv-show)))))
 
 (provide 'episode-renamer)
