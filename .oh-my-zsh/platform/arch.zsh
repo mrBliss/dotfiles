@@ -35,11 +35,19 @@ aur () {
 # Nice ls alternative
 alias lls='~/bin/lls'
 
+# Seriously ncmpcpp?
+alias nc=ncmpcpp
+
 # Put /usr/local/bin on the PATH
 export PATH=/usr/local/bin:$PATH
 
 # Put cljr on the PATH
 export PATH=~/.cljr/bin:$PATH
 
-# Put gems (Cake) on the PATH
-# export PATH=~/.gem/ruby/1.8/bin:$PATH
+# Maven
+export MAVEN_OPTS=-Xmx512m
+export M2_HOME=/opt/maven
+export PATH=$PATH:$M2_HOME/bin
+
+# Man with colors
+export MANPAGER=most
