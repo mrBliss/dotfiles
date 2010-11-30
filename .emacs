@@ -62,6 +62,7 @@
         scratch
         smart-tab
         smex
+        swop-helpers
         tramp
         typing-speed
         uniquify

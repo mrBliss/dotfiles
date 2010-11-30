@@ -33,7 +33,7 @@
 ;;
 
 (defun get-tvdbid-and-season-and-lang ()
-  "Returns of list containing the tvdb, season and language for
+  "Returns a list containing the tvdb, season and language for
 the season currently displayed in the dired buffer."
   (let* ((season (progn  (string-match "Season \\([0-9]+\\)"
                                        (dired-current-directory))
