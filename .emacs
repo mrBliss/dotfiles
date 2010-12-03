@@ -468,8 +468,8 @@
 
 ;; Add custom colors to (ansi-)term
 (setq ansi-term-color-vector
-      [unspecified "#000000" "#FF0000" "#A6E32D" "#FC951E" "#C48DFF" "#FA2573"
-                   "#67D9F0" "#F2F2F2"])
+      [unspecified "#000000" "#FF0000" "#A6E22E" "#FD971F" "#0074e8" "#F92672"
+                   "#66D9EF" "#F8F8F0"])
 
 ;; auto-complete
 (add-to-list 'ac-dictionary-directories

@@ -1,7 +1,10 @@
 # Linux specific options
 
 # Welcome message
-fortune chucknorris futurama himym tbbt | cowsay
+fortune chucknorris futurama himym tbbt | cowsay -f flaming-sheep
+
+# Needed for ssh (ProxyCommand)
+export SHELL=/bin/zsh
 
 # Keychain (for SSH keys)
 eval `keychain --eval -q --agents ssh id_rsa`
