@@ -213,7 +213,7 @@
    GUI. Disables the scroll and tool bar. Also sets the font."
   (with-selected-frame f
     (if (window-system f)
-        (progn 
+        (progn
           (case system-type
             ('windows-nt (set-default-font "Consolas-8"))
             ('gnu/linux (set-default-font "Inconsolata-9"))
@@ -269,11 +269,9 @@
 
 ;; Put auto save files in one folder
 (setq backup-directory-alist
-      `((".*" . ,temporary-file-directory))
+      `(("." . "~/auto-saves/"))
       tramp-backup-directory-alist
-      `((".*" . ,temporary-file-directory))
-      auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
+      `(("." . "~/auto-saves/")))
 
 ;; Set frame title
 (setq-default
