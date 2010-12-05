@@ -5,14 +5,14 @@ HISTSIZE=1000000
 HISTCONTROL="ignoredups"
 SAVEHIST=1000000
 
-setopt no_histbeep
-setopt histignoredups
-setopt histfindnodups
-setopt histreduceblanks
-setopt histnostore
-setopt incappendhistory
-setopt histverify
+unsetopt hist_beep
+setopt hist_ignore_dups
+setopt hist_find_no_dups
+setopt hist_reduce_blanks
+setopt hist_no_store
+setopt hist_save_by_copy
+setopt inc_append_history
+setopt hist_verify
 setopt share_history
+setopt hist_fcntl_lock
 
-setopt SHARE_HISTORY
-setopt APPEND_HISTORY

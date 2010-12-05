@@ -27,6 +27,9 @@ alias pacsl='pacman-color -Qs'
 # Use pacman-color for yaourt
 export PACMAN=pacman-color
 
+# yrt = yaourt
+alias yrt='yaourt'
+
 # fetch a AUR package
 # pass the package name without .tar.gz as argument
 aur () {
@@ -52,5 +55,12 @@ export MAVEN_OPTS=-Xmx512m
 export M2_HOME=/opt/maven
 export PATH=$PATH:$M2_HOME/bin
 
+# Ant
+export ANT_HOME=/usr/share/java/apache-ant
+export PATH=$PATH:$ANT_HOME/bin
+
 # Man with colors
 export MANPAGER=most
+
+# StartX
+alias x='startx'

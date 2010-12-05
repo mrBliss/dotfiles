@@ -22,9 +22,7 @@ else
     fi
 
     setopt no_beep
-    setopt auto_cd
     setopt multios
-    setopt cdablevars
 
     if [[ x$WINDOW != x ]]
     then

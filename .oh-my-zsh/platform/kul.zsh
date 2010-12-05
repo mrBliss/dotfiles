@@ -26,3 +26,9 @@ nx () {
 
 # Run Visual Paradigm
 alias vispara=/localhost/packages/visual_paradigm/VP_Suite5.0/bin/Visual_Paradigm_for_UML_8.0
+
+# Kill emacs and remove server file in /tmp
+killem () {
+    killall emacs
+    rm -rf /tmp/emacs*
+}

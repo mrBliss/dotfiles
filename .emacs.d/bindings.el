@@ -7,8 +7,8 @@
 (global-set-key (kbd "C-x O") (lambda () (interactive) (other-window -1)))
 
 ;; Swap windows
-(global-set-key (kbd "C-c x") 'swap-windows)
-(global-set-key (kbd "C-c X") 'swap-windows-with-cursor)
+(global-set-key (kbd "C-c X") 'swap-windows)
+(global-set-key (kbd "C-c x") 'swap-windows-with-cursor)
 
 ;; Ido binds
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file)
@@ -165,7 +165,6 @@
   '(progn
      (define-key clojure-mode-map (kbd "C-c t") 'clojure-jump-to-test)
      (define-key clojure-mode-map (kbd "C-j") 'slime-eval-print-last-expression)
-     (define-key clojure-mode-map (kbd "M-s") 'paredit-splice-sexp)
      (define-key clojure-mode-map (kbd "M-(") 'paredit-wrap-sexp)
      (define-key clojure-mode-map (kbd "M-J") 'paredit-join-sexps)
      (define-key clojure-mode-map (kbd "C-)") 'paredit-forward-slurp-sexp)
