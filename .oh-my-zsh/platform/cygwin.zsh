@@ -31,5 +31,8 @@ alias gitpulllin='git pull ssh://thomas@lucy/~ master'
 alias gitpullwin='git pull file:///cygdrive/c/Users/Thomas/AppData/Roaming master'
 alias gitpullcyg='git pull file:///home/Thomas/ master'
 
-# Shorthand for cd'ing into AppData
+# Shorthand for cd'ing to the 'other' ~
 alias cdapp='cd /cygdrive/c/Users/Thomas/AppData/Roaming/'
+
+# Shorthand for cd'ing to the desktop
+alias cddesk='cd /cygdrive/c/Users/Thomas/Desktop/'
