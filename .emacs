@@ -547,6 +547,9 @@
 (setq prolog-system 'swi)
 (add-to-list 'auto-mode-alist '("\\.pl" . prolog-mode))
 
+;; Enable mercury-mode for .m files 
+(add-to-list 'auto-mode-alist '("\\.m" . mercury-mode))
+
 ;; Use javadoc
 (javadoc-set-predefined-urls
  '("http://download.oracle.com/javase/6/docs/api"))

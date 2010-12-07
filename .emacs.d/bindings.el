@@ -191,9 +191,17 @@
      (define-key dired-mode-map (kbd "C-c C-e") 'wdired-change-to-wdired-mode)
      (define-key dired-mode-map (kbd "(") 'dired-details-toggle)))
 
-;; Consult a file with C-c C-k in Prolog-mode
+;; Consult a file with C-c C-k in Prolog-mode. Compile the current
+;; file with C-c C-k in Mercury-mode and run it with C-c RET
 (defun prolog-bindings ()
-  (define-key prolog-mode-map (kbd "C-c C-k") 'prolog-consult-file)
+  (define-key prolog-mode-map (kbd "C-c C-k")
+    (lambda () (interactive) (if (eq prolog-system 'mercury)
+                            (mercury-compile)
+                          (prolog-consult-file))))
+  (define-key prolog-mode-map (kbd "C-c RET")
+    (lambda () (interactive) (if (eq prolog-system 'mercury)
+                            (mercury-run)
+                          (run-prolog))))
   (define-key prolog-mode-map (kbd "C-M-h") 'backward-kill-word))
 (add-hook 'prolog-mode-hook 'prolog-bindings)
 

@@ -8,7 +8,7 @@ then
 else
     # Enable 256 colors
     export TERM=xterm-256color
-    
+
     # ls colors
     autoload colors; colors;
     export LSCOLORS="Gxfxcxdxbxegedabagacad"
@@ -45,5 +45,11 @@ else
     setopt prompt_subst
     # Load the theme
     source "$ZSH/themes/$ZSH_THEME.zsh-theme"
+
+    # Don't display the RPROMPT in Emacs (ansi-term)
+    if [ "$EMACS" != '' ];
+    then
+        RPROMPT=''
+    fi
 
 fi

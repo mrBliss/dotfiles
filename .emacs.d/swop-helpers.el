@@ -60,7 +60,7 @@ Verslag dinsdag 2010-11-30
 (add-hook 'swop-project-file-visit-hook
           (lambda ()
             (ignore-errors
-              (define-key (current-local-map) (kbd "C-c C-t") 'swop-insert-todo)
-              (define-key (current-local-map) (kbd "C-c C-l") 'swop-insert-log-header))))
+              (local-set-key (kbd "C-c C-t") 'swop-insert-todo)
+              (local-set-key (kbd "C-c C-l") 'swop-insert-log-header))))
 
 (provide 'swop-helpers)
