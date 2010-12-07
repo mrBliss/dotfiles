@@ -269,9 +269,9 @@
 
 ;; Put auto save files in one folder
 (setq backup-directory-alist
-      `(("." . "~/auto-saves/"))
+      `(("." . "~/.auto-saves/"))
       tramp-backup-directory-alist
-      `(("." . "~/auto-saves/")))
+      `(("." . "~/.auto-saves/")))
 
 ;; Set frame title
 (setq-default
