@@ -1,12 +1,15 @@
 # Mac OS X specific options
 
+# Needed for ssh (ProxyCommand)
+export SHELL=/bin/zsh
+
 # Use Cocoa Emacs
 alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs'
 alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
 
 # Use emacsclient in a terminal window or nano
 export EDITOR='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t -a ""'
-export ALTERNATE_EDITOR='/Applications/Emacs.app/Contents/MacOS/bin/emacs --daemon; emacsclient -t'
+export ALTERNATE_EDITOR='/Applications/Emacs.app/Contents/MacOS/Emacs --daemon; emacsclient -t'
 
 # Environment variables
 export JAVA_HOME=/Library/Java/Home/
@@ -44,3 +47,6 @@ mnt_win () {
             mount_smbfs //Thomas:$password@192.168.1.3/dotfiles /Volumes/dotfiles
         fi
     }
+
+# Man with colors
+export MANPAGER=most
