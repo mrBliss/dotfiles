@@ -306,4 +306,22 @@ fewer than 80 columns."
     (other-window 1)
     (isearch-backward-regexp)))
 
+(defun undo-kill-buffer ()
+  "Re-open the last buffer killed."
+  (interactive)
+  (let ((dont-restore (mapcar 'expand-file-name
+                              '("~/.emacs.d/emacs-visited-files" "~/.ido.last"
+                                "~/.emacs.d/abbrev_defs" "~/.javadoc-help")))
+        (recently-killed-list (copy-sequence recentf-list))
+        (buffer-files-list
+         (delq nil (mapcar (lambda (buf)
+                             (when (buffer-file-name buf)
+                               (expand-file-name (buffer-file-name buf))))
+                           (buffer-list)))))
+    (mapc (lambda (buf-file)
+            (setq recently-killed-list (delq buf-file recently-killed-list)))
+          buffer-files-list)
+    (find-file (car (member-if-not (lambda (x) (member x dont-restore))
+                                   recently-killed-list)))))
+
 (provide 'functions)

@@ -233,4 +233,8 @@
 ;; Go to last change with C-c SPC
 (global-set-key (kbd "C-c SPC") 'goto-last-change)
 
+;; Undo the last kill-buffer with C-x C-z
+(global-set-key (kbd "C-x C-z") 'undo-kill-buffer)
+
+
 (provide 'bindings)
