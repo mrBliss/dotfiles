@@ -49,6 +49,7 @@
         imenu
         javadoc-help
         markdown-mode
+        mercury-tools
         mic-paren
         minimap
         nxml-mode
@@ -559,7 +560,7 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 ;; Pretty unicode symbols
-(setq haskell-font-lock-symbols t)
+;;(setq haskell-font-lock-symbols t)
 
 
 ;;; Platform or version dependent sutff

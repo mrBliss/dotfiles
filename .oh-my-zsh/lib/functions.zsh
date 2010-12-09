@@ -112,3 +112,9 @@ map() {
     argv[1]=""
     echo $@ | xargs --no-run-if-empty --max-args=1 ${=f}
 }
+
+# Kill emacs and remove server file in /tmp
+killem () {
+    killall emacs
+    rm -rf /tmp/emacs*
+}

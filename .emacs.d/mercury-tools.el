@@ -5,13 +5,16 @@
 ;; Keywords: mercury, prolog, run, compile, compilation
 ;;
 
+(defvar mmc-path "/localhost/packages/prolog/mercury/mercury-yes.linux/bin/mmc")
+
 (defun mercury-compile ()
   "Compiles the .m file visited by the current buffer with
    mmc (Mercury Compiler). Jumps to the line with the compilation
    error, if any."
   (interactive)
-  (let ((compilation-buffer "*mercury-compilation*"))
-    (shell-command (format "mmc %s" (buffer-file-name))
+  (let ((compilation-buffer "*mercury-compilation*")
+        (mmc (or mmc-path "mmc")))
+    (shell-command (format "%s %s" mmc (buffer-file-name))
                    compilation-buffer)
     (let ((compilation-output
            (save-excursion (switch-to-buffer compilation-buffer)
@@ -47,10 +50,18 @@
         (term-send-input))
     (message "Not a Mercury file.")))
 
-
-
-
-
-
+(defun mercury-clean  ()
+  "Removes all the junk mmc (Mercury Compiler) spits out after
+   compiling a file."
+  (interactive)
+  (let ((sans-ext (file-name-sans-extension (buffer-file-name)))
+        (files-deleted 0))
+    (dolist (suf '("" ".c" ".c_date" ".d" "_init.c" "_init.o" ".mh" ".o")
+                 files-deleted)
+      (let ((file (concat sans-ext suf)))
+        (when (file-exists-p file)
+          (delete-file file)
+          (setq files-deleted (1+ files-deleted)))))
+    (message (format "%d junk files deleted." files-deleted))))
 
 (provide 'mercury-tools)
