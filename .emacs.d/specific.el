@@ -3,7 +3,7 @@
 ;; Cygwin as shell on Windows
 (when (or (eq system-type 'cygwin)
           (eq system-type 'windows-nt))
-  (require 'cygwin-custom))
+  (require 'custom-cygwin))
 
 ;; Default method for tramp should be ssh or plink on cygwin
 (if (or (eq system-type 'windows-nt)
