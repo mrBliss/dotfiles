@@ -59,17 +59,20 @@
 (require 'custom-appearance)
 (require 'custom-bindings)
 (require 'custom-coding)
-(require 'custom-clojure)
 (require 'custom-completion)
 (require 'custom-defuns)
 (require 'custom-dired)
 (require 'custom-editing)
 (require 'custom-erc)
+(require 'custom-misc)
+(require 'custom-shell)
+
+(require 'custom-clojure)
+(require 'custom-haskell)
 (require 'custom-latex)
 (require 'custom-lisp)
 (require 'custom-mercury)
-(require 'custom-misc)
-(require 'custom-shell)
+
 
 ;; Load platform specifics (currently one file full of cases)
 (require 'specific)

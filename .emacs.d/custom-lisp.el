@@ -29,4 +29,8 @@
 (define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol)
 (define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
 
+;; Use clisp as defalt for SLIME
+(setq inferior-lisp-program "/usr/bin/clisp")
+
+
 (provide 'custom-lisp)
