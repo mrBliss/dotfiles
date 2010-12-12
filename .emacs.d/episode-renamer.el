@@ -71,7 +71,8 @@ coll, else nil."
 (defun filter-files (exts files)
   "Filters out the files having an extension that is listed in exts."
   (let ((ends-with-exts (mapcar (lambda (e) (concat e "$")) exts)))
-    (filter (lambda (f) (some (lambda (ext) (string-match ext f)) ends-with-exts)) files)))
+    (filter (lambda (f) (some (lambda (ext) (string-match ext f))
+                         ends-with-exts)) files)))
 
 (defun repeat-nil (n)
   "Returns a list of n nils."
@@ -88,9 +89,9 @@ coll, else nil."
             (get-tvdbid-and-season-and-lang)
           (message "Downloading episode titles from TheTVDB...")
           (let* ((output (shell-command-to-string
-                         (format "/usr/local/bin/episodetitles %s %s %s"
-                                 tvdbid season lang)))
-                (episode-titles (butlast (split-string output "\n"))))
+                          (format "/usr/local/bin/episodetitles %s %s %s"
+                                  tvdbid season lang)))
+                 (episode-titles (butlast (split-string output "\n"))))
             (if (= (length vids) (length episode-titles))
                 (progn
                   (dolist (x (mapcar* 'list vids
@@ -106,9 +107,10 @@ coll, else nil."
                                (file-name-extension (second x))))))
                   (message "Successfully renamed %d files" (length vids))
                   (revert-buffer))
-              (message "Number of files (%d) does not match number of episodes (%d)"
+              (message "Number of files (%d) and episodes (%d) don't match"
                        (length vids) (length episode-titles)))))
       (message "Number of files (%d) does not match number of subtitles (%d)"
                (length vids) (length subs)))))
+
 
 (provide 'episode-renamer)

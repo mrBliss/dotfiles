@@ -1,10 +1,16 @@
-;;; mercury-tools.el --- Compile and run Mercury files
+;;; custom-mercury.el --- Compile and run Mercury files
 ;;
 ;; Author: Thomas Winant <dewinant@gmail.com>
 ;; Created: Tue Dec 7 2010
 ;; Keywords: mercury, prolog, run, compile, compilation
 ;;
 
+(require 'prolog)
+
+;; Enable mercury-mode for .m files 
+(add-to-list 'auto-mode-alist '("\\.m" . mercury-mode))
+
+;; Path to the Mercury compiler
 (defvar mmc-path "/localhost/packages/prolog/mercury/mercury-yes.linux/bin/mmc")
 
 (defun mercury-compile ()
@@ -64,4 +70,4 @@
           (setq files-deleted (1+ files-deleted)))))
     (message (format "%d junk files deleted." files-deleted))))
 
-(provide 'mercury-tools)
+(provide 'custom-mercury)

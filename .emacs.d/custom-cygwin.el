@@ -53,4 +53,4 @@
           (add-to-list 'arguments "-d"))
         (apply 'call-process program nil (not discard) nil arguments)))))
 
-(provide 'cygwin)
+(provide 'custom-cygwin)

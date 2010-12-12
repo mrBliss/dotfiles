@@ -670,7 +670,7 @@ Built-in packages also qualify."
       (package-built-in-p package min-version))))
 
 (defun package-compute-transaction (package-list requirements)
-  "Return a list of packages to be installed, including PACKAGE-LIST.
+  "Return a list of packages ton be installed, including PACKAGE-LIST.
 PACKAGE-LIST should be a list of package names (symbols).
 
 REQUIREMENTS should be a list of additional requirements; each

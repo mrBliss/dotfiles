@@ -1,4 +1,9 @@
-;; Key bindings
+;;; custom-bindings.el --- Extra bindings
+;;
+;; Author: Thomas Winant <dewinant@gmail.com>
+;; Created: Sat Dec 11 2010
+;; Keywords: bindings
+
 
 ;; Move to windows with S-Up/Down/Left/Right
 (windmove-default-keybindings)
@@ -9,6 +14,12 @@
 ;; Swap windows
 (global-set-key (kbd "C-c X") 'swap-windows)
 (global-set-key (kbd "C-c x") 'swap-windows-with-cursor)
+
+;; When the old M-x is needed
+(global-set-key (kbd "C-c M-x") 'execute-extended-command)
+
+;; Also a variant without the meta key
+(global-set-key (kbd "C-c C-m") 'execute-extended-command)
 
 ;; Ido binds
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file)
@@ -44,11 +55,9 @@
 (global-set-key (kbd "C-c r") 'replace-string)
 (global-set-key (kbd "C-c C-r") 'replace-regexp)
 
-;; Open .emacs
-(global-set-key (kbd "C-c e") (lambda () (interactive) (find-file "~/.emacs")))
-
-;; Evaluate the current buffer
-(global-set-key (kbd "C-c E") (lambda () (interactive) (eval-buffer)))
+;; Open init.el
+(global-set-key (kbd "C-c e")
+                (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
 
 ;; Open a new frame
 (global-set-key (kbd "C-c f") 'make-frame)
@@ -73,18 +82,6 @@
 ;; Shorter than M-g (M-)g
 (global-set-key (kbd "M-g") 'goto-line)
 
-;; Smart command completion with history
-(global-set-key (kbd "M-x") 'smex)
-
-;; Variant of the previous without the meta key
-(global-set-key (kbd "C-x C-m") 'smex)
-
-;; When the old M-x is needed
-(global-set-key (kbd "C-c M-x") 'execute-extended-command)
-
-;; Also a variant without the meta key
-(global-set-key (kbd "C-c C-m") 'execute-extended-command)
-
 ;; Magit status
 (global-set-key (kbd "C-x g") 'magit-status)
 
@@ -93,7 +90,7 @@
                                   (save-some-buffers t t)
                                   (kill-emacs)))
 
-;; Instead of newline
+;; Indent when going to the next line
 (global-set-key (kbd "RET") 'newline-and-indent)
 
 ;; Untabifies the buffer and deletes trailing white space
@@ -127,6 +124,13 @@
 (global-set-key (kbd "C-M-s") 'isearch-forward-regexp-other-window)
 (global-set-key (kbd "C-M-r") 'isearch-backward-regexp-other-window)
 
+;; Activate occur easily inside isearch
+(define-key isearch-mode-map (kbd "C-o")
+  (lambda () (interactive)
+    (let ((case-fold-search isearch-case-fold-search))
+      (occur (if isearch-regexp isearch-string
+               (regexp-quote isearch-string))))))
+
 ;; Transpose lines with M-T, shorter than C-x C-t
 (global-set-key (kbd "M-T") 'transpose-paragraphs)
 
@@ -154,76 +158,6 @@
 ;; Toggle window dedication with PAUSE
 (global-set-key [pause] 'toggle-current-window-dedication)
 
-;; Use C-j not only for *scratch* but for all elisp buffers
-(define-key emacs-lisp-mode-map (kbd "C-j") 'eval-print-last-sexp)
-
-;; Look up a Java Class in the JDK Docs with C-c C-d j
-(global-set-key (kbd "C-c C-d j") 'javadoc-lookup)
-
-;; Extra bindings for clojure-mode
-(eval-after-load "clojure-mode"
-  '(progn
-     (define-key clojure-mode-map (kbd "C-c t") 'clojure-jump-to-test)
-     (define-key clojure-mode-map (kbd "C-j") 'slime-eval-print-last-expression)
-     (define-key clojure-mode-map (kbd "M-(") 'paredit-wrap-sexp)
-     (define-key clojure-mode-map (kbd "M-J") 'paredit-join-sexps)
-     (define-key clojure-mode-map (kbd "C-)") 'paredit-forward-slurp-sexp)
-     (define-key clojure-mode-map (kbd "M-RET") 'close-all-matching)))
-
-;; Expanding in zencoding is triggered with M-RET
-(eval-after-load "zencoding-mode"
-  '(define-key zencoding-mode-keymap (kbd "M-RET") 'zencoding-expand-line))
-
-;; Same shortcut for compiling a buffer in coffee-mode as in Slime
-(eval-after-load "coffee-mode"
-  '(define-key coffee-mode-map (kbd "C-c C-k") 'coffee-compile-buffer))
-
-;; js2-mode binds C-M-h to something else; undo this
-(eval-after-load "js2-mode"
-  '(define-key js2-mode-map (kbd "C-M-h") 'backward-kill-word))
-
-;; Move one directory up in Dired with r, toggle details with ( and
-;; start wdired-change-to-wdired-mode with C-c C-e
-(eval-after-load "dired"
-  '(progn
-     (define-key dired-mode-map (kbd "r")
-       (lambda () (interactive) (find-alternate-file "../")))
-     (define-key dired-mode-map (kbd "C-c C-e") 'wdired-change-to-wdired-mode)
-     (define-key dired-mode-map (kbd "(") 'dired-details-toggle)))
-
-;; Consult a file with C-c C-k in Prolog-mode. Compile the current
-;; file with C-c C-k in Mercury-mode and run it with C-c RET
-(defun prolog-bindings ()
-  (define-key prolog-mode-map (kbd "C-c C-k")
-    (lambda () (interactive) (if (eq prolog-system 'mercury)
-                            (mercury-compile)
-                          (prolog-consult-file))))
-  (define-key prolog-mode-map (kbd "C-c RET")
-    (lambda () (interactive) (if (eq prolog-system 'mercury)
-                            (mercury-run)
-                          (run-prolog))))
-  (define-key prolog-mode-map (kbd "C-M-h") 'backward-kill-word))
-(add-hook 'prolog-mode-hook 'prolog-bindings)
-
-;; Add bindings to disable tracing and debugging in a Prolog REPL
-(defun prolog-repl-bindings ()
-  (define-key prolog-inferior-mode-map (kbd "C-c M-d") 'prolog-debug-off)
-  (define-key prolog-inferior-mode-map (kbd "C-c M-t") 'prolog-trace-off))
-(add-hook 'prolog-inferior-mode-hook 'prolog-repl-bindings)
-
-;; Use C-c C-k to load Haskell files
-(defun haskell-bindings ()
-  (define-key haskell-mode-map (kbd "C-c C-k")
-    (lambda () (interactive)
-      (inferior-haskell-load-file)
-      (switch-to-haskell))))
-(add-hook 'haskell-mode-hook 'haskell-bindings)
-
-;; java-mode rebinds C-M-h to something else than backward-kill-word
-(defun java-bindings ()
-  (define-key java-mode-map (kbd "C-M-h") 'backward-kill-word))
-(add-hook 'java-mode-hook 'java-bindings)
-
 ;; C-z is only useful for emacs in a terminal window
 (when window-system (global-unset-key "\C-z"))
 
@@ -236,5 +170,7 @@
 ;; Undo the last kill-buffer with C-x C-z
 (global-set-key (kbd "C-x C-z") 'undo-kill-buffer)
 
+;; Rgrep with C-c g
+(global-set-key (kbd "C-c g") 'rgrep)
 
-(provide 'bindings)
+(provide 'custom-bindings)

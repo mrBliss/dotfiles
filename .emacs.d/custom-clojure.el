@@ -1,9 +1,18 @@
-;; Clojure
+;;; custom-clojure.el --- Clojure specific settings
+;;
+;; Author: Thomas Winant <dewinant@gmail.com>
+;; Created: Sat Dec 11 2010
+;; Keywords: clojure, lisp
+
 
 ;; Load files
 (require 'clojure-mode)
-(require 'clojure-test-mode)
 (require 'slime)
+
+;; Autoload clojure-test-mode
+(autoload 'clojure-test-mode "clojure-test-mode" "Clojure test mode" t)
+(autoload 'clojure-test-maybe-enable "clojure-test-mode" "" t)
+(add-hook 'clojure-mode-hook 'clojure-test-maybe-enable)
 
 ;; Hide slime version mismatches
 (setq slime-protocol-version 'ignore)
@@ -22,8 +31,9 @@
             (("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 'font-lock-warning-face t))
             (("(\\(fn\\>\\)" 0 (progn (compose-region (match-beginning 1)
                                                       (match-end 1) "ƒ") nil)))
-            (("(\\(complement\\>\\)" 0 (progn (compose-region (match-beginning 1)
-                                                      (match-end 1) "¬") nil)))
+            (("(\\(complement\\>\\)" 0 (progn (compose-region
+                                               (match-beginning 1)
+                                               (match-end 1) "¬") nil)))
             (("^[a-zA-Z0-9-.*+!_?]+?>" . 'slime-repl-prompt-face)))))
 
 ;; Slime
@@ -44,8 +54,8 @@
 (eval-after-load "clojure-mode"
   '(progn
      (add-hook 'clojure-mode-hook 'highlight-80+-mode)
-     (whitespace-mode 1)))
-(tweak-clojure-syntax 'clojure-mode)
+     (whitespace-mode 1)
+     (tweak-clojure-syntax 'clojure-mode)))
 
 ;; Beter REPL behaviour
 (defun slime-clojure-repl-setup ()
@@ -55,10 +65,7 @@
       (slime-redirect-inferior-output))
     (set-syntax-table clojure-mode-syntax-table)
     (clojure-mode-font-lock-setup)
-    (setq lisp-indent-function 'clojure-indent-function)
-    (when (and (featurep 'paredit) paredit-mode (>= paredit-version 21))
-      (define-key slime-repl-mode-map "{" 'paredit-open-curly)
-      (define-key slime-repl-mode-map "}" 'paredit-close-curly))))
+    (setq lisp-indent-function 'clojure-indent-function)))
 
 ;; Macro for face definition
 (defmacro defcljface (name color desc &optional others)
@@ -190,4 +197,14 @@
   (interactive)
   (while (close-matching)))
 
-(provide 'clojure)
+;; Extra bindings for clojure-mode
+(eval-after-load "clojure-mode"
+  '(progn
+     (define-key clojure-mode-map (kbd "C-c t") 'clojure-jump-to-test)
+     (define-key clojure-mode-map (kbd "C-j") 'slime-eval-print-last-expression)
+     (define-key clojure-mode-map (kbd "M-(") 'paredit-wrap-sexp)
+     (define-key clojure-mode-map (kbd "M-J") 'paredit-join-sexps)
+     (define-key clojure-mode-map (kbd "C-)") 'paredit-forward-slurp-sexp)
+     (define-key clojure-mode-map (kbd "M-RET") 'close-all-matching)))
+
+(provide 'custom-clojure)

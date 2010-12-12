@@ -622,7 +622,7 @@ created 2009-06-23."
      (minibuffer-prompt ((t (:bold t :foreground "#FF6600")))))))
 
 (defun color-theme-blissterm ()
-  "Terminal color theme by mrBliss"
+  "Terminal color theme by mrBliss."
   (interactive)
   (color-theme-install
    '(color-theme-blissterm
@@ -656,7 +656,7 @@ created 2009-06-23."
      (erc-prompt-face ((t (:foreground "magenta")))))))
 
 (defun color-theme-bespin ()
-  "Based on Mozilla's Bespin. By mrBliss"
+  "Based on Mozilla's Bespin. By mrBliss."
   (interactive)
   (color-theme-install
    '(color-theme-bespin
@@ -745,5 +745,5 @@ created 2009-06-23."
      (undo-tree-visualizer-current-face ((t (:foreground "#F1266F"))))
      (slime-repl-result-face ((t (:foreground "#a8937a")))))))
 
-(provide 'custom-themes)
 
+(provide 'custom-themes)
