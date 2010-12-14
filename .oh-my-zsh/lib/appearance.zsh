@@ -1,14 +1,16 @@
-# # No fancy prompt for dumb shells (TRAMP) via ssh
-if [ "${TERM}" = "dumb" ];
+# No fancy prompt for dumb shells (TRAMP) via ssh
+if [ "$TERM" = "dumb" ]
 then
     unsetopt zle
     unsetopt prompt_cr
     unsetopt prompt_subst
     PS1='$ '
 else
-    # Enable 256 colors
-    export TERM=xterm-256color
-
+    # Enable 256 colors unless we're being used as ansi-term in emacs
+    if [ "$TERM" != "eterm-color" ]
+    then
+        export TERM=xterm-256color
+    fi
     # ls colors
     autoload colors; colors;
     export LSCOLORS="Gxfxcxdxbxegedabagacad"
@@ -24,7 +26,7 @@ else
     setopt no_beep
     setopt multios
 
-    if [[ x$WINDOW != x ]]
+    if [[ $WINDOW != x ]]
     then
         SCREEN_NO="%B$WINDOW%b "
     else
