@@ -143,5 +143,13 @@
 ;; List ELPA packages with elpa command
 (defalias 'elpa 'package-list-packages)
 
+;; post-mode for editing mutt messages
+(autoload 'post-mode "post" "mode for e-mail" t)
+(add-to-list 'auto-mode-alist '("\\.*mutt-*" . post-mode))
+(defun post-hook
+  (auto-fill-mode t)
+  (setq fill-column 72)) ;; rfc 1855 for usenet messages
+(add-hook 'post-mode-hook 'post-hook)
+
 
 (provide 'custom-misc)

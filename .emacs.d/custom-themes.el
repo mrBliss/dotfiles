@@ -730,6 +730,9 @@ created 2009-06-23."
      (font-latex-warning-face ((t (:foreground "#F9EE98"))))
      (font-latex-italic-face
       ((t (:foreground "#BAAE9E" :italic t :underline nil))))
+     (font-latex-bold-face ((t (:foreground "#BAAE9E" :bold t))))
+     (font-latex-sectioning-2-face ((t (:foreground "#BAAE9E"))))
+     (font-latex-sectioning-3-face ((t (:foreground "#BAAE9E"))))
      (nxml-processing-instruction-delimiter-face ((t (:foreground "#0074e8"))))
      (nxml-tag-delimiter-face ((t (:foreground "#5EA6EA"))))
      (nxml-element-local-name-face ((t (:foreground "#0074e8"))))

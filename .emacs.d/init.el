@@ -33,7 +33,7 @@
 (add-to-list 'load-path vendor-dir)
 (progn (cd vendor-dir)
        (normal-top-level-add-subdirs-to-load-path)
-       (cd dot-dir))
+       (cd (getenv "HOME")))
 
 ;; Load up ELPA, the package manager
 (load (concat dot-dir "elpa/package.el"))
