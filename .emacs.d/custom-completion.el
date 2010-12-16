@@ -82,6 +82,7 @@ imenu index, then jumps to that symbol's location."
 ;; auto-complete
 
 (require 'auto-complete-config)
+(require 'auto-complete-extension)
 
 (add-to-list 'ac-dictionary-directories
              (expand-file-name "~/.emacs.d/auto-complete/ac-dict"))

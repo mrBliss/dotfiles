@@ -174,29 +174,6 @@
 
 (add-hook 'sldb-mode-hook 'durendal-dim-sldb-font-lock)
 
-
-;; Close matching parens/brackets etc
-;; Author: Martin Blais <blais@furius.ca>
-(defvar close-matching-chars
-  '((?( . ?))
-    (?[ . ?])
-    (?{ . ?})
-    (?< . >})))
-
-(defun close-matching ()
-  "Close with the most appropriate matching balanced character."
-  (interactive)
-  (let ((c (save-excursion
-             (while (ignore-errors (forward-sexp -1) (not (<= (point) 1))))
-             (re-search-backward "[^ \n]" nil nil nil)
-             (string-to-char (thing-at-point 'char)))))
-    (insert-char (cdr (assoc c close-matching-chars)) 1) c))
-
-(defun close-all-matching ()
-  "Close as much as we can."
-  (interactive)
-  (while (close-matching)))
-
 ;; Extra bindings for clojure-mode
 (eval-after-load "clojure-mode"
   '(progn
@@ -204,7 +181,6 @@
      (define-key clojure-mode-map (kbd "C-j") 'slime-eval-print-last-expression)
      (define-key clojure-mode-map (kbd "M-(") 'paredit-wrap-sexp)
      (define-key clojure-mode-map (kbd "M-J") 'paredit-join-sexps)
-     (define-key clojure-mode-map (kbd "C-)") 'paredit-forward-slurp-sexp)
-     (define-key clojure-mode-map (kbd "M-RET") 'close-all-matching)))
+     (define-key clojure-mode-map (kbd "C-)") 'paredit-forward-slurp-sexp)))
 
 (provide 'custom-clojure)

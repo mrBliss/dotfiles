@@ -12,6 +12,9 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
+;; Auto-complete
+(add-to-list 'ac-modes 'haskell-mode)
+
 ;; Pretty unicode symbols (messes up indentation for other people)
 ;;(setq haskell-font-lock-symbols t)
 

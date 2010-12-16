@@ -28,13 +28,6 @@
   "Enable things that are convenient across all coding buffers."
   (run-hooks 'coding-hook))
 
-;; Highlight matching parentheses
-(show-paren-mode 1)
-
-;; Shows the line of the starting paren in the minibuffer
-(require 'mic-paren)
-(paren-activate)
-
 
 ;;##############################################################################
 ;; Coffeescript
