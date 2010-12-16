@@ -479,7 +479,7 @@ created 2009-06-23."
         (*gui* "#eeeeee")
         (*gui2* "#555555")
         (*class* "#FFFFB6")
-        (*variable* "#89bdff"))
+        (*variable* "#66D9EF"))
 
     (flet ((color (fgcolor &optional (bgcolor nil) (bold nil) (italic nil)
                            (underline nil))

@@ -7,7 +7,7 @@
 
 (require 'prolog)
 
-;; Enable mercury-mode for .m files 
+;; Enable mercury-mode for .m files
 (add-to-list 'auto-mode-alist '("\\.m" . mercury-mode))
 
 ;; Path to the Mercury compiler
@@ -56,13 +56,14 @@
         (term-send-input))
     (message "Not a Mercury file.")))
 
-(defun mercury-clean  ()
+(defun mercury-clean ()
   "Removes all the junk mmc (Mercury Compiler) spits out after
    compiling a file."
   (interactive)
   (let ((sans-ext (file-name-sans-extension (buffer-file-name)))
         (files-deleted 0))
-    (dolist (suf '("" ".c" ".c_date" ".d" "_init.c" "_init.o" ".mh" ".o")
+    (dolist (suf '("" ".c" ".c_date" ".d" "_init.c" "_init.o" ".mh" ".o"
+                   ".m_error")
                  files-deleted)
       (let ((file (concat sans-ext suf)))
         (when (file-exists-p file)
