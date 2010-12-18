@@ -2,7 +2,12 @@ function collapse_pwd {
     echo $(pwd | sed -e "s,^$HOME,~,")
 }
 
-PROMPT='%{$fg[green]%}%m%{$reset_colors%}:%{$fg[magenta]%}$(collapse_pwd)%{$fg[cyan]%}> '
+if [[ "$SSH_CONNECTION" != "" ]]
+then
+        PROMPT='%{$fg_bold[magenta]%}%m%{$reset_colors%}:%{$fg_no_bold[magenta]%}$(collapse_pwd)%{$fg[cyan]%}> '
+else
+        PROMPT='%{$fg[green]%}%m%{$reset_colors%}:%{$fg[magenta]%}$(collapse_pwd)%{$fg[cyan]%}> '
+fi
 
 if [ "$USER" = "s0202013" ]
 then
