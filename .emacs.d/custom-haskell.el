@@ -5,8 +5,6 @@
 ;; Keywords: haskell, flymake, ghc, ghci
 
 
-(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
-
 ;; Haskell-mode
 (autoload 'haskell-mode "haskell-mode" "Haskell mode" t)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)

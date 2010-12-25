@@ -8,7 +8,7 @@
 (require 'prolog)
 
 ;; Enable mercury-mode for .m files
-(add-to-list 'auto-mode-alist '("\\.m" . mercury-mode))
+(add-to-list 'auto-mode-alist '("\\.m$" . mercury-mode))
 
 ;; Path to the Mercury compiler
 (defvar mmc-path "/localhost/packages/prolog/mercury/mercury-yes.linux/bin/mmc")

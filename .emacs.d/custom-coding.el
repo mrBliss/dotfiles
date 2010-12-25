@@ -34,10 +34,6 @@
 
 (require 'coffee-mode)
 
-;; Load coffee-mode for .coffee and Cakefile files
-(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
-(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
-
 ;; Coffee-mode hook
 (defun coffee-custom ()
   ;; Use two spaces
@@ -102,9 +98,8 @@
 (require 'markdown-mode)
 
 ;; Load markdown-mode for .text .markdown and .md files
-(add-to-list 'auto-mode-alist '("\\.text" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.markdown" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown$" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 
 ;; Markdown command
 (setq markdown-command "/usr/local/bin/run_markdown")
@@ -123,7 +118,7 @@
 
 ;; Use SWI Prolog by default and .pl files are prolog files
 (setq prolog-system 'swi)
-(add-to-list 'auto-mode-alist '("\\.pl" . prolog-mode))
+(add-to-list 'auto-mode-alist '("\\.pl$" . prolog-mode))
 
 ;; Consult a file with C-c C-k in Prolog-mode. Compile the current
 ;; file with C-c C-k in Mercury-mode and run it with C-c RET
