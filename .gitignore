@@ -9,11 +9,11 @@
 !.conkerorrc
 !README.md
 *~
+*.elc
 .emacs.d/auto-save-list
 .emacs.d/server
 .emacs.d/tramp
 .emacs.d/ac-comphist.dat
 .emacs.d/emacs-visited-files
-.emacs.d/*.elc
 .emacs.d/image-dired
 .emacs.d/tetris-scores
