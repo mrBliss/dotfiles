@@ -4,6 +4,9 @@
 export EDITOR='emacsclient -t -a ""'
 export ALTERNATE_EDITOR='emacs --daemon; emacsclient -t'
 
+# Needed for ssh (ProxyCommand)
+export SHELL=/usr/bin/zsh
+
 # Change colours
 echo -e "\e]P0000000"
 echo -e "\e]P1FF0000"
@@ -21,7 +24,6 @@ echo -e "\e]PC6D9CBE"
 echo -e "\e]PDAE59AB"
 echo -e "\e]PE89BDFF"
 echo -e "\e]PFCCCDDD"
-
 
 # Keychain
 eval `keychain --eval --nogui -Q -q id_rsa`
