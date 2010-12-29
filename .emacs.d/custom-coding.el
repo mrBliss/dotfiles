@@ -158,5 +158,12 @@
 (add-to-list 'auto-mode-alist '("\\xml$" . nxml-mode))
 (add-to-list 'auto-mode-alist '("\\nfo$" . nxml-mode))
 
+(defun nxml-tweaks ()
+  (define-key nxml-mode-map (kbd "M-RET") 'nxml-complete)
+  ;; close last tag with </
+  (setq nxml-slash-auto-complete-flag t))
+
+(add-hook 'nxml-mode-hook 'nxml-tweaks)
+
 
 (provide 'custom-coding)

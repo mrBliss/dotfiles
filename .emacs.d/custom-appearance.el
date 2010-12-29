@@ -19,7 +19,7 @@
     (if (window-system f)
         (progn
           (case system-type
-            ('windows-nt (set-default-font "Consolas-8"))
+            ('windows-nt (set-default-font "Envy Code R-8"))
             ('gnu/linux (set-default-font "Inconsolata-9"))
             ('darwin (set-default-font "Inconsolata-12")))
           (tool-bar-mode -1)
