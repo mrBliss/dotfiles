@@ -12,21 +12,6 @@
 (setq icomplete-prospects-height 1
       icomplete-compute-delay 0)
 
-;; Display el instead of Emacs Lisp in the mode-line
-(defun shorten-emacs-lisp-mode-name ()
-  (setq mode-name "el"))
-(add-hook 'emacs-lisp-mode-hook 'shorten-emacs-lisp-mode-name)
-
-;; When opened via cocoa (i.e drop file on icon, or dbl click) open in
-;; a new window in an existing frame, rather than new frame
-(setq ns-pop-up-frames nil)
-
-;; Beter colors for diff in magit
-(eval-after-load 'magit
-  '(progn
-     (set-face-foreground 'magit-diff-add "green3")
-     (set-face-foreground 'magit-diff-del "red3")))
-
 ;;##############################################################################
 ;; Abbrev
 
@@ -174,6 +159,14 @@ imenu index, then jumps to that symbol's location."
 
 ;; Variant of the previous without the meta key
 (global-set-key (kbd "C-x C-m") 'smex)
+
+;;##############################################################################
+;; YASnippet
+
+(require 'yasnippet)
+(yas/initialize)
+(yas/load-directory
+ (expand-file-name (concat vendor-dir "/yasnippet/snippets")))
 
 
 (provide 'custom-completion)
