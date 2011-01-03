@@ -1,0 +1,5 @@
+#name: defun
+# --
+(defun ${1:name} (${2:args})${3:
+  "${4:doc-string}"
+ }$0)

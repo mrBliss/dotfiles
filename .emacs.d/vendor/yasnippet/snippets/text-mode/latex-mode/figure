@@ -1,0 +1,8 @@
+#contributor : Thomas Winant <dewinant@gmail.com>
+#name : \begin{figure} ... \end{figure}
+# --
+
+\begin{figure}[${1:h!}]
+  \includegraphics[width=0.5]{$2}
+  \caption{$3}\label{fig:$0}
+\end{figure}
