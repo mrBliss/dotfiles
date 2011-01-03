@@ -57,5 +57,8 @@ export PATH=$PATH:$ANT_HOME/bin
 # Man with colors
 export MANPAGER=most
 
-# StartX
+# Start the X server with x
 alias x='startx'
+
+# Load autojump
+source /etc/profile.d/autojump.zsh

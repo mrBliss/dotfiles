@@ -18,6 +18,17 @@ let (os = get_os().toLowerCase()) {
     register_user_stylesheet(chrome_os_css);
 };
 
+//Bigger hints (Uppercase as well)
+register_user_stylesheet(
+    "data:text/css," +
+        escape(
+            "@namespace url(\"http://www.w3.org/1999/xhtml\");\n" +
+                "span.__conkeror_hint {\n"+
+                "  font-size: 16px !important;\n"+
+                "  line-height: 16px !important;\n"+
+                "  text-transform: uppercase !important;\n"+
+                "}"));
+
 //Load google-reader.css
 var google_reader_css = cssdir.clone();
 google_reader_css.append("google-reader.css");

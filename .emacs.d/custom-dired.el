@@ -14,8 +14,7 @@
 ;; start wdired-change-to-wdired-mode with C-c C-e
 (eval-after-load "dired"
   '(progn
-     (define-key dired-mode-map (kbd "r")
-       (lambda () (interactive) (find-alternate-file "../")))
+     (define-key dired-mode-map (kbd "r") 'dired-up-directory)
      (define-key dired-mode-map (kbd "C-c C-e") 'wdired-change-to-wdired-mode)
      (define-key dired-mode-map (kbd "(") 'dired-details-toggle)))
 
