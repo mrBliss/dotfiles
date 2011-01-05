@@ -62,3 +62,4 @@ alias x='startx'
 
 # Load autojump
 source /etc/profile.d/autojump.zsh
+
