@@ -46,6 +46,9 @@
   (setq fill-column 78))
 (add-hook 'text-mode-hook 'turn-on-fill-column)
 
+;; Always delete trailing whitespace
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 (defun untabify-buffer ()
   "Replace all tabs with spaces in the current buffer."
   (interactive)
