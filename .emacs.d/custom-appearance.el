@@ -65,13 +65,8 @@
 (setq tooltip-use-echo-area t)
 
 ;; Set frame title
-(setq-default
- frame-title-format
- '(:eval
-   (format "%s@%s"
-           (or (file-remote-p default-directory 'user) user-login-name)
-           (file-name-nondirectory (or (buffer-file-name)
-                                       default-directory)))))
+(setq frame-title-format
+      '("" invocation-name " :: %b"))
 
 ;; Indicate empty lines by default (in the fringe)
 (setq default-indicate-empty-lines t)
