@@ -63,20 +63,6 @@
 ;; 19 and XEmacs 19, which provides a uniform interface for creating
 ;; menus in GNU Emacs and XEmacs.
 
-;;; Installation:
-
-;; Make sure to place `markdown-mode.el` somewhere in the load-path and add
-;; the following lines to your `.emacs` file to associate markdown-mode
-;; with `.text` files:
-;;
-;;     (autoload 'markdown-mode "markdown-mode.el"
-;;        "Major mode for editing Markdown files" t)
-;;     (setq auto-mode-alist
-;;        (cons '("\\.text" . markdown-mode) auto-mode-alist))
-;;
-;; There is no consensus on an official file extension so change `.text` to
-;; `.mdwn`, `.md`, `.mdt`, or whatever you call your markdown files.
-
 ;;; Customization:
 
 ;; Although no configuration is *necessary* there are a few things
@@ -1432,6 +1418,7 @@ This is an exact copy of `line-number-at-pos' for use in emacs21."
   (interactive)
   (message "markdown-mode, version %s" markdown-mode-version))
 
+;;;###autoload
 (define-derived-mode markdown-mode text-mode "Markdown"
   "Major mode for editing Markdown files."
   ;; Comments
@@ -1462,7 +1449,10 @@ This is an exact copy of `line-number-at-pos' for use in emacs21."
   (add-hook 'fill-nobreak-predicate 'markdown-nobreak-p)
   (setq indent-line-function markdown-indent-function))
 
-;(add-to-list 'auto-mode-alist '("\\.text$" . markdown-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.markdown$" . markdown-mode))
 
 (provide 'markdown-mode)
 
