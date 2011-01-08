@@ -251,4 +251,13 @@ fewer than 80 columns."
              (if dedicated "no longer " "")
              (buffer-name))))
 
+(defun grep-emacs-config ()
+  "Search/grep in my .emacs.d configuration directory, but only
+  the first level, so no vendor packages."
+  (interactive)
+  (let ((find-cmd
+         "find ~/.emacs.d/ -type f -print0 -maxdepth 1 -name \"*.el\" | xargs -0 -e grep -nH -e %s"))
+    (grep-find (format find-cmd (read-string "Search .emacs.d for: ")))))
+
+
 (provide 'custom-defuns)

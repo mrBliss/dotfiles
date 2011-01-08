@@ -166,5 +166,11 @@
      (set-face-foreground 'magit-diff-add "green3")
      (set-face-foreground 'magit-diff-del "red3")))
 
+;; Don't ask whether we want to kill the server
+(remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
+
+;; Show keystrokes in minibuffer immediately
+(setq echo-keystrokes 0.01)
+
 
 (provide 'custom-misc)

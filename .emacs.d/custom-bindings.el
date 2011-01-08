@@ -156,7 +156,7 @@
                 (lambda () (interactive) (switch-to-buffer "*scratch*")))
 
 ;; Toggle window dedication with PAUSE
-(global-set-key [pause] 'toggle-current-window-dedication)
+(global-set-key (kbd "<pause>") 'toggle-current-window-dedication)
 
 ;; C-z is only useful for emacs in a terminal window
 (when window-system (global-unset-key "\C-z"))

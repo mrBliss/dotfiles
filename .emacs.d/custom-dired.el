@@ -16,7 +16,8 @@
   '(progn
      (define-key dired-mode-map (kbd "r") 'dired-up-directory)
      (define-key dired-mode-map (kbd "C-c C-e") 'wdired-change-to-wdired-mode)
-     (define-key dired-mode-map (kbd "(") 'dired-details-toggle)))
+     (define-key dired-mode-map (kbd "(") 'dired-details-toggle)
+     (define-key dired-mode-map (kbd "o") 'browse-url-of-dired-file)))
 
 ;; Copy file to the other open dired folder by default
 (setq dired-dwim-target t)
