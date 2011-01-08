@@ -1,4 +1,5 @@
-#name: (ns .. ..)
+# -*- mode: snippet -*-
+# name: ns
 # --
 (ns `(clojure-find-package)`${1:
   (:use [${2:clojure} :only ($3)])}${4:

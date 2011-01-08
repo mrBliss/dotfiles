@@ -1,4 +1,5 @@
-#name: cond
+# -*- mode: snippet -*-
+# name: cond
 # --
 (cond
  $1

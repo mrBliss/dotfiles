@@ -1,4 +1,5 @@
-#name: defn
+# -*- mode: snippet -*-
+# name: defn
 # --
 (defn ${1:name} ${2:
   "${3:doc-string}"

@@ -1,3 +1,4 @@
-#name: breakpoint
+# -*- mode: snippet -*-
+# name: breakpoint
 # --
 (swank.core/break)
