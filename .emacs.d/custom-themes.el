@@ -734,7 +734,7 @@ created 2009-06-23."
      (custom-button-pressed  ((t (:inherit 'custom-button :box (:style pressed-button)))))
      (custom-button-mouse-pressed-unraised  ((t (:inherit 'custom-button-unraised :background "grey60"))))
      (custom-documentation ((t (:italic t))))
-     (message-cited-text ((t (:foreground "#edd400")))) 
+     (message-cited-text ((t (:foreground "#edd400"))))
      (gnus-cite-face-1 ((t (:foreground "#ad7fa8"))))
      (gnus-cite-face-2 ((t (:foreground "sienna4"))))
      (gnus-cite-face-3 ((t (:foreground "khaki4"))))
@@ -842,7 +842,8 @@ created 2009-06-23."
      (flyspell-incorrect
       ((t (:foreground "#F1266F" :bold t :underline t))))
      (font-lock-builtin-face ((t (:foreground "#5EA6EA"))))
-     (font-lock-comment-face ((t (:italic t :foreground "#666666"))))
+     (font-lock-comment-face
+      ((t (:italic t :foreground "#666666" :background "#382C25"))))
      (font-lock-constant-face ((t (:foreground "#DDF2A4"))))
      (font-lock-doc-string-face ((t (:foreground "#5EA6EA"))))
      (font-lock-string-face ((t (:foreground "#00920A"))))
