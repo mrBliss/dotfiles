@@ -118,3 +118,8 @@ killem () {
     killall emacs
     rm -rf /tmp/emacs*
 }
+
+# Use emacs' woman command as man viewer
+women () {
+    emacsclient -t -e "(woman \"$1\")'"
+}

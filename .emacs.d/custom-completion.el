@@ -131,6 +131,7 @@ imenu index, then jumps to that symbol's location."
            (name . "\\*Shell Command Output\\*$")
            (name . "\\*Marked Files\\*$")
            (name . "\\*SLIME Compilation\\*$")
+           (name . "\\*WoMan-Log\\*$")
            (name . "\\*Compile-Log\\*$")))
          ("Stuff"
           (name . "^\\*.+\\*")))))
