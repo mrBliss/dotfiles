@@ -75,65 +75,19 @@ interactive("scrollUpMore",
                 call_builtin_command(I.window, "cmd_scrollLineUp");
             });
 
-//Del.icio.us
-interactive("delicious-post",
-            "bookmark the page via delicious",
+interactive("add-google-bookmark",
+            "Bookmark the page via Google Bookmarks",
             function (I) {
                 check_buffer(I.buffer, content_buffer);
-                let posturl = 'https://api.del.icio.us/v1/posts/add?&url=' +
-                    encodeURIComponent(
-                        load_spec_uri_string(
-                            load_spec(I.buffer.top_frame))) +
-                    '&description=' +
-                    encodeURIComponent(
-                        yield I.minibuffer.read(
-                            $prompt = "name (required): ",
-                            $initial_value = I.buffer.title)) +
-                    '&tags=' +
-                    encodeURIComponent(
-                        yield I.minibuffer.read(
-                            $prompt = "tags (space delimited): ")) +
-                    '&extended=' +
-                    encodeURIComponent(
-                        yield I.minibuffer.read(
-                        $prompt = "extended description: "));
-
-                try {
-                    var content = yield send_http_request(
-                        load_spec({uri: posturl}));
-                    I.window.minibuffer.message(content.responseText);
-                } catch (e) { }
+                let (enc = encodeURIComponent,
+                     title = I.buffer.title,
+                     url = load_spec_uri_string(load_spec(I.buffer.top_frame)))
+                    browser_object_follow(
+                        I.buffer, OPEN_NEW_BUFFER,
+                        'http://www.google.com/bookmarks/mark?op=edit'
+                            + '&output=popup&bkmk=' + enc(url)
+                            + '&title=' + enc(title));
             });
-
-interactive("delicious-post-link",
-            "bookmark the link via delicious",
-            function (I) {
-                bo = yield read_browser_object(I) ;
-                mylink = load_spec_uri_string(
-                    load_spec(encodeURIComponent(bo)));
-                check_buffer(I.buffer, content_buffer);
-                let postlinkurl = 'https://api.del.icio.us/v1/posts/add?&url=' +
-                    mylink +
-                    '&description=' +
-                    encodeURIComponent(
-                        yield I.minibuffer.read(
-                            $prompt = "name (required): ",
-                            $initial_value = bo.textContent)) +
-                    '&tags=' +
-                    encodeURIComponent(
-                        yield I.minibuffer.read(
-                            $prompt = "tags (space delimited): ")) +
-                    '&extended=' +
-                    encodeURIComponent(
-                        yield I.minibuffer.read(
-                            $prompt = "extended description: "));
-
-                try {
-                    var content = yield send_http_request(
-                        load_spec({uri: postlinkurl}));
-                    I.window.minibuffer.message(content.responseText);
-                } catch (e) { }
-            }, $browser_object = browser_object_links);
 
 //To check if this page was successfully loaded
 loaded_functions = true;

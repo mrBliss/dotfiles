@@ -36,6 +36,8 @@ define_webjump("emw", "http://www.google.com/cse?cx=004774160799092323420%3A6-ff
                $description = "Search on the Emacs Wiki");
 define_webjump("g", "http://www.google.com/search?q=%s&ie=utf-8&oe=utf-8&aq=t",
                $description = "Google Search");
+define_webjump("gb", "https://www.google.com/bookmarks/l#!view=threadsmgmt&q=%s",
+               $description = "Google Bookmarks Search");
 define_webjump("idiom", "http://www.idiomdictionary.com/search.php?search=%s",
                $description = "Search for idioms on IdiomDictionary");
 define_webjump("img", "http://images.google.com/images?q=%s",
@@ -59,11 +61,9 @@ define_webjump("wnl", "http://nl.wikipedia.org/wiki/Special:Search?search=%s&go=
 define_webjump("wolf", "http://www.wolframalpha.com/input/?i=%s",
                $description = "Calculate something with WolframAlpha");
 
-add_delicious_webjumps("dewinant");
 
 //Add missing descriptions
 webjumps['conkerorwiki'].description = "Search the Conkeror Wiki";
-webjumps['delicious'].description = "Browse my delicious bookmarks with the given tag ";
 webjumps['dictionary'].description = "Look up a word in an online dictionary";
 webjumps['image'].description = "Search for images on Google Images";
 webjumps['maps'].description = "Look up a place on Google Maps";
@@ -72,9 +72,8 @@ webjumps['slang'].description = "Look up slang word in the Urban Dictionary";
 
 //TODO XPather
 
-
 //Remove unused webjumps
-var unused_webjumps = ['adelicious','answers','bugzilla','buildd','buildd-ports','clhs','cliki','clusty','creativecommons','debbugs','debfile','debpkg','debpopcon','debpts','debqa','freshmeat','google','kuro5hin','launchpad','lucky','ratpoisonwiki','savannah','sadelicious','scholar','sdelicious','slashdot','sourceforge','stumpwmwiki','ubuntubugs','ubuntufile','ubuntupkg','wiktionary','yahoo'];
+var unused_webjumps = ['answers','bugzilla','buildd','buildd-ports','clhs','cliki','clusty','creativecommons','debbugs','debfile','debpkg','debpopcon','debpts','debqa','freshmeat','google','kuro5hin','launchpad','lucky','ratpoisonwiki','savannah','sadelicious','scholar','sdelicious','slashdot','sourceforge','stumpwmwiki','ubuntubugs','ubuntufile','ubuntupkg','wiktionary','yahoo'];
 
 for (var i=0; i<unused_webjumps.length; i++) {
     delete webjumps[unused_webjumps[i]];

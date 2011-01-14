@@ -11,8 +11,7 @@ loaded_bindings = false;
  * u = up
  * U = root*
  * i = browser-object-images
- * p = delicious-post*
- * P = delicious-post-link*
+ * p = add-google-bookmark
  * q = kill-current-buffer
  * s = save
  * S = isearch-continue-forward
@@ -51,6 +50,11 @@ define_key(content_buffer_normal_keymap, "l", "cmd_scrollRight");
 define_key(content_buffer_normal_keymap, "J", "scrollDownMore");
 define_key(content_buffer_normal_keymap, "K", "scrollUpMore");
 
+//C-j/C-k are the same as J/K
+define_key(content_buffer_normal_keymap, "C-j", "scrollDownMore");
+define_key(content_buffer_normal_keymap, "C-k", "scrollUpMore");
+
+
 //C-x f is the same as C-x C-f
 define_key(default_global_keymap, "C-x f", "find-url-new-buffer");
 
@@ -79,9 +83,8 @@ define_key(content_buffer_normal_keymap, "C-d", "delete");
 define_key(default_global_keymap, "C-c e", "reinit");
 define_key(default_global_keymap, "C-c r", "reinit");
 
-//Del.icio.us
-define_key(default_global_keymap, "p", "delicious-post");
-define_key(default_global_keymap, "P", "delicious-post-link");
+//Google Bookmarks 
+define_key(default_global_keymap, "p", "add-google-bookmark");
 
 //C-x v checks if the rc is valid
 define_key(default_global_keymap, "C-x v", "valid-rc");
