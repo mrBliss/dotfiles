@@ -173,4 +173,8 @@
 ;; Rgrep with C-c g
 (global-set-key (kbd "C-c g") 'rgrep)
 
+;; Shorthand for find-name-dired
+(defalias 'find 'find-name-dired)
+
+
 (provide 'custom-bindings)
