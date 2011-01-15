@@ -37,7 +37,7 @@ in parentheses."
          (host (cadr (memq ?h args)))
          (match (string-match ".+\\(\\.[a-z]+\\)$" host)))
     (if match
-        (format ">>>> %s (%s)" nick (match-string 1 host))
+        (format ">>>> %s (%s)" nick (downcase (match-string 1 host)))
       (format ">>>> %s" nick))))
 
 (defun erc-message-quit-format (&rest args)
@@ -50,7 +50,8 @@ in parentheses."
           (replace-regexp-in-string " (IRC client for Emacs)" "" reason))
          (match (string-match ".+\\(\\.[a-z]+\\)$" host)))
     (if match
-        (format "<<<< %s (%s) (%s)" nick (match-string 1 host) reason-sans-erc)
+        (format "<<<< %s (%s) (%s)" nick (downcase (match-string 1 host))
+                reason-sans-erc)
       (format "<<<< %s (%s)" nick reason-sans-erc))))
 
 (defun erc-message-part-format (&rest args)
@@ -70,7 +71,7 @@ in parentheses."
            (format "You have left channel %s%s" channel reason-fmt))
           (match
            (format "<<<< %s (%s) left %s%s"
-                   nick (match-string 1 host) channel reason-fmt))
+                   nick (downcase (match-string 1 host)) channel reason-fmt))
           (t (format "<<<< %s left %s%s" nick channel reason-fmt)))))
 
 (setq erc-custom-catalog-entries

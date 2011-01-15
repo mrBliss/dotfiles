@@ -24,3 +24,6 @@ Angry colors."
          (auto-revert-tail-mode -1)
          (highlight-changes-mode -1)
          (use-local-map (keymap-parent angry-fruit-salad-log-view-mode-map)))))
+
+
+(provide 'angry-fuit-salad)

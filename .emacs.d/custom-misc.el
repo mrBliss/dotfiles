@@ -4,6 +4,7 @@
 ;; Created: Sat Dec 11 2010
 ;; Keywords: custom, tweaks, misc
 
+(require 'angry-fuit-salad)
 (require 'fastnav)
 (require 'goto-last-change)
 (require 'htmlize)
@@ -13,6 +14,7 @@
 (require 'typing-speed)
 (require 'unbound)
 (require 'undo-tree)
+
 
 ;; Enable transient-mark-mode
 (setq transient-mark-mode '(only . t))
@@ -71,52 +73,76 @@
 (setq initial-scratch-message
       ";; SCRATCH Buffer
 ;; Commands to learn:
-;;  goto previous macro: C-x C-k C-p
-;;  Insert/set macro counter: C-x C-k C-i/c
-;;  insert output for shell command: M-1 M-!
-;;  search with results: M-s o
-;;  move point to center/top/bottom: M-r
-;;  make sure the current function is visible: C-M-l
-;;  wordcount for active region: M-=
-;;  undo for the active region: C-u C-_
-;;  mark the end of the next word: M-@
-;;  apply macro to region: C-x C-k r
-;;  count lines in region: M-=
-;;  go to previous any location (across files): C-x C-Space
-;;  regex search in all open buffers: multi-occur-in-matching-buffers
-;;  apply shell command on region: M-|
-;;  rename files with dired: wdired-change-to-wdired-mode
-;;  show previous complex command: C-x ESC ESC
-;;  Narrow to region/defun: C-x n n/d
-;;  Undo narrow: C-x n w
-;;  Correct word: C-.
-;;  SLIME COMMANDS
 ;;  ------------------------------
-;;  COMPILATION & EVALUATION:
+;;  SLIME COMMANDS
+;;  * COMPILATION & EVALUATION
 ;;  Compile current function: C-c C-c
 ;;  Evaluate current function: C-M-x
 ;;  Evaluate minibuffer expression: C-c :
 ;;  Evaluate and print last sexp: C-j
-;;  SLDB COMMANDS:
+;;  * SLDB COMMANDS
 ;;  Eval sexp in minibuffer: :
 ;;  Move between frames: p/n
 ;;  INSPECTOR:
 ;;  Launch SLIME Inspector: C-c I
 ;;  Inspect: RET
 ;;  Return: l
-;;  DOCUMENTATION:
+;;  * DOCUMENTATION
 ;;  Documentation: C-C C-d d
 ;;  Who calls: C-c C-w c
 ;;  Go to definition: M-.
 ;;  Return from definition: M-,
-;;  MACROS:
+;;  * MACROS
 ;;  Macro expand 1: C-c C-m
 ;;  Macro expand all: C-c M-m
-;;  REPL:
+;;  * REPL
 ;;  Set current package: C-c M-p
 ;;  Close parens and eval: M-RET
 ;;  Previous/next prompt: C-c C-p/C-n
-
+;;  ------------------------------
+;;  GENERAL
+;;  make sure the current function is visible: C-M-l
+;;  undo for the active region: C-u C-_
+;;  mark the end of the next word: M-@
+;;  count lines in region: M-=
+;;  regex search in all open buffers: multi-occur-in-matching-buffers
+;;  apply shell command on region: M-|
+;;  show previous complex command: C-x ESC ESC
+;;  Narrow to region/defun: C-x n n/d
+;;  Undo narrow: C-x n w
+;;  Correct word: C-.
+;;  insert output for shell command: M-1 M-!
+;;  yank previous killed text when searching (C-s/r): M-y
+;;  toggle C-s/r to regex: M-r
+;;  edit search string: M-e
+;;  ------------------------------
+;;  IDO
+;;  case-sensitive: M-c
+;;  standard find-file: C-f
+;;  look for a buffer instead: C-b
+;;  open dired: C-d
+;;  edit filename: C-e
+;;  don't change typed input: C-j
+;;  ------------------------------
+;;  MACRO HANDLING
+;;  goto previous macro: C-x C-k C-p
+;;  insert/set macro counter: C-x C-k C-i/c or F3
+;;  apply macro to region: C-x C-k r
+;;  repeat until error: C-u o F4
+;;  view last macro: M-x edit-last-kbd-macro
+;;  ------------------------------
+;;  NXML-MODE
+;;  insert xml declaration: C-c C-x
+;;  guess schema: C-c C-s C-a
+;;  completion: M-RET
+;;  close tag (block): C-c C-b
+;;  close tag (inline): C-c TAB
+;;  close last unclosed tag: </ or C-c C-c
+;;  navigate: C-M-{f,b,u,d}
+;;  go to next/prev error C-c C-n/p
+;;  split element: C-c RET
+;;  autocomplete surrounding tags by other occurences: C-c C-d
+;;  insert unicode characters: C-c C-u
 ")
 
 ;; C-p/C-n move the cursor one line down/up, even when lines are wrapped

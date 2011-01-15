@@ -858,6 +858,10 @@ created 2009-06-23."
      (region ((t (:background "#f8fab7"))))
      (link ((t (:foreground "#5EA6EA" :underline t))))
      (ido-subdir ((t (:foreground "#F1266F"))))
+     (diff-added ((t (:foreground "green3"))))
+     (diff-indicator-added ((t (:foreground "green3"))))
+     (diff-removed ((t (:foreground "red3"))))
+     (diff-indicator-removed ((t (:foreground "red3"))))
      (diredp-dir-heading
       ((t (:background nil :underline t :foreground "#5EA6EA"))))
      (diredp-inode+size ((t (:foreground "#A8937A" :italic t))))
