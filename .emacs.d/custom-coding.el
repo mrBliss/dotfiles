@@ -91,6 +91,17 @@
 (eval-after-load "zencoding-mode"
   '(define-key zencoding-mode-keymap (kbd "M-RET") 'zencoding-expand-line))
 
+(defun tidy-buffer ()
+  "Run Tidy HTML parser on current buffer."
+  (interactive)
+  (when (get-buffer "tidy-errs") (kill-buffer "tidy-errs"))
+  (shell-command-on-region (point-min) (point-max)
+                           "tidy -f /tmp/tidy-errs -q -i -utf8 -asxhtml -wrap 0 -c" t)
+  (find-file-other-window "/tmp/tidy-errs")
+  (other-window 1)
+  (delete-file "/tmp/tidy-errs")
+  (message "buffer tidy'ed"))
+
 
 ;;##############################################################################
 ;; Markdown
@@ -164,6 +175,22 @@
   (setq nxml-slash-auto-complete-flag t))
 
 (add-hook 'nxml-mode-hook 'nxml-tweaks)
+
+;; By Benjamin Ferrari http://blog.bookworm.at/
+(defun nxml-pretty (begin end)
+  "Pretty format XML markup in region. You need to have nxml-mode
+http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
+this.  The function inserts linebreaks to separate tags that have
+nothing but whitespace between them.  It then indents the markup
+by using nxml's indentation rules."
+  (interactive "r")
+  (save-excursion
+    (nxml-mode)
+    (goto-char begin)
+    (while (search-forward-regexp "\>[ \\t]*\<" nil t)
+      (backward-char) (insert "\n"))
+    (indent-region begin end))
+  (message "Done!"))
 
 
 (provide 'custom-coding)

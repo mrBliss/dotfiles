@@ -22,17 +22,19 @@
 (defun latex-hook ()
   (TeX-fold-mode 1)
   (auto-fill-mode 1)
-  (flymake-mode t)
-  (define-key TeX-mode-map (kbd "M-d") 'TeX-font))
+  (flymake-mode 1)
+  (ispell-change-dictionary "dutch")
+  (eproject-mode -1)
+  (flyspell-mode 1)
+  (define-key TeX-mode-map (kbd "M-d") 'TeX-font)
+  (define-key TeX-mode-map (kbd "C-c C-p") 'flymake-goto-prev-error)
+  (define-key TeX-mode-map (kbd "C-c C-n") 'flymake-goto-next-error))
 (add-hook 'TeX-mode-hook 'latex-hook)
 
-;; ;; Change .dvi viewer to Skim on Mac OS X
-;; (setq tex-dvi-view-command
-;;       '(cond ((eq window-system 'ns)
-;;               "/Applications/Skim.app/Contents/MacOS/Skim")
-;;              ((eq window-system 'x) "evince")
-;;              ((eq window-system 'w32) "yap")
-;;              (t "dvi2tty * | cat -s")))
+
+;; Use Zathura as default PDF viewer
+(push '(output-pdf "Zathura") TeX-view-program-selection)
+(setq TeX-view-program-list '(("Zathura" "zathura %o")))
 
 
 (provide 'custom-latex)

@@ -140,6 +140,9 @@ imenu index, then jumps to that symbol's location."
   (ibuffer-switch-to-saved-filter-groups "default"))
 (add-hook 'ibuffer-mode-hook 'turn-on-ibuffer-filter-groups)
 
+;; Don't show empty groups
+(setq ibuffer-show-empty-filter-groups nil)
+
 (defun recentf-ido-find-file ()
   "Find a recent file using Ido."
   (interactive)
