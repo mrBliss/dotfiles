@@ -4,7 +4,7 @@
 ;; Created: Sat Dec 11 2010
 ;; Keywords: custom, tweaks, misc
 
-(require 'angry-fuit-salad)
+(require 'angry-fruit-salad)
 (require 'fastnav)
 (require 'goto-last-change)
 (require 'htmlize)

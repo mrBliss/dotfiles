@@ -26,4 +26,4 @@ Angry colors."
          (use-local-map (keymap-parent angry-fruit-salad-log-view-mode-map)))))
 
 
-(provide 'angry-fuit-salad)
+(provide 'angry-fruit-salad)

@@ -6,7 +6,7 @@
 
 ;; Use flymake with chktex
 (defun flymake-get-tex-args (file-name)
-     (list "chktex" (list "-q" "-v0" file-name)))
+  (list "chktex" (list "-q" "-v0" file-name)))
 
 ;; Enable Document parsing
 (setq TeX-auto-save t)
@@ -33,7 +33,9 @@
 
 
 ;; Use Zathura as default PDF viewer
-(push '(output-pdf "Zathura") TeX-view-program-selection)
+(if (boundp 'TeX-view-program-selection)
+    (push '(output-pdf "Zathura") TeX-view-program-selection)
+  (setq TeX-view-program-selection '((output-pdf "Zathura"))))
 (setq TeX-view-program-list '(("Zathura" "zathura %o")))
 
 
