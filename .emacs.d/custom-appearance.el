@@ -81,4 +81,5 @@
 ;; Moves the mouse pointer to the corner of the screen when typing
 (mouse-avoidance-mode 'jump)
 
+
 (provide 'custom-appearance)

@@ -31,8 +31,7 @@
 
 ;;##############################################################################
 ;; Coffeescript
-
-(require 'coffee-mode)
+(autoload 'coffee-mode "coffee-mode" nil t)
 
 ;; Coffee-mode hook
 (defun coffee-custom ()
@@ -46,7 +45,7 @@
 ;;##############################################################################
 ;; CSS
 
-(require 'rainbow-mode)
+(autoload 'rainbow-mode "rainbow-mode" nil t)
 
 ;; Enable rainbow-mode for css files
 (add-hook 'css-mode-hook 'rainbow-mode)
@@ -55,11 +54,14 @@
 ;;##############################################################################
 ;; Java
 
-(require 'javadoc-help)
+(autoload 'javadoc-lookup "javadoc-help" "Look up Java class in Javadoc." t)
+(autoload 'javadoc-help "javadoc-help" "Open up the Javadoc-help menu." t)
+(autoload 'javadoc-set-predefined-urls
+  "javadoc-help" "Set pre-defined urls." t)
 
-;; Use javadoc
-(javadoc-set-predefined-urls
- '("http://download.oracle.com/javase/6/docs/api"))
+(eval-after-load "javadoc-lookup"
+  '(javadoc-set-predefined-urls
+      '("http://download.oracle.com/javase/6/docs/api")))
 
 ;; Look up a Java Class in the JDK Docs with C-c C-d j
 (global-set-key (kbd "C-c C-d j") 'javadoc-lookup)
@@ -81,8 +83,7 @@
 ;;##############################################################################
 ;; HTML
 
-(require 'nxml-mode)
-(require 'zencoding-mode)
+(autoload 'zencoding-mode "zencoding-mode" nil t)
 
 ;; Zencoding-mode
 (add-hook 'sgml-mode-hook 'zencoding-mode)
@@ -106,8 +107,6 @@
 ;;##############################################################################
 ;; Markdown
 
-(require 'markdown-mode)
-
 ;; Load markdown-mode for .text .markdown and .md files
 (add-to-list 'auto-mode-alist '("\\.markdown$" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
@@ -117,15 +116,11 @@
 
 
 ;;##############################################################################
-;; PHP
-
-(require 'php-mode)
-
-
-;;##############################################################################
 ;; Prolog
 
-(require 'prolog)
+(autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
+(autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
+(autoload 'mercury-mode "prolog" "Major mode for editing Mercury programs.")
 
 ;; Use SWI Prolog by default and .pl files are prolog files
 (setq prolog-system 'swi)

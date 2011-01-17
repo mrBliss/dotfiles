@@ -5,14 +5,11 @@
 ;; Keywords: clojure, lisp
 
 
-;; Load files
-(require 'clojure-mode)
-(require 'slime)
-
-;; Autoload clojure-test-mode
-(autoload 'clojure-test-mode "clojure-test-mode" "Clojure test mode" t)
-(autoload 'clojure-test-maybe-enable "clojure-test-mode" "" t)
+;; Enable clojure-test-mode
 (add-hook 'clojure-mode-hook 'clojure-test-maybe-enable)
+
+;; Autoload align-cljlet
+(autoload 'align-cljlet "align-cljlet" nil t)
 
 ;; Hide slime version mismatches
 (setq slime-protocol-version 'ignore)
@@ -55,7 +52,11 @@
   '(progn
      (add-hook 'clojure-mode-hook 'highlight-80+-mode)
      (whitespace-mode 1)
-     (tweak-clojure-syntax 'clojure-mode)))
+     (tweak-clojure-syntax 'clojure-mode)
+     (define-key clojure-mode-map (kbd "C-c t") 'clojure-jump-to-test)
+     (define-key clojure-mode-map (kbd "C-j")
+       'slime-eval-print-last-expression)
+     (define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)))
 
 ;; Beter REPL behaviour
 (defun slime-clojure-repl-setup ()
@@ -174,10 +175,5 @@
 
 (add-hook 'sldb-mode-hook 'durendal-dim-sldb-font-lock)
 
-;; Extra bindings for clojure-mode
-(eval-after-load "clojure-mode"
-  '(progn
-     (define-key clojure-mode-map (kbd "C-c t") 'clojure-jump-to-test)
-     (define-key clojure-mode-map (kbd "C-j") 'slime-eval-print-last-expression)))
 
 (provide 'custom-clojure)

@@ -5,8 +5,6 @@
 ;; Keywords: mercury, prolog, run, compile, compilation
 ;;
 
-(require 'prolog)
-
 ;; Enable mercury-mode for .m files
 (add-to-list 'auto-mode-alist '("\\.m$" . mercury-mode))
 

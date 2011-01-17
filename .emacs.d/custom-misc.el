@@ -4,12 +4,12 @@
 ;; Created: Sat Dec 11 2010
 ;; Keywords: custom, tweaks, misc
 
+(autoload 'regex-tool "regex-tool" nil t)
+
 (require 'angry-fruit-salad)
 (require 'fastnav)
 (require 'goto-last-change)
-(require 'htmlize)
 (require 'minimap)
-(require 'regex-tool)
 (require 'scratch)
 (require 'typing-speed)
 (require 'unbound)
