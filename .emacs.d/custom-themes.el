@@ -860,6 +860,8 @@ created 2009-06-23."
      (ido-subdir ((t (:foreground "#F1266F"))))
      (diff-added ((t (:foreground "green3"))))
      (diff-indicator-added ((t (:foreground "green3"))))
+     (diff-changed ((t (:foreground "#FF8844"))))
+     (diff-indicator-changed ((t (:foreground "#FF8844"))))
      (diff-removed ((t (:foreground "red3"))))
      (diff-indicator-removed ((t (:foreground "red3"))))
      (diredp-dir-heading

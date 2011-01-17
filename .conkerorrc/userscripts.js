@@ -1,3 +1,4 @@
+
 //To check if this page was successfully loaded
 loaded_userscripts = false;
 
@@ -30,9 +31,10 @@ register_user_stylesheet(
                 "}"));
 
 //Load google-reader.css
-var google_reader_css = cssdir.clone();
-google_reader_css.append("google-reader.css");
-register_user_stylesheet(google_reader_css);
+let (google_reader_css = cssdir.clone()) {
+    google_reader_css.append("google-reader.css");
+    register_user_stylesheet(google_reader_css);
+}
 
 //Nicer fonts on ubuntuforums.org
 register_user_stylesheet(

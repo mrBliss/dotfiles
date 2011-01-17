@@ -196,7 +196,7 @@
 (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
 
 ;; Show keystrokes in minibuffer immediately
-(setq echo-keystrokes 0.01)
+(setq echo-keystrokes 0.1)
 
 
 (provide 'custom-misc)

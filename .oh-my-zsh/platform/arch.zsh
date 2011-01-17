@@ -68,3 +68,6 @@ source /etc/profile.d/autojump.zsh
 
 # Personal TeX packages
 export TEXMFHOME=~/.texmf
+
+# Java GUI Look and Feel
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
