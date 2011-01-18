@@ -30,49 +30,69 @@
       erc-header-line-face-method t)
 
 ;; Change the format of the JOIN, QUIT and PART messages
+(defmacro with-erc (args props &rest body)
+  "Anaphoric macro that takes `args' that are passed to a
+`erc-catalog-entry' and a list of properties. The properties in
+the `props' list are the bindings that will be constructed from
+the erc arguments.
+
+ Available properties: `nick', `host', `tld', `channel' and
+`reason'. The `reason' property will be changed: if it is the
+same as the channel, it will be nil. ERC returns '\"ERC Version
+5.3\" (IRC client for Emacs)' as `reason', since we know ERC, the
+'IRC clie..' part will be stripped from the `reason'.
+
+The `tld' property is extracted from the `host' property: the
+alphanumeric characters after the last '.' in lowercase. Will be
+nil when it could not be extracted.
+
+Some properties will be bound even though they weren't in the
+`props' list, because they will be needed for other
+properties (`tld' requires `host' and `reason' requires
+`channel')."
+  `(let* ,(remove-if-not
+           (lambda (b) (or (memq (car b) props)
+                      (and (eq (car b) 'host) (memq 'tld props))
+                      (and (eq (car b) 'channel) (memq 'reason props))))
+           '((nick (cadr (memq ?n args)))
+             (host (cadr (memq ?h args)))
+             (tld (when (string-match ".+\\(\\.[a-z]+\\)$" host)
+                    (downcase (match-string 1 host))))
+             (channel (cadr (memq ?c args)))
+             (reason (let ((raw (cadr (memq ?r args))))
+                       (unless (or (not raw) (string= raw "")
+                                   (string= raw channel))
+                         (replace-regexp-in-string " (IRC client for Emacs)" ""
+                                                   raw))))))
+     ,@body))
+
+;; Fix indentation of with-erc macro
+(put 'with-erc 'lisp-indent-function 2)
+
 (defun erc-message-join-format (&rest args)
   "Format a JOIN message. If the host ends with a TLD, display it
 in parentheses."
-  (let* ((nick (cadr (memq ?n args)))
-         (host (cadr (memq ?h args)))
-         (match (string-match ".+\\(\\.[a-z]+\\)$" host)))
-    (if match
-        (format ">>>> %s (%s)" nick (downcase (match-string 1 host)))
-      (format ">>>> %s" nick))))
+  (with-erc args (nick tld)
+    (format (if tld ">>>> %s (%s)" ">>>> %s") nick tld)))
 
 (defun erc-message-quit-format (&rest args)
   "Format a QUIT message. If the host ends with a TLD, display it
-in parentheses."
-  (let* ((nick (cadr (memq ?n args)))
-         (host (cadr (memq ?h args)))
-         (reason (cadr (memq ?r args)))
-         (reason-sans-erc               ; I know what ERC is
-          (replace-regexp-in-string " (IRC client for Emacs)" "" reason))
-         (match (string-match ".+\\(\\.[a-z]+\\)$" host)))
-    (if match
-        (format "<<<< %s (%s) (%s)" nick (downcase (match-string 1 host))
-                reason-sans-erc)
-      (format "<<<< %s (%s)" nick reason-sans-erc))))
+in parentheses. A non-empty reason will also be displayed."
+  (with-erc args (nick tld reason)
+    (let ((reason-fmt (if reason (format " (%s)" reason) "")))
+      (if tld
+          (format "<<<< %s (%s)%s" nick tld reason-fmt)
+        (format "<<<< %s%s" nick reason-fmt)))))
 
 (defun erc-message-part-format (&rest args)
   "Format a proper PART message. If the host ends with a TLD, display it
-in parentheses."
-  (let* ((nick (cadr (memq ?n args)))
-         (host (cadr (memq ?h args)))
-         (channel (cadr (memq ?c args)))
-         (reason (cadr (memq ?r args)))
-         (reason-fmt (if (or (string= reason "")
-                             (string= reason channel))
-                         "" (format " (%s)" ; I know what ERC is
-                                    (replace-regexp-in-string
-                                     " (IRC client for Emacs)" "" reason))))
-         (match (string-match ".+\\(\\.[a-z]+\\)$" host)))
-    (cond ((string= nick (erc-current-nick))
-           (format "You have left channel %s%s" channel reason-fmt))
-          (match
-           (format "<<<< %s (%s) left %s%s"
-                   nick (downcase (match-string 1 host)) channel reason-fmt))
-          (t (format "<<<< %s left %s%s" nick channel reason-fmt)))))
+in parentheses. A non-empty reason will also be displayed."
+  (with-erc args (nick tld reason)
+    (let ((reason-fmt (if reason (format " (%s)" reason) "")))
+      (cond ((string= nick (erc-current-nick))
+             (format "You have left channel %s%s" channel reason-fmt))
+            (tld (format "<<<< %s (%s) left%s" nick tld reason-fmt))
+            (t (format "<<<< %s left%s" nick reason-fmt))))))
 
 (setq erc-custom-catalog-entries
       '((JOIN . erc-message-join-format)
