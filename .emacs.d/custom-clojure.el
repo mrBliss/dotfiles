@@ -178,9 +178,6 @@
 (eval-after-load "clojure-mode"
   '(progn
      (define-key clojure-mode-map (kbd "C-c t") 'clojure-jump-to-test)
-     (define-key clojure-mode-map (kbd "C-j") 'slime-eval-print-last-expression)
-     (define-key clojure-mode-map (kbd "M-(") 'paredit-wrap-sexp)
-     (define-key clojure-mode-map (kbd "M-J") 'paredit-join-sexps)
-     (define-key clojure-mode-map (kbd "C-)") 'paredit-forward-slurp-sexp)))
+     (define-key clojure-mode-map (kbd "C-j") 'slime-eval-print-last-expression)))
 
 (provide 'custom-clojure)

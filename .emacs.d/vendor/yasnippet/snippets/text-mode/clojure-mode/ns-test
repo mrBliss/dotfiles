@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: ns-test
+# key: ns-test
+# --
+(ns `(clojure-find-package)`
+  (:use [`(replace-regexp-in-string "\.test\." "." (clojure-find-package))`] :reload)
+  (:use [clojure.test]))
