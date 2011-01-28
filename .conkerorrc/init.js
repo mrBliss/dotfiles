@@ -14,7 +14,7 @@ require("page-modes/wikipedia.js");
 homepage = "http://www.google.be";
 
 //Correct the path on Windows
-if (get_os() == "WINNT" && cwd.path.indexOf("Roaming") < 0) {
+if (WINDOWS && cwd.path.indexOf("Roaming") < 0) {
     cwd.append("AppData");
     cwd.append("Roaming");
 }
@@ -27,7 +27,8 @@ url_completion_use_history = true;
 url_completion_use_bookmarks = false;
 
 //External editor
-editor_shell_command = "emacsclient -c -n";
+editor_shell_command = "emacsclient -c";
+view_source_use_external_editor = true;
 
 //Show xkcd titles
 xkcd_add_title = true;
@@ -85,6 +86,10 @@ read_url_handler_list = [read_url_make_default_webjump_handler("g")];
 
 //Don't change the title (in the title bar)
 title_format_fn = function(window) {return "conkeror";};
+
+//Use zathura for PDF documents on GNU/Linux
+if (get_os() == "Linux")
+    external_content_handlers.set("application/pdf", "zathura");
 
 //To check if this page was successfully loaded
 loaded_init = true;

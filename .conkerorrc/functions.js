@@ -89,5 +89,45 @@ interactive("add-google-bookmark",
                             + '&title=' + enc(title));
             });
 
+interactive("read-later",
+            "Save a web page to Instapaper for reading later",
+            function (I) {
+                check_buffer(I.buffer, content_buffer);
+                let doc = I.buffer.document;
+                let newscript = doc.createElement('script');
+                let srcurl = 'https://www.instapaper.com/j/xlSmtS0T8o6c?u='
+                    + encodeURIComponent(doc.location.href) + '&t='
+                    + (new Date().getTime());
+                newscript.setAttribute('src', srcurl);
+                doc.body.appendChild(newscript);
+            });
+
+interactive("subscribe-rss",
+            "Subscribes to first encountered RSS feed with Google Reader",
+            function (I) {
+                let found = false;
+                let reader = 'http://google.com/ig/add?feedurl=';
+                let doc = I.buffer.document;
+                let links = doc.getElementsByTagName("link");
+                for(var i = 0, l; l = links[i]; i++) {
+                    let type = l.getAttribute('type');
+                    let rel = l.getAttribute('rel');
+                    if (type && (type == 'application/rss+xml'
+                              || type == 'application/atom+xml')
+                        && rel && rel == 'alternate') {
+                        let h = l.getAttribute('href');
+                        if (h.indexOf('http') != 0) {
+                            let p = (h.indexOf('/') != 0)
+                                ? '/' : doc.location.pathname;
+                            h = 'http://' + doc.location.hostname + p + h;
+                        }
+                        doc.location = reader + h;
+                        found = true;
+                    }
+                }
+                if(!found) I.minibuffer.message('Couldn\'t find a feed.');
+            });
+
+
 //To check if this page was successfully loaded
 loaded_functions = true;

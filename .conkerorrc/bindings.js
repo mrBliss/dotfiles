@@ -28,6 +28,7 @@ loaded_bindings = false;
  * k = cmd_scrollLineUp*
  * K = scrollUpMore*
  * l = cmd_scrollRight*
+ * L = read-later
  * m = browser-object-frames
  * c = copy
  * v = view-as-mime-type
@@ -110,6 +111,16 @@ define_key(text_keymap, "C-M-k", "cmd_deleteWordForward");
 
 //View an image in a new buffer with I
 define_key(content_buffer_normal_keymap, "I", "view-image");
+
+//Make C-c C-c "submit form"
+define_key(content_buffer_normal_keymap, "C-c C-c", "submit-form");
+
+//Read it later (via Instapaper) with L
+define_key(content_buffer_normal_keymap, "L", "read-later");
+
+//Subscribe to an RSS feed with C-c s
+define_key(content_buffer_normal_keymap, "C-c s", "subscribe-rss");
+
 
 //To check if this page was successfully loaded
 loaded_bindings = true;

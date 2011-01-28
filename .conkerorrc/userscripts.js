@@ -25,8 +25,8 @@ register_user_stylesheet(
         escape(
             "@namespace url(\"http://www.w3.org/1999/xhtml\");\n" +
                 "span.__conkeror_hint {\n"+
-                "  font-size: 16px !important;\n"+
-                "  line-height: 16px !important;\n"+
+                "  font-size: 15px !important;\n"+
+                "  line-height: 15px !important;\n"+
                 "  text-transform: uppercase !important;\n"+
                 "}"));
 
