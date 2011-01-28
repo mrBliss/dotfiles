@@ -4,14 +4,14 @@ function collapse_pwd {
 
 if [[ "$SSH_CONNECTION" != "" ]]
 then
-        PROMPT='%{$fg_bold[magenta]%}%m%{$reset_colors%}:%{$fg_no_bold[magenta]%}$(collapse_pwd)%{$fg[cyan]%}> '
+        PROMPT='%{$fg_bold[magenta]%}%m%f:%{$fg_no_bold[magenta]%}$(collapse_pwd)%{$fg[cyan]%}> '
 else
-        PROMPT='%{$fg[green]%}%m%{$reset_colors%}:%{$fg[magenta]%}$(collapse_pwd)%{$fg[cyan]%}> '
+        PROMPT='%{$fg[green]%}%m%f:%{$fg[magenta]%}$(collapse_pwd)%{$fg[cyan]%}>%f '
 fi
 
 if [ "$USER" = "s0202013" ]
 then
-        RPROMPT='%{$fg[cyan]%}%n %(?,%{$fg[green]%}:%)%{$reset_color%},%{$fg[red]%}:(%{$reset_color%})'
+        RPROMPT=' %(?,%{$fg[green]%}:%)%f,%{$fg[red]%}:(%f)'
 else
-        RPROMPT='%{$fg[blue]%}%n %(?,%{$fg[green]%}:%)%{$reset_color%},%{$fg[red]%}:(%{$reset_color%})'
+        RPROMPT=' %(?,%{$fg[green]%}:%)%f,%{$fg[red]%}:(%f)'
 fi
