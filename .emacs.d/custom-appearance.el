@@ -66,7 +66,7 @@
 
 ;; Set frame title
 (setq frame-title-format
-      '("" invocation-name " :: %b"))
+      '(("" invocation-name " | " mode-name " | " buffer-name "%b")))
 
 ;; Indicate empty lines by default (in the fringe)
 (setq default-indicate-empty-lines t)

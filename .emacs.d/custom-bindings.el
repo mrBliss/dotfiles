@@ -173,5 +173,12 @@
 ;; Rgrep with C-c g
 (global-set-key (kbd "C-c g") 'rgrep)
 
+;; Open a file as root with C-x M-f
+(global-set-key (kbd "C-x M-f") 'sudo-edit)
+
+;; Replace the preceding sexp with its evaluated result with C-x M-e.
+(global-set-key (kbd "C-x M-e") 'eval-and-replace)
+
+
 
 (provide 'custom-bindings)

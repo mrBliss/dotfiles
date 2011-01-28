@@ -67,9 +67,10 @@
 (global-set-key (kbd "C-c C-d j") 'javadoc-lookup)
 
 ;; java-mode rebinds C-M-h to something else than backward-kill-word
-(defun java-bindings ()
-  (define-key java-mode-map (kbd "C-M-h") 'backward-kill-word))
-(add-hook 'java-mode-hook 'java-bindings)
+(defun java-custom ()
+  (define-key java-mode-map (kbd "C-M-h") 'backward-kill-word)
+  (setq tab-width 4))
+(add-hook 'java-mode-hook 'java-custom)
 
 
 ;;##############################################################################

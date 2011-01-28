@@ -259,5 +259,12 @@ fewer than 80 columns."
          "find ~/.emacs.d/ -type f -print0 -maxdepth 1 -name \"*.el\" | xargs -0 -e grep -nH -e %s"))
     (grep-find (format find-cmd (read-string "Search .emacs.d for: ")))))
 
+(defun eval-and-replace ()
+  "Replace the preceding sexp with its value."
+  (interactive)
+  (backward-kill-sexp)
+  (princ (eval (read (current-kill 0)))
+         (current-buffer)))
+
 
 (provide 'custom-defuns)
