@@ -3,8 +3,8 @@ alias pu='pushd'
 alias po='popd'
 
 # Super user
-alias s='sudo'
-alias plz='sudo'
+alias s='sudo '
+alias plz='sudo '
 
 # Show history
 alias history='fc -l 1'

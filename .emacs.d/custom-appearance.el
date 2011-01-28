@@ -20,7 +20,9 @@
         (progn
           (case system-type
             ('windows-nt (set-default-font "Envy Code R-8"))
-            ('gnu/linux (set-default-font "Inconsolata-9"))
+            ('gnu/linux (if (string= system-name "gideon")
+                            (set-default-font "QuadraatSMono-Regular-9")
+                          (set-default-font "Inconsolata-9")))
             ('darwin (set-default-font "Inconsolata-12")))
           (tool-bar-mode -1)
           (set-scroll-bar-mode nil)
