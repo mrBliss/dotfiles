@@ -10,11 +10,11 @@ alias plz='sudo '
 alias history='fc -l 1'
 
 # List direcory contents
-alias l='ls -lFh'
-alias la='ls -lAFh'  # all
-alias ld='ls -ld .*' # only dotfiles
-alias ll='ls -lAFh | less' # list with less
-alias sl='ls -lAFh' # catch typo
+alias l='ls -oFh'
+alias la='ls -oAFh'  # all
+alias ld='ls -od .*' # only dotfiles
+alias ll='ls -oAFh | less' # list with less
+alias sl='ls -oAFh' # catch typo
 
 # Directory navigation
 alias .='pwd'
