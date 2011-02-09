@@ -159,7 +159,7 @@
 (global-set-key (kbd "<pause>") 'toggle-current-window-dedication)
 
 ;; C-z is only useful for emacs in a terminal window
-(when window-system (global-unset-key "\C-z"))
+(when (display-graphic-p) (global-unset-key "\C-z"))
 
 ;; Insert a Unicode character with C-c u
 (global-set-key (kbd "C-c u") 'ucs-insert)

@@ -16,17 +16,17 @@
   "Applies the color-theme, ir-black in a terminal or bespin in a
    GUI. Disables the scroll and tool bar. Also sets the font."
   (with-selected-frame f
-    (if (window-system f)
+    (if (display-graphic-p f)
         (progn
           (case system-type
             ('windows-nt (set-default-font "Envy Code R-8"))
             ('gnu/linux (if (string= system-name "gideon")
                             (set-default-font "QuadraatSMono-Regular-9")
                           (set-default-font "Inconsolata-9")))
-            ('darwin (set-default-font "Inconsolata-12")))
+            ('darwin (set-default-font "QuadraatSMono-Regular-12")))
           (tool-bar-mode -1)
           (set-scroll-bar-mode nil)
-          (color-theme-bespin))
+         (color-theme-bespin))
       (color-theme-ir-black))))
 (add-hook 'after-make-frame-functions 'appearance)
 
@@ -37,7 +37,7 @@
 ;; Change flyspell faces
 (eval-after-load "flyspell"
   ;; The faces in my color-themes are ignored :-(
-  '(if window-system
+  '(if (display-graphic-p)
        (progn (set-face-foreground 'flyspell-incorrect "#FA2573"
                                    (selected-frame))
               (set-face-attribute 'flyspell-incorrect (selected-frame)
