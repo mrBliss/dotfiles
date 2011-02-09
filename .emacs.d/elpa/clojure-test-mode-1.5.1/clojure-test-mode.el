@@ -141,7 +141,7 @@
 
 (defun clojure-test-load-reporting ()
   "Redefine the test-is report function to store results in metadata."
-  (when (compare-strings "clojure" 0 7 (slime-connection-name) 0 7)
+  (when (string= "clojure" (slime-connection-name))
     (clojure-test-eval-sync
      "(require 'clojure.test) (ns clojure.test)
 
@@ -192,7 +192,7 @@
             (incf clojure-test-error-count)
             (clojure-test-highlight-problem line event actual)))))))
 
-	
+
 (defun clojure-test-highlight-problem (line event message)
   (save-excursion
     (goto-line line)
@@ -358,7 +358,7 @@ Retuns the problem overlay if such a position is found, otherwise nil."
 ;;;###autoload
 (progn
 (defun clojure-test-maybe-enable ()
-  "Enable clojure-test-mode if the current buffer contains a namespace 
+  "Enable clojure-test-mode if the current buffer contains a namespace
 with a \"test.\" bit on it."
   (let ((ns (clojure-find-package))) ; defined in clojure-mode.el
     (when (search "test." ns)
