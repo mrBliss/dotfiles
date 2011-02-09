@@ -70,11 +70,17 @@
 ;;##############################################################################
 ;; Common Lisp
 
-;; Use clisp as default for SLIME
-(setq inferior-lisp-program "/usr/bin/clisp")
+;; Use clisp as default for SLIME (Different location on OS X)
+(setq inferior-lisp-program
+      (if (eq system-type 'darwin)
+          "/usr/local/bin/clisp"
+        "/usr/bin/clisp"))
 
 ;; Enable auto-complete
 (add-to-list 'ac-modes 'lisp-mode)
+
+;; Use C-j to print the evaluated expresion in the buffer
+(define-key lisp-mode-map (kbd "C-j") 'slime-eval-print-last-expression)
 
 
 (provide 'custom-lisp)
