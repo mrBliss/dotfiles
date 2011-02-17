@@ -24,10 +24,13 @@ register_user_stylesheet(
     "data:text/css," +
         escape(
             "@namespace url(\"http://www.w3.org/1999/xhtml\");\n" +
-                "span.__conkeror_hint {\n"+
-                "  font-size: 15px !important;\n"+
-                "  line-height: 15px !important;\n"+
-                "  text-transform: uppercase !important;\n"+
+                "span.__conkeror_hint {"+
+                "font-size: 15px !important;"+
+                "line-height: 15px !important;"+
+                "text-transform: uppercase !important;"+
+                "background: rgba(68, 68, 68, 0.8) !important;"+
+                "padding: 3px 5px 3px 5px !important;"+
+                "-moz-border-radius: 15px;"+
                 "}"));
 
 //Load google-reader.css
