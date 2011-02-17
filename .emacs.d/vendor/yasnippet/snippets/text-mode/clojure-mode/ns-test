@@ -2,6 +2,18 @@
 # name: ns-test
 # key: ns-test
 # --
-(ns `(clojure-find-package)`
-  (:use [`(replace-regexp-in-string "\.test\." "." (clojure-find-package))`] :reload)
+(ns `(let ((bfn (buffer-file-name)))
+  (with-temp-buffer
+    (insert bfn)
+    (mark-whole-buffer)
+    (replace-string (concat (expand-file-name (locate-dominating-file bfn "project.clj")) "test/") "")
+    (replace-string "/" ".")
+    (replace-regexp-in-string "\.clj$" "" (buffer-string))))`
+  (:use [`(replace-regexp-in-string "\.test\." "." (let ((bfn (buffer-file-name)))
+  (with-temp-buffer
+    (insert bfn)
+    (mark-whole-buffer)
+    (replace-string (concat (expand-file-name (locate-dominating-file bfn "project.clj")) "test/") "")
+    (replace-string "/" ".")
+    (replace-regexp-in-string "\.clj$" "" (buffer-string)))))`] :reload)
   (:use [clojure.test]))

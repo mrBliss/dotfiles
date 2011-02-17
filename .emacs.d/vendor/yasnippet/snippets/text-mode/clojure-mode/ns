@@ -1,7 +1,13 @@
 # -*- mode: snippet -*-
 # name: ns
 # --
-(ns `(clojure-find-package)`${1:
+(ns `(let ((bfn (buffer-file-name)))
+  (with-temp-buffer
+    (insert bfn)
+    (mark-whole-buffer)
+    (replace-string (concat (expand-file-name (locate-dominating-file bfn "project.clj")) "src/") "")
+    (replace-string "/" ".")
+    (replace-regexp-in-string "\.clj$" "" (buffer-string))))`${1:
   (:use [${2:clojure} :only ($3)])}${4:
   (:require [${5:clojure} :as $6])}${7:
   (:import ($8 $9))})

@@ -134,7 +134,7 @@
 ;; Completions for lein-task
 (setq lein-task-list '("pom" "help" "install" "jar" "test" "deps"
                        "classpath" "interactive" "uberjar" "test!" "clean"
-                       "compile" "version" "swank" "run"))
+                       "compile" "version" "swank" "run" "marg"))
 
 (defun lein-task ()
   "Runs leiningen with the given task, completes with lein-task-list"
