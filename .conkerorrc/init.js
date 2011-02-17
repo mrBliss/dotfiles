@@ -6,6 +6,8 @@ require("clicks-in-new-buffer.js");
 require("new-tabs.js");
 require("session.js");
 require("content-buffer.js");
+require("favicon.js");
+require("block-content-focus-change");
 require("page-modes/google-images.js");
 require("page-modes/google-reader.js");
 require("page-modes/wikipedia.js");
@@ -64,6 +66,9 @@ can_kill_last_buffer = false;
 
 //Store more history for the minibuffer
 minibuffer_history_max_items = 1000;
+
+//Show favicons on tabs
+tab_bar_show_icon = true;
 
 //Remove clock from mode-line and add loading_count and buffer_count
 remove_hook("mode_line_hook", mode_line_adder(clock_widget));
