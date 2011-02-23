@@ -51,9 +51,9 @@
 
 ;; Put auto save files in one folder
 (setq backup-directory-alist
-      `(("." . ,(expand-file-name "~/.emacs.d/auto-saves/")))
+      `((".*" . ,(expand-file-name "~/.emacs.d/auto-saves/")))
       tramp-backup-directory-alist
-      `(("." . ,(expand-file-name "~/.emacs.d/auto-saves/"))))
+      `((".*" . ,(expand-file-name "~/.emacs.d/auto-saves/"))))
 
 ;; Autoclose successfull compilations
 (setq compilation-finish-functions nil)
