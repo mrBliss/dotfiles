@@ -198,5 +198,8 @@
 ;; Show keystrokes in minibuffer immediately
 (setq echo-keystrokes 0.1)
 
+;; Automatically reload files modified in other applications
+(global-auto-revert-mode 1)
+
 
 (provide 'custom-misc)
