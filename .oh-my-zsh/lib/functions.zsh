@@ -123,3 +123,29 @@ killem () {
 women () {
     emacsclient -t -e "(woman \"$1\")'"
 }
+
+# Reattach a screen session. If multiple, presents a menu for
+# choosing.
+reattach () {
+    OPTS=`screen -ls | grep "[0-9]\." | while read line ; do echo "$line" | sed -e 's/\s/_/g' ; done`
+
+    case $(echo $OPTS | wc -w) in
+	0)
+	    echo -e "\nNo screen sessions open\n"
+	    ;;
+	1)
+	    SESSION=$OPTS
+	    echo -e "\nAttaching to only available screen"
+	    ;;
+	*)
+	    echo -e "\nPick a screen session"
+	    select opt in $OPTS ; do
+		SESSION=$opt
+		break;
+	    done
+	    ;;
+    esac
+
+    screen -x $(echo $SESSION | sed -e 's/\..*//')
+
+}
