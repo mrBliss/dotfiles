@@ -48,13 +48,13 @@ the season currently displayed in the dired buffer."
          (nfo (concat tv-show-folder "tvshow.nfo")))
     (if (file-readable-p nfo)
         (let* ((tvdbid-line (shell-command-to-string
-                             (concat "egrep '<tvdbid>([0-9]+)</tvdbid>' '"
-                                     nfo "'")))
+                             (concat "egrep '<tvdbid>([0-9]+)</tvdbid>' \""
+                                     nfo "\"")))
                (tvdbid (progn (string-match "[0-9]+" tvdbid-line)
                               (match-string 0 tvdbid-line)))
                (lang-line (shell-command-to-string
-                           (concat "egrep '<language>([a-z]+)</language>' '"
-                                   nfo "'")))
+                           (concat "egrep '<language>([a-z]+)</language>' \""
+                                   nfo "\"")))
                (lang (progn (string-match ">[a-z]+" lang-line)
                             (substring (match-string 0 lang-line) 1))))
           (list tvdbid season lang)))))

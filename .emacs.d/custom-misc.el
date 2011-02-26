@@ -48,9 +48,9 @@
 
 ;; Put auto save files in one folder
 (setq backup-directory-alist
-      `(("." . ,(expand-file-name "~/.emacs.d/auto-saves/")))
+      `((".*" . ,(expand-file-name "~/.emacs.d/auto-saves/")))
       tramp-backup-directory-alist
-      `(("." . ,(expand-file-name "~/.emacs.d/auto-saves/"))))
+      `((".*" . ,(expand-file-name "~/.emacs.d/auto-saves/"))))
 
 ;; Autoclose successfull compilations
 (setq compilation-finish-functions nil)
@@ -196,6 +196,9 @@
 
 ;; Show keystrokes in minibuffer immediately
 (setq echo-keystrokes 0.1)
+
+;; Automatically reload files modified in other applications
+(global-auto-revert-mode 1)
 
 
 (provide 'custom-misc)

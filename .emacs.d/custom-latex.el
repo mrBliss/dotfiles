@@ -32,11 +32,17 @@
 (add-hook 'TeX-mode-hook 'latex-hook)
 
 
-;; Use Zathura as default PDF viewer
-(if (boundp 'TeX-view-program-selection)
-    (push '(output-pdf "Zathura") TeX-view-program-selection)
-  (setq TeX-view-program-selection '((output-pdf "Zathura"))))
-(setq TeX-view-program-list '(("Zathura" "zathura %o")))
+;; Use Zathura as default PDF viewer on GNU/Linux, Skim on OS X.
+(setq TeX-view-program-list
+      (list (if (eq system-type 'darwin)
+                '("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b")
+              ('gnu/linux '("Zathura" "zathura %o")))))
+
+(unless (boundp 'TeX-view-program-selection)
+  (setq TeX-view-program-selection))
+(push (list 'output-pdf (caar TeX-view-program-list))
+      TeX-view-program-selection)
+
 
 
 (provide 'custom-latex)

@@ -179,6 +179,9 @@
 ;; Replace the preceding sexp with its evaluated result with C-x M-e.
 (global-set-key (kbd "C-x M-e") 'eval-and-replace)
 
+;; Align-regexp with C-c a
+(global-set-key (kbd "C-c a") 'align-regexp)
+
 
 
 (provide 'custom-bindings)
