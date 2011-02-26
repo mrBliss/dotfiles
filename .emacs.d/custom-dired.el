@@ -14,7 +14,14 @@
 ;; start wdired-change-to-wdired-mode with C-c C-e
 (eval-after-load "dired"
   '(progn
-     (define-key dired-mode-map (kbd "r") 'dired-up-directory)
+     (defun dired-up-and-kill ()
+       "Run DIred on the parent directory of the current
+       directory, kills the current Dired buffer."
+       (interactive)
+       (let ((prev (current-buffer)))
+         (dired-up-directory)
+         (kill-buffer prev)))
+     (define-key dired-mode-map (kbd "r") 'dired-up-and-kill)
      (define-key dired-mode-map (kbd "C-c C-e") 'wdired-change-to-wdired-mode)
      (define-key dired-mode-map (kbd "(") 'dired-details-toggle)
      (define-key dired-mode-map (kbd "o") 'browse-url-of-dired-file)))
