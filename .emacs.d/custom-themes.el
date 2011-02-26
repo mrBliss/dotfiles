@@ -828,7 +828,7 @@ created 2009-06-23."
      (highlight
       ((t (:background "#0074e8" :foreground "#ffffff"))))
      (modeline
-      ((t (:background "#433E37" :foreground "#BAAE9E"
+      ((t (:background "#28201A" :foreground "#BAAE9E"
                        :box (:line-width 1 :color "#4c4a41" :style nil)))))
      (modeline-buffer-id ((t nil)))
      (mode-line-highlight
