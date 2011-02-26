@@ -31,9 +31,6 @@
 (setq recentf-max-menu-items 15
       recentf-max-saved-items 100)
 
-;; Enable narrow-to-region (C-x n n <-> C-x n w)
-(put 'narrow-to-region 'disabled nil)
-
 ;; Instead of numbering like-named buffers,
 ;; add enough enough of the file path to distinguish them
 (setq uniquify-buffer-name-style 'post-forward)
@@ -156,6 +153,8 @@
 
 ;; Enable some disabled commands
 (put 'downcase-region 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
+(put 'set-goal-column 'disabled nil)
 
 ;; Save mark location in files
 (setq-default save-place t)
