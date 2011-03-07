@@ -36,7 +36,7 @@
 (setq TeX-view-program-list
       (list (if (eq system-type 'darwin)
                 '("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b")
-              ('gnu/linux '("Zathura" "zathura %o")))))
+              '(gnu/linux ("Zathura" "zathura %o")))))
 
 (unless (boundp 'TeX-view-program-selection)
   (setq TeX-view-program-selection))
