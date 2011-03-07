@@ -50,7 +50,9 @@
 (setq backup-directory-alist
       `((".*" . ,(expand-file-name "~/.emacs.d/auto-saves/")))
       tramp-backup-directory-alist
-      `((".*" . ,(expand-file-name "~/.emacs.d/auto-saves/"))))
+      `((".*" . ,(expand-file-name "~/.emacs.d/auto-saves/")))
+      auto-save-file-name-transforms
+      `((".*" ,(expand-file-name "~/.emacs.d/auto-saves/") t)))
 
 ;; Autoclose successfull compilations
 (setq compilation-finish-functions nil)
