@@ -83,5 +83,9 @@
 ;; Moves the mouse pointer to the corner of the screen when typing
 (mouse-avoidance-mode 'jump)
 
+;; Close pop-up windows with C-g
+(require 'popwin)
+(setq display-buffer-function 'popwin:display-buffer)
+
 
 (provide 'custom-appearance)
