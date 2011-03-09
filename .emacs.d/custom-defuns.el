@@ -266,5 +266,38 @@ fewer than 80 columns."
   (princ (eval (read (current-kill 0)))
          (current-buffer)))
 
+;; From scottjad
+(defun insert-local-variables-spec ()
+  (interactive)
+  "Insert a minimal local variables spec for this buffer."
+  (save-excursion
+    (save-restriction
+      (widen)
+      (goto-char (point-min))
+      ;; FIXME: only strip the last 5 characters when they're "-mode"
+      (insert (format "-*- mode: %s; coding: %s -*-"
+                      (substring (symbol-name major-mode) 0 -5)
+                      buffer-file-coding-system))
+      ;; If there's some kind of local comment syntax, ensure the local
+      ;; variables spec lives in one.
+      (when comment-start
+        (comment-region (point-min) (point)))
+      (insert "\n"))))
+
+;; From scottjad
+(defun delete-this-buffer-and-file ()
+  "Removes file connected to current buffer and kills buffer."
+  (interactive)
+  (let ((filename (buffer-file-name))
+        (buffer (current-buffer))
+        (name (buffer-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (error "Buffer '%s' is not visiting a file!" name)
+      (when (yes-or-no-p
+             (format "Are you sure you want to delete '%s'? " name))
+        (delete-file filename)
+        (kill-buffer buffer)
+        (message "File '%s' successfully deleted" filename)))))
+
 
 (provide 'custom-defuns)
