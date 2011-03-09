@@ -6,6 +6,7 @@
 
 (require 'flymake)
 (require 'flymake-cursor)
+(require 'full-ack)
 (require 'swop-helpers)
 
 (defun local-comment-auto-fill ()
