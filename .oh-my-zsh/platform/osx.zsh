@@ -38,3 +38,15 @@ alias preview='groff -Tps > /tmp/tmp.ps && open -a Preview /tmp/tmp.ps'
 
 # Load autojump
 source /usr/local/Cellar/autojump/14/etc/autojump.zsh
+
+
+# homebrew aliases
+alias br='brew'
+alias bri='brew install'
+alias brs='brew search'
+alias bru='brew update'
+alias brrm='brew uninstall'
+alias bro='brew outdated'
+alias brdeps='brew deps'
+alias bruses='brew uses'
+# TODO upgrade?
