@@ -149,3 +149,9 @@ reattach () {
     screen -x $(echo $SESSION | sed -e 's/\..*//')
 
 }
+
+# Starts a simple (Python) webserver in the current directory on port
+# 8000. Tries python2 first (ArchLinux), then python.
+serve () {
+    type -a python2 &>/dev/null && python2 -m SimpleHTTPServer || python -m SimpleHTTPServer
+}
