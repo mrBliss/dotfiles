@@ -202,5 +202,15 @@
 ;; Automatically reload files modified in other applications
 (global-auto-revert-mode 1)
 
+;; Show the whole evaluated form
+(setq eval-expression-print-length nil
+      eval-expression-print-level nil)
+
+;; Compiling Xdefaults = applying the settings
+(defun xdefaults-compile-hook ()
+  (set (make-local-variable 'compile-command)
+       (concat "xrdb -merge " buffer-file-name)))
+(add-hook 'conf-xdefaults-mode-hook 'xdefaults-compile-hook)
+
 
 (provide 'custom-misc)

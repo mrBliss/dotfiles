@@ -299,5 +299,27 @@ fewer than 80 columns."
         (kill-buffer buffer)
         (message "File '%s' successfully deleted" filename)))))
 
+;; From retroj.net
+(defun insert-info-link ()
+  (interactive)
+  "Insert opened info node into the current buffer."
+  (unless (get-buffer "*info*")
+    (error "No *info* buffer open"))
+  (insert (with-current-buffer "*info*"
+            (let* ((file (file-name-nondirectory Info-current-file))
+                   (node Info-current-node))
+              (format "(info \"(%s)%s\")"
+                      file node)))))
+
+(defun replace-octal-character-codes ()
+  "Function to replace octal sequences like \123 with their
+  character representation (S in this case)."
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward "\\\\\\([0-7][0-7][0-7]\\)" nil t)
+      (replace-match
+        (char-to-string
+         (string-to-number (match-string 1) 8))))))
 
 (provide 'custom-defuns)
