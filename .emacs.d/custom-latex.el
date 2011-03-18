@@ -26,17 +26,17 @@
   (ispell-change-dictionary "dutch")
   (eproject-mode -1)
   (flyspell-mode 1)
-  (define-key TeX-mode-map (kbd "M-d") 'TeX-font)
-  (define-key TeX-mode-map (kbd "C-c C-p") 'flymake-goto-prev-error)
-  (define-key TeX-mode-map (kbd "C-c C-n") 'flymake-goto-next-error))
+  (define-key LaTeX-mode-map (kbd "M-d") 'TeX-font)
+  (define-key LaTeX-mode-map (kbd "C-c C-p") 'flymake-goto-prev-error)
+  (define-key LaTeX-mode-map (kbd "C-c C-n") 'flymake-goto-next-error)
+  (define-key LaTeX-mode-map (kbd "C-c C-l") 'TeX-next-error))
 (add-hook 'TeX-mode-hook 'latex-hook)
-
 
 ;; Use Zathura as default PDF viewer on GNU/Linux, Skim on OS X.
 (setq TeX-view-program-list
       (list (if (eq system-type 'darwin)
                 '("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b")
-              '(gnu/linux ("Zathura" "zathura %o")))))
+              '("Zathura" "zathura %o"))))
 
 (unless (boundp 'TeX-view-program-selection)
   (setq TeX-view-program-selection))
