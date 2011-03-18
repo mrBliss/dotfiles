@@ -76,6 +76,10 @@ imenu index, then jumps to that symbol's location."
 (ac-set-trigger-key "TAB")
 (setq ac-auto-start 1)
 
+;; CSS autocomplete inifinite loop hacks
+(add-to-list 'ac-css-value-classes
+	     '(border-width "thin" "medium" "thick" "inherit"))
+
 
 ;;##############################################################################
 ;; Ido
