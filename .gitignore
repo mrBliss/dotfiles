@@ -11,6 +11,7 @@
 *~
 *.elc
 .emacs.d/auto-save-list
+.emacs.d/auto-saves
 .emacs.d/server
 .emacs.d/tramp
 .emacs.d/ac-comphist.dat
