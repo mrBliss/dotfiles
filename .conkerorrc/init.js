@@ -11,6 +11,7 @@ require("block-content-focus-change");
 require("page-modes/google-images.js");
 require("page-modes/google-reader.js");
 require("page-modes/wikipedia.js");
+require("page-modes/github.js");
 
 //Homepage
 homepage = "http://www.google.be";

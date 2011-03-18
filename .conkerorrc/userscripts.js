@@ -25,8 +25,8 @@ register_user_stylesheet(
         escape(
             "@namespace url(\"http://www.w3.org/1999/xhtml\");\n" +
                 "span.__conkeror_hint {"+
-                "font-size: 15px !important;"+
-                "line-height: 15px !important;"+
+                "font-size: 13px !important;"+
+                "line-height: 13px !important;"+
                 "text-transform: uppercase !important;"+
                 "background: rgba(68, 68, 68, 0.8) !important;"+
                 "padding: 3px 5px 3px 5px !important;"+
@@ -74,6 +74,7 @@ register_user_stylesheet(
     make_css_data_uri(["div#bookmarkListDeckAdPlaceholder"
                        + " {display: none !important;}"],
                       $url_prefixes = "http://www.instapaper.com"));
+
 
 //To check if this page was successfully loaded
 loaded_userscripts = true;
