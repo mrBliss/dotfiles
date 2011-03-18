@@ -62,7 +62,7 @@
 
 (eval-after-load "javadoc-lookup"
   '(javadoc-set-predefined-urls
-      '("http://download.oracle.com/javase/6/docs/api")))
+    '("http://download.oracle.com/javase/6/docs/api")))
 
 ;; Look up a Java Class in the JDK Docs with C-c C-d j
 (global-set-key (kbd "C-c C-d j") 'javadoc-lookup)
@@ -114,8 +114,10 @@
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 
 ;; Markdown command
-(setq markdown-command "/usr/local/bin/run_markdown")
 
+(case system-type
+  ('windows-nt (setq markdown-command "/usr/local/bin/run_markdown"))
+  ('gnu/linux (setq markdown-command "/usr/bin/perlbin/vendor/Markdown.pl")))
 
 ;;##############################################################################
 ;; Prolog
