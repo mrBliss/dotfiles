@@ -932,4 +932,135 @@ created 2009-06-23."
      (slime-repl-result-face ((t (:foreground "#a8937a")))))))
 
 
+(defun color-theme-dark-violet ()
+  "A dark, violet and blue color-theme by mrBliss."
+  (interactive)
+  (color-theme-install
+   '(color-theme-new-theme
+     ((background-color . "#1C1C1C")
+      (foreground-color . "#DDEEDD")
+      (cursor-color . "#ffffff"))
+     (default ((t (nil))))
+
+     (modeline
+      ((t (:background "#4E4E4E" :foreground "FFFFFF"
+                       :box (:line-width 1 :color "#3D3D3D" :style nil)))))
+     (mode-line-inactive
+      ((t (:background "#353535" :foreground "#DDEEDD"
+                       :box (:line-width 1 :color "#454545")))))
+
+     (font-lock-builtin-face ((t (:foreground "#D7AFD7"))))
+     (font-lock-comment-face ((t (:foreground "#808080" :background "#1A1A1A"))))
+     (font-lock-constant-face ((t (:foreground "#86A2BE"))))
+     (font-lock-string-face ((t (:foreground "#5E468C" :background "#202020"))))
+     (font-lock-function-name-face ((t (:foreground "#9C75DD" :italic t))))
+     (font-lock-keyword-face ((t (:foreground "#8CC8DB"))))
+     (font-lock-type-face ((t (:foreground "#6096BF"))))
+     (font-lock-variable-name-face ((t (:foreground "#395573" :bold t))))
+     (font-lock-warning-face ((t (:bold t :foreground "#AFD787"))))
+     ;; (font-lock-doc-string-face ((t (:foreground "#5EA6EA"))))
+
+     (region ((t (:background "#477AB3" :foreground "#FFFFFF"))))
+     ;; (highlight ((t (:background "#477AB3" :foreground "#ffffff"))))
+     (highlight-80+ ((t (:background "#BF4D80"))))
+     (hl-line ((t (:background "#161616"))))
+
+     (minibuffer-prompt ((t (:foreground "#6096BF"))))
+     (link ((t (:foreground "#6096BF" :underline t))))
+     (comint-highlight-prompt ((t (:foreground "#6096BF"))))
+
+     (info-menu-star ((t (:foreground "#BF4D80"))))
+     (escape-glyph ((t (:foreground "#BF4D80"))))
+     (ido-subdir ((t (:foreground "#AF87D7"))))
+     (ido-first-match ((t (:foreground "#5E468C"))))
+     (ido-only-match ((t (:foreground "#31658C"))))
+     (undo-tree-visualizer-current-face ((t (:foreground "#BF4D80"))))
+
+     (flyspell-duplicate
+      ((t (:foreground "#FF907A" :bold t :underline t))))
+     (flyspell-incorrect
+      ((t (:foreground "#BF4D80" :bold t :underline t))))
+
+     (diff-added ((t (:foreground "green3"))))
+     (diff-indicator-added ((t (:foreground "green3"))))
+     (diff-changed ((t (:foreground "#FF907A"))))
+     (diff-indicator-changed ((t (:foreground "#FF907A"))))
+     (diff-removed ((t (:foreground "red3"))))
+     (diff-indicator-removed ((t (:foreground "red3"))))
+
+     (diredp-dir-heading
+      ((t (:background nil :underline t :foreground "#6096BF"))))
+     (diredp-inode+size ((t (:foreground "#8CC8DB" :italic t))))
+     (diredp-file-name ((t (:foreground "#A9D1DF"))))
+     (diredp-file-suffix ((t (:foreground "#8B769F"))))
+     (diredp-dir-priv
+      ((t (:background nil :italic t :foreground "#6096BF"))))
+     (diredp-link-priv ((t (:foreground "#287373"))))
+     (diredp-rare-priv ((t (:foreground "#BF4D80" :background nil))))
+     (diredp-other-priv ((t (:foreground "#477AB3" :background nil))))
+     (diredp-read-priv ((t (:background nil :foreground "#6096BF"))))
+     (diredp-write-priv ((t (:background nil :foreground "#D7AFD7"))))
+     (diredp-exec-priv ((t (:background nil :foreground "#5E468C"))))
+     (diredp-no-priv ((t (:background nil :foreground "#DDEEDD"))))
+     (diredp-date-time ((t (:foreground "#8CC8DB"))))
+     (diredp-flag-mark ((t (:background nil :foreground "#8CC8DB"))))
+     (diredp-flag-mark-line ((t (:background "#8CC8DB" :foreground "#1A1A1A"))))
+     (diredp-deletion ((t (:background nil :foreground "#FF00FF"))))
+     (diredp-deletion-file-name ((t (:background nil :foreground "#BF4D80"))))
+     (diredp-ignored-file-name ((t (:foreground "#808080"))))
+     (diredp-compressed-file-suffix ((t (:foreground "#D7AF87"))))
+     (diredp-executable-tag ((t (:foreground "#BF4D80"))))
+     (diredp-symlink ((t (:foreground "#287373"))))
+
+     (magit-section-title ((t (:foreground "#86A2BE"))))
+     (magit-branch ((t (:foreground "#D7AFD7"))))
+     (magit-item-highlight ((t (:background "#353535"))))
+     (magit-log-sha1 ((t (:foreground "#AF87D7"))))
+
+     (erc-notice-face ((t (:foreground "#808080"))))
+     (erc-timestamp-face ((t (:foreground "#9C75DD"))))
+     (erc-direct-msg-face ((t (:foreground "#BF4D80"))))
+     (erc-nick-msg-face ((t (:foreground "#BF4D80" :bold t))))
+     (erc-pal-face ((t (:foreground "#395573"))))
+     (erc-input-face ((t (:foreground "#86A2BE" :italic t))))
+     (erc-current-nick-face ((t (:foreground "#BF4D80"))))
+     (erc-nick-default-face ((t (:foreground "#8CC8DB"))))
+     (erc-my-nick-face ((t (:foreground "#BF4D80" :italic t))))
+     (erc-prompt-face ((t (:background nil :foreground "#6096BF"))))
+
+     (font-latex-warning-face ((t (:foreground "#FF00FF"))))
+     (font-latex-italic-face
+      ((t (:foreground "#AF87D7" :italic t :underline nil))))
+     (font-latex-bold-face ((t (:foreground "#849DA2" :bold t))))
+     (font-latex-sectioning-1-face ((t (:foreground "#395573"))))
+     (font-latex-sectioning-2-face ((t (:foreground "#31658C"))))
+     (font-latex-sectioning-3-face ((t (:foreground "#6096BF"))))
+     (font-latex-sectioning-4-face ((t (:foreground "#86A2BE"))))
+     (font-latex-sectioning-5-face ((t (:foreground "#A9D1DF"))))
+     (font-latex-sedate-face ((t (:foreground "#6096BF"))))
+
+     ;; (markdown-inline-code-face ((t (:foreground "#5EA6EA"))))
+     ;; (markdown-pre-face ((t (:foreground "#5EA6EA"))))
+
+     (nxml-processing-instruction-delimiter-face ((t (:foreground "#31658C"))))
+     (nxml-tag-delimiter-face ((t (:foreground "#31658C"))))
+     (nxml-element-local-name-face ((t (:foreground "#31658C"))))
+     (nxml-attribute-local-name-face ((t (:foreground "#86A2BE"))))
+     (nxml-processing-instruction-target-face ((t (:foreground "#31658C"))))
+     (nxml-attribute-value-face ((t (:foreground "#9C75DD"))))
+     (nxml-attribute-value-delimiter-face ((t (:foreground "#9C75DD"))))
+     (nxml-comment-content-face ((t (:foreground "#808080"))))
+     (nxml-comment-delimiter-face ((t (:foreground "#808080"))))
+     (nxml-entity-ref-name-face ((t (:foreground "#D7AF87"))))
+     (nxml-entity-ref-delimiter-face ((t (:foreground "#D7AF87"))))
+     ;; (nxml-prolog-literal-content-face ((t (:foreground "#808080"))))
+     ;; (nxml-prolog-keyword-face ((t (:foreground "#5EA6EA"))))
+     ;; (nxml-namespace-attribute-xmlns-face ((t (:foreground "#5EA6EA"))))
+
+     (clojure-parens ((t (:foreground "#4E4E4E"))))
+     (clojure-keyword ((t (:foreground "#45b8f2"))))
+     (clojure-double-quote ((t (:foreground "#5E468C"))))
+     (clojure-special ((t (:foreground "#AF87D7")))))))
+
+
 (provide 'custom-themes)
