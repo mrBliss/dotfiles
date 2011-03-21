@@ -1,5 +1,5 @@
 
-//To check if this page was successfully loaded
+// To check if this page was successfully loaded
 loaded_init = false;
 
 require("clicks-in-new-buffer.js");
@@ -13,45 +13,45 @@ require("page-modes/google-reader.js");
 require("page-modes/wikipedia.js");
 require("page-modes/github.js");
 
-//Homepage
+// Homepage
 homepage = "http://www.google.be";
 
-//Correct the path on Windows
+// Correct the path on Windows
 if (WINDOWS && cwd.path.indexOf("Roaming") < 0) {
     cwd.append("AppData");
     cwd.append("Roaming");
 }
 
-//Use the home row as base for the hint numbers
+// Use the home row as base for the hint numbers
 hint_digits = "jklmqsdf";
 
-//Complete new urls with history
+// Complete new urls with history
 url_completion_use_history = true;
 url_completion_use_bookmarks = false;
 
-//External editor
+// External editor
 editor_shell_command = "emacsclient -c";
 view_source_use_external_editor = true;
 
-//Show xkcd titles
+// Show xkcd titles
 xkcd_add_title = true;
 
-//Show url of highlighted node during the hints interaction
+// Show url of highlighted node during the hints interaction
 hints_display_url_panel = true;
 
-//Open downloads in a buffer
+// Open downloads in a buffer
 download_buffer_automatic_open_target = OPEN_NEW_BUFFER;
 
-//Autocompletion in the minibuffer
+// Autocompletion in the minibuffer
 minibuffer_auto_complete_default = true;
 
-//Enable middle click
+// Enable middle click
 clicks_in_new_buffer_target = OPEN_NEW_BUFFER_BACKGROUND;
 
-//Open links opened in applications in a new buffer
+// Open links opened in applications in a new buffer
 url_remoting_fn = load_url_in_new_buffer;
 
-//Sessions
+// Sessions
 let (dir = cwd.clone()) {
     dir.append(".conkerorrc");
     dir.append("sessions");
@@ -59,24 +59,24 @@ let (dir = cwd.clone()) {
 };
 session_auto_save_auto_load = "prompt";
 
-//Automatically follow "did you mean" links on wikipedia
+// Automatically follow "did you mean" links on wikipedia
 wikipedia_enable_didyoumean = true;
 
-//Don't quit when killing the last buffer
+// Don't quit when killing the last buffer
 can_kill_last_buffer = false;
 
-//Store more history for the minibuffer
+// Store more history for the minibuffer
 minibuffer_history_max_items = 1000;
 
-//Show favicons on tabs
+// Show favicons on tabs
 tab_bar_show_icon = true;
 
-//Remove clock from mode-line and add loading_count and buffer_count
+// Remove clock from mode-line and add loading_count and buffer_count
 remove_hook("mode_line_hook", mode_line_adder(clock_widget));
 add_hook("mode_line_hook", mode_line_adder(loading_count_widget), true);
 add_hook("mode_line_hook", mode_line_adder(buffer_count_widget), true);
 
-//Confirm quit
+// Confirm quit
 add_hook("before_quit_hook",
          function () {
              var w = get_recent_conkeror_window();
@@ -87,15 +87,15 @@ add_hook("before_quit_hook",
              yield co_return(result);
          });
 
-//Default webjump
+// Default webjump
 read_url_handler_list = [read_url_make_default_webjump_handler("g")];
 
-//Don't change the title (in the title bar)
+// Don't change the title (in the title bar)
 title_format_fn = function(window) {return "conkeror";};
 
-//Use zathura for PDF documents on GNU/Linux
+// Use zathura for PDF documents on GNU/Linux
 if (get_os() == "Linux")
     external_content_handlers.set("application/pdf", "zathura");
 
-//To check if this page was successfully loaded
+// To check if this page was successfully loaded
 loaded_init = true;

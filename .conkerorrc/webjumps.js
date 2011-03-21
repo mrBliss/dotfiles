@@ -1,7 +1,7 @@
-//To check if this page was successfully loaded
+// To check if this page was successfully loaded
 loaded_webjumps = false;
 
-//Webjumps
+// Webjumps
 define_webjump("imdb", "http://imdb.com/find?q=%s",
               $description = "Search for movies and actors on IMDB");
 define_webjump("yt", "http://www.youtube.com/results?search_query=%s&search=Search",
@@ -62,7 +62,7 @@ define_webjump("wolf", "http://www.wolframalpha.com/input/?i=%s",
                $description = "Calculate something with WolframAlpha");
 
 
-//Add missing descriptions
+// Add missing descriptions
 webjumps['conkerorwiki'].description = "Search the Conkeror Wiki";
 webjumps['dictionary'].description = "Look up a word in an online dictionary";
 webjumps['image'].description = "Search for images on Google Images";
@@ -70,14 +70,14 @@ webjumps['maps'].description = "Look up a place on Google Maps";
 webjumps['slang'].description = "Look up slang word in the Urban Dictionary";
 
 
-//TODO XPather
+// TODO XPather
 
-//Remove unused webjumps
+// Remove unused webjumps
 var unused_webjumps = ['answers','bugzilla','buildd','buildd-ports','clhs','cliki','clusty','creativecommons','debbugs','debfile','debpkg','debpopcon','debpts','debqa','freshmeat','google','kuro5hin','launchpad','lucky','ratpoisonwiki','savannah','sadelicious','scholar','sdelicious','slashdot','sourceforge','stumpwmwiki','ubuntubugs','ubuntufile','ubuntupkg','wiktionary','yahoo'];
 
 for (var i=0; i<unused_webjumps.length; i++) {
     delete webjumps[unused_webjumps[i]];
 }
 
-//To check if this page was successfully loaded
+// To check if this page was successfully loaded
 loaded_webjumps = true;

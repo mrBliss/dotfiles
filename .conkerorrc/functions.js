@@ -1,13 +1,13 @@
-//To check if this page was successfully loaded
+// To check if this page was successfully loaded
 loaded_functions = false;
 
-//Duplicate buffer
+// Duplicate buffer
 interactive("duplicate-buffer", "Duplicate buffer",
             function (I) {
                 browser_object_follow(I.buffer, OPEN_NEW_BUFFER, I.buffer.current_uri.spec);
             });
 
-//Go to the root of a URL
+// Go to the root of a URL
 define_browser_object_class("root-url",
                             "Browser object which returns the root of a URL.",
                             function(I, prompt) {
@@ -18,7 +18,7 @@ interactive("root",
             "find-url",
             $browser_object = browser_object_root_url);
 
-//Delete dom object
+// Delete dom object
 interactive("delete", null,
     function (I) {
         var elem = yield read_browser_object(I);
@@ -26,7 +26,7 @@ interactive("delete", null,
     },
     $browser_object = browser_object_dom_node);
 
-//Check if the rc was valid, i.e. all the js files loaded
+// Check if the rc was valid, i.e. all the js files loaded
 function valid_rc (window) {
     var failed = "";
     var msg = "Valid RC";
@@ -52,7 +52,7 @@ interactive("new-frame",
                 browser_object_follow(I.buffer, OPEN_NEW_WINDOW, "about:blank");
             });
 
-//Opens a new buffer with the selected image
+// Opens a new buffer with the selected image
 interactive("view-image", "View the image in a buffer",
     function (I) {
         var image = yield read_browser_object(I);
@@ -62,17 +62,31 @@ interactive("view-image", "View the image in a buffer",
     $prompt = "View image:");
 
 interactive("scrollDownMore",
-            "Scroll down more than one line, less than a page",
+            "Scroll down 10 lines",
             function (I) {
                 for (var i = 1; i <= 10; i++)
                 call_builtin_command(I.window, "cmd_scrollLineDown");
             });
 
 interactive("scrollUpMore",
-            "Scroll up more than one line, less than a page",
+            "Scroll up 10 lines",
             function (I) {
                 for (var i = 1; i <= 10; i++)
                 call_builtin_command(I.window, "cmd_scrollLineUp");
+            });
+
+interactive("scrollLeftMore",
+            "Scroll left 10 times",
+            function (I) {
+                for (var i = 1; i <= 10; i++)
+                call_builtin_command(I.window, "cmd_scrollLeft");
+            });
+
+interactive("scrollRightMore",
+            "Scroll right 10 times",
+            function (I) {
+                for (var i = 1; i <= 10; i++)
+                call_builtin_command(I.window, "cmd_scrollRight");
             });
 
 interactive("add-google-bookmark",
@@ -129,5 +143,5 @@ interactive("subscribe-rss",
             });
 
 
-//To check if this page was successfully loaded
+// To check if this page was successfully loaded
 loaded_functions = true;

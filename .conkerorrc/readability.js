@@ -1,4 +1,4 @@
-//Readability
+// Readability
 // http://lab.arc90.com/experiments/readability/
 interactive("readability_arc90",
             "Readability is a simple tool that makes reading on the web more enjoyable by removing the clutter around what you are reading",

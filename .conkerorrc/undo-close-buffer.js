@@ -8,10 +8,10 @@
  * restore with search-killed-buffer
  *
  */
-//To check if this page was successfully loaded
+// To check if this page was successfully loaded
 loaded_undo_close_buffer = false;
 
-//Don't overwrite the saved_buffers when reloading the rc file
+// Don't overwrite the saved_buffers when reloading the rc file
 if (typeof saved_buffers == "undefined")
     var saved_buffers = [];
 var max_saved_buffers = 30;
@@ -31,7 +31,7 @@ function get_last_saved_buffer() {
         return "about:blank";
 }
 
-//Return all the distinct elements of the given array
+// Return all the distinct elements of the given array
 function distinct(a){
     a.sort();
     for(var i = 1;i < a.length;){
@@ -69,5 +69,5 @@ interactive("search-killed-buffer",
                 browser_object_follow(I.buffer, OPEN_NEW_BUFFER, found_buffer);
             });
 
-//To check if this page was successfully loaded
+// To check if this page was successfully loaded
 loaded_undo_close_buffer = true;
