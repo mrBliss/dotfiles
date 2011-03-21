@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: test
+# --
+@Test
+public void ${1:test}() {
+    $0
+}
