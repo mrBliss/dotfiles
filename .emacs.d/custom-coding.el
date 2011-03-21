@@ -70,7 +70,11 @@
 ;; java-mode rebinds C-M-h to something else than backward-kill-word
 (defun java-custom ()
   (define-key java-mode-map (kbd "C-M-h") 'backward-kill-word)
-  (setq tab-width 4))
+  (setq tab-width 4)
+  ;; Treat Java 1.5 @-style annotations as comments
+  (setq c-comment-start-regexp "(@|/(/|[*][*]?))")
+  (modify-syntax-entry ?@ "< b" java-mode-syntax-table))
+
 (add-hook 'java-mode-hook 'java-custom)
 
 
