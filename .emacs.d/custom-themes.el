@@ -936,7 +936,7 @@ created 2009-06-23."
   "A dark, violet and blue color-theme by mrBliss."
   (interactive)
   (color-theme-install
-   '(color-theme-new-theme
+   '(color-theme-dark-violet
      ((background-color . "#1C1C1C")
       (foreground-color . "#DDEEDD")
       (cursor-color . "#ffffff"))
@@ -961,7 +961,7 @@ created 2009-06-23."
      ;; (font-lock-doc-string-face ((t (:foreground "#5EA6EA"))))
 
      (region ((t (:background "#477AB3" :foreground "#FFFFFF"))))
-     ;; (highlight ((t (:background "#477AB3" :foreground "#ffffff"))))
+     (highlight ((t (:background "#477AB3" :foreground "#ffffff"))))
      (highlight-80+ ((t (:background "#BF4D80"))))
      (hl-line ((t (:background "#161616"))))
 
@@ -1017,14 +1017,15 @@ created 2009-06-23."
      (magit-item-highlight ((t (:background "#353535"))))
      (magit-log-sha1 ((t (:foreground "#AF87D7"))))
 
-     (erc-notice-face ((t (:foreground "#808080"))))
-     (erc-timestamp-face ((t (:foreground "#9C75DD"))))
+     (erc-default-face ((t (:foreground "#999999"))))
+     (erc-notice-face ((t (:foreground "#3D3D3D"))))
+     (erc-timestamp-face ((t (:foreground "#BF4D80"))))
      (erc-direct-msg-face ((t (:foreground "#BF4D80"))))
      (erc-nick-msg-face ((t (:foreground "#BF4D80" :bold t))))
-     (erc-pal-face ((t (:foreground "#395573"))))
+     (erc-pal-face ((t (:foreground "#53A6A6"))))
      (erc-input-face ((t (:foreground "#86A2BE" :italic t))))
      (erc-current-nick-face ((t (:foreground "#BF4D80"))))
-     (erc-nick-default-face ((t (:foreground "#8CC8DB"))))
+     (erc-nick-default-face ((t (:foreground "#477AB3"))))
      (erc-my-nick-face ((t (:foreground "#BF4D80" :italic t))))
      (erc-prompt-face ((t (:background nil :foreground "#6096BF"))))
 

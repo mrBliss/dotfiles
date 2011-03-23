@@ -26,7 +26,7 @@
             ('darwin (set-default-font "QuadraatSMono-Regular-12")))
           (tool-bar-mode -1)
           (set-scroll-bar-mode nil)
-         (color-theme-bespin))
+         (color-theme-dark-violet))
       (color-theme-ir-black))))
 (add-hook 'after-make-frame-functions 'appearance)
 
