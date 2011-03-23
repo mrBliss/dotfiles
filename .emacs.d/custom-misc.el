@@ -114,6 +114,8 @@
 ;;  yank previous killed text when searching (C-s/r): M-y
 ;;  toggle C-s/r to regex: M-r
 ;;  edit search string: M-e
+;;  number rows with CUA: M-n
+;;  close begin block (AUCTeX): C-x ]
 ;;  ------------------------------
 ;;  IDO
 ;;  case-sensitive: M-c
