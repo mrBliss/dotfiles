@@ -35,7 +35,7 @@
 ;; Use Zathura as default PDF viewer on GNU/Linux, Skim on OS X.
 (setq TeX-view-program-list
       (list (if (eq system-type 'darwin)
-                '("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b")
+                '("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline %q")
               '("Zathura" "zathura %o"))))
 
 (unless (boundp 'TeX-view-program-selection)
@@ -43,6 +43,21 @@
 (push (list 'output-pdf (caar TeX-view-program-list))
       TeX-view-program-selection)
 
+;; Synctex for Skim
+(when (eq system-type 'darwin)
+
+  (defun skim-make-url ()
+    (concat
+     (TeX-current-line)
+     " "
+     (expand-file-name (funcall file (TeX-output-extension) t)
+                       (file-name-directory (TeX-master-file)))
+     " "
+     (buffer-file-name)))
+
+  (add-to-list 'TeX-expand-list '("%q" skim-make-url))
+
+  (setq LaTeX-command "latex -synctex=1"))
 
 
 (provide 'custom-latex)
