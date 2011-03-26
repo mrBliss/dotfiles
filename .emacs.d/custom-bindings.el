@@ -182,6 +182,8 @@
 ;; Align-regexp with C-c a
 (global-set-key (kbd "C-c a") 'align-regexp)
 
+;; Search for a file with C-c M-f
+(global-set-key (kbd "C-c M-f") 'find-lisp-find-dired)
 
 
 (provide 'custom-bindings)

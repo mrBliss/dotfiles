@@ -116,6 +116,8 @@
 ;;  edit search string: M-e
 ;;  number rows with CUA: M-n
 ;;  close begin block (AUCTeX): C-x ]
+;;  find files: find-name-dired, find-lisp-find-dired
+;;  find only directories: find-lisp-find-dired-subdirectories
 ;;  ------------------------------
 ;;  IDO
 ;;  case-sensitive: M-c
@@ -213,6 +215,10 @@
   (set (make-local-variable 'compile-command)
        (concat "xrdb -merge " buffer-file-name)))
 (add-hook 'conf-xdefaults-mode-hook 'xdefaults-compile-hook)
+
+;; Make find faster
+(require 'find-dired)
+(setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld"))
 
 
 (provide 'custom-misc)
