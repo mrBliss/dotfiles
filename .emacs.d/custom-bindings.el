@@ -176,6 +176,9 @@
 ;; Open a file as root with C-x M-f
 (global-set-key (kbd "C-x M-f") 'sudo-edit)
 
+;; Open a directory with dired as root with C-x M-d
+(global-set-key (kbd "C-x M-d") 'sudo-dired)
+
 ;; Replace the preceding sexp with its evaluated result with C-x M-e.
 (global-set-key (kbd "C-x M-e") 'eval-and-replace)
 

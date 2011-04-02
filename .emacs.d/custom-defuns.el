@@ -116,6 +116,10 @@ from http://amitp.blogspot.com/2007/03/emacs-dont-kill-unsaved-buffers.html."
   (find-alternate-file (concat "/sudo:root@localhost:"
                                (buffer-file-name (current-buffer)))))
 
+(defun sudo-dired (&optional arg)
+  (interactive "p")
+  (dired (concat "/sudo:root@localhost:" (ido-read-directory-name "Directory: "))))
+
 (defun sum-column ()
   "Sums a column of numbers starting at point"
   (interactive)
