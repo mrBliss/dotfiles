@@ -121,10 +121,14 @@ imenu index, then jumps to that symbol's location."
            (name . "^\\*scratch\\*$")
            (name . "\\.emacs$")
            (name . ".+\\.el$")))
+         ("LaTeX"
+          (name . ".+\\.tex$"))
          ("Dired"
           (mode . dired-mode))
          ("Magit"
           (name . ".+magit.+"))
+         ("Mingus"
+          (name . "^\\*Mingus"))
          ("Kill these"
           (or
            (name . "\\*Help\\*$")
