@@ -1,6 +1,6 @@
-;;; Platform or version dependent sutff
+;;; Platform or version dependent stuff
 
-;; Cygwin as shell on Windows
+;; Use Cygwin as shell on Windows
 (when (or (eq system-type 'cygwin)
           (eq system-type 'windows-nt))
   (require 'custom-cygwin))
@@ -15,14 +15,14 @@
 (when (not (eq system-type 'cygwin))
   (tooltip-mode -1))
 
-;; Mac: use Cmd as Meta and Option as modifier key
+;; OS X specific
 (when (eq system-type 'darwin)
+  ;; Mac: use Cmd as Meta and Option as modifier key
   (setq mac-command-modifier 'meta)
   (setq ns-alternate-modifier 'none)
-  (setq ns-command-modifier 'meta))
+  (setq ns-command-modifier 'meta)
 
-;; Add some folders to the PATH on OS X
-(when (eq system-type 'darwin)
+  ;; Add some folders to the PATH on OS X
   (setenv "PATH"
           (concat (getenv "PATH")
                   ":/usr/local/bin/:/Users/Thomas/.cljr/bin:/usr/texbin/"))
@@ -34,7 +34,14 @@
 (when (eq system-type 'gnu/linux)
   ;; Kill to the clipboard on Linux
   (setq x-select-enable-clipboard t)
-  ;; Use Conkeror on linux
+  ;; Load w3m
+  (require 'w3m-load))
+
+;; Arch specific
+(when (string= system-name "gideon")
+  ;; Mingus is a frontend for GNU Emacs to the Music Player daemon.
+  (autoload 'mingus "mingus-stays-home" nil t)
+  ;; Use Conkeror as default browser
   (setq browse-url-browser-function 'browse-url-generic
         browse-url-generic-program "/usr/bin/conkeror"))
 
@@ -46,11 +53,6 @@
 (when (eq system-type 'windows-nt)
   (server-start))
 
-;; AUCTeX is only installed on Linux and Mac OS X
-(when (or (eq system-type 'gnu/linux)
-          (eq system-type 'darwin))
-  (require 'custom-latex))
-
 ;; Only available in Emacs 23.2 and higher
 (when (or (> emacs-major-version 23)
           (and (= emacs-major-version 23)
@@ -60,8 +62,9 @@
   (require 'wrap-region)
   (wrap-region-global-mode t)
 
-  ;; Also enable wrap-region for earmuffs
+  ;; Also enable wrap-region for earmuffs and `
   (wrap-region-add-punctuation "*" "*")
+  (wrap-region-add-punctuation "`" "`")
 
   ;; Auto save a list of visited files
   (turn-on-save-visited-files-mode)
