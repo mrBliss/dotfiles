@@ -943,7 +943,7 @@ created 2009-06-23."
      (default ((t (nil))))
 
      (modeline
-      ((t (:background "#4E4E4E" :foreground "FFFFFF"
+      ((t (:background "#4E4E4E" :foreground "#FFFFFF"
                        :box (:line-width 1 :color "#3D3D3D" :style nil)))))
      (mode-line-inactive
       ((t (:background "#353535" :foreground "#DDEEDD"
@@ -1057,6 +1057,11 @@ created 2009-06-23."
      ;; (nxml-prolog-literal-content-face ((t (:foreground "#808080"))))
      ;; (nxml-prolog-keyword-face ((t (:foreground "#5EA6EA"))))
      ;; (nxml-namespace-attribute-xmlns-face ((t (:foreground "#5EA6EA"))))
+
+     (w3m-anchor ((t (:foreground "#6096BF" ))))
+     (w3m-header-line-location-title ((t (:foreground "#9C75DD"))))
+     (w3m-header-line-location-content ((t (:foreground "#D7AF87"))))
+     (w3m-image-anchor ((t (:background "#31658C" :foreground "#DDEEDD"))))
 
      (clojure-parens ((t (:foreground "#4E4E4E"))))
      (clojure-keyword ((t (:foreground "#45b8f2"))))
