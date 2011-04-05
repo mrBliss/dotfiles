@@ -182,6 +182,9 @@
   (setq fill-column 72)) ;; rfc 1855 for usenet messages
 (add-hook 'post-mode-hook 'post-hook)
 
+;; tbemail for editing Thunderbird emails
+(require 'tbemail)
+
 ;; Display el instead of Emacs Lisp in the mode-line
 (defun shorten-emacs-lisp-mode-name ()
   (setq mode-name "el"))
