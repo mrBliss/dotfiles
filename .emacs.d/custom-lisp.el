@@ -83,4 +83,12 @@
 (define-key lisp-mode-map (kbd "C-j") 'slime-eval-print-last-expression)
 
 
+(defadvice slime-documentation-lookup (around slime-documentation-lookup-around)
+  "Use w3m for browsing the Common Lisp HyperSpec."
+  (let ((browse-url-browser-function 'w3m-browse-url))
+    ad-do-it))
+
+(ad-activate 'slime-documentation-lookup)
+
+
 (provide 'custom-lisp)

@@ -61,8 +61,16 @@
   "javadoc-help" "Set pre-defined urls." t)
 
 (eval-after-load "javadoc-lookup"
-  '(javadoc-set-predefined-urls
-    '("http://download.oracle.com/javase/6/docs/api")))
+  '(progn
+     (javadoc-set-predefined-urls
+      '("http://download.oracle.com/javase/6/docs/api"))
+
+     (defadvice jdh-smenu-open-url (around jdh-smenu-open-url-around)
+       "Use w3m for browsing JavaDoc."
+       (let ((browse-url-browser-function 'w3m-browse-url))
+         ad-do-it))
+
+     (ad-activate 'jdh-smenu-open-url)))
 
 ;; Look up a Java Class in the JDK Docs with C-c C-d j
 (global-set-key (kbd "C-c C-d j") 'javadoc-lookup)
