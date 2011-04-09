@@ -1,12 +1,12 @@
 ;;; clojure-mode.el --- Major mode for Clojure code
 
-;; Copyright (C) 2007-2010 Jeffrey Chu, Lennart Staflin, Phil Hagelberg
+;; Copyright (C) 2007-2011 Jeffrey Chu, Lennart Staflin, Phil Hagelberg
 ;;
 ;; Authors: Jeffrey Chu <jochu0@gmail.com>
 ;;          Lennart Staflin <lenst@lysator.liu.se>
 ;;          Phil Hagelberg <technomancy@gmail.com>
 ;; URL: http://www.emacswiki.org/cgi-bin/wiki/ClojureMode
-;; Version: 1.8.0
+;; Version: 1.8.1
 ;; Keywords: languages, lisp
 
 ;; This file is not part of GNU Emacs.
@@ -16,32 +16,31 @@
 ;; Provides font-lock, indentation, and navigation for the Clojure
 ;; language. (http://clojure.org)
 
-;; See also the swank-clojure package for better interaction with
-;; Clojure subprocesses.
-
 ;; Users of older Emacs (pre-22) should get version 1.4:
 ;; http://github.com/technomancy/clojure-mode/tree/1.4
 
-;; Install using package.el. You will need to add repo.technomancy.us
-;; to your archive list:
+;; Use package.el. You'll need to add Marmalade to your archives:
 
-;; (add-to-list 'package-archives "http://repo.technomancy.us/emacs")
+;; (require 'package)
+;; (add-to-list 'package-archives
+;;              '("marmalade" . "http://marmalade-repo.org/packages/"))
 
 ;; If you use a version of Emacs prior to 24 that doesn't include
-;; package.el, you can get it from http://bit.ly/pkg-el. If you have
+;; package.el, you can get it from http://bit.ly/pkg-el23. If you have
 ;; an older package.el installed from tromey.com, you should upgrade
 ;; in order to support installation from multiple sources.
 
-;; Paredit users:
-
-;; Download paredit v21 or greater
-;;    http://mumble.net/~campbell/emacs/paredit.el
+;; Using clojure-mode with paredit is highly recommended. It is also
+;; available using package.el from the above archive.
 
 ;; Use paredit as you normally would with any other mode; for instance:
 ;;
 ;;   ;; require or autoload paredit-mode
-;;   (defun lisp-enable-paredit-hook () (paredit-mode 1))
-;;   (add-hook 'clojure-mode-hook 'lisp-enable-paredit-hook)
+;;   (defun turn-on-paredit () (paredit-mode 1))
+;;   (add-hook 'clojure-mode-hook 'turn-on-paredit)
+
+;; See slime-repl (also available from the same package archive) for
+;; better interaction with subprocesses.
 
 ;;; License:
 
@@ -84,7 +83,7 @@ Clojure to load that file."
   :type 'string
   :group 'clojure-mode)
 
-(defcustom clojure-mode-use-backtracking-indent nil
+(defcustom clojure-mode-use-backtracking-indent t
   "Set to non-nil to enable backtracking/context sensitive indentation."
   :type 'boolean
   :group 'clojure-mode)
@@ -132,7 +131,7 @@ Clojure to load that file."
 This holds a cons cell of the form `(DIRECTORY . FILE)'
 describing the last `clojure-load-file' or `clojure-compile-file' command.")
 
-(defvar clojure-def-regexp "^\\s *\\((def\\S *\\s +\\(\[^ \n\t\]+\\)\\)"
+(defvar clojure-def-regexp "^\\s *(def\\S *\\s +\\(?:\\^\\S +\\s +\\)?\\([^ \n\t]+\\)"
   "A regular expression to match any top-level definitions.")
 
 (defvar clojure-test-ns-segment-position -1
@@ -143,6 +142,10 @@ numbers count from the end:
 
   leiningen.compile -> leiningen.test.compile (uses 1)
   clojure.http.client -> clojure.http.test.client (uses -1)")
+
+(defun clojure-mode-version ()
+  "Currently package.el doesn't support prerelease version numbers."
+  "1.8.1-SNAPSHOT")
 
 ;;;###autoload
 (defun clojure-mode ()
@@ -159,25 +162,21 @@ if that value is non-nil."
   (interactive)
   (kill-all-local-variables)
   (use-local-map clojure-mode-map)
-  (setq major-mode 'clojure-mode)
-  (setq mode-name "Clojure")
+  (setq mode-name "Clojure"
+        major-mode 'clojure-mode
+        imenu-create-index-function
+        (lambda ()
+          (imenu--generic-function `((nil ,clojure-def-regexp 1))))
+        local-abbrev-table clojure-mode-abbrev-table
+        indent-tabs-mode nil)
   (lisp-mode-variables nil)
   (set-syntax-table clojure-mode-syntax-table)
-
-  (setq local-abbrev-table clojure-mode-abbrev-table)
-
   (set (make-local-variable 'comment-start-skip)
        "\\(\\(^\\|[^\\\\\n]\\)\\(\\\\\\\\\\)*\\)\\(;+\\|#|\\) *")
   (set (make-local-variable 'lisp-indent-function)
        'clojure-indent-function)
   (set (make-local-variable 'lisp-doc-string-elt-property)
        'clojure-doc-string-elt)
-
-  (setq lisp-imenu-generic-expression
-        `((nil ,clojure-def-regexp 2)))
-  (setq imenu-create-index-function
-        (lambda ()
-          (imenu--generic-function lisp-imenu-generic-expression)))
 
   (clojure-mode-font-lock-setup)
 
@@ -310,7 +309,8 @@ elements of a def* forms."
                 (regexp-opt '("defn" "defn-" "def" "def-" "defonce"
                               "defmulti" "defmethod" "defmacro"
                               "defstruct" "deftype" "defprotocol"
-                              "defrecord"
+                              "defrecord" "deftest"
+                              "slice" "def\\[a-z\\]"
                               "defalias" "defhinted" "defmacro-"
                               "defn-memo" "defnk" "defonce-"
                               "defstruct-" "defunbound" "defunbound-"
@@ -675,6 +675,22 @@ check for contextual indenting."
      ,@(mapcar (lambda (x) `(put-clojure-indent
                         (quote ,(first x)) ,(second x))) kvs)))
 
+(defun add-custom-clojure-indents (name value)
+  (setq clojure-defun-indents value)
+  (mapcar (lambda (x)
+            (put-clojure-indent x 'defun))
+          value))
+
+(defcustom clojure-defun-indents nil
+  "List of symbols to give defun-style indentation to in Clojure
+code, in addition to those that are built-in. You can use this to
+get emacs to indent your own macros the same as it does the
+built-ins like with-open. To set manually from lisp code,
+use (put-clojure-indent 'some-symbol 'defun)."
+  :type '(repeat symbol)
+  :group 'clojure-mode
+  :set 'add-custom-clojure-indents)
+
 (define-clojure-indent
   ;; built-ins
   (ns 1)
@@ -739,11 +755,50 @@ check for contextual indenting."
 
 
 
-;; A little bit of SLIME help:
-;; swank-clojure.el should now only be needed if you want to launch from Emacs
+(defconst *namespace-name-regex*
+  (rx line-start
+      "("
+      (zero-or-one (group (regexp "clojure.core/")))
+      (zero-or-one (submatch "in-"))
+      "ns"
+      (zero-or-one "+")
+      (one-or-more (any whitespace "\n"))
+      (zero-or-more (or (submatch (zero-or-one "#")
+                                  "^{"
+                                  (zero-or-more (not (any "}")))
+                                  "}")
+                        (zero-or-more "^:"
+                                      (one-or-more (not (any whitespace)))))
+                    (one-or-more (any whitespace "\n")))
+      ;; why is this here? oh (in-ns 'foo) or (ns+ :user)
+      (zero-or-one (any ":'"))
+      (group (one-or-more (not (any "()\"" whitespace))) word-end)))
+
+;; for testing *namespace-name-regex*, you can evaluate this code and make
+;; sure foo (or whatever the namespace name is) shows up in results. some of
+;; these currently fail.
+;; (mapcar (lambda (s) (let ((n (string-match *namespace-name-regex* s)))
+;;                       (if n (match-string 4 s))))
+;;         '("(ns foo)"
+;;           "(ns
+;; foo)"
+;;           "(ns foo.baz)"
+;;           "(ns ^:bar foo)"
+;;           "(ns ^:bar ^:baz foo)"
+;;           "(ns ^{:bar true} foo)"
+;;           "(ns #^{:bar true} foo)"
+;;           "(ns #^{:fail {}} foo)"
+;;           "(ns ^{:fail2 {}} foo.baz)"
+;;           "(ns ^{} foo)"
+;;           "(ns ^{:skip-wiki true}
+;;   aleph.netty
+;; "
+;;           "(ns
+;;  foo)"
+;;     "foo"))
 
 (defun clojure-find-package ()
-  (let ((regexp "^(\\(clojure.core/\\)?\\(in-\\)?ns\\+?[ \t\n\r]+\\(#\\^{[^}]+}[ \t\n\r]+\\)?[:']?\\([^()\" \t\n]+\\>\\)"))
+  (let ((regexp *namespace-name-regex*))
     (save-excursion
       (when (or (re-search-backward regexp nil t)
                 (re-search-forward regexp nil t))
