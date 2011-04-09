@@ -60,7 +60,7 @@
 (autoload 'javadoc-set-predefined-urls
   "javadoc-help" "Set pre-defined urls." t)
 
-(eval-after-load "javadoc-lookup"
+(eval-after-load "javadoc-help"
   '(progn
      (javadoc-set-predefined-urls
       '("http://download.oracle.com/javase/6/docs/api"))

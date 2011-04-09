@@ -43,7 +43,9 @@
   (autoload 'mingus "mingus-stays-home" nil t)
   ;; Use Conkeror as default browser
   (setq browse-url-browser-function 'browse-url-generic
-        browse-url-generic-program "/usr/bin/conkeror"))
+        browse-url-generic-program "/usr/bin/conkeror")
+  ;; Extra Info directory
+  (push (expand-file-name "~/.info") Info-directory-list))
 
 ;; Bloody save-visited-files doesn't load on Linux
 (when (not (eq system-type 'gnu/linux))
