@@ -4,6 +4,7 @@
 ;; Created: Sat Dec 11 2010
 ;; Keywords: custom, tweaks, misc
 
+(autoload 'magit-status "magit" nil t)
 (autoload 'regex-tool "regex-tool" nil t)
 
 (require 'angry-fruit-salad)
@@ -222,6 +223,9 @@
 ;; Make find faster
 (require 'find-dired)
 (setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld"))
+
+;; Add magit Info directory
+(push (expand-file-name "~/.emacs.d/vendor/magit") Info-directory-list)
 
 
 (provide 'custom-misc)
