@@ -55,6 +55,8 @@
      " "
      (buffer-file-name)))
 
+  (unless (fboundp 'TeX-expand-list)
+    (setq TeX-expand-list nil))
   (add-to-list 'TeX-expand-list '("%q" skim-make-url))
 
   (setq LaTeX-command "latex -synctex=1"))
