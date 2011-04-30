@@ -39,12 +39,15 @@
      (slime-setup '(slime-repl))
      (setq slime-net-coding-system 'utf-8-unix)
      (setq slime-highlight-compiler-notes nil)))
+(add-hook 'slime-mode-hook 'set-up-slime-ac)
 
 ;; Slime-REPL tweaks
 (eval-after-load "slime-repl"
   '(progn
      (add-hook 'slime-repl-mode-hook 'slime-clojure-repl-setup)
      (tweak-clojure-syntax 'slime-repl-mode)))
+(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+
 
 ;; Tweak clojure syntax, replace (fn by (ƒ and highlight characters
 ;; beyond the 80 char limit
