@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: document
+# --
+\documentclass[${1:a4paper, titlepage}]{${2:article}}
+
+\usepackage[dutch]{babel}
+\usepackage{parskip}${3:
+\usepackage[oldstyle]{minion}
+}
+
+\begin{document}
+\selectlanguage{dutch}
+
+$0
+
+\end{document}
+
