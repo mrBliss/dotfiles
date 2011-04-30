@@ -7,16 +7,17 @@ fpath=($ZSH/functions $fpath)
 # TIP: Add files you don't want in git to .gitignore
 for config_file ($ZSH/lib/*.zsh) source $config_file
 
-# Load all of the plugins that were defined in ~/.zshrc
+# Add all defined plugins to fpath
 plugin=${plugin:=()}
-for plugin ($plugins) source $ZSH/plugins/$plugin.plugin.zsh
+for plugin ($plugins) fpath=($ZSH/plugins/$plugin $fpath)
 
-# Check for updates on initial load...
-if [ "$DISABLE_AUTO_UPDATE" = "true" ]
-then
-  return
-else
-  /usr/bin/env zsh $ZSH/tools/check_for_upgrade.sh
-fi
+# Load and run compinit
+autoload -U compinit
+compinit -i
 
-unset config_file
+# Load all of the plugins that were defined in ~/.zshrc
+for plugin ($plugins); do
+    if [ -f $ZSH/plugins/$plugin/$plugin.plugin.zsh ]; then
+        source $ZSH/plugins/$plugin/$plugin.plugin.zsh
+    fi
+done

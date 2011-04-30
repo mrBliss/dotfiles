@@ -9,8 +9,8 @@ alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
 alias emd='/Applications/Emacs.app/Contents/MacOS/Emacs --daemon'
 
 # Use emacsclient in a terminal window or nano
-export EDITOR='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t -a ""'
-export ALTERNATE_EDITOR='/Applications/Emacs.app/Contents/MacOS/Emacs --daemon; emacsclient -t'
+export EDITOR='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t'
+export ALTERNATE_EDITOR='/Applications/Emacs.app/Contents/MacOS/Emacs --daemon; /Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t -a ""'
 
 # Environment variables
 export JAVA_HOME=/Library/Java/Home/

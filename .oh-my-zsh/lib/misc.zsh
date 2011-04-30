@@ -12,6 +12,11 @@ setopt long_list_jobs
 export PAGER=less
 export LC_CTYPE=en_US.UTF-8
 
+## edit command line
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '\C-x\C-e' edit-command-line
+
 ## terminal support
 # case "$TERM" in
 #   xterm*|rxvt*)

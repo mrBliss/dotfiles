@@ -13,9 +13,6 @@ setopt complete_aliases
 
 WORDCHARS=''
 
-autoload -U compinit
-compinit -i
-
 zmodload -i zsh/complist
 
 ## case-insensitive (all),partial-word and then substring completion
@@ -35,11 +32,21 @@ zstyle ':completion:*:*:*:*:*' menu select
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
 zstyle ':completion:*:*:*:*:processes' command "ps -u `whoami` -o pid,user,comm,%cpu,cmd -w -w"
 
-# Load known hosts file for auto-completion with ssh and scp commands
-if [ -f ~/.ssh/known_hosts ]; then
-  zstyle ':completion:*' hosts $( sed 's/[, ].*$//' $HOME/.ssh/known_hosts )
-  zstyle ':completion:*:*:(ssh|scp):*:*' hosts `sed 's/^\([^ ,]*\).*$/\1/' ~/.ssh/known_hosts`
-fi
+# disable named-directories autocompletion
+zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
+cdpath=(.)
+
+# use /etc/hosts and known_hosts for hostname completion
+[ -r ~/.ssh/known_hosts ] && _ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
+[ -r /etc/hosts ] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
+hosts=(
+  "$_ssh_hosts[@]"
+  "$_etc_hosts[@]"
+  `hostname`
+  localhost
+)
+zstyle ':completion:*:hosts' hosts $hosts
+
 
 # Maven Completion
 function listMavenCompletions { reply=(cli:execute cli:execute-phase archetype:generate compile clean install test test-compile deploy package cobertura:cobertura jetty:run -Dmaven.test.skip=true -DarchetypeCatalog=http://tapestry.formos.com/maven-snapshot-repository -Dtest= `if [ -d ./src ] ; then find ./src -type f | grep -v svn | sed 's?.*/\([^/]*\)\..*?-Dtest=\1?' ; fi`); }

@@ -5,9 +5,10 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 export ZSH_THEME="thomas"
 
-# Comment this out to disable weekly auto-update checks
-export DISABLE_AUTO_UPDATE="true"
+# Enabled plugins
+plugins=(lein brew)
 
+# Load Zsh
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
