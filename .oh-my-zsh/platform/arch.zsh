@@ -37,7 +37,7 @@ alias yrtu='yaourt -Syu --aur'
 export PACMAN=pacman-color
 
 # Nice ls alternative
-alias lls='~/bin/lls'
+alias lls='~/.bin/lls'
 
 # Seriously ncmpcpp?
 alias nc=ncmpcpp
@@ -75,5 +75,3 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.defaultlaf=com.su
 # Reset MPD playlist
 alias mpdreset='mpc clear; mpc ls | mpc add'
 
-# Load infinality fonts settings
-source ~/.infinality-settings.sh
