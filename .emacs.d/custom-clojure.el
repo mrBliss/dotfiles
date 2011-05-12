@@ -14,6 +14,9 @@
 ;; Hide slime version mismatches
 (setq slime-protocol-version 'ignore)
 
+;; autocomplete for slime
+(require 'ac-slime)
+
 ;; More syntax coloring
 (defun tweak-clojure-syntax (mode)
   (mapcar (lambda (x) (font-lock-add-keywords mode x))
@@ -33,20 +36,25 @@
                                                (match-end 1) "¬") nil)))
             (("^[a-zA-Z0-9-.*+!_?]+?>" . 'slime-repl-prompt-face)))))
 
+
+(defun enable-slime-ac-hook ()
+  (set-up-slime-ac)
+  (auto-complete-mode 1))
+
 ;; Slime
 (eval-after-load "slime"
   '(progn
      (slime-setup '(slime-repl))
      (setq slime-net-coding-system 'utf-8-unix)
      (setq slime-highlight-compiler-notes nil)))
-(add-hook 'slime-mode-hook 'set-up-slime-ac)
+(add-hook 'slime-mode-hook 'enable-slime-ac-hook)
 
 ;; Slime-REPL tweaks
 (eval-after-load "slime-repl"
   '(progn
      (add-hook 'slime-repl-mode-hook 'slime-clojure-repl-setup)
      (tweak-clojure-syntax 'slime-repl-mode)))
-(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+(add-hook 'slime-repl-mode-hook 'enable-slime-ac-hook)
 
 
 ;; Tweak clojure syntax, replace (fn by (ƒ and highlight characters
