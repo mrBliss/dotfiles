@@ -58,8 +58,9 @@ markkeys " =^ "
 # Stop C-o C-g from toggling the bell style
 bind ^g
 
-# Stop C-o C-x from locking screen
+# Stop C-o C-x and C-o x from locking screen
 bind ^x
+bind x
 
 # C-space sets mark.
 markkeys ' '=^@
