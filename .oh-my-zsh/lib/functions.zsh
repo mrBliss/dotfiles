@@ -104,14 +104,22 @@ up() {
 }
 
 
-# map() takes a command and a list of files, then runs the command on each
-# file. Functional zsh!
-
-map() {
-    f=$argv[1]
-    argv[1]=""
-    echo $@ | xargs --no-run-if-empty --max-args=1 ${=f}
+# The syntax is map COMMAND: ITEM1 ITEM2 ITEM3 ...
+# The space following the colon is required. Space preceding it is optional.
+map(){
+    local command
+    if [ $# -lt 2 ] || [[ ! "$@" =~ :[[:space:]] ]];then
+        echo "Invalid syntax." >&2; return 1
+    fi
+    until [[ $1 =~ : ]]; do
+        command="$command $1"; shift
+    done
+    command="$command ${1%:}"; shift
+    for i in "$@"; do
+        eval "${command//\\/\\\\} \"${i//\\/\\\\}\""
+    done
 }
+
 
 # Kill emacs and remove server file in /tmp
 killem () {
@@ -130,20 +138,20 @@ reattach () {
     OPTS=`screen -ls | grep "[0-9]\." | while read line ; do echo "$line" | sed -e 's/\s/_/g' ; done`
 
     case $(echo $OPTS | wc -w) in
-	0)
-	    echo -e "\nNo screen sessions open\n"
-	    ;;
-	1)
-	    SESSION=$OPTS
-	    echo -e "\nAttaching to only available screen"
-	    ;;
-	*)
-	    echo -e "\nPick a screen session"
-	    select opt in $OPTS ; do
-		SESSION=$opt
-		break;
-	    done
-	    ;;
+        0)
+            echo -e "\nNo screen sessions open\n"
+            ;;
+        1)
+            SESSION=$OPTS
+            echo -e "\nAttaching to only available screen"
+            ;;
+        *)
+            echo -e "\nPick a screen session"
+            select opt in $OPTS ; do
+                SESSION=$opt
+                break;
+            done
+            ;;
     esac
 
     screen -x $(echo $SESSION | sed -e 's/\..*//')
