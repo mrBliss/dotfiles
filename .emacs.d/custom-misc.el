@@ -107,16 +107,16 @@
 ;;  count lines in region: M-=
 ;;  regex search in all open buffers: multi-occur-in-matching-buffers
 ;;  apply shell command on region: M-|
+;;  insert output for shell command: M-1 M-!
 ;;  show previous complex command: C-x ESC ESC
 ;;  Narrow to region/defun: C-x n n/d
 ;;  Undo narrow: C-x n w
 ;;  Correct word: C-.
-;;  insert output for shell command: M-1 M-!
 ;;  yank previous killed text when searching (C-s/r): M-y
 ;;  toggle C-s/r to regex: M-r
 ;;  edit search string: M-e
 ;;  number rows with CUA: M-n
-;;  close begin block (AUCTeX): C-x ]
+;;  close begin block (AUCTeX): C-c ]
 ;;  find files: find-name-dired, find-lisp-find-dired
 ;;  find only directories: find-lisp-find-dired-subdirectories
 ;;  ------------------------------

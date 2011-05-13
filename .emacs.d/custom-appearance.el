@@ -13,7 +13,7 @@
 ;; Set font and theme depending on frame type. Also disable the tool
 ;; bar and the scroll bar
 (defun appearance (f)
-  "Applies the color-theme, ir-black in a terminal or bespin in a
+  "Applies the color-theme, ir-black in a terminal or dark-violet in a
    GUI. Disables the scroll and tool bar. Also sets the font."
   (with-selected-frame f
     (if (display-graphic-p f)
