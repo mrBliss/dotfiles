@@ -12,6 +12,9 @@
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 
+;; Automatically save before compiling
+(setq TeX-save-query nil)
+
 ;; Make AUCTeX aware of multi-file documents
 (setq-default TeX-master nil)
 
