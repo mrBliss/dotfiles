@@ -80,25 +80,49 @@
 ;;  Evaluate current function: C-M-x
 ;;  Evaluate minibuffer expression: C-c :
 ;;  Evaluate and print last sexp: C-j
+;;  Replace expr before point with its value: C-x M-e
+;;  Remove notes: C-c M-c
 ;;  * SLDB COMMANDS
 ;;  Eval sexp in minibuffer: :
 ;;  Move between frames: p/n
-;;  INSPECTOR:
+;;  * INSPECTOR:
 ;;  Launch SLIME Inspector: C-c I
 ;;  Inspect: RET
 ;;  Return: l
+;;  Eval: e
+;;  Show source: .
+;;  Store as *: M-RET
+;;  Next inspectable: TAB
 ;;  * DOCUMENTATION
 ;;  Documentation: C-C C-d d
-;;  Who calls: C-c C-w c
-;;  Go to definition: M-.
-;;  Return from definition: M-,
+;;  Hyperspec lookup: C-c C-d h
+;;  Apropos: C-c C-d A
+;;  Apropos in a package: C-c C-d p
 ;;  * MACROS
 ;;  Macro expand 1: C-c C-m
 ;;  Macro expand all: C-c M-m
 ;;  * REPL
-;;  Set current package: C-c M-p
 ;;  Close parens and eval: M-RET
 ;;  Previous/next prompt: C-c C-p/C-n
+;;  Search input: M-s/M-r
+;;  Enter shortcut: ,
+;;  * GENERAL
+;;  Set current package: C-c M-p
+;;  Complete form with arguments: C-c C-s
+;;  Show connections: C-c C-x c
+;;  Select default connection: d
+;;  Fuzzy completion: C-c M-i
+;;  Undefine function: C-c C-u
+;;  Who calls: C-c C-w c
+;;  Calls who: C-c C-w w
+;;  Who references: C-c C-w r
+;;  Who macroexpands: C-c C-w m
+;;  List callers: C-c C-w m
+;;  Go to definition: M-.
+;;  Return from definition: M-,
+;;  Disassemble symbol: C-c M-d
+;;  Toggle trace: C-c C-t
+;;  Interrupt: C-c C-b
 ;;  ------------------------------
 ;;  GENERAL
 ;;  make sure the current function is visible: C-M-l
