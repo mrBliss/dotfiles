@@ -96,5 +96,11 @@ title_format_fn = function(window) {return "conkeror";};
 if (get_os() == "Linux")
     external_content_handlers.set("application/pdf", "zathura");
 
+// Add missing scrollbar in first buffer of window
+add_hook("create_buffer_late_hook",
+         function (buffer) {
+             buffer.top_frame.scrollbars.visible = true;
+         });
+
 // To check if this page was successfully loaded
 loaded_init = true;
