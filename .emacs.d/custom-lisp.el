@@ -91,4 +91,43 @@
 (ad-activate 'hyperspec-lookup)
 
 
+;;##############################################################################
+;; Scheme
+
+;; Load Geiser
+(require 'geiser)
+
+;; Add Geiser's info file
+(push (expand-file-name (concat vendor-dir "/geiser/doc"))
+      Info-directory-list)
+
+
+(defun geiser-ac-candidates ()
+ (geiser-company--candidates ac-prefix))
+
+(defun geiser-ac-prefix ()
+  (let ((prefix (geiser-company--prefix-at-point)))
+    (when (stringp prefix)
+      (- (point) (length prefix)))))
+
+(eval-after-load "geiser"
+  '(progn
+     ;; Define an auto-complete source for geiser
+     (defvar ac-source-geiser
+       '((candidates . geiser-ac-candidates)
+         (prefix . geiser-ac-prefix)))))
+
+(defun set-up-geiser-ac ()
+  "Add a Geiser completion source to the
+front of `ac-sources' for the current buffer."
+  (interactive)
+  (setq ac-sources (add-to-list 'ac-sources 'ac-source-geiser)))
+
+(add-hook 'geiser-repl-mode-hook 'set-up-geiser-ac)
+(add-hook 'scheme-mode-hook 'set-up-geiser-ac)
+
+;; Enable auto-complete for Geiser
+(add-to-list 'ac-modes 'geiser-mode)
+
+
 (provide 'custom-lisp)
