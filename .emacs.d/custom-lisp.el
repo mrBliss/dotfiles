@@ -4,6 +4,13 @@
 ;; Created: Sat Dec 11 2010
 ;; Keywords: lisp, elisp, scheme, cl
 
+;;##############################################################################
+;; All Lisps
+
+;; Shared between all Lisps
+(define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
+(define-key lisp-mode-shared-map (kbd "M-RET") 'close-all-matching)
+
 
 ;;##############################################################################
 ;; Parentheses
@@ -58,14 +65,53 @@
 ;; Use C-j not only for *scratch* but for all elisp buffers
 (define-key emacs-lisp-mode-map (kbd "C-j") 'eval-print-last-sexp)
 
+;; The following two functions are from
+;; http://osdir.com/ml/help-gnu-emacs-gnu/2009-09/msg00668.html
+
+(defun elisp-pop-found-function ()
+  (interactive)
+  (cond ((featurep 'xemacs) (pop-tag-mark nil))
+        (t (pop-tag-mark))))
+
+(defun elisp-push-point-marker ()
+  (require 'etags)
+  (cond ((featurep 'xemacs)
+         (push-tag-mark))
+        (t (ring-insert find-tag-marker-ring (point-marker)))))
+
+(defun elisp-find-definition (name)
+  "Jump to the definition of the function (or variable) at point."
+  (interactive (list (thing-at-point 'symbol)))
+  (cond (name
+         (let ((symbol (intern-soft name))
+               (search (lambda (fun sym)
+                         (let* ((r (save-excursion (funcall fun sym)))
+                                (buffer (car r))
+                                (point (cdr r)))
+                           (cond ((not point)
+                                  (error "Found no definition for %s in %s"
+                                         name buffer))
+                                 (t
+                                  (switch-to-buffer buffer)
+                                  (goto-char point)
+                                  (recenter 1)))))))
+           (cond ((fboundp symbol)
+                  (elisp-push-point-marker)
+                  (funcall search 'find-function-noselect symbol))
+                 ((boundp symbol)
+                  (elisp-push-point-marker)
+                  (funcall search 'find-variable-noselect symbol))
+                 (t
+                  (message "Symbol not bound: %S" symbol)))))
+        (t (message "No symbol at point"))))
+
+(define-key emacs-lisp-mode-map (kbd "M-.") 'elisp-find-definition)
+(define-key emacs-lisp-mode-map (kbd "M-,") 'elisp-pop-found-function)
+
 ;; Other handy Emacs Lisp bindings
-(define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
 (define-key emacs-lisp-mode-map (kbd "C-c E") 'eval-buffer)
 (define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol)
 
-;; Shared between all Lisps
-(define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
-(define-key lisp-mode-shared-map (kbd "M-RET") 'close-all-matching)
 
 ;;##############################################################################
 ;; Common Lisp
@@ -103,7 +149,7 @@
 
 
 (defun geiser-ac-candidates ()
- (geiser-company--candidates ac-prefix))
+  (geiser-company--candidates ac-prefix))
 
 (defun geiser-ac-prefix ()
   (let ((prefix (geiser-company--prefix-at-point)))
