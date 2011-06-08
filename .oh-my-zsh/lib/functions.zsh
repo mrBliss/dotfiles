@@ -163,3 +163,11 @@ reattach () {
 serve () {
     type -a python2 &>/dev/null && python2 -m SimpleHTTPServer || python -m SimpleHTTPServer
 }
+
+
+# Reset current directory to sensible permissions
+fixperms() {
+    find . -type d -print0 | xargs -0 chmod 755
+    find . -type f -print0 | xargs -0 chmod 644
+}
+
