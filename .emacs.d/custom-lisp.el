@@ -105,11 +105,11 @@
                   (message "Symbol not bound: %S" symbol)))))
         (t (message "No symbol at point"))))
 
-(define-key emacs-lisp-mode-map (kbd "M-.") 'elisp-find-definition)
-(define-key emacs-lisp-mode-map (kbd "M-,") 'elisp-pop-found-function)
+(define-key lisp-interaction-mode-map (kbd "M-.") 'elisp-find-definition)
+(define-key lisp-interaction-mode-map (kbd "M-,") 'elisp-pop-found-function)
 
 ;; Other handy Emacs Lisp bindings
-(define-key emacs-lisp-mode-map (kbd "C-c E") 'eval-buffer)
+(define-key lisp-interaction-mode-map (kbd "C-c E") 'eval-buffer)
 (define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol)
 
 
