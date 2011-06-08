@@ -43,7 +43,7 @@
 (defun close-all-matching ()
   "Close as much as we can."
   (interactive)
-  (while (close-matching)))
+  (ignore-errors (while (close-matching))))
 
 
 ;;##############################################################################
