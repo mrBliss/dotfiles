@@ -251,5 +251,19 @@
 ;; Add magit Info directory
 (push (expand-file-name "~/.emacs.d/vendor/magit") Info-directory-list)
 
+;; Save minibuffer history
+(savehist-mode 1)
+(setq savehist-additional-variables
+      '(kill-ring search-ring regexp-search-ring))
+
+;; Create missing parent directories after opening a new file. A
+;; warning is still shown, but can be ignored
+(defun create-missing-directories ()
+  (let ((dir (file-name-directory (buffer-file-name))))
+    (unless (file-exists-p dir)
+      (make-directory dir t))))
+
+(add-hook 'find-file-hook 'create-missing-directories)
+
 
 (provide 'custom-misc)
