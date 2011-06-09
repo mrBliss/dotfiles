@@ -164,10 +164,20 @@ serve () {
     type -a python2 &>/dev/null && python2 -m SimpleHTTPServer || python -m SimpleHTTPServer
 }
 
-
 # Reset current directory to sensible permissions
 fixperms() {
     find . -type d -print0 | xargs -0 chmod 755
     find . -type f -print0 | xargs -0 chmod 644
+}
+
+# Backup a remote svn repository.
+# Usage: backup_svn svn+ssh://url.to.re/mote/repo /home/user/path/to/local/destination
+# Example: backup_svn svn+ssh://repocs/repos/swop-groep-01 /home/thomas/Documents/SO/backup
+backup_svn () {
+    svnadmin create "$2"
+    echo '#!/bin/bash' > "$2/hooks/pre-revprop-change"
+    chmod +x "$2/hooks/pre-revprop-change"
+    svnsync init "file:///$2" "$1"
+    svnsync sync "file:///$2"
 }
 
