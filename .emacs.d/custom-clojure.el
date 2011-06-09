@@ -11,11 +11,22 @@
 ;; Autoload align-cljlet
 (autoload 'align-cljlet "align-cljlet" nil t)
 
+;; Load Slime
+(require 'slime-autoloads)
+(slime-setup '(slime-fancy slime-clj))
+
 ;; Hide slime version mismatches
 (setq slime-protocol-version 'ignore)
 
 ;; autocomplete for slime
 (require 'ac-slime)
+
+(defun set-up-slime-fuzzy-ac ()
+  "Add fuzzy slime completion source to the
+front of `ac-sources' for the current buffer."
+  (interactive)
+  (set-up-slime-ac t))
+
 
 ;; More syntax coloring
 (defun tweak-clojure-syntax (mode)
@@ -79,19 +90,21 @@
 ;; Slime
 (eval-after-load "slime"
   '(progn
-     (slime-setup '(slime-repl))
+     ;; Doesn't work with Clojure
+     (unload-feature 'slime-autodoc t)
+     (setq slime-protocol-version 'ignore)
      (define-key slime-mode-map (kbd "C-c C-e") 'slime-send-dwim)
      (define-key slime-mode-map (kbd "C-j") 'slime-eval-print-last-expression)
-     (setq slime-net-coding-system 'utf-8-unix)
-     (setq slime-highlight-compiler-notes nil)))
-(add-hook 'slime-mode-hook 'set-up-slime-ac)
+     (define-key slime-mode-map (kbd "C-c C-n") 'slime-highlight-notes)
+     (setq slime-net-coding-system 'utf-8-unix)))
+(add-hook 'slime-mode-hook 'set-up-slime-fuzzy-ac)
 
 ;; Slime-REPL tweaks
 (eval-after-load "slime-repl"
   '(progn
      (add-hook 'slime-repl-mode-hook 'slime-clojure-repl-setup)
      (tweak-clojure-syntax 'slime-repl-mode)))
-(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+(add-hook 'slime-repl-mode-hook 'set-up-slime-fuzzy-ac)
 
 
 ;; Tweak clojure syntax, replace (fn by (ƒ and highlight characters

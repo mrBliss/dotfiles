@@ -120,7 +120,7 @@
 (setq inferior-lisp-program
       (if (eq system-type 'darwin)
           "/usr/local/bin/clisp"
-        "/usr/bin/clisp"))
+        "/usr/bin/sbcl"))
 
 ;; Enable auto-complete
 (add-to-list 'ac-modes 'lisp-mode)
