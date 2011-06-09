@@ -29,6 +29,19 @@
   "Enable things that are convenient across all coding buffers."
   (run-hooks 'coding-hook))
 
+;; ECB
+
+(require 'ecb-autoloads)
+
+(setq ecb-tip-of-the-day nil)
+
+;; (defun turn-on-semantic ()
+;;   (semantic-mode 1))
+
+;; (add-hook 'ecb-before-activate-hook 'turn-on-semantic)
+
+(push (expand-file-name "~/.emacs.d/vendor/ecb/doc") Info-directory-list)
+
 
 ;;##############################################################################
 ;; Coffeescript

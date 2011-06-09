@@ -76,3 +76,8 @@
 
 ;; Load platform specifics (currently one file full of cases)
 (require 'specific)
+
+
+;; ECB ignores setq
+(custom-set-variables '(ecb-options-version "2.40"))
+
