@@ -75,6 +75,7 @@ imenu index, then jumps to that symbol's location."
 (setq ac-use-quick-help t)
 (ac-set-trigger-key "TAB")
 (setq ac-auto-start 1)
+(ac-flyspell-workaround)
 
 ;; CSS autocomplete inifinite loop hacks
 (add-to-list 'ac-css-value-classes
