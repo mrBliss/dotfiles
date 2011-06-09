@@ -126,9 +126,6 @@
 (add-to-list 'ac-modes 'lisp-mode)
 (add-to-list 'ac-modes 'slime-repl-mode)
 
-;; Use C-j to print the evaluated expresion in the buffer
-(define-key lisp-mode-map (kbd "C-j") 'slime-eval-print-last-expression)
-
 (defadvice hyperspec-lookup (around hyperspec-lookup-around)
   "Use w3m for browsing the Common Lisp HyperSpec."
   (let ((browse-url-browser-function 'w3m-browse-url))

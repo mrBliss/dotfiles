@@ -123,6 +123,7 @@
 ;;  Disassemble symbol: C-c M-d
 ;;  Toggle trace: C-c C-t
 ;;  Interrupt: C-c C-b
+;;  Copy function call to REPL: C-c C-y
 ;;  ------------------------------
 ;;  GENERAL
 ;;  make sure the current function is visible: C-M-l

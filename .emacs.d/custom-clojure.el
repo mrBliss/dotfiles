@@ -36,11 +36,52 @@
                                                (match-end 1) "¬") nil)))
             (("^[a-zA-Z0-9-.*+!_?]+?>" . 'slime-repl-prompt-face)))))
 
+;; Snippet from Bill Clementson
+;; http://bc.tech.coop/blog/070424.html
+(defun slime-send-dwim (arg)
+  "Send the appropriate forms to REPL to be evaluated."
+  (interactive "P")
+  (save-excursion
+    (cond
+     ;;Region selected - evaluate region
+     ((not (equal mark-active nil)) (copy-region-as-kill (mark) (point)))
+     ;; At/before sexp - evaluate next sexp
+     ((or (looking-at "\s(")
+          (save-excursion
+            (ignore-errors (forward-char 1)) (looking-at "\s(")))
+      (forward-list 1)
+      (let ((end (point))
+            (beg (save-excursion (backward-list 1) (point))))
+        (copy-region-as-kill beg end)))
+     ;; At/after sexp - evaluate last sexp
+     ((or (looking-at ")")
+          (save-excursion (backward-char 1) (looking-at ")")))
+      (when (looking-at ")") (forward-char 1))
+      (let ((end (point))
+            (beg (save-excursion (backward-list 1) (point))))
+        (copy-region-as-kill beg end)))
+     ;; Default - evaluate enclosing top-level sexp
+     (t (progn
+          (while (ignore-errors (progn (backward-up-list) t)))
+          (forward-list 1)
+          (let ((end (point))
+                (beg (save-excursion (backward-list 1) (point))))
+            (copy-region-as-kill beg end)))))
+    (set-buffer (slime-output-buffer))
+    (unless (eq (current-buffer) (window-buffer))
+      (pop-to-buffer (current-buffer) t))
+    (goto-char (point-max))
+    (yank)
+    (when arg
+      (slime-repl-return)
+      (other-window 1))))
 
 ;; Slime
 (eval-after-load "slime"
   '(progn
      (slime-setup '(slime-repl))
+     (define-key slime-mode-map (kbd "C-c C-e") 'slime-send-dwim)
+     (define-key slime-mode-map (kbd "C-j") 'slime-eval-print-last-expression)
      (setq slime-net-coding-system 'utf-8-unix)
      (setq slime-highlight-compiler-notes nil)))
 (add-hook 'slime-mode-hook 'set-up-slime-ac)
@@ -61,8 +102,6 @@
      (whitespace-mode 1)
      (tweak-clojure-syntax 'clojure-mode)
      (define-key clojure-mode-map (kbd "C-c t") 'clojure-jump-to-test)
-     (define-key clojure-mode-map (kbd "C-j")
-       'slime-eval-print-last-expression)
      (define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)))
 
 ;; Beter REPL behaviour
