@@ -266,5 +266,28 @@
 
 (add-hook 'find-file-hook 'create-missing-directories)
 
+;; C-w or M-w without an active region kills the current line
+(put 'kill-ring-save 'interactive-form
+     '(interactive
+       (if (use-region-p)
+           (list (region-beginning) (region-end))
+         (list
+          (if (and (eq major-mode 'slime-repl-mode)
+                   (slime-same-line-p (point) slime-repl-input-start-mark))
+              slime-repl-input-start-mark
+            (line-beginning-position))
+          (line-beginning-position 2)))))
+
+(put 'kill-region 'interactive-form
+     '(interactive
+       (if (use-region-p)
+           (list (region-beginning) (region-end))
+         (list
+          (if (and (eq major-mode 'slime-repl-mode)
+                   (slime-same-line-p (point) slime-repl-input-start-mark))
+              slime-repl-input-start-mark
+            (line-beginning-position))
+          (line-beginning-position 2)))))
+
 
 (provide 'custom-misc)
