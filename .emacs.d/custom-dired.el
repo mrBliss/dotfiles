@@ -18,19 +18,31 @@
     (dired-up-directory)
     (kill-buffer prev)))
 
+(defun dired-find-file-reuse-buffer ()
+  "In Dired, open the file in a new buffer or reuse the current
+buffer for a folder."
+  (interactive)
+  (if (file-directory-p (dired-get-file-for-visit))
+      (dired-find-alternate-file)
+    (dired-find-file)))
+
 ;; From Scottjad
 (defun dired-hide-dot-files ()
   (interactive)
   (dired-mark-files-regexp "^\\.")
   (dired-do-kill-lines))
 
-;; Move one directory up in Dired with r, toggle details with ( and
-;; start wdired-change-to-wdired-mode with C-c C-e
+
+;; Move one directory up in Dired with r, toggle details with (, start
+;; wdired-change-to-wdired-mode with C-c C-e and open a new buffer or
+;; reuse the existing one if it's a file or directory.
 (define-key dired-mode-map (kbd "r") 'dired-up-and-kill)
 (define-key dired-mode-map (kbd "C-c C-e") 'wdired-change-to-wdired-mode)
 (define-key dired-mode-map (kbd "(") 'dired-details-toggle)
 (define-key dired-mode-map (kbd "o") 'browse-url-of-dired-file)
 (define-key dired-mode-map (kbd "h") 'dired-hide-dot-files)
+(define-key dired-mode-map (kbd "a") 'dired-find-file-reuse-buffer)
+(define-key dired-mode-map (kbd "RET") 'dired-find-file-reuse-buffer)
 
 ;; From Scottjad
 (defun dired-view-file ()
