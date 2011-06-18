@@ -81,7 +81,7 @@
 (window-numbering-mode t)
 
 ;; Moves the mouse pointer to the corner of the screen when typing
-(mouse-avoidance-mode 'banish)
+(mouse-avoidance-mode 'jump)
 
 ;; Close pop-up windows with C-g
 (require 'popwin)
