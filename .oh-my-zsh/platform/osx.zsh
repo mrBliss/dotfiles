@@ -37,7 +37,7 @@ alias preview='groff -Tps > /tmp/tmp.ps && open -a Preview /tmp/tmp.ps'
 
 
 # Load autojump
-source /usr/local/Cellar/autojump/14/etc/autojump.zsh
+source /usr/local/Cellar/autojump/15/etc/autojump.zsh
 
 
 # homebrew aliases
