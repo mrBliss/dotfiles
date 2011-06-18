@@ -62,9 +62,7 @@
   (server-start))
 
 ;; Only available in Emacs 23.2 and higher
-(when (or (> emacs-major-version 23)
-          (and (= emacs-major-version 23)
-               (>= emacs-minor-version 2)))
+(when (version<= "23.2" emacs-version)
 
   ;; Enable wrap-region for all buffers
   (require 'wrap-region)
