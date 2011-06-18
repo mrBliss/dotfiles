@@ -93,10 +93,18 @@ front of `ac-sources' for the current buffer."
      ;; Doesn't work with Clojure
      (unload-feature 'slime-autodoc t)
      (setq slime-protocol-version 'ignore)
+     (setq slime-net-coding-system 'utf-8-unix)
+     ;; Bindings
      (define-key slime-mode-map (kbd "C-c C-e") 'slime-send-dwim)
      (define-key slime-mode-map (kbd "C-j") 'slime-eval-print-last-expression)
+     (define-key slime-mode-map (kbd "M-p") 'backward-paragraph)
+     (define-key slime-mode-map (kbd "M-n") 'forward-paragraph)
+     (define-key slime-mode-map (kbd "M-P") 'slime-previous-note)
+     (define-key slime-mode-map (kbd "M-N") 'slime-next-note)
      (define-key slime-mode-map (kbd "C-c C-n") 'slime-highlight-notes)
-     (setq slime-net-coding-system 'utf-8-unix)))
+     ;; Fuzzy completion
+     (setq slime-complete-symbol*-fancy t)
+     (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)))
 (add-hook 'slime-mode-hook 'set-up-slime-fuzzy-ac)
 
 ;; Slime-REPL tweaks
