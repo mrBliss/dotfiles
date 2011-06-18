@@ -133,6 +133,9 @@
 
 (ad-activate 'hyperspec-lookup)
 
+;; .stumpwmrc files contain Lisp
+(add-to-list 'auto-mode-alist '("\\.stumpwmrc$" . lisp-mode))
+
 
 ;;##############################################################################
 ;; Scheme
