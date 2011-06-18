@@ -39,6 +39,7 @@
 ;;   (semantic-mode 1))
 
 ;; (add-hook 'ecb-before-activate-hook 'turn-on-semantic)
+(setq ecb-layout-name "left3")
 
 (push (expand-file-name "~/.emacs.d/vendor/ecb/doc") Info-directory-list)
 
