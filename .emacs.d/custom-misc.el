@@ -289,5 +289,8 @@
             (line-beginning-position))
           (line-beginning-position 2)))))
 
+;; .srt-files are subtitles
+(add-to-list 'auto-mode-alist '("\\.srt$" . text-mode))
+
 
 (provide 'custom-misc)
