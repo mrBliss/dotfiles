@@ -126,7 +126,6 @@
 
 ;; Enable auto-complete
 (add-to-list 'ac-modes 'lisp-mode)
-(add-to-list 'ac-modes 'slime-repl-mode)
 
 (defadvice hyperspec-lookup (around hyperspec-lookup-around)
   "Use w3m for browsing the Common Lisp HyperSpec."

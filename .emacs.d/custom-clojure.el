@@ -11,23 +11,6 @@
 ;; Autoload align-cljlet
 (autoload 'align-cljlet "align-cljlet" nil t)
 
-;; Load Slime
-(require 'slime-autoloads)
-(slime-setup '(slime-fancy slime-clj))
-
-;; Hide slime version mismatches
-(setq slime-protocol-version 'ignore)
-
-;; autocomplete for slime
-(require 'ac-slime)
-
-(defun set-up-slime-fuzzy-ac ()
-  "Add fuzzy slime completion source to the
-front of `ac-sources' for the current buffer."
-  (interactive)
-  (set-up-slime-ac t))
-
-
 ;; More syntax coloring
 (defun tweak-clojure-syntax (mode)
   (mapcar (lambda (x) (font-lock-add-keywords mode x))
@@ -47,80 +30,12 @@ front of `ac-sources' for the current buffer."
                                                (match-end 1) "¬") nil)))
             (("^[a-zA-Z0-9-.*+!_?]+?>" . 'slime-repl-prompt-face)))))
 
-;; Snippet from Bill Clementson
-;; http://bc.tech.coop/blog/070424.html
-(defun slime-send-dwim (arg)
-  "Send the appropriate forms to REPL to be evaluated."
-  (interactive "P")
-  (save-excursion
-    (cond
-     ;;Region selected - evaluate region
-     ((not (equal mark-active nil)) (copy-region-as-kill (mark) (point)))
-     ;; At/before sexp - evaluate next sexp
-     ((or (looking-at "\s(")
-          (save-excursion
-            (ignore-errors (forward-char 1)) (looking-at "\s(")))
-      (forward-list 1)
-      (let ((end (point))
-            (beg (save-excursion (backward-list 1) (point))))
-        (copy-region-as-kill beg end)))
-     ;; At/after sexp - evaluate last sexp
-     ((or (looking-at ")")
-          (save-excursion (backward-char 1) (looking-at ")")))
-      (when (looking-at ")") (forward-char 1))
-      (let ((end (point))
-            (beg (save-excursion (backward-list 1) (point))))
-        (copy-region-as-kill beg end)))
-     ;; Default - evaluate enclosing top-level sexp
-     (t (progn
-          (while (ignore-errors (progn (backward-up-list) t)))
-          (forward-list 1)
-          (let ((end (point))
-                (beg (save-excursion (backward-list 1) (point))))
-            (copy-region-as-kill beg end)))))
-    (set-buffer (slime-output-buffer))
-    (unless (eq (current-buffer) (window-buffer))
-      (pop-to-buffer (current-buffer) t))
-    (goto-char (point-max))
-    (yank)
-    (when arg
-      (slime-repl-return)
-      (other-window 1))))
 
-;; Slime
-(eval-after-load "slime"
-  '(progn
-     ;; Doesn't work with Clojure
-     (unload-feature 'slime-autodoc t)
-     (setq slime-protocol-version 'ignore)
-     (setq slime-net-coding-system 'utf-8-unix)
-     ;; Bindings
-     (define-key slime-mode-map (kbd "C-c C-e") 'slime-send-dwim)
-     (define-key slime-mode-map (kbd "C-j") 'slime-eval-print-last-expression)
-     (define-key slime-mode-map (kbd "M-p") 'backward-paragraph)
-     (define-key slime-mode-map (kbd "M-n") 'forward-paragraph)
-     (define-key slime-mode-map (kbd "M-P") 'slime-previous-note)
-     (define-key slime-mode-map (kbd "M-N") 'slime-next-note)
-     (define-key slime-mode-map (kbd "C-c C-n") 'slime-highlight-notes)
-     ;; Fuzzy completion
-     (setq slime-complete-symbol*-fancy t)
-     (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)))
-(add-hook 'slime-mode-hook 'set-up-slime-fuzzy-ac)
-
-;; Slime-REPL tweaks
-(eval-after-load "slime-repl"
-  '(progn
-     (add-hook 'slime-repl-mode-hook 'slime-clojure-repl-setup)
-     (tweak-clojure-syntax 'slime-repl-mode)))
-(add-hook 'slime-repl-mode-hook 'set-up-slime-fuzzy-ac)
-
-
-;; Tweak clojure syntax, replace (fn by (ƒ and highlight characters
-;; beyond the 80 char limit
+;; Tweak clojure syntax, replace (fn by (ƒ, highlight characters
+;; beyond the 80 char limit and define some bindings
 (eval-after-load "clojure-mode"
   '(progn
      (add-hook 'clojure-mode-hook 'highlight-80+-mode)
-     (whitespace-mode 1)
      (tweak-clojure-syntax 'clojure-mode)
      (define-key clojure-mode-map (kbd "C-c t") 'clojure-jump-to-test)
      (define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)))
@@ -141,7 +56,8 @@ front of `ac-sources' for the current buffer."
      ,desc :group 'faces))
 
 ;; Define extra clojure faces
-(defcljface clojure-parens       "DimGrey"   "Clojure parens")
+(defcljface clojure-parens
+       "DimGrey"   "Clojure parens")
 (defcljface clojure-braces       "#49b2c7"   "Clojure braces")
 (defcljface clojure-brackets     "#0074e8"   "Clojure brackets")
 (defcljface clojure-keyword      "#45b8f2"   "Clojure keywords")
@@ -150,8 +66,8 @@ front of `ac-sources' for the current buffer."
 (defcljface clojure-special      "#0074e8"   "Clojure special")
 (defcljface clojure-double-quote "#00920A"   "Clojure special")
 
-;; Start a leiningen swank server and connect to it
 (defun lein-swank ()
+  "Start a leiningen Swank server and connect to it"
   (interactive)
   (let ((default-directory (locate-dominating-file default-directory
                                                    "project.clj")))
@@ -175,6 +91,9 @@ front of `ac-sources' for the current buffer."
                   ;; no need to further process output
                   (set-process-filter proc nil))))
         (message "Starting lein swank server...")))))
+
+(autoload 'lein-swank "slime"
+  "Start and connect to a Swank server for the current leiningen project." t)
 
 (defun cljr-swank ()
   (interactive)

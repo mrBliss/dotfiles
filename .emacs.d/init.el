@@ -67,6 +67,7 @@
 (require 'custom-misc)
 (require 'custom-shell)
 
+(require 'custom-slime)
 (require 'custom-clojure)
 (require 'custom-haskell)
 (require 'custom-latex)
