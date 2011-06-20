@@ -30,13 +30,6 @@
         (append exec-path
                 '("/usr/local/bin/" "/Users/Thomas/.cljr/bin" "/usr/texbin/"))))
 
-;; Linux & OS X
-(when (or (eq system-type 'gnu/linux)
-          (eq system-type 'darwin))
-  ;; Load w3m
-  (require 'w3m-load))
-
-
 ;; Linux specific
 (when (eq system-type 'gnu/linux)
   ;; Kill to the clipboard on Linux

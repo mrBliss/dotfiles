@@ -292,5 +292,8 @@
 ;; .srt-files are subtitles
 (add-to-list 'auto-mode-alist '("\\.srt$" . text-mode))
 
+;; Load w3m
+(require 'w3m-load)
+
 
 (provide 'custom-misc)
