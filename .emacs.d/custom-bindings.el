@@ -188,5 +188,9 @@
 ;; Search for a file with C-c M-f
 (global-set-key (kbd "C-c M-f") 'find-lisp-find-dired)
 
+;; Undo with Undo-Tree with C-x M-u
+(define-key undo-tree-map (kbd "C-x M-u") 'undo-tree-visualize)
+(define-key undo-tree-map (kbd "C-x u") 'undo-tree-undo)
+
 
 (provide 'custom-bindings)
