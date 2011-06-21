@@ -118,11 +118,8 @@
 ;;##############################################################################
 ;; Common Lisp
 
-;; Use clisp as default for SLIME (Different location on OS X)
-(setq inferior-lisp-program
-      (if (eq system-type 'darwin)
-          "/usr/local/bin/clisp"
-        "/usr/bin/sbcl"))
+;; Use SBCL as default for Slime
+(setq inferior-lisp-program "sbcl")
 
 ;; Enable auto-complete
 (add-to-list 'ac-modes 'lisp-mode)
@@ -143,6 +140,10 @@
 
 ;; Load Geiser
 (require 'geiser)
+
+;; Point to the right Racket executable on OS X
+(when (eq system-type 'darwin)
+  (setq geiser-racket-binary "/Applications/Racket v5.1.1/bin/racket"))
 
 ;; Add Geiser's info file
 (push (expand-file-name (concat vendor-dir "/geiser/doc"))
