@@ -106,11 +106,11 @@
 ;; Balance windows with C-c b
 (global-set-key (kbd "C-c b") 'balance-windows)
 
-;; Resize window with C-c j/k and h/l
-(global-set-key (kbd "C-c j") 'enlarge-window)
-(global-set-key (kbd "C-c k") 'shrink-window)
-(global-set-key (kbd "C-c h") 'enlarge-window-horizontally)
-(global-set-key (kbd "C-c l") 'shrink-window-horizontally)
+;; Resize window with C-M-up/down/left/right
+(global-set-key (kbd "<C-M-up>") 'enlarge-window)
+(global-set-key (kbd "<C-M-down>") 'shrink-window)
+(global-set-key (kbd "<C-M-right>") 'enlarge-window-horizontally)
+(global-set-key (kbd "<C-M-left>") 'shrink-window-horizontally)
 
 ;; Kill the word under the point with C-c d
 (global-set-key (kbd "C-c d") (lambda () (interactive)
@@ -188,9 +188,11 @@
 ;; Search for a file with C-c M-f
 (global-set-key (kbd "C-c M-f") 'find-lisp-find-dired)
 
-;; Undo with Undo-Tree with C-x M-u
-(define-key undo-tree-map (kbd "C-x M-u") 'undo-tree-visualize)
-(define-key undo-tree-map (kbd "C-x u") 'undo-tree-undo)
+(eval-after-load "undo-tree"
+  '(progn
+   ;; Undo with Undo-Tree with C-x M-u
+   (define-key undo-tree-map (kbd "C-x M-u") 'undo-tree-visualize)
+   (define-key undo-tree-map (kbd "C-x u") 'undo-tree-undo)))
 
 
 (provide 'custom-bindings)
