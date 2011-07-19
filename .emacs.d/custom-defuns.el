@@ -326,4 +326,15 @@ fewer than 80 columns."
         (char-to-string
          (string-to-number (match-string 1) 8))))))
 
+(defun zap-back-to-char (arg char)
+  "No need to enter C-- to zap back."
+  (interactive "p\ncZap back to char: ")
+  (zap-to-char (- arg) char))
+
+(defadvice zap-to-char (after dont-zap-char (arg char))
+  "Doesn't include the char - zaps to the char before it (like vim)."
+  (insert char))
+(ad-activate 'zap-to-char)
+
+
 (provide 'custom-defuns)

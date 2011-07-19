@@ -33,11 +33,13 @@
 ;; C-M-b doesn't work on OS X, so use C-M-g
 (global-set-key (kbd "C-M-g") 'backward-sexp)
 
-;; FastNav
-(global-set-key (kbd "M-z") 'zap-up-to-char-forward)
-(global-set-key (kbd "C-M-z") 'zap-up-to-char-backward)
-(global-set-key (kbd "M-s") 'jump-to-char-forward)
-(global-set-key (kbd "M-S") 'jump-to-char-backward)
+;; Quickly delete portions of a word/sentence
+(global-set-key (kbd "M-z") 'zap-to-char)
+(global-set-key (kbd "C-M-z") 'zap-back-to-char)
+
+;; Quickly navigate to a word or letter
+(global-set-key (kbd "M-s") 'ace-jump-char-mode)
+(global-set-key (kbd "M-S") 'ace-jump-word-mode)
 
 ;; The reverse of C-k
 (global-set-key (kbd "M-k") 'kill-line-backwards)

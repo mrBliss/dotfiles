@@ -7,15 +7,14 @@
 (autoload 'magit-status "magit" nil t)
 (autoload 'regex-tool "regex-tool" nil t)
 
+(require 'ace-jump-mode)
 (require 'angry-fruit-salad)
-(require 'fastnav)
 (require 'goto-last-change)
 (require 'minimap)
 (require 'scratch)
 (require 'typing-speed)
 (require 'unbound)
 (require 'undo-tree)
-
 
 ;; Enable transient-mark-mode
 (setq transient-mark-mode '(only . t))
