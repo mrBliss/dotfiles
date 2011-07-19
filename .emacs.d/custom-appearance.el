@@ -18,18 +18,17 @@
   (with-selected-frame f
     (if (display-graphic-p f)
         (progn
-          (case system-type
-            ('windows-nt (set-default-font "Envy Code R-8"))
-            ('gnu/linux (if (string= system-name "gideon")
-                            (set-default-font "QuadraatSMono-Regular-9")
-                          (set-default-font "Inconsolata-9")))
-            ('darwin (set-default-font "QuadraatSMono-Regular-12"))
-            ('cygwin (set-default-font "QuadraatSMono-Regular-9")))
-          (tool-bar-mode -1)
-          (set-scroll-bar-mode nil)
-          (color-theme-dark-violet))
-      (color-theme-ir-black))))
-(add-hook 'after-make-frame-functions 'appearance)
+          (set-frame-font
+           (case system-type
+             ('windows-nt "Envy Code R-8")
+             ('gnu/linux "QuadraatSMono-Regular-9")
+             ('darwin "QuadraatSMono-Regular-12")
+             ('cygwin "QuadraatSMono-Regular-9")))
+           (tool-bar-mode -1)
+           (set-scroll-bar-mode nil)
+           (color-theme-dark-violet))
+          (color-theme-ir-black))))
+  (add-hook 'after-make-frame-functions 'appearance)
 
 ;; Not global, because terminal and graphical windows have different
 ;; themes.
