@@ -294,5 +294,8 @@
 ;; Load w3m
 (require 'w3m-load)
 
+;; Easy interactive window resizing
+(require 'windresize)
+
 
 (provide 'custom-misc)
