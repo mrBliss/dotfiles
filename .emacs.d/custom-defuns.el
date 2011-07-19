@@ -337,4 +337,14 @@ fewer than 80 columns."
 (ad-activate 'zap-to-char)
 
 
+(defun replace-in-string* (pattern rep string &optional
+                                  fixedcase literal subexp start)
+  "Replace all matches for PATTERN with REP in STRING.
+
+Like `replace-regexp-in-string' but looks for an identical string
+match instead of a regular expression."
+  (replace-regexp-in-string (regexp-quote pattern) rep string
+                            fixedcase literal subexp start))
+
+
 (provide 'custom-defuns)
