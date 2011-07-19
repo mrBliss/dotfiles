@@ -26,6 +26,27 @@ buffer for a folder."
       (dired-find-alternate-file)
     (dired-find-file)))
 
+(defun dired-move-to-filename (&optional raise-error eol)
+  "Move to the beginning of the filename on the current line.
+Return the position of the beginning of the filename, or nil if none found."
+  (interactive)
+  ;; This is the UNIX version.
+  (or eol (setq eol (line-end-position)))
+  (beginning-of-line)
+  ;; First try assuming `ls --dired' was used.
+  (let ((change (next-single-property-change (point) 'dired-filename nil eol)))
+    (cond
+     ((re-search-forward directory-listing-before-filename-regexp eol t)
+      (goto-char (match-end 0)))
+     ((re-search-forward dired-permission-flags-regexp eol t)
+      ;; Ha!  There *is* a file.  Our regexp-from-hell just failed to find it.
+      (if raise-error
+          (error "Unrecognized line!  Check directory-listing-before-filename-regexp"))
+      (beginning-of-line)
+      nil)
+     (raise-error
+      (error "No file on this line")))))
+
 ;; From Scottjad
 (defun dired-hide-dot-files ()
   (interactive)
@@ -43,6 +64,7 @@ buffer for a folder."
 (define-key dired-mode-map (kbd "h") 'dired-hide-dot-files)
 (define-key dired-mode-map (kbd "a") 'dired-find-file-reuse-buffer)
 (define-key dired-mode-map (kbd "RET") 'dired-find-file-reuse-buffer)
+(define-key dired-mode-map (kbd "M-m") 'dired-move-to-filename)
 
 ;; From Scottjad
 (defun dired-view-file ()
