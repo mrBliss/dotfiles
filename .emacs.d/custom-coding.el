@@ -7,6 +7,7 @@
 (require 'flymake)
 (require 'flymake-cursor)
 (require 'full-ack)
+(require 'smart-operator)
 (require 'swop-helpers)
 
 (defun local-comment-auto-fill ()
@@ -21,24 +22,16 @@
    nil '(("\\<\\(FIX\\|TODO\\|FIXME\\|BUG\\|REFACTOR\\):"
           1 font-lock-warning-face t))))
 
-(add-hook 'coding-hook 'local-comment-auto-fill)
-(add-hook 'coding-hook 'turn-on-save-place-mode)
-(add-hook 'coding-hook 'add-watchwords)
+(add-hook 'c-mode-common-hook 'local-comment-auto-fill)
+(add-hook 'c-mode-common-hook 'add-watchwords)
+(add-hook 'c-mode-common-hook 'smart-operator-mode)
 
-(defun run-coding-hook ()
-  "Enable things that are convenient across all coding buffers."
-  (run-hooks 'coding-hook))
 
 ;; ECB
 
 (require 'ecb-autoloads)
 
 (setq ecb-tip-of-the-day nil)
-
-;; (defun turn-on-semantic ()
-;;   (semantic-mode 1))
-
-;; (add-hook 'ecb-before-activate-hook 'turn-on-semantic)
 (setq ecb-layout-name "left3")
 
 (push (expand-file-name "~/.emacs.d/vendor/ecb/doc") Info-directory-list)
