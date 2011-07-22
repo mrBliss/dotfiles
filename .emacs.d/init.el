@@ -66,6 +66,7 @@
 (require 'custom-erc)
 (require 'custom-misc)
 (require 'custom-shell)
+(require 'custom-w3m)
 
 (require 'custom-slime)
 (require 'custom-clojure)

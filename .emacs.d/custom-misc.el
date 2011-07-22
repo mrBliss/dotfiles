@@ -302,9 +302,6 @@ Otherwise, use the original definition of `yank'."
 ;; .srt-files are subtitles
 (add-to-list 'auto-mode-alist '("\\.srt$" . text-mode))
 
-;; Load w3m
-(require 'w3m-load)
-
 ;; Easy interactive window resizing
 (require 'windresize)
 
