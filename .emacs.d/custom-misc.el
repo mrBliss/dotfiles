@@ -288,6 +288,17 @@
             (line-beginning-position))
           (line-beginning-position 2)))))
 
+;; The argument to yank should indicate the number of times to yank, not
+;; which element in the kill buffer to yank.
+(defadvice yank (around damd-yank first nil activate)
+  "If ARG is neither nil nor \\[universal-argument], yank ARG times.
+Otherwise, use the original definition of `yank'."
+  (if (or (not arg)
+          (consp arg))
+      ad-do-it
+    (dotimes (i arg)
+      (yank))))
+
 ;; .srt-files are subtitles
 (add-to-list 'auto-mode-alist '("\\.srt$" . text-mode))
 

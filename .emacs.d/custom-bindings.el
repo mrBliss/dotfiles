@@ -192,9 +192,9 @@
 
 (eval-after-load "undo-tree"
   '(progn
-   ;; Undo with Undo-Tree with C-x M-u
-   (define-key undo-tree-map (kbd "C-x M-u") 'undo-tree-visualize)
-   (define-key undo-tree-map (kbd "C-x u") 'undo-tree-undo)))
+     ;; Undo with Undo-Tree with C-x M-u
+     (define-key undo-tree-map (kbd "C-x M-u") 'undo-tree-visualize)
+     (define-key undo-tree-map (kbd "C-x u") 'undo-tree-undo)))
 
 
 (provide 'custom-bindings)
