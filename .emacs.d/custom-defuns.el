@@ -347,4 +347,27 @@ match instead of a regular expression."
                             fixedcase literal subexp start))
 
 
+(defun renumber-srt ()
+  "Renumbers the srt entries in the current buffer."
+  (interactive)
+  (let ((buffer (current-buffer)))
+    (if (not (string= "srt" (file-name-extension (buffer-file-name))))
+        (message "Not an srt file")
+
+      (save-excursion
+        ;; The numbers to be renumbered are alone on their line, the
+        ;; next line should contain a timecode (e.g. `00:01:27,253 -->
+        ;; 00:01:29,100`). *Lonely* numbers not followed by a timecode could be
+        ;; part of the text of a subtitle, they shouldn't be touched.
+        (let* ((d "[0-9]")
+               (ds (concat d d ":" d d ":" d d "," d d d))
+               (number-regexp (concat "^\\([0-9][0-9]*\\)\\\n" ds " --> " ds))
+               (i 1))
+          (beginning-of-buffer)
+          (while (ignore-errors (re-search-forward number-regexp))
+            (replace-match (int-to-string i) nil t nil 1)
+            (setq i (1+ i)))
+          (message "Successfully renumbered %d entries" (1- i)))))))
+
+
 (provide 'custom-defuns)
