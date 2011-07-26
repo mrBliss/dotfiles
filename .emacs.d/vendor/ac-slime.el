@@ -15,12 +15,12 @@
   "Return a possibly-empty list of fuzzy completions for the symbol at point."
   (if (slime-connected-p)
       (let ((slime-fuzzy-completion-limit 50))
-        (mapcar 'car (car (slime-fuzzy-completions  ac-prefix))))))
+        (mapcar 'car (car (slime-fuzzy-completions ac-prefix))))))
 
 (defun ac-source-slime-simple-candidates ()
   "Return a possibly-empty list of completions for the symbol at point."
   (if (slime-connected-p)
-      (car (slime-simple-completions  ac-prefix))))
+      (car (slime-simple-completions ac-prefix))))
 
 (defvar ac-slime-current-doc nil "Holds slime docstring for current symbol")
 (defun ac-slime-documentation (symbol-name)
@@ -47,6 +47,7 @@
     (selection-face . ac-slime-selection-face)
     (prefix . slime-symbol-start-pos)
     (symbol . "l")
+    (match . (lambda (prefix candidates) candidates))
     (document . ac-slime-documentation))
   "Source for fuzzy slime completion")
 
