@@ -4,14 +4,11 @@ function collapse_pwd {
 
 if [[ "$SSH_CONNECTION" != "" ]]
 then
-        PROMPT='%{$fg_bold[magenta]%}%m%f:%{$fg_no_bold[magenta]%}$(collapse_pwd)%{$fg[cyan]%}> '
+    # No lambda: often no support for unicode
+    PROMPT='%{$fg[yellow]%}%m%f:%{$fg[magenta]%}$(collapse_pwd) %{$fg[blue]>%}%f '
 else
-        PROMPT='%{$fg[green]%}%m%f:%{$fg[magenta]%}$(collapse_pwd)%{$fg[cyan]%}>%f '
+    PROMPT='%{$fg_bold[cyan]%}%m%f:%{$fg[magenta]%}$(collapse_pwd) %{$fg_no_bold[blue]λ%}%f '
 fi
 
-if [ "$USER" = "s0202013" ]
-then
-        RPROMPT=' %(?,%{$fg[green]%}:%)%f,%{$fg[red]%}:(%f)'
-else
-        RPROMPT=' %(?,%{$fg[green]%}:%)%f,%{$fg[red]%}:(%f)'
-fi
+RPROMPT=' %(?,%{$fg_bold[green]%}:%)%f,%{$fg_bold[red]%}:(%f) %{$reset_color%}'
+
