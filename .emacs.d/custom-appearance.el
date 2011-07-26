@@ -58,7 +58,6 @@
 ;; Pretty lambdas
 (require 'pretty-lambdada)
 (pretty-lambda-for-modes)
-(add-hook 'coding-hook 'pretty-lambdas)
 
 ;; Show column numbers
 (column-number-mode 1)
