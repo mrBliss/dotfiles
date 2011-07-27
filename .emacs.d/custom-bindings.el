@@ -196,5 +196,11 @@
      (define-key undo-tree-map (kbd "C-x M-u") 'undo-tree-visualize)
      (define-key undo-tree-map (kbd "C-x u") 'undo-tree-undo)))
 
+;; Move the point to beginning of the next word
+(global-set-key (kbd "M-M") 'move-to-next-word)
+
+;; My improved alternative to M-i
+(global-set-key (kbd "M-i") 'indent-to-next-word)
+
 
 (provide 'custom-bindings)
