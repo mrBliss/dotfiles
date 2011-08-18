@@ -4,9 +4,8 @@
 ;; Created: Sat Dec 11 2010
 ;; Keywords: clojure, lisp
 
-
-;; Enable clojure-test-mode
-(add-hook 'clojure-mode-hook 'clojure-test-maybe-enable)
+(autoload 'clojure-mode "clojure-mode" nil t)
+(autoload 'clojure-test-mode "clojure-test-mode" nil t)
 
 ;; Autoload align-cljlet
 (autoload 'align-cljlet "align-cljlet" nil t)
