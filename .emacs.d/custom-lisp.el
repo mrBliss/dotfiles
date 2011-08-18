@@ -11,6 +11,21 @@
 (define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
 (define-key lisp-mode-shared-map (kbd "M-RET") 'close-all-matching)
 
+(defcustom lisp-common-hook nil
+  "A hook for all Lisp dialects."
+  :type 'hook)
+
+(defun run-lisp-common-hooks ()
+  (run-hooks 'lisp-common-hook))
+
+(add-hook 'lisp-mode-hook 'run-lisp-common-hooks)
+(add-hook 'emacs-lisp-mode-hook 'run-lisp-common-hooks)
+(add-hook 'lisp-interaction-mode-hook 'run-lisp-common-hooks)
+
+
+(add-hook 'lisp-common-hook 'add-watchwords)
+(add-hook 'lisp-common-hook 'idle-highlight)
+
 
 ;;##############################################################################
 ;; Parentheses
@@ -173,6 +188,7 @@ front of `ac-sources' for the current buffer."
 
 (add-hook 'geiser-repl-mode-hook 'set-up-geiser-ac)
 (add-hook 'scheme-mode-hook 'set-up-geiser-ac)
+(add-hook 'scheme-mode-hook 'run-lisp-common-hooks)
 
 ;; Enable auto-complete for Geiser
 (add-to-list 'ac-modes 'geiser-mode)

@@ -35,6 +35,7 @@
 (eval-after-load "clojure-mode"
   '(progn
      (add-hook 'clojure-mode-hook 'highlight-80+-mode)
+     (add-hook 'clojure-mode-hook 'run-lisp-common-hooks)
      (tweak-clojure-syntax 'clojure-mode)
      (define-key clojure-mode-map (kbd "C-c t") 'clojure-jump-to-test)
      (define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)))
