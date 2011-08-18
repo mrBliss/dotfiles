@@ -43,6 +43,7 @@
 
 ;; The reverse of C-k
 (global-set-key (kbd "M-k") 'kill-line-backwards)
+(global-set-key (kbd "M-K") 'kill-line-backwards-and-jump-up)
 
 ;; Join multiple lines
 (global-set-key (kbd "C-x j") 'join-line-or-lines-in-region)
@@ -201,6 +202,9 @@
 
 ;; My improved alternative to M-i
 (global-set-key (kbd "M-i") 'indent-to-next-word)
+
+;; Remove all arguments in the current sexp with C-M-l
+(global-set-key (kbd "C-M-l") 'remove-args-in-sexp)
 
 
 (provide 'custom-bindings)
