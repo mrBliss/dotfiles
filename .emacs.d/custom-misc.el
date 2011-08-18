@@ -65,6 +65,9 @@
       save-interprogram-paste-before-kill t
       kill-do-not-save-duplicates t)
 
+;; Increase the size of the mark ring
+(setq mark-ring-max 64)
+
 ;; Saved by the bell -NOT!
 (setq ring-bell-function 'ignore)
 
