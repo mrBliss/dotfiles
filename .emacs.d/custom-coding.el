@@ -128,12 +128,14 @@
 ;;##############################################################################
 ;; Markdown
 
+(autoload 'markdown-mode "markdown-mode.el"
+  "Major mode for editing Markdown files" t)
+
 ;; Load markdown-mode for .text .markdown and .md files
 (add-to-list 'auto-mode-alist '("\\.markdown$" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 
 ;; Markdown command
-
 (case system-type
   ('windows-nt (setq markdown-command "/usr/local/bin/run_markdown"))
   ('gnu/linux (setq markdown-command "/usr/bin/perlbin/vendor/Markdown.pl")))
