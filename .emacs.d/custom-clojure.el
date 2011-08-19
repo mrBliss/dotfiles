@@ -4,6 +4,9 @@
 ;; Created: Sat Dec 11 2010
 ;; Keywords: clojure, lisp
 
+
+;; Autoload clojure-mode and clojure-test-mode
+(add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
 (autoload 'clojure-mode "clojure-mode" nil t)
 (autoload 'clojure-test-mode "clojure-test-mode" nil t)
 
