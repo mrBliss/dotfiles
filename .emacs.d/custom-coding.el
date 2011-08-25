@@ -141,7 +141,7 @@
 ;; Markdown command
 (case system-type
   ('windows-nt (setq markdown-command "/usr/local/bin/run_markdown"))
-  ('gnu/linux (setq markdown-command "/usr/bin/perlbin/vendor/Markdown.pl")))
+  ('gnu/linux (setq markdown-command "/usr/bin/vendor_perl/Markdown.pl")))
 
 ;;##############################################################################
 ;; Prolog
