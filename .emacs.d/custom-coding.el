@@ -106,9 +106,11 @@
 ;; HTML
 
 (autoload 'zencoding-mode "zencoding-mode" nil t)
+(require 'hl-tags-mode)
 
 ;; Zencoding-mode
 (add-hook 'sgml-mode-hook 'zencoding-mode)
+(add-hook 'sgml-mode-hook 'hl-tags-mode)
 
 ;; Expanding in zencoding is triggered with M-RET
 (eval-after-load "zencoding-mode"
