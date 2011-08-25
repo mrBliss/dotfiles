@@ -119,12 +119,15 @@ in parentheses. A non-empty reason will also be displayed."
   (:eval (format " %S users" (hash-table-count erc-channel-users))))
 (add-hook 'erc-mode-hook 'erc-members-mode)
 
-(defun irc-connect ()
-  "Connect to the IRC servers and open some channels."
-  (interactive)
+(defun irc-connect (&optional arg)
+  "Connect to some IRC servers and open some channels. When
+invoked with a prefix argument, all existing ERC buffers are
+killed before connecting."
+  (interactive "P")
+  (when arg
+    (mapc 'kill-buffer (erc-buffer-list nil)))
   (let ((pwd (read-passwd "Password: ")))
-    (erc :server "irc.freenode.net" :port 6667 :nick "mrBliss" :password pwd)
-    (erc-tls :server "irc.blinkenshell.org" :port 6697 :nick "mrBliss"
-             :password pwd)))
+    (erc :server "irc.freenode.net" :port 6667 :nick "mrBliss" :password pwd)))
+
 
 (provide 'custom-erc)
