@@ -15,20 +15,22 @@
           "pariatur. Excepteur sint occaecat cupidatat non proident, sunt in "
           "culpa qui officia deserunt mollit anim id est laborum."))
 
-(defun rename-file-and-buffer (new-name)
+(defun rename-file-and-buffer ()
   "Renames both current buffer and file it's visiting to NEW-NAME."
-  (interactive "sNew name: ")
+  (interactive)
   (let ((name (buffer-name))
         (filename (buffer-file-name)))
     (if (not filename)
         (message "Buffer '%s' is not visiting a file!" name)
-      (if (get-buffer new-name)
-          (message "A buffer named '%s' already exists!" new-name)
-        (progn
-          (rename-file name new-name 1)
-          (rename-buffer new-name)
-          (set-visited-file-name new-name)
-          (set-buffer-modified-p nil))))))
+      (let ((new-name (read-from-minibuffer
+                       "New name: " (file-name-nondirectory filename))))
+        (if (get-buffer new-name)
+            (message "A buffer named '%s' already exists!" new-name)
+          (progn
+            (rename-file name new-name 1)
+            (rename-buffer new-name)
+            (set-visited-file-name new-name)
+            (set-buffer-modified-p nil)))))))
 
 (defun timestamp ()
   "Spit out the current time"
