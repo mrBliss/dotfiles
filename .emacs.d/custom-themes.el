@@ -1041,8 +1041,8 @@ created 2009-06-23."
      (font-latex-sectioning-5-face ((t (:foreground "#A9D1DF"))))
      (font-latex-sedate-face ((t (:foreground "#6096BF"))))
 
-     ;; (markdown-inline-code-face ((t (:foreground "#5EA6EA"))))
-     ;; (markdown-pre-face ((t (:foreground "#5EA6EA"))))
+     (markdown-inline-code-face ((t (:foreground "#6096BF"))))
+     (markdown-pre-face ((t (:foreground "#6096BF"))))
 
      (nxml-processing-instruction-delimiter-face ((t (:foreground "#31658C"))))
      (nxml-tag-delimiter-face ((t (:foreground "#31658C"))))
@@ -1068,6 +1068,268 @@ created 2009-06-23."
      (clojure-keyword ((t (:foreground "#45b8f2"))))
      (clojure-double-quote ((t (:foreground "#5E468C"))))
      (clojure-special ((t (:foreground "#AF87D7")))))))
+
+(defun color-theme-solarized-light ()
+  "Color theme by Ethan Schoonover, ported to Emacs by Greg
+Pfeil, edited by mrBliss."
+  (interactive)
+  (let ((base03  "#002b36")
+        (base02  "#073642")
+        (base01  "#586e75")
+        (base00  "#657b83")
+        (base0   "#839496")
+        (base1   "#93a1a1")
+        (base2   "#eee8d5")
+        (base25  "#f9f2e0")
+        (base3   "#fdf6e3")
+        (yellow  "#b58900")
+        (orange  "#cb4b16")
+        (red     "#dc322f")
+        (magenta "#d33682")
+        (violet  "#6c71c4")
+        (blue    "#268bd2")
+        (cyan    "#2aa198")
+        (green   "#859900"))
+    (color-theme-install
+     `(color-theme-solarized-light
+       ((foreground-color . ,base00)
+        (background-color . ,base3)
+        (background-mode . light)
+        (cursor-color . ,base0))
+       (default ((t (:foreground ,base00 :background ,base3))))
+       (cursor
+        ((t (:foreground ,base0 :background ,base03 :inverse-video t))))
+       (header-line ((t (:foreground ,base00 :background ,base02))))
+       (fringe ((t (:foreground ,base1 :background ,base2))))
+
+       (mode-line ((t (:foreground ,base01 :background ,base2
+                                   :box (:color ,base2 :style nil)))))
+       (mode-line-buffer-id ((t (:foreground ,base01))))
+       (mode-line-inactive
+        ((t (:foreground ,base00  :background ,base3
+                         :box (:color ,base3 :style nil)))))
+
+       (font-lock-builtin-face ((t (:foreground ,magenta))))
+       (font-lock-comment-face ((t (:foreground ,base1 :italic t
+                                                :background ,base25))))
+       (font-lock-constant-face ((t (:foreground ,cyan))))
+       (font-lock-string-face ((t (:foreground ,cyan :background nil))))
+       (font-lock-function-name-face ((t (:foreground ,blue))))
+       (font-lock-keyword-face ((t (:foreground ,green))))
+       (font-lock-type-face ((t (:foreground ,yellow))))
+       (font-lock-variable-name-face ((t (:foreground ,blue :bold t))))
+       (font-lock-warning-face ((t (:foreground ,magenta :bold t))))
+       (font-lock-doc-face ((t (:foreground ,cyan :italic t))))
+       (font-lock-color-constant-face ((t (:foreground ,green))))
+       (font-lock-comment-delimiter-face
+        ((t (:foreground ,base1 :bold t))))
+       (font-lock-doc-string-face ((t (:foreground ,green))))
+       (font-lock-preprocessor-face ((t (:foreground ,orange))))
+       (font-lock-reference-face ((t (:foreground ,cyan))))
+       (font-lock-negation-char-face ((t (:foreground ,red))))
+       (font-lock-other-type-face ((t (:foreground ,blue :italic t))))
+       (font-lock-regexp-grouping-construct ((t (:foreground ,orange))))
+       (font-lock-special-keyword-face ((t (:foreground ,magenta))))
+       (font-lock-exit-face ((t (:foreground ,red))))
+       (font-lock-other-emphasized-face
+        ((t (:foreground ,violet :bold t :italic t))))
+       (font-lock-regexp-grouping-backslash ((t (:foreground ,yellow))))
+
+       (region ((t (:background ,base2))))
+       (highlight ((t (:background ,base2))))
+       (hl-line ((t (:background ,base2))))
+       (isearch ((t (:foreground ,yellow :inverse-video t))))
+
+       (minibuffer-prompt ((t (:foreground ,blue))))
+       (link ((t (:foreground ,violet :underline t))))
+       (link-visited ((t (:foreground ,magenta :underline t))))
+       (comint-highlight-prompt ((t (:foreground ,blue))))
+       (geiser-font-lock-doc-link ((t (:foreground ,violet :underline t))))
+
+       (info-menu-star ((t (:foreground ,magenta))))
+       (escape-glyph-face ((t (:foreground ,red))))
+       (ido-subdir ((t (:foreground ,blue))))
+       (ido-first-match ((t (:foreground ,green :bold t))))
+       (ido-only-match ((t (:foreground ,green))))
+       (undo-tree-visualizer-current-face ((t (:foreground ,red))))
+
+       (flyspell-duplicate
+        ((t (:background ,orange :background nil :bold t :underline t))))
+       (flyspell-incorrect
+        ((t (:foreground ,green :background nil :bold t :underline t))))
+
+       (diff-added ((t (:foreground ,green :inverse-video t))))
+       (diff-indicator-added ((t (:foreground ,green :inverse-video t))))
+       (diff-changed ((t (:foreground ,yellow :inverse-video t))))
+       (diff-indicator-changed ((t (:foreground ,yellow :inverse-video t))))
+       (diff-removed ((t (:foreground ,red :inverse-video t))))
+       (diff-indicator-removed ((t (:foreground ,red :inverse-video t))))
+       (diff-header ((t (:background ,base1))))
+       (diff-file-header
+        ((t (:background ,base01 :foreground ,base1 :bold t))))
+       (diff-refine-change ((t (:background ,base01))))
+
+       (diredp-dir-heading
+        ((t (:background nil :underline t :foreground ,magenta))))
+       (diredp-inode+size ((t (:foreground ,blue :italic t))))
+       (diredp-file-name ((t (:foreground ,base02))))
+       (diredp-file-suffix ((t (:foreground ,base00))))
+       (diredp-dir-priv
+        ((t (:background nil :italic t :foreground ,base01))))
+       (diredp-link-priv ((t (:foreground ,base1))))
+       (diredp-rare-priv ((t (:foreground ,yellow :background nil))))
+       (diredp-other-priv ((t (:foreground ,cyan :background nil))))
+       (diredp-read-priv ((t (:background nil :foreground ,blue))))
+       (diredp-write-priv ((t (:background nil :foreground ,violet))))
+       (diredp-exec-priv ((t (:background nil :foreground ,magenta))))
+       (diredp-no-priv ((t (:background nil :foreground ,base2))))
+       (diredp-date-time ((t (:foreground ,blue))))
+       (diredp-flag-mark ((t (:background nil :foreground ,base02))))
+       (diredp-flag-mark-line ((t (:background ,base01 :foreground ,base2))))
+       (diredp-deletion ((t (:background nil :foreground ,red))))
+       (diredp-deletion-file-name ((t (:background nil :foreground ,red))))
+       (diredp-ignored-file-name ((t (:foreground ,base00))))
+       (diredp-compressed-file-suffix ((t (:foreground ,yellow))))
+       (diredp-executable-tag ((t (:foreground ,magenta))))
+       (diredp-symlink ((t (:foreground ,cyan))))
+
+       (magit-section-title ((t (:foreground ,blue))))
+       (magit-branch ((t (:foreground ,magenta))))
+       (magit-item-highlight ((t (:background ,base01 :foreground ,base3))))
+       (magit-log-sha1 ((t (:foreground ,magenta))))
+
+       (erc-default-face ((t (:foreground ,base03))))
+       (erc-notice-face ((t (:foreground ,base1))))
+       (erc-timestamp-face ((t (:foreground ,magenta))))
+       (erc-direct-msg-face ((t (:foreground ,magenta))))
+       (erc-nick-msg-face ((t (:foreground ,magenta :bold t))))
+       (erc-pal-face ((t (:foreground ,blue))))
+       (erc-input-face ((t (:foreground ,cyan :italic t))))
+       (erc-current-nick-face ((t (:foreground ,magenta))))
+       (erc-nick-default-face ((t (:foreground ,violet))))
+       (erc-my-nick-face ((t (:foreground ,violet :italic t))))
+       (erc-prompt-face ((t (:background nil :foreground ,blue))))
+
+       (font-latex-warning-face ((t (:foreground ,magenta))))
+       (font-latex-italic-face
+        ((t (:foreground ,violet :italic t :underline nil))))
+       (font-latex-bold-face ((t (:foreground ,base03 :bold t))))
+       (font-latex-sectioning-1-face ((t (:foreground ,base03))))
+       (font-latex-sectioning-2-face ((t (:foreground ,base02))))
+       (font-latex-sectioning-3-face ((t (:foreground ,base01))))
+       (font-latex-sectioning-4-face ((t (:foreground ,base1))))
+       (font-latex-sectioning-5-face ((t (:foreground ,base01))))
+       (font-latex-sedate-face ((t (:foreground ,blue))))
+
+       (markdown-inline-code-face ((t (:foreground ,blue))))
+       (markdown-pre-face ((t (:foreground ,blue))))
+
+       (nxml-processing-instruction-delimiter-face ((t (:foreground ,base1))))
+       (nxml-tag-delimiter-face ((t (:foreground ,base1))))
+       (nxml-element-local-name-face ((t (:foreground ,base1))))
+       (nxml-attribute-local-name-face ((t (:foreground ,blue))))
+       (nxml-processing-instruction-target-face ((t (:foreground ,base1))))
+       (nxml-attribute-value-face ((t (:foreground ,violet))))
+       (nxml-attribute-value-delimiter-face ((t (:foreground ,violet))))
+       (nxml-entity-ref-name-face ((t (:foreground ,yellow))))
+       (nxml-entity-ref-delimiter-face ((t (:foreground ,yellow))))
+
+
+       (w3m-anchor ((t (:foreground ,violet ))))
+       (w3m-current-anchor ((t (:foreground ,magenta))))
+       (w3m-header-line-location-title ((t (:foreground ,base01))))
+       (w3m-header-line-location-content ((t (:foreground ,base02))))
+       (w3m-image-anchor ((t (:foreground ,violet))))
+
+       (clojure-parens ((t (:foreground ,base1))))
+       (clojure-braces ((t (:foreground ,violet))))
+       (clojure-brackets ((t (:foreground ,blue))))
+       (clojure-java-call ((t (:foreground ,violet))))
+       (clojure-keyword ((t (:foreground ,yellow))))
+       (clojure-double-quote ((t (:foreground ,cyan))))
+       (clojure-special ((t (:foreground ,magenta))))))))
+
+
+;; Tomorrow Theme
+;;
+;; Originally by Chris Kempson https://github.com/ChrisKempson/Tomorrow-Theme
+;; Ported to GNU Emacs by Chris Charles
+(defun color-theme-tomorrow-real (background current-line
+selection foreground comment red orange yellow green aqua blue
+purple)
+  "GNU Emacs port of Chris Kempson's Tomorrow theme. Port by Chris Charles."
+
+    (color-theme-install
+     `(color-theme-tomorrow-real
+       ((background . ,background)
+        (background-mode . dark)
+        (border-color . "black")
+        (cursor-color . "black")
+        (foreground-color . ,foreground))
+
+       ;; Built-in stuff (Emacs 23)
+       (default ((t (:background ,background :foreground ,foreground))))
+       (fringe ((t (:background ,current-line))))
+       (minibuffer-prompt ((t (:foreground ,blue))))
+       (mode-line ((t (:background ,current-line :foreground ,foreground))))
+       (region ((t (:background ,selection))))
+
+       ;; Font-lock stuff
+       (font-lock-comment-face ((t (:foreground ,comment))))
+       (font-lock-constant-face ((t (:foreground ,green))))
+       (font-lock-doc-string-face ((t (:foreground ,comment))))
+       (font-lock-function-name-face ((t (:foreground ,blue))))
+       (font-lock-keyword-face ((t (:foreground ,purple))))
+       (font-lock-string-face ((t (:foreground ,green))))
+       (font-lock-type-face ((t (:foreground ,yellow))))
+       (font-lock-variable-name-face ((t (:foreground ,red))))
+       (font-lock-warning-face ((t (:foreground ,red))))
+
+       ;; hl-line-mode
+       (hl-line ((t (:background ,current-line))))
+
+       ;; linum-mode
+       (linum ((t (:background ,current-line :foreground ,foreground))))
+
+       ;; org-mode
+       (org-date ((t (:foreground ,purple))))
+       (org-done ((t (:foreground ,green))))
+       (org-hide ((t (:foreground ,current-line))))
+       (org-link ((t (:foreground ,blue))))
+       (org-todo ((t (:foreground ,red))))
+
+       ;; show-paren-mode
+       (show-paren-match-face ((t (:background ,blue :foreground ,current-line))))
+       (show-paren-mismatch-face ((t (:background ,orange :foreground ,current-line)))))))
+
+(defun color-theme-tomorrow ()
+  "Base light Tomorrow theme."
+  (interactive)
+  (color-theme-tomorrow-real "#ffffff" "#e9efff" "#c5cce9" "#4d4d4c" "#8e908c"
+                             "#c82829" "#f5871f" "#eab700" "#718c00" "#3e999f"
+                             "#4271ae" "#8959a8"))
+
+(defun color-theme-tomorrow-night ()
+  "Dark Tomorrow theme."
+  (interactive)
+  (color-theme-tomorrow-real "#1d1f21" "#282a2e" "#373b41" "#c5c8c6" "#969896"
+                             "#cc6666" "#de935f" "#f0c674" "#b5bd68" "#8abeb7"
+                             "#81a2be" "#b294bb"))
+
+(defun color-theme-tomorrow-night-eighties ()
+  "Somewhat lighter dark Tomorrow theme."
+  (interactive)
+  (color-theme-tomorrow-real "#2d2d2d" "#393939" "#515151" "#cccccc" "#999999"
+                             "#f2777a" "#f99157" "#ffcc66" "#99cc99" "#009999"
+                             "#99cccc" "#cc99cc"))
+
+
+(defun color-theme-tomorrow-night-blue ()
+  "Dark Tomorrow theme with a blue background."
+  (interactive)
+  (color-theme-tomorrow-real "#002451" "#00346e" "#003f8e" "#ffffff" "#7285b7"
+                             "#ff9da4" "#ffc58f" "#ffeead" "#d1f1a9" "#99ffff"
+                             "#bbdaff" "#ebbbff"))
 
 
 (provide 'custom-themes)
