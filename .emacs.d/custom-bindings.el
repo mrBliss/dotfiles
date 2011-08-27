@@ -206,5 +206,8 @@
 ;; Remove all arguments in the current sexp with C-M-l
 (global-set-key (kbd "C-M-l") 'remove-args-in-sexp)
 
+;; Underline a title with C-c -
+(global-set-key (kbd "C-c -") 'underline-title)
+
 
 (provide 'custom-bindings)

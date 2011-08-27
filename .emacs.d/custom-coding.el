@@ -143,6 +143,14 @@
   ('windows-nt (setq markdown-command "/usr/local/bin/run_markdown"))
   ('gnu/linux (setq markdown-command "/usr/bin/vendor_perl/Markdown.pl")))
 
+;; Override some bindings
+(eval-after-load "markdown-mode"
+  '(progn
+     (define-key markdown-mode-map (kbd "C-c -") 'underline-title)
+     (define-key markdown-mode-map (kbd "M-p") 'backward-paragraph)
+     (define-key markdown-mode-map (kbd "M-n") 'forward-paragraph)))
+
+
 ;;##############################################################################
 ;; Prolog
 

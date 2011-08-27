@@ -474,5 +474,18 @@ the next word typed will be aligned with 'bar', two lines above."
       (delete-region s (point))
       (insert " "))))
 
+(defun underline-title (ch)
+  "Inserts the queried character until the column of the end of
+the line above is reached. Entering RET will use the default
+character, '-'."
+  (interactive "cUnderline with character (- is default): ")
+  (let ((n (save-excursion
+             (end-of-line 0)
+             (current-column)))
+        ;; RET = 13
+        (c (if (eq 13 ch) ?\- ch)))
+    (insert-char c (- n (current-column)))))
+
+
 
 (provide 'custom-defuns)
