@@ -963,7 +963,7 @@ created 2009-06-23."
      (region ((t (:background "#477AB3" :foreground "#FFFFFF"))))
      (highlight ((t (:background "#477AB3" :foreground "#ffffff"))))
      (highlight-80+ ((t (:background "#BF4D80"))))
-     (hl-line ((t (:background "#161616"))))
+     (hl-line ((t (:background "#222222"))))
 
      (minibuffer-prompt ((t (:foreground "#6096BF"))))
      (link ((t (:foreground "#6096BF" :underline t))))
