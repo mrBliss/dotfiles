@@ -8,6 +8,9 @@
 (require 'eproject)
 (require 'eproject-extras)
 
+;; Use ido's completing-read function
+(setq eproject-completing-read-function 'eproject--ido-completing-read)
+
 ;; Clojure eprojects
 (define-project-type clojure (generic)
   (look-for "project.clj")
@@ -28,5 +31,6 @@
   (look-for "_region_.tex")
   :relevant-files ("\\.tex")
   :irrelevant-files ("auto" "_region_.tex"))
+
 
 (provide 'custom-eproject)

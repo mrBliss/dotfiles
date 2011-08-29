@@ -42,26 +42,7 @@
 ;; ido-imenu
 
 (require 'imenu)
-
-(defun flatten-assoc-tree (tree pred)
-  "Returns an alist of only (key . leaf) pairs in TREE. PRED
-determines whether a value is a sub-alist or a leaf."
-  (flet ((inner (lst)
-                (mapcan (lambda (elt)
-                          (cond ((atom elt) nil)
-                                ((funcall pred elt) (inner elt))
-                                (t (list elt))))
-                        lst)))
-    (inner tree)))
-
-(defun ido-imenu ()
-  "Queries with `ido-completing-read' a symbol in the buffer's
-imenu index, then jumps to that symbol's location."
-  (interactive)
-  (goto-char
-   (let ((lst (nreverse (flatten-assoc-tree
-                         (imenu--make-index-alist) 'imenu--subalist-p))))
-     (cdr (assoc (ido-completing-read "Symbol: " (mapcar 'car lst)) lst)))))
+(global-set-key (kbd "C-x C-i") 'imenu)
 
 ;; Always rescan the file before displaying imenu
 (setq imenu-auto-rescan t)
@@ -83,7 +64,7 @@ imenu index, then jumps to that symbol's location."
 
 ;; CSS autocomplete inifinite loop hacks
 (add-to-list 'ac-css-value-classes
-	     '(border-width "thin" "medium" "thick" "inherit"))
+             '(border-width "thin" "medium" "thick" "inherit"))
 
 
 ;;##############################################################################
