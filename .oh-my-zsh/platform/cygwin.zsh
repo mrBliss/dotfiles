@@ -42,3 +42,6 @@ alias cdapp='cd /cygdrive/c/Users/Thomas/AppData/Roaming/'
 
 # Shorthand for cd'ing to the desktop
 alias cddesk='cd /cygdrive/c/Users/Thomas/Desktop/'
+
+# Alias for updatedb with predefined paths
+alias updb="updatedb --localpaths='/home/Thomas /usr/share/emacs/23.3/lisp' --prunepaths='/home/Thomas/.emacs.d/auto-saves /home/Thomas/.emacs.d/auto-save-list /home/Thomas/.git /home/Thomas/.m2 /home/Thomas/.local /home/Thomas/Documents/Cygwin'"
