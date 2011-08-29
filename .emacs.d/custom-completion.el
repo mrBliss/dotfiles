@@ -182,6 +182,47 @@
     (when file
       (find-file file))))
 
+(require 'locate)
+
+(defvar ido-locate-ignore-patterns '("\\.class$" "\\.elc")
+  "A list of regexps matching path names. Path names matched by
+  one of the regexps in this list are not shown by
+  `ido-locate'.")
+
+(defun ido-locate (search-string)
+  "Uses the `locate' program to search for files matching the
+prompted string. Uses `ido-completing-read' to choose a file to
+open among the results. Files matching any of the patterns in
+`ido-locate-ignore-patterns' are ignored."
+  (interactive (list (locate-prompt-for-search-string)))
+  ;; Copy the cmd and arg processing from `locate'
+  (let* ((locate-cmd-list (funcall locate-make-command-line search-string))
+         (locate-cmd (car locate-cmd-list))
+         (locate-cmd-args (cdr locate-cmd-list))
+         (candidates nil))
+    (with-temp-buffer
+      (apply 'call-process locate-cmd nil t nil locate-cmd-args)
+      (goto-char (point-min))
+      ;; Add every line of the buffer as a string to the list of
+      ;; candidates.
+      (while (not (eobp))
+        (let ((str (buffer-substring-no-properties (point-at-bol)
+                                                   (point-at-eol))))
+          (when (not (some (lambda (re) (string-match-p re str))
+                           ido-locate-ignore-patterns))
+            (push str candidates)))
+        (forward-line 1)))
+    ;; No match
+    (cond ((null candidates) (message "No matches"))
+          ;; Only one match
+          ((null (cdr candidates)) (find-file (car candidates)))
+          ;; Choose one among many matches with Ido
+          (t (let ((chosen (ido-completing-read "Choose: " candidates nil t)))
+               (if (equal chosen "")
+                   (message "No file chosen")
+                 (find-file chosen)))))))
+
+
 ;;##############################################################################
 ;; Smex
 

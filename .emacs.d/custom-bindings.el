@@ -206,5 +206,8 @@
 ;; Underline a title with C-c -
 (global-set-key (kbd "C-c -") 'underline-title)
 
+;; Find a file using ido-locate with C-x M-l
+(global-set-key (kbd "C-x M-l") 'ido-locate)
+
 
 (provide 'custom-bindings)
