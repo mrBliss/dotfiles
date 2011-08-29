@@ -106,9 +106,6 @@
 ;; Maximize frame with C-c m
 (global-set-key (kbd "C-c m") 'maximize-frame)
 
-;; Balance windows with C-c b
-(global-set-key (kbd "C-c b") 'balance-windows)
-
 ;; Resize window with C-M-up/down/left/right
 (global-set-key (kbd "<C-M-up>") 'enlarge-window)
 (global-set-key (kbd "<C-M-down>") 'shrink-window)
