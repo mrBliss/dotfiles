@@ -5,6 +5,11 @@
           (eq system-type 'windows-nt))
   (require 'custom-cygwin))
 
+;; call-process is very slow on Cygwin Emacs, so not querying the VC
+;; status speeds saving and opening up significantly.
+(when (eq system-type 'cygwin)
+  (setq vc-handled-backends nil))
+
 ;; Default method for tramp should be ssh or plink on cygwin
 (if (or (eq system-type 'windows-nt)
         (eq system-type 'cygwin))
