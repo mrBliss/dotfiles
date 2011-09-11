@@ -29,7 +29,7 @@
 ;; Keep track of recent files
 (recentf-mode 1)
 (setq recentf-max-menu-items 15
-      recentf-max-saved-items 100)
+      recentf-max-saved-items 200)
 
 ;; Instead of numbering like-named buffers,
 ;; add enough enough of the file path to distinguish them
