@@ -266,7 +266,7 @@
     (unless (file-exists-p dir)
       (make-directory dir t))))
 
-(add-hook 'find-file-hook 'create-missing-directories)
+(add-hook 'before-save-hook 'create-missing-directories)
 
 ;; C-w or M-w without an active region kills the current line
 (put 'kill-ring-save 'interactive-form
