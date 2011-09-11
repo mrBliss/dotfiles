@@ -76,24 +76,29 @@
                                                    "project.clj")))
     (when (not default-directory)
       (error "Not in a Leiningen project."))
-    ;; you can customize slime-port using .dir-locals.el
-    (let ((proc (start-process "lein-swank" "*lein-swank*" "lein" "swank"
-                               (number-to-string slime-port))))
-      (when proc
-        (process-put proc :output nil)
-        (set-process-sentinel
-         proc (lambda (proc event)
-                (message "%s%s: `%S'" (process-get proc :output)
-                         proc (replace-regexp-in-string "\n" "" event))))
-        (set-process-filter
-         proc (lambda (proc output)
-                (process-put proc :output
-                             (concat (process-get proc :output) output))
-                (when (string-match "Connection opened on" output)
-                  (slime-connect "localhost" slime-port)
-                  ;; no need to further process output
-                  (set-process-filter proc nil))))
-        (message "Starting lein swank server...")))))
+    ;; If there already are connections, generate a new port number
+    (lexical-let ((port (if slime-net-processes
+                            (1+ (apply #'max
+                                       (mapcar #'slime-connection-port
+                                               slime-net-processes)))
+                          4005)))
+      (let ((proc (start-process "lein-swank" "*lein-swank*" "lein" "swank"
+                                 (number-to-string port))))
+        (when proc
+          (process-put proc :output nil)
+          (set-process-sentinel
+           proc (lambda (proc event)
+                  (message "%s%s: `%S'" (process-get proc :output)
+                           proc (replace-regexp-in-string "\n" "" event))))
+          (set-process-filter
+           proc (lambda (proc output)
+                  (process-put proc :output
+                               (concat (process-get proc :output) output))
+                  (when (string-match "Connection opened on" output)
+                    (slime-connect "localhost" port)
+                    ;; no need to further process output
+                    (set-process-filter proc nil))))
+          (message "Starting lein swank server on port %d..." port))))))
 
 (autoload 'lein-swank "slime"
   "Start and connect to a Swank server for the current leiningen project." t)
