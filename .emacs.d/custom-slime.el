@@ -58,6 +58,47 @@ front of `ac-sources' for the current buffer."
       (slime-repl-return)
       (other-window 1))))
 
+(defun select-default-slime-connection (&optional arg)
+  "Interactively select the default SLIME connection from the
+list of connections. Uses `ido-completing-read' for the
+selection. The connection that is the current default is marked
+with a `*'.
+
+When this function is invoked with a prefix argument and the
+current buffer is a SLIME-Repl (the mode will be
+`slime-repl-mode') connected to a running instance, the
+connection of the REPL is chosen as the default."
+  (interactive "P")
+  (if (and arg
+           (eq major-mode 'slime-repl-mode)
+           (slime-connected-p))
+      (progn
+        (setq slime-default-connection (slime-connection))
+        (message
+         "The connection associated with this REPL (%s) is now the default."
+         (slime-connection-name slime-default-connection)))
+
+    (let* ((name-process-alist
+            (mapcar (lambda (p) (cons (format "%s (%d)%s"
+                                         (slime-connection-name p)
+                                         (slime-connection-port p)
+                                         (if (eq p slime-default-connection)
+                                             "*" ""))
+                                 p))
+                    slime-net-processes))
+           (default-name-process-cons
+             (car (member-if (lambda (np)
+                               (eq slime-default-connection (cdr np)))
+                             name-process-alist))))
+      (setq slime-default-connection
+            (cdr (assoc (ido-completing-read "Default SLIME connection: "
+                                             (mapcar #'car name-process-alist)
+                                             nil t nil nil
+                                             default-name-process-cons)
+                        name-process-alist)))
+      (message "Selected %s as default SLIME connection."
+         (slime-connection-name slime-default-connection)))))
+
 ;; Slime
 (eval-after-load "slime"
   '(progn
@@ -73,6 +114,7 @@ front of `ac-sources' for the current buffer."
      (define-key slime-mode-map (kbd "M-P") 'slime-previous-note)
      (define-key slime-mode-map (kbd "M-N") 'slime-next-note)
      (define-key slime-mode-map (kbd "C-c C-n") 'slime-highlight-notes)
+     (define-key slime-mode-map (kbd "C-c C-x C-c") 'select-default-slime-connection)
      ;; Use a modern encoding
      (setq slime-net-coding-system 'utf-8-unix)
 
@@ -82,6 +124,11 @@ front of `ac-sources' for the current buffer."
 
      (add-hook 'slime-repl-mode-hook 'slime-clojure-repl-setup)
      (tweak-clojure-syntax 'slime-repl-mode)))
+
+(eval-after-load "slime-repl"
+  '(progn
+     (define-key slime-repl-mode-map (kbd "C-c C-x C-c")
+       'select-default-slime-connection)))
 
 (add-hook 'slime-mode-hook 'set-up-slime-fuzzy-ac)
 (add-hook 'slime-repl-mode-hook 'set-up-slime-fuzzy-ac)
