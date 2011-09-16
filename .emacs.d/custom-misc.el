@@ -308,5 +308,11 @@ Otherwise, use the original definition of `yank'."
 ;; Easy interactive window resizing
 (require 'windresize)
 
+;; Deft settings
+(require 'deft)
+(setq deft-text-mode 'text-mode)
+(setq deft-directory "~/Dropbox/Notes/")
+(setq deft-auto-save-interval 0.0)
+
 
 (provide 'custom-misc)

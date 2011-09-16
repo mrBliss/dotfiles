@@ -1,0 +1,1 @@
+/home/Thomas/src/deft/deft.el
