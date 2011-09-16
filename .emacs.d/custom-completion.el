@@ -65,6 +65,7 @@
 ;; CSS autocomplete inifinite loop hacks
 (add-to-list 'ac-css-value-classes
              '(border-width "thin" "medium" "thick" "inherit"))
+(setq ac-modes (remq 'css-mode ac-modes))
 
 
 ;;##############################################################################
