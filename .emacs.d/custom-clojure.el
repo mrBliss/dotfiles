@@ -77,7 +77,8 @@
     (when (not default-directory)
       (error "Not in a Leiningen project."))
     ;; If there already are connections, generate a new port number
-    (lexical-let ((port (if slime-net-processes
+    (lexical-let ((port (if (and (boundp 'slime-net-processes)
+                                 slime-net-processes)
                             (1+ (apply #'max
                                        (mapcar #'slime-connection-port
                                                slime-net-processes)))
