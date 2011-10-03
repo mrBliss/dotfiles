@@ -310,9 +310,10 @@ Otherwise, use the original definition of `yank'."
 
 ;; Deft settings
 (require 'deft)
-(setq deft-text-mode 'text-mode)
-(setq deft-directory "~/Dropbox/Notes/")
-(setq deft-auto-save-interval 0.0)
+(setq deft-text-mode 'text-mode
+      deft-directory "~/Dropbox/Notes/"
+      deft-auto-save-interval 0.0
+      deft-use-filename-as-title t)
 
 ;; Breadcrumb
 (autoload 'bc-set               "breadcrumb" "Set bookmark in current point."   t)
