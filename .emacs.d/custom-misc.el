@@ -330,5 +330,9 @@ Otherwise, use the original definition of `yank'."
 (global-set-key (kbd "C-x C-SPC") 'bc-previous)
 (global-set-key (kbd "C-x SPC") 'bc-next)
 
+;; sysuplist-mode
+(autoload 'sysuplist-mode "sysuplist-mode.el"
+  "Major mode for selection Yaourt updates" t)
+
 
 (provide 'custom-misc)
