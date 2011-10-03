@@ -19,7 +19,7 @@
 
 (defun add-watchwords ()
   (font-lock-add-keywords
-   nil '(("\\<\\(FIX\\|TODO\\|FIXME\\|BUG\\|REFACTOR\\):"
+   nil '(("\\<\\(FIX\\|TODO\\|FIXME\\|BUG\\|REFACTOR\\):?"
           1 font-lock-warning-face t))))
 
 (add-hook 'c-mode-common-hook 'local-comment-auto-fill)
