@@ -5,7 +5,7 @@
 ;; Author: Thomas Winant <dewinant@gmail.com>
 ;; Maintainer: Thomas Winant <dewinant@gmail.com>
 ;; Created: Sep 30, 2011
-;; Version: 0.1
+;; Version: 0.2
 ;; Keywords: yaourt, sysuplist, arch linux
 
 ;; This file is not part of GNU Emacs.
@@ -92,6 +92,7 @@
 ;;
 ;;     (autoload 'sysuplist-mode "sysuplist-mode.el"
 ;;        "Major mode for selection Yaourt updates" t)
+;;     (add-to-list 'auto-mode-alist '("sysuplist$" . sysuplist-mode))
 
 
 ;;; Customization:
@@ -111,6 +112,8 @@
 ;;   * Toggle an item between marked an unmarked with `t`.
 ;;   * Toggle all items with `T`: marked items become unmarked, and vice
 ;;     versa.
+;;   * Save and quit with `q`. Only kills the frame when using
+;;     emacsclient.
 
 ;;; Bugs:
 
@@ -162,6 +165,7 @@ repositories, including a trailing '/'.")
       (define-key map (kbd "p") 'sysuplist-prev-item)
       (define-key map (kbd "N") 'sysuplist-next-section)
       (define-key map (kbd "P") 'sysuplist-prev-section)
+      (define-key map (kbd "q") 'sysuplist-save-and-quit)
       map))
   "Keymap for the sysuplist major mode.")
 
@@ -327,6 +331,19 @@ with `sysuplist-toggle-item'.  The point doesn't move."
     (while (sysuplist-toggle-item))))
 
 
+(defun sysuplist-save-and-quit ()
+  "Offer to save the file and quit.
+The current buffer is saved. When using emacslient, the current
+frame is deleted, otherwise `save-buffers-kill-emacs' is
+executed."
+  (interactive)
+  (when (yes-or-no-p (format "Save %s and quit? " (buffer-name)))
+    (save-buffer)
+    (if (frame-parameter (selected-frame) 'client)
+        (delete-frame)
+      (save-buffers-kill-emacs))))
+
+
 
 ;; Functions called on load
 
@@ -374,11 +391,8 @@ easily be turned off by the user."
   (sysuplist-newlines-between-items)
   (sysuplist-make-headers-read-only)
   (setq buffer-read-only t)
+  (toggle-truncate-lines 1)
   (run-mode-hooks 'sysuplist-mode-hook))
-
-
-;;;###autoload
-(add-to-list 'auto-mode-alist '("sysuplist$" . sysuplist-mode))
 
 
 (provide 'sysuplist-mode)

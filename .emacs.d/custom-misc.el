@@ -333,6 +333,7 @@ Otherwise, use the original definition of `yank'."
 ;; sysuplist-mode
 (autoload 'sysuplist-mode "sysuplist-mode.el"
   "Major mode for selection Yaourt updates" t)
+(add-to-list 'auto-mode-alist '("sysuplist$" . sysuplist-mode))
 
 
 (provide 'custom-misc)
