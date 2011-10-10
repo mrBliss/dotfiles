@@ -24,7 +24,7 @@
 
 (add-hook 'c-mode-common-hook 'local-comment-auto-fill)
 (add-hook 'c-mode-common-hook 'add-watchwords)
-(add-hook 'c-mode-common-hook 'smart-operator-mode)
+;;(add-hook 'c-mode-common-hook 'smart-operator-mode)
 (add-hook 'c-mode-common-hook 'idle-highlight)
 
 
@@ -36,6 +36,39 @@
 (setq ecb-layout-name "left3")
 
 (push (expand-file-name "~/.emacs.d/vendor/ecb/doc") Info-directory-list)
+
+;;##############################################################################
+;; C
+
+
+(defun c-mode-customisations ()
+  (define-key c-mode-map (kbd "C-M-h") 'backward-kill-word)
+  (flymake-mode-on))
+(add-hook 'c-mode-hook 'c-mode-customisations)
+
+;; Indentation
+(setq c-default-style '((java-mode . "java") (awk-mode . "awk") (other . "k&r")))
+
+
+;; CEDET
+(require 'semantic/sb)
+(semantic-mode 1)
+(global-ede-mode 1)
+
+(setq semantic-default-submodes
+      '(global-semanticdb-minor-mode
+        global-semantic-idle-scheduler-mode
+        global-semantic-idle-summary-mode
+        global-semantic-idle-completions-mode
+        global-semantic-decoration-mode
+        global-semantic-highlight-func-mode
+        global-semantic-mru-bookmark-mode))
+
+
+;; Don't overline function definitions
+(set-face-attribute 'semantic-tag-boundary-face
+                    nil
+                    :overline nil)
 
 
 ;;##############################################################################
