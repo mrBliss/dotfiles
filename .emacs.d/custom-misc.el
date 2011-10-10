@@ -335,5 +335,8 @@ Otherwise, use the original definition of `yank'."
   "Major mode for selection Yaourt updates" t)
 (add-to-list 'auto-mode-alist '("sysuplist$" . sysuplist-mode))
 
+;; Show Man pages in the current buffer instead of the other
+(setq Man-notify-method 'pushy)
+
 
 (provide 'custom-misc)
