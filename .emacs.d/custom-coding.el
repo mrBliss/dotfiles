@@ -37,18 +37,28 @@
 
 (push (expand-file-name "~/.emacs.d/vendor/ecb/doc") Info-directory-list)
 
+
 ;;##############################################################################
 ;; C
 
+(require 'auto-complete-clang)
+
+
+;; Backport from emacs 24: gcc 4.5 and later also display the column number
+(add-to-list 'flymake-err-line-patterns
+'(" *\\(\\[javac\\] *\\)?\\(\\([a-zA-Z]:\\)?[^:(\t\n]+\\)\:\\([0-9]+\\)\\(?:\:[0-9]+\\)?\:[ \t\n]*\\(.+\\)"
+      2 4 nil 5))
 
 (defun c-mode-customisations ()
   (define-key c-mode-map (kbd "C-M-h") 'backward-kill-word)
-  (flymake-mode-on))
+  (flymake-mode-on)
+  (add-to-list 'ac-sources 'ac-source-clang)
+  (define-key c-mode-map (kbd "C-S-n") 'flymake-goto-next-error)
+  (define-key c-mode-map (kbd "C-S-p") 'flymake-goto-prev-error))
 (add-hook 'c-mode-hook 'c-mode-customisations)
 
 ;; Indentation
 (setq c-default-style '((java-mode . "java") (awk-mode . "awk") (other . "k&r")))
-
 
 ;; CEDET
 (require 'semantic/sb)
