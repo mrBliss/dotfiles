@@ -183,7 +183,8 @@
 (case system-type
   ('windows-nt (setq markdown-command "/usr/local/bin/run_markdown"))
   ('cygwin (setq markdown-command "/usr/local/bin/run_markdown"))
-  ('gnu/linux (setq markdown-command "/usr/bin/vendor_perl/Markdown.pl")))
+  ('gnu/linux (setq markdown-command "/usr/bin/vendor_perl/Markdown.pl"))
+  ('darwin (setq markdown-command "/usr/local/bin/markdown")))
 
 ;; Override some bindings
 (eval-after-load "markdown-mode"
