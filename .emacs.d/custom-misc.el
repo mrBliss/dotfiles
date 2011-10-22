@@ -338,5 +338,8 @@ Otherwise, use the original definition of `yank'."
 ;; Show Man pages in the current buffer instead of the other
 (setq Man-notify-method 'pushy)
 
+;; Use conf-mode for .gitconfig
+(add-to-list 'auto-mode-alist '("\\.gitconfig$" . conf-mode))
+
 
 (provide 'custom-misc)
