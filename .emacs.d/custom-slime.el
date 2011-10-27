@@ -6,7 +6,7 @@
 
 ;; Load Slime
 (require 'slime-autoloads)
-(slime-setup '(slime-fancy slime-clj))
+(slime-setup '(slime-fancy))
 
 ;; autocomplete for Slime
 (require 'ac-slime)
