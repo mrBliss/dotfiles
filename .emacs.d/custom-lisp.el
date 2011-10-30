@@ -157,8 +157,11 @@
 (require 'geiser)
 
 ;; Point to the right Racket executable on OS X
-(when (eq system-type 'darwin)
-  (setq geiser-racket-binary "/Applications/Racket v5.1.1/bin/racket"))
+(cond ((eq system-type 'darwin)
+       (setq geiser-racket-binary "/Applications/Racket v5.1.1/bin/racket"))
+      ((string= user-login-name "s0202013")
+       (setq geiser-racket-binary
+             "/localhost/packages/racket/current/bin/racket")))
 
 ;; Add Geiser's info file
 (push (expand-file-name (concat vendor-dir "/geiser/doc"))
