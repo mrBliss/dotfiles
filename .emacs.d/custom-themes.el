@@ -982,7 +982,7 @@ created 2009-06-23."
      (flyspell-incorrect
       ((t (:foreground "#BF4D80" :bold t :underline t))))
 
-     (flymake-errline ((t (:underline "#BF4D80" :background nil))))
+     (flymake-errline ((t (:underline "red" :background nil))))
      (flymake-warnline ((t (:underline "#FF907A" :background nil))))
 
      (diff-added ((t (:foreground "green3"))))
