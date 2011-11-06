@@ -84,12 +84,12 @@ the season currently displayed in the dired buffer."
                                       episode-titles))
                     (rename-file
                      (concat cd (first x))
-                     (concat cd (third x) "." (file-name-extension (first x))))
+                     (concat cd (third x) "." (file-name-extension (first x))) t)
                     (when (second x)
                       (rename-file
                        (concat cd (second x))
                        (concat cd (third x) "."
-                               (file-name-extension (second x))))))
+                               (file-name-extension (second x))) t)))
                   (message "Successfully renamed %d files" (length vids))
                   (revert-buffer))
               (message "Number of files (%d) and episodes (%d) don't match"
