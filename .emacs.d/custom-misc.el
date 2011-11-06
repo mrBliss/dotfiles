@@ -205,6 +205,7 @@
 ;; post-mode for editing mutt messages
 (autoload 'post-mode "post" "mode for e-mail" t)
 (add-to-list 'auto-mode-alist '("\\.*mutt-*" . post-mode))
+
 (defun post-hook ()
   (auto-fill-mode t)
   (setq fill-column 72)) ;; rfc 1855 for usenet messages
@@ -343,6 +344,9 @@ Otherwise, use the original definition of `yank'."
 
 ;; Use conf-mode for .gitconfig
 (add-to-list 'auto-mode-alist '("\\.gitconfig$" . conf-mode))
+
+;; A minibuffer in your minibuffer
+(setq enable-recursive-minibuffers t)
 
 
 (provide 'custom-misc)
