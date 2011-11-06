@@ -157,18 +157,12 @@ from http://amitp.blogspot.com/2007/03/emacs-dont-kill-unsaved-buffers.html."
   (message "%d line%s copied" arg (if (= 1 arg) "" "s")))
 
 (defun remove-M ()
-  "Remove ^M at end of line in the whole buffer."
+  "Remove all ^Ms in the buffer."
   (interactive)
-  (save-match-data
-    (save-excursion
-      (let ((remove-count 0))
-        (goto-char (point-min))
-        (while (re-search-forward "
-" (point-max) t)
-          (setq remove-count (+ remove-count 1))
-          (replace-match "
-" nil nil))
-        (message (format "%d ^M removed from buffer." remove-count))))))
+  (save-excursion
+    (goto-char (point-min))
+    (while (search-forward "\r" nil t)
+      (replace-match "" nil t))))
 
 (defun kill-line-backwards ()
   "Removes everything between the start of the line and the point"
