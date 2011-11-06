@@ -348,5 +348,57 @@ Otherwise, use the original definition of `yank'."
 ;; A minibuffer in your minibuffer
 (setq enable-recursive-minibuffers t)
 
+(defvar epsrt-tvshow-folders '("/cygdrive/i/TV Shows" "/cygdrive/d/TV Shows")
+  "A list of folders containing TV Shows.")
+
+(defun epsrt-subdirs (root-dir)
+  "Return a list of (absolute) subdirectories.
+Files and the folders '.' and '..' are removed from the results."
+  (remove-if-not (lambda (f) (and (file-directory-p f)
+                             (not (string-match-p ".+\\.$" f))))
+                 (directory-files root-dir t)))
+
+(defun epsrt-choose-file (files prompt &optional candidate-transform)
+  "Choose a file/directory  interactively.
+Using `ido-completing-read' with the given PROMPT, choose a file
+or directory among FILES.  The CANDIDATE-TRANSFORM function will
+be applied to the files to obtain the list of candidates to
+choose from. CANDIDATE-TRANSFORM defaults to
+`file-name-nondirectory'."
+  (let* ((file-alist (mapcar (lambda (file)
+                               (cons (funcall (or candidate-transform
+                                                  'file-name-nondirectory) file)
+                                     file))
+                             files))
+         (candidates (mapcar 'car file-alist)))
+    (cdr (assoc (ido-completing-read prompt candidates nil t)
+                file-alist))))
+
+(defun epsrt-find ()
+  "Quickly open a subtitle (.srt) file of a TV Show episode.
+Ask the user the TV Show, season folder and finally the episode.
+Will open the subtitle file (.srt) associated with the episode.
+If no subtitle file exists, the episode will not be among the
+candidates to select.  TV Show folders aren't required to have
+season folders, the season question will be skipped when the TV
+Show folder doesn't have any subfolders.  Starts with the
+subfolders of the folders in `epsrt-tvshow-folders'."
+  (interactive)
+  (let* ((tvshow-folder (epsrt-choose-file
+                         (mapcan 'epsrt-subdirs epsrt-tvshow-folders)
+                         "TV Show: "))
+         (season-folders (epsrt-subdirs tvshow-folder))
+         (season-folder (if (null season-folders)
+                            tvshow-folder
+                          (epsrt-choose-file season-folders "Season: ")))
+         (episodes (remove-if-not (lambda (f) (string-match ".+\\.srt$" f))
+                                  (remove-if 'file-directory-p
+                                             (directory-files season-folder t))))
+         (episode (epsrt-choose-file episodes "Episode: "
+                                     (lambda (f) (let ((fnd (file-name-nondirectory f)))
+                                              (string-match "\\(.+\\)\\.srt" fnd)
+                                              (match-string 1 fnd))))))
+    (find-file episode)))
+
 
 (provide 'custom-misc)
