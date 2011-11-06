@@ -51,10 +51,6 @@
   ;; Extra Info directory
   (push (expand-file-name "~/.info") Info-directory-list))
 
-;; Bloody save-visited-files doesn't load on Linux
-(when (not (eq system-type 'gnu/linux))
-  (require 'save-visited-files))
-
 ;; Run a server on Windows, work with a daemon on Linux and Mac OS X
 (when (eq system-type 'windows-nt)
   (server-start))
@@ -69,9 +65,6 @@
   ;; Also enable wrap-region for earmuffs and `
   (wrap-region-add-punctuation "*" "*")
   (wrap-region-add-punctuation "`" "`")
-
-  ;; Auto save a list of visited files
-  (turn-on-save-visited-files-mode)
 
   ;; Treat CamelCaseWords as distinct words
   (global-subword-mode 1))

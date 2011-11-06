@@ -259,6 +259,9 @@
 (setq savehist-additional-variables
       '(kill-ring search-ring regexp-search-ring))
 
+;; Save which buffers were opened
+(desktop-save-mode 1)
+
 ;; Create missing parent directories after opening a new file. A
 ;; warning is still shown, but can be ignored
 (defun create-missing-directories ()
