@@ -372,19 +372,20 @@ be the first non-empty line of a file or the file name."
   (if deft-use-filename-as-title
       (deft-base-filename file)
     (let ((begin (string-match "^.+$" contents)))
-      (when begin
-	(substring contents begin (match-end 0))))))
+      (if begin
+        (substring contents begin (match-end 0))
+        (deft-base-filename file)))))
 
 (defun deft-parse-summary (contents title)
   "Parse the file CONTENTS, given the TITLE, and extract a summary.
 The summary is a string extracted from the contents following the
 title."
-  (let (summary)
-    (setq summary (replace-regexp-in-string "[\n\t]" " " contents))
-    (when (and (not deft-use-filename-as-title) title)
-      (string-match (regexp-quote title) summary)
-      (setq summary (deft-chomp (substring summary (match-end 0) (length summary)))))
-    summary))
+  (let ((summary (replace-regexp-in-string "[\n\t]" " " contents)))
+    (if (and (not deft-use-filename-as-title) title)
+        (if (string-match (regexp-quote title) summary)
+            (deft-chomp (substring summary (match-end 0) nil))
+          "")
+      summary)))
 
 (defun deft-cache-file (file)
   "Update file cache if FILE exists."
@@ -528,13 +529,19 @@ title."
               (deft-buffer-setup))))
 
 (defun deft-refresh ()
-  "Refresh the *Deft* buffer in the background."
+  "Update the file cache, reapply the filter, and refresh the *Deft* buffer."
   (interactive)
   (when (get-buffer deft-buffer)
     (set-buffer deft-buffer)
     (deft-cache-update)
     (deft-filter-update)
     (deft-buffer-setup)))
+
+(defun deft-refresh-browser ()
+  "Refresh the *Deft* buffer in the background."
+  (when (get-buffer deft-buffer)
+    (with-current-buffer deft-buffer
+      (deft-buffer-setup))))
 
 (defun deft-no-directory-message ()
   "Return a short message to display when the Deft directory does not exist."
@@ -678,7 +685,7 @@ If the point is not on a file widget, do nothing."
     (setq deft-filter-regexp str)
     (setq deft-current-files (mapcar 'deft-filter-match-file deft-all-files))
     (setq deft-current-files (delq nil deft-current-files)))
-  (deft-refresh))
+  (deft-refresh-browser))
 
 (defun deft-filter-increment ()
   "Append character to the filter regexp and update `deft-current-files'."
@@ -690,7 +697,7 @@ If the point is not on a file widget, do nothing."
     (setq deft-filter-regexp (concat deft-filter-regexp char))
     (setq deft-current-files (mapcar 'deft-filter-match-file deft-current-files))
     (setq deft-current-files (delq nil deft-current-files)))
-  (deft-refresh))
+  (deft-refresh-browser))
 
 (defun deft-filter-decrement ()
   "Remove last character from the filter regexp and update `deft-current-files'."
