@@ -10,6 +10,7 @@
 (require 'dired-sort-map)
 (require 'episode-renamer)
 
+
 (defun dired-up-and-kill ()
   "Run Dired on the parent directory of the current
        directory, kills the current Dired buffer."
@@ -105,5 +106,15 @@ Otherwise, display it in another buffer."
 ;; Dired ls switches and search option
 (setq dired-listing-switches "-alhF"
       dired-isearch-filenames 'dwim)
+
+
+(defadvice dired-details-toggle (before dired-details-toggle-delete-overlays)
+  "Always delete the overlays when toggle the dired details.  When
+this is not done, the function would stop working after executing
+`revert-buffer' in the dired buffer."
+  (dired-details-delete-overlays))
+
+(ad-activate 'dired-details-toggle)
+
 
 (provide 'custom-dired)
