@@ -115,6 +115,8 @@ connection of the REPL is chosen as the default."
      (define-key slime-mode-map (kbd "M-N") 'slime-next-note)
      (define-key slime-mode-map (kbd "C-c C-n") 'slime-highlight-notes)
      (define-key slime-mode-map (kbd "C-c C-x C-c") 'select-default-slime-connection)
+     (define-key slime-mode-map (kbd "C-c C-r") 'replace-regexp)
+     (define-key slime-mode-map (kbd "C-c x") 'swap-windows-with-cursor)
      ;; Use a modern encoding
      (setq slime-net-coding-system 'utf-8-unix)
 
