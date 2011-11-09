@@ -150,7 +150,7 @@ windows to numbers."
   (when (and window-numbering-auto-assign-0-to-minibuffer
              (active-minibuffer-window))
     (window-numbering-assign (active-minibuffer-window) 0))
-  (let ((windows (window-list nil 0 (window-at 0 0))))
+  (let ((windows (window-list nil 0 (window-at 1 1))))
     (run-hook-with-args 'window-numbering-before-hook windows)
     (when window-numbering-assign-func
       (mapc `(lambda (window)
