@@ -49,5 +49,14 @@
 ;; Always delete trailing whitespace
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+;;##############################################################################
+;; Key Chords
+
+(require 'key-chord)
+(key-chord-mode 1)
+
+(key-chord-define c-mode-base-map ";;" "\C-e;")
+(key-chord-define-global "jj" 'ace-jump-char-mode)
+
 
 (provide 'custom-editing)
