@@ -1198,7 +1198,7 @@ Pfeil, edited by mrBliss."
 
        (magit-section-title ((t (:foreground ,blue))))
        (magit-branch ((t (:foreground ,magenta))))
-       (magit-item-highlight ((t (:background ,base01))))
+       (magit-item-highlight ((t (:background ,base2))))
        (magit-log-sha1 ((t (:foreground ,magenta))))
 
        (erc-default-face ((t (:foreground ,base03))))
