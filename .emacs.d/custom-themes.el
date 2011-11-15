@@ -1198,7 +1198,7 @@ Pfeil, edited by mrBliss."
 
        (magit-section-title ((t (:foreground ,blue))))
        (magit-branch ((t (:foreground ,magenta))))
-       (magit-item-highlight ((t (:background ,base01 :foreground ,base3))))
+       (magit-item-highlight ((t (:background ,base01))))
        (magit-log-sha1 ((t (:foreground ,magenta))))
 
        (erc-default-face ((t (:foreground ,base03))))
@@ -1238,11 +1238,14 @@ Pfeil, edited by mrBliss."
        (nxml-entity-ref-delimiter-face ((t (:foreground ,yellow))))
 
 
-       (w3m-anchor ((t (:foreground ,violet ))))
+       (w3m-anchor ((t (:foreground ,violet))))
        (w3m-current-anchor ((t (:foreground ,magenta))))
        (w3m-header-line-location-title ((t (:foreground ,base01))))
        (w3m-header-line-location-content ((t (:foreground ,base02))))
        (w3m-image-anchor ((t (:foreground ,violet))))
+
+       (show-paren-match-face ((t (:background ,magenta :foreground ,base3))))
+       (paren-face-match ((t (:background ,blue :foreground ,base3))))
 
        (clojure-parens ((t (:foreground ,base1))))
        (clojure-braces ((t (:foreground ,violet))))
