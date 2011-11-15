@@ -25,6 +25,7 @@
 
 (add-hook 'lisp-common-hook 'add-watchwords)
 (add-hook 'lisp-common-hook 'idle-highlight)
+(add-hook 'lisp-common-hook 'highlight-parentheses-mode)
 
 
 ;;##############################################################################
