@@ -250,12 +250,14 @@ fewer than 80 columns."
 (defun increase-font-size ()
   (interactive)
   (set-face-attribute
-   'default nil :height (ceiling (* 1.10 (face-attribute 'default :height)))))
+   'default (selected-frame)
+   :height (ceiling (* 1.10 (face-attribute 'default :height)))))
 
 (defun decrease-font-size ()
   (interactive)
   (set-face-attribute
-   'default nil :height (floor (* 0.9 (face-attribute 'default :height)))))
+   'default (selected-frame)
+   :height (floor (* 0.9 (face-attribute 'default :height)))))
 
 (defun toggle-current-window-dedication ()
   (interactive)
