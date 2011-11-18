@@ -24,11 +24,11 @@
              ('gnu/linux "QuadraatSMono-Regular-9")
              ('darwin "QuadraatSMono-Regular-12")
              ('cygwin "QuadraatSMono-Regular-9")))
-           (tool-bar-mode -1)
-           (set-scroll-bar-mode nil)
-           (color-theme-dark-violet))
-          (color-theme-ir-black))))
-  (add-hook 'after-make-frame-functions 'appearance)
+          (tool-bar-mode -1)
+          (set-scroll-bar-mode nil)
+          (color-theme-dark-violet))
+      (color-theme-ir-black))))
+(add-hook 'after-make-frame-functions 'appearance)
 
 ;; Not global, because terminal and graphical windows have different
 ;; themes.
@@ -85,6 +85,37 @@
 ;; Close pop-up windows with C-g
 (require 'popwin)
 (setq display-buffer-function 'popwin:display-buffer)
+
+;; Escreen, screen for Emacs
+(require 'escreen)
+(escreen-install)
+(setq escreen-prefix-char (kbd "C-z"))
+(global-set-key escreen-prefix-char 'escreen-prefix)
+
+;; C-z is now the prefix char for escreen, so to use its previous
+;; function, suspending the frame, use C-z C-z.
+(define-key escreen-map "\C-z" 'suspend-frame)
+
+;; Modified version of Vinh Nguyen's
+;; escreen-get-active-screen-numbers-with-emphasis.
+(defun escreen-display-active-screen ()
+  "Display the screens in the minibuffer.
+Emphasize the active screen by displaying it in another face and
+putting it in parentheses."
+  (interactive)
+  (let ((current escreen-current-screen-number)
+        (screens (copy-list (escreen-configuration-screen-numbers)))
+        (str ""))
+    (dolist (s (sort screens '<))
+      (setq str (concat str " "
+                        (if (eq s current)
+                            (propertize (format "(%d)" s)
+                                        'face 'font-lock-builtin-face)
+                          (number-to-string s)))))
+    (message "Screen:%s" str)))
+
+(add-hook 'escreen-goto-screen-hook 'escreen-display-active-screen)
+
 
 
 (provide 'custom-appearance)
