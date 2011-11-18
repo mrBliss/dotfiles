@@ -66,6 +66,7 @@ Return the position of the beginning of the filename, or nil if none found."
 (define-key dired-mode-map (kbd "a") 'dired-find-file-reuse-buffer)
 (define-key dired-mode-map (kbd "RET") 'dired-find-file-reuse-buffer)
 (define-key dired-mode-map (kbd "M-m") 'dired-move-to-filename)
+(define-key dired-mode-map (kbd "M-b") 'backward-word)
 
 ;; From Scottjad
 (defun dired-view-file ()
