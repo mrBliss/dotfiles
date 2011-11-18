@@ -73,6 +73,7 @@ alias gitgui='git gui'
 alias gits='git status'
 alias gitll='git log -n2'
 alias gitpullorig='git pull origin master'
+alias gpo='git pull origin master'
 
 # GNU Screen
 alias scr='screen'
