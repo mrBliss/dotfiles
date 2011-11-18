@@ -12,8 +12,8 @@
 (global-set-key (kbd "C-x O") (lambda () (interactive) (other-window -1)))
 
 ;; Swap windows
-(global-set-key (kbd "C-c X") 'swap-windows)
-(global-set-key (kbd "C-c x") 'swap-windows-with-cursor)
+(global-set-key (kbd "C-c x") 'swap-windows)
+(global-set-key (kbd "C-c X") 'swap-windows-reverse)
 
 ;; When the old M-x is needed
 (global-set-key (kbd "C-c M-x") 'execute-extended-command)

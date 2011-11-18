@@ -38,21 +38,25 @@
   (insert (format-time-string "%d-%m-%Y")))
 
 (defun swap-windows ()
-  "Swap two windows, leaving the cursor in the current window."
-  (interactive)
-  (let ((thiswin (selected-window))
-        (nextbuf (window-buffer (next-window))))
-    (set-window-buffer (next-window) (window-buffer))
-    (set-window-buffer thiswin nextbuf)))
-
-(defun swap-windows-with-cursor ()
-  "Swap two windows, with cursor in the same buffer."
+  "Swap the buffers of the current and the next window.
+The cursor remains in the same buffer."
   (interactive)
   (let ((thiswin (selected-window))
         (thisbuf (window-buffer)))
     (other-window 1)
     (set-window-buffer thiswin (window-buffer))
     (set-window-buffer (selected-window) thisbuf)))
+
+(defun swap-windows-reverse ()
+  "Swap the buffers of the current and the previous window.
+The cursor remains in the same buffer."
+  (interactive)
+  (let ((thiswin (selected-window))
+        (thisbuf (window-buffer)))
+    (other-window -1)
+    (set-window-buffer thiswin (window-buffer))
+    (set-window-buffer (selected-window) thisbuf)))
+
 
 (defun prevent-killing-scratch ()
   "Prevent the *scratch* buffer from being killed. Modified from function
