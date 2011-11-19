@@ -10,6 +10,20 @@
 (require 'color-theme)
 (require 'custom-themes)
 
+;; The dark and light color-themes
+(setq dark-color-theme 'color-theme-dark-violet)
+(setq light-color-theme 'color-theme-solarized-light)
+;; The color-theme for the next frame
+(setq next-color-theme dark-color-theme)
+
+(defun make-frame-light-or-dark (arg)
+  "Make a new frame like `make-frame' with a dark color-theme or
+a light color-theme when passed a prefix argument."
+  (interactive "P")
+  (setq next-color-theme (if arg light-color-theme dark-color-theme))
+  (make-frame))
+
+
 ;; Set font and theme depending on frame type. Also disable the tool
 ;; bar and the scroll bar
 (defun appearance (f)
@@ -26,7 +40,7 @@
              ('cygwin "QuadraatSMono-Regular-9")))
           (tool-bar-mode -1)
           (set-scroll-bar-mode nil)
-          (color-theme-dark-violet))
+          (funcall next-color-theme))
       (color-theme-ir-black))))
 (add-hook 'after-make-frame-functions 'appearance)
 

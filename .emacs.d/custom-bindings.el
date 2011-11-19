@@ -63,7 +63,7 @@
                 (lambda () (interactive) (find-file "~/.emacs.d/init.el")))
 
 ;; Open a new frame
-(global-set-key (kbd "C-c f") 'make-frame)
+(global-set-key (kbd "C-c f") 'make-frame-light-or-dark)
 
 ;; Search for text in the kill ring
 (global-set-key (kbd "C-M-y") 'kill-ring-search)
