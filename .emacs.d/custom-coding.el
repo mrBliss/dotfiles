@@ -27,6 +27,8 @@
 ;;(add-hook 'c-mode-common-hook 'smart-operator-mode)
 (add-hook 'c-mode-common-hook 'idle-highlight)
 
+;; Please don't
+(setq flymake-gui-warnings-enabled nil)
 
 ;; ECB
 
@@ -60,9 +62,14 @@
 (defun c-mode-customisations ()
   (define-key c-mode-map (kbd "C-M-h") 'backward-kill-word)
   (flymake-mode-on)
+  (linum-mode 1)
   (add-to-list 'ac-sources 'ac-source-clang)
   (define-key c-mode-map (kbd "C-S-n") 'flymake-goto-next-error)
-  (define-key c-mode-map (kbd "C-S-p") 'flymake-goto-prev-error))
+  (define-key c-mode-map (kbd "C-S-p") 'flymake-goto-prev-error)
+  (setq ac-sources
+        (append '(ac-source-yasnippet ac-source-clang)
+                (remq 'ac-source-yasnippet
+                      (remq 'ac-source-clang ac-sources)))))
 (add-hook 'c-mode-hook 'c-mode-customisations)
 
 ;; Indentation
@@ -83,10 +90,11 @@
         global-semantic-mru-bookmark-mode))
 
 
-;; Don't overline function definitions
-(set-face-attribute 'semantic-tag-boundary-face
-                    nil
-                    :overline nil)
+(eval-after-load "semantic-mode"
+  ;; Don't overline function definitions
+  '(set-face-attribute 'semantic-tag-boundary-face
+                       nil
+                       :overline nil))
 
 
 ;;##############################################################################
