@@ -285,8 +285,8 @@ fewer than 80 columns."
 
 ;; From scottjad
 (defun insert-local-variables-spec ()
-  (interactive)
   "Insert a minimal local variables spec for this buffer."
+  (interactive)
   (save-excursion
     (save-restriction
       (widen)

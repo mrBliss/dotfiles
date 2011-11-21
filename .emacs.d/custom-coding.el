@@ -57,7 +57,22 @@
 ;; Backport from emacs 24: gcc 4.5 and later also display the column number
 (add-to-list 'flymake-err-line-patterns
 '(" *\\(\\[javac\\] *\\)?\\(\\([a-zA-Z]:\\)?[^:(\t\n]+\\)\:\\([0-9]+\\)\\(?:\:[0-9]+\\)?\:[ \t\n]*\\(.+\\)"
-      2 4 nil 5))
+  2 4 nil 5))
+
+(defun c-rename-variable ()
+  "Rename all occurences of a variable within the current
+function.  Prompts the user for the variable to rename and the
+replacement.  Uses `symbol-at-point' to guess the variable to
+rename."
+  (interactive)
+  (let* ((at-pt (symbol-at-point))
+         (old-name (read-string "Variable to rename: "
+                                (when at-pt (symbol-name at-pt))))
+         (new-name (read-string "New name: ")))
+    (save-excursion
+      (c-mark-function)
+      (replace-string old-name new-name t))))
+
 
 (defun c-mode-customisations ()
   (define-key c-mode-map (kbd "C-M-h") 'backward-kill-word)
@@ -66,6 +81,7 @@
   (add-to-list 'ac-sources 'ac-source-clang)
   (define-key c-mode-map (kbd "C-S-n") 'flymake-goto-next-error)
   (define-key c-mode-map (kbd "C-S-p") 'flymake-goto-prev-error)
+  (define-key c-mode-map (kbd "M-R") 'c-rename-variable)
   (setq ac-sources
         (append '(ac-source-yasnippet ac-source-clang)
                 (remq 'ac-source-yasnippet
