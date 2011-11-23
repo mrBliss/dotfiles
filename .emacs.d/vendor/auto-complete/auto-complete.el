@@ -163,9 +163,9 @@
   '(emacs-lisp-mode
     lisp-interaction-mode
     c-mode cc-mode c++-mode
-    java-mode clojure-mode scala-mode
+    java-mode malabar-mode clojure-mode scala-mode
     scheme-mode
-    ocaml-mode tuareg-mode
+    ocaml-mode tuareg-mode haskell-mode
     perl-mode cperl-mode python-mode ruby-mode
     ecmascript-mode javascript-mode js-mode js2-mode php-mode css-mode
     makefile-mode sh-mode fortran-mode f90-mode ada-mode
@@ -218,6 +218,12 @@ If you specify `nil', never be started automatically."
 
 (defcustom ac-ignores nil
   "List of string to ignore completion."
+  :type '(repeat string)
+  :group 'auto-complete)
+
+(defcustom ac-delete-dups t
+  "Non-nil means that duplicate candidates will be automatically
+removed."
   :type '(repeat string)
   :group 'auto-complete)
 
@@ -470,8 +476,9 @@ If there is no common part, this will be nil.")
                 (loop for p from 0 below (length string)
                       ;; sigmoid function
                       with a = 5
+                      with b = (/ 700.0 a) ; bounds for avoiding range error in `exp'
                       with d = (/ 6.0 a)
-                      for x = (- d (abs (- prefix p)))
+                      for x = (max (- b) (min b (- d (abs (- prefix p)))))
                       for r = (/ 1.0 (1+ (exp (* (- a) x))))
                       do
                       (incf score (* (aref stat p) r))))
@@ -698,9 +705,9 @@ You can not use it in source definition like (prefix . `NAME')."
                     (< width string-width)
                     (setq c (char-after))
                     (not (eq c ?\t)))   ; special case for tab
-        (incf width (char-width c))
-        (incf length)
-        (forward-char)))
+	  (incf width (char-width c))
+	  (incf length)
+	  (forward-char)))
 
       ;; Show completion
       (goto-char point)
@@ -845,7 +852,7 @@ You can not use it in source definition like (prefix . `NAME')."
                 (setq point nil))
             (if point
                 (setq prefix-def prefix))))
-        
+
         if (equal prefix prefix-def) do (push source sources)
 
         finally return
@@ -918,7 +925,8 @@ You can not use it in source definition like (prefix . `NAME')."
         append (ac-candidates-1 source) into candidates
         finally return
         (progn
-          (delete-dups candidates)
+	  (when ac-delete-dups
+	    (delete-dups candidates))
           (if (and ac-use-comphist ac-comphist)
               (if ac-show-menu
                   (let* ((pair (ac-comphist-sort ac-comphist candidates prefix-len ac-comphist-threshold))
@@ -1175,16 +1183,16 @@ that have been made before in this function."
   (when (and (or force (null this-command))
              (ac-menu-live-p)
              (null ac-quick-help))
-      (setq ac-quick-help
-            (funcall (if (and ac-quick-help-prefer-x
-                              (eq window-system 'x)
-                              (featurep 'pos-tip))
-                         'ac-pos-tip-show-quick-help
-                       'popup-menu-show-quick-help)
-                     ac-menu nil
-                     :point ac-point
-                     :height ac-quick-help-height
-                     :nowait t))))
+    (setq ac-quick-help
+	  (funcall (if (and ac-quick-help-prefer-x
+			    (eq window-system 'x)
+			    (featurep 'pos-tip))
+		       'ac-pos-tip-show-quick-help
+		     'popup-menu-show-quick-help)
+		   ac-menu nil
+		   :point ac-point
+		   :height ac-quick-help-height
+		   :nowait t))))
 
 (defun ac-remove-quick-help ()
   (when ac-quick-help
@@ -1328,7 +1336,7 @@ that have been made before in this function."
       (ac-complete)
     (when (and (ac-inline-live-p)
                ac-common-part)
-      (ac-inline-hide) 
+      (ac-inline-hide)
       (ac-expand-string ac-common-part (eq last-command this-command))
       (setq ac-common-part nil)
       t)))
@@ -1367,11 +1375,14 @@ that have been made before in this function."
            (prefix-def (nth 0 info))
            (point (nth 1 info))
            (sources (nth 2 info))
-           prefix
+           (prefix (or (null point)
+		       (buffer-substring-no-properties point (point))))
            (init (or force-init (not (eq ac-point point)))))
+
       (if (or (null point)
-              (member (setq prefix (buffer-substring-no-properties point (point)))
-                      ac-ignores))
+              (member prefix ac-ignores)
+	      (and (integerp ac-auto-start)
+		   (<= (length prefix) ac-auto-start)))
           (prog1 nil
             (ac-abort))
         (unless ac-cursor-color
@@ -1489,7 +1500,7 @@ that have been made before in this function."
                      ac-completing)
                  (not isearch-mode))
         (setq ac-last-point (point))
-        (ac-start :requires (unless ac-completing ac-auto-start))
+	(ac-start :requires (unless ac-completing ac-auto-start))
         (ac-inline-update))
     (error (ac-error var))))
 

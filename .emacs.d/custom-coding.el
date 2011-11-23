@@ -259,6 +259,14 @@ rename."
 
 
 ;;##############################################################################
+;; Scala
+
+(require 'scala-mode-auto)
+(require 'ensime)
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+
+
+;;##############################################################################
 ;; Shell scripts
 
 ;; Make shells scripts executable
