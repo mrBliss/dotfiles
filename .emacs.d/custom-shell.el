@@ -18,4 +18,13 @@
 (setq comint-prompt-read-only t)
 
 
+(defun clear-shell ()
+  "Clear the current shell buffer."
+  (interactive)
+  (let ((comint-buffer-maximum-size 0))
+    (comint-truncate-buffer)))
+
+(define-key shell-mode-map (kbd "C-c C-l") 'clear-shell)
+
+
 (provide 'custom-shell)
