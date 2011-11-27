@@ -201,8 +201,9 @@ rename."
   (message "buffer tidy'ed"))
 
 ;; Qiuckly rename the current opening and closing tag.
-(provide 'rename-sgml-tag)
-(define-key sgml-mode-map (kbd "C-c C-e") 'rename-sgml-tag)
+(require 'rename-sgml-tag)
+(eval-after-load "sgml-mode"
+  '(define-key sgml-mode-map (kbd "C-c C-e") 'rename-sgml-tag))
 
 
 ;;##############################################################################
