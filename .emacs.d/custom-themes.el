@@ -985,6 +985,8 @@ created 2009-06-23."
      (flymake-errline ((t (:underline "red" :background nil))))
      (flymake-warnline ((t (:underline "#FF907A" :background nil))))
 
+     (ensime-errline-highlight ((t (:underline "red" :background nil))))
+
      (diff-added ((t (:foreground "green3"))))
      (diff-indicator-added ((t (:foreground "green3"))))
      (diff-changed ((t (:foreground "#FF907A"))))

@@ -269,6 +269,26 @@ rename."
 (require 'scala-mode-auto)
 (require 'ensime)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+(add-hook 'scala-mode-hook 'add-watchwords)
+(add-hook 'scala-mode-hook 'idle-highlight)
+
+
+(eval-after-load "scala-mode"
+  ;; Override the function bound to RET to reindent and indent
+  '(defun scala-newline ()
+     (interactive)
+     (if (scala-in-multi-line-comment-p)
+         (progn
+           (newline-and-indent)
+           (insert "* "))
+       (reindent-then-newline-and-indent))))
+
+(eval-after-load "ensime"
+  '(progn
+     (define-key ensime-mode-map (kbd "M-p") 'backward-paragraph)
+     (define-key ensime-mode-map (kbd "M-n") 'forward-paragraph)
+     (define-key ensime-mode-map (kbd "M-P") 'ensime-backward-note)
+     (define-key ensime-mode-map (kbd "M-N") 'ensime-forward-note)))
 
 
 ;;##############################################################################
