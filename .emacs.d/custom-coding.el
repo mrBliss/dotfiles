@@ -79,8 +79,8 @@ rename."
   (flymake-mode-on)
   (linum-mode 1)
   (add-to-list 'ac-sources 'ac-source-clang)
-  (define-key c-mode-map (kbd "C-S-n") 'flymake-goto-next-error)
-  (define-key c-mode-map (kbd "C-S-p") 'flymake-goto-prev-error)
+  (define-key c-mode-map (kbd "M-N") 'flymake-goto-next-error)
+  (define-key c-mode-map (kbd "M-P") 'flymake-goto-prev-error)
   (define-key c-mode-map (kbd "M-R") 'c-rename-variable)
   (setq ac-sources
         (append '(ac-source-yasnippet ac-source-clang)
