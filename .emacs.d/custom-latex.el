@@ -35,6 +35,8 @@
   (define-key TeX-mode-map (kbd "C-c C-p") 'flymake-goto-prev-error)
   (define-key TeX-mode-map (kbd "C-c C-n") 'flymake-goto-next-error)
   (define-key TeX-mode-map (kbd "C-c C-l") 'TeX-next-error)
+  ;; Quickly type {|} with | being the point.
+  (key-chord-define LaTeX-mode-map "((" "{}\C-b")
 
   ;; Use Zathura as default PDF viewer on GNU/Linux, Skim on OS X.
   (setq TeX-view-program-list
