@@ -8,7 +8,6 @@
 (autoload 'regex-tool "regex-tool" nil t)
 
 (require 'ace-jump-mode)
-(require 'angry-fruit-salad)
 (require 'goto-last-change)
 (require 'minimap)
 (require 'scratch)
