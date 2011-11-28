@@ -10,12 +10,12 @@
 
 ;;; Code:
 
-(defvar agda2-version "2.2.10"
+(defvar agda2-version "2.2.6"
   "The version of the Agda mode.
 Note that, by default, the same version of the underlying Haskell
 library is used (see `agda2-ghci-options').")
 
-(require 'cl)
+(require 'cl) ;  haskell-indent requires it anyway.
 (set (make-local-variable 'lisp-indent-function)
      'common-lisp-indent-function)
 (require 'comint)
@@ -25,6 +25,7 @@ library is used (see `agda2-ghci-options').")
 (require 'agda-input)
 (require 'agda2-highlight)
 (require 'agda2-abbrevs)
+(require 'haskell-indent)
 (require 'haskell-ghci)
 ;; due to a bug in haskell-mode-2.1
 (setq haskell-ghci-mode-map (copy-keymap comint-mode-map))
@@ -85,13 +86,6 @@ the root of the current project."
   :type '(repeat directory)
   :group 'agda2)
 
-(defcustom agda2-backend
-  "MAlonzo"
-  "The backend which is used to compile Agda programs."
-  :type '(choice (const "MAlonzo")
-                 (const "Epic"))
-  :group 'agda2)
-
 (defcustom agda2-ghci-options
   (list (concat "-package Agda-" agda2-version))
   "Options set in GHCi before loading `agda2-toplevel-module'.
@@ -107,6 +101,14 @@ Note that only dynamic options can be set using this variable."
   '(agda2-fix-ghci-for-windows)
   "Hooks for `agda2-mode'."
   :type 'hook :group 'agda2)
+
+(defcustom agda2-indentation
+  'eri
+  "*The kind of indentation used in `agda2-mode'."
+  :type '(choice (const :tag "Haskell" haskell)
+                 (const :tag "Extended relative" eri)
+                 (const :tag "None" nil))
+  :group 'agda2)
 
 (defcustom agda2-information-window-max-height
   0.35
@@ -243,12 +245,11 @@ constituents.")
     (agda2-infer-type-maybe-toplevel         "\C-c\C-d"         (local global) "Infer (deduce) type")
     (agda2-goal-and-context                  ,(kbd "C-c C-,")   (local)        "Goal type and context")
     (agda2-goal-and-context-and-inferred     ,(kbd "C-c C-.")   (local)        "Goal type, context and inferred type")
-    (agda2-module-contents-maybe-toplevel    ,(kbd "C-c C-o")   (local global) "Module contents")
     (agda2-compute-normalised-maybe-toplevel "\C-c\C-n"         (local global) "Evaluate term to normal form")
-    (eri-indent                  ,(kbd "TAB"))
-    (eri-indent-reverse          [S-iso-lefttab])
-    (eri-indent-reverse          [S-lefttab])
-    (eri-indent-reverse          [S-tab])
+    (agda2-indent                ,(kbd "TAB"))
+    (agda2-indent-reverse        [S-iso-lefttab])
+    (agda2-indent-reverse        [S-lefttab])
+    (agda2-indent-reverse        [S-tab])
     (agda2-goto-definition-mouse [mouse-2])
     (agda2-goto-definition-keyboard "\M-.")
     (agda2-go-back                  "\M-*")
@@ -354,6 +355,7 @@ Special commands:
      (condition-case nil
          (set-frame-font agda2-fontset-name)
        (error (error "Unable to change the font; change agda2-fontset-name or tweak agda2-fontset-spec-of-fontset-agda2"))))
+ (agda2-indent-setup)
  ;; If GHCi is not running syntax highlighting does not work properly.
  (unless (eq 'run (agda2-process-status))
    (agda2-restart))
@@ -377,14 +379,7 @@ Special commands:
   (interactive)
   (save-excursion (let ((agda2-bufname "*ghci*")
                         (ignore-dot-ghci "-ignore-dot-ghci"))
-                    (agda2-protect
-                      (progn
-                        ;; GHCi doesn't always die when its buffer is
-                        ;; killed, so GHCi is killed before the buffer
-                        ;; is.
-                        (set-buffer agda2-bufname)
-                        (agda2-protect (comint-kill-subjob))
-                        (kill-buffer agda2-bufname)))
+                    (agda2-protect (kill-buffer agda2-bufname))
                     ;; Make sure that the user's .ghci is not read.
                     ;; Users can override this by adding
                     ;; "-read-dot-ghci" to
@@ -428,7 +423,8 @@ long strings (some versions of GHCi, on some systems)."
 (defun agda2-call-ghci (&rest args)
   "Executes commands in GHCi.
 Sends the list of strings ARGS to GHCi, waits for output and
-returns the responses."
+executes the responses, if any. Returns the number of processed
+responses."
   (unless (eq 'run (agda2-process-status))
     ;; Try restarting automatically, but only once, in case there is
     ;; some major problem.
@@ -457,37 +453,37 @@ returns the responses."
                 (setq response (buffer-substring-no-properties
                                 (point-min) (point-max)))))
           (delete-file tempfile))))
-    response))
+    (agda2-respond response)))
 
-(defun agda2-go (responses-expected highlight &rest args)
+(defun agda2-go (highlight require-response update-goals &rest args)
   "Executes commands in GHCi.
 Sends the list of strings ARGS to GHCi, waits for output and
-executes the responses, if any. If no responses are received, and
-RESPONSES-EXPECTED is non-nil, then an error is raised; otherwise
-the syntax highlighting information is reloaded (unless HIGHLIGHT
-is nil; if HIGHLIGHT is a string, then highlighting info is read
-from the corresponding file)."
+executes the responses, if any. An error is raised if no
+responses are received (unless REQUIRE-RESPONSE is nil), and
+otherwise the syntax highlighting information is reloaded (unless
+HIGHLIGHT is nil; if HIGHLIGHT is a string, then highlighting
+info is read from the corresponding file) and the goals
+updated (unless UPDATE-GOALS is nil)."
   (let* ((highlighting-temp (and highlight (not (stringp highlight))))
          (highlighting (cond ((stringp highlight) highlight)
                              (highlighting-temp (make-temp-file "agda2-mode")))))
         (unwind-protect
-            (let ((responses
-                   (agda2-read-responses
-                    (apply 'agda2-call-ghci
-                           "ioTCM"
-                           (agda2-string-quote (buffer-file-name))
-                           (if highlighting-temp
-                               (concat "(Just "
-                                       (agda2-string-quote highlighting)
-                                       ")")
-                             "Nothing")
-                           "("
-                           (append args '(")"))))))
-                (when (and responses-expected (null responses))
+            (let ((no-responses
+                   (apply 'agda2-call-ghci
+                          "ioTCM"
+                          (agda2-string-quote (buffer-file-name))
+                          (if highlighting-temp
+                              (concat "(Just "
+                                      (agda2-string-quote highlighting)
+                                      ")")
+                            "Nothing")
+                          "("
+                          (append args '(")")))))
+                (when (and require-response (>= 0 no-responses))
                   (agda2-raise-ghci-error))
-                (if highlight (agda2-highlight-load highlighting))
-                (agda2-exec-responses responses))
-          (if highlighting-temp (delete-file highlighting)))))
+                (if highlight (agda2-highlight-load highlighting)))
+          (if highlighting-temp (delete-file highlighting))))
+  (if update-goals (agda2-annotate)))
 
 (defun agda2-goal-cmd (cmd &optional want ask &rest args)
   "Reads input from goal or minibuffer and sends command to Agda.
@@ -506,42 +502,22 @@ The user input is computed as follows:
   contains whitespace, then the input is taken from the
   minibuffer. In this case WANT is used as the prompt string.
 
-* Otherwise (including if WANT is 'goal) the goal contents are
+* Otherwise (including if WANT is 'goal) the goal contents is
   used.
-
-If the user input is not taken from the goal, then an empty goal
-range is given.
 
 An error is raised if no responses are received."
   (multiple-value-bind (o g) (agda2-goal-at (point))
     (unless g (error "For this command, please place the cursor in a goal"))
     (let ((txt (buffer-substring-no-properties (+ (overlay-start o) 2)
-                                               (- (overlay-end   o) 2)))
-          (input-from-goal nil))
+                                               (- (overlay-end   o) 2))))
       (cond ((null want) (setq txt ""))
             ((and (stringp want)
                   (or ask (string-match "\\`\\s *\\'" txt)))
-             (setq txt (read-string (concat want ": ") nil nil txt t)))
-            (t (setq input-from-goal t)))
-      (apply 'agda2-go t nil cmd
+             (setq txt (read-string (concat want ": ") txt))))
+      (apply 'agda2-go nil t t cmd
              (format "%d" g)
-             (if input-from-goal (agda2-goal-Range o) "noRange")
+             (agda2-goal-Range o)
              (agda2-string-quote txt) args))))
-
-(defun agda2-read-responses (response)
-  "Returns a list containing the responses in the response string.
-Responses of the form (last . actual-response) are placed last in
-the returned list, with last stripped."
-  (let ((responses)
-        (former)
-        (latter))
-    (while (string-match "agda2_mode_code" response)
-      (setq response (substring response (match-end 0)))
-      (push (read response) responses))
-    (dolist (r responses (append former latter))
-      (if (and (consp r) (equal (car r) 'last))
-          (push (cdr r) latter)
-        (push r former)))))
 
 ;; Note that the following function is a security risk, since it
 ;; evaluates code without first inspecting it. The code (supposedly)
@@ -549,12 +525,29 @@ the returned list, with last stripped."
 ;; which can be exploited by an attacker which manages to trick
 ;; someone into type-checking compromised Agda code.
 
-(defun agda2-exec-responses (responses)
-  "Interprets responses."
-  (mapc (lambda (r)
-          (let ((inhibit-read-only t))
-            (eval r)))
-          responses))
+(defun agda2-respond (response)
+  "Interprets response strings.
+For every occurrence of 'agda2_mode_code<sexp>' in RESPONSE the
+sexp is executed. The number of executed responses is returned."
+  (let ((no-responses 0))
+    (while (string-match "agda2_mode_code" response)
+      (incf no-responses)
+      (setq response (substring response (match-end 0)))
+      (let ((inhibit-read-only t))
+        (eval (read response))))
+    no-responses))
+
+(defvar agda2-response nil
+  "Used by the backend to give responses to the Agda mode.")
+(make-variable-buffer-local 'agda2-response)
+
+(defun agda2-ask (&rest args)
+  "Executes a query in GHCi and returns the response string."
+  (setq agda2-response 'agda2-no-response)
+  (apply 'agda2-go nil nil nil args)
+  (if (equal agda2-response 'agda2-no-response)
+      (agda2-raise-ghci-error)
+    agda2-response))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; User commands and response processing
@@ -562,18 +555,15 @@ the returned list, with last stripped."
 (defun agda2-load ()
   "Load current buffer."
   (interactive)
-  (agda2-go t t "cmd_load"
+  (agda2-go t t t "cmd_load"
             (agda2-string-quote (buffer-file-name))
             (agda2-list-quote agda2-include-dirs)
             ))
 
 (defun agda2-compile ()
-  "Compile the current module.
-
-The variable `agda2-backend' determines which backend is used."
+  "Compile the current module."
   (interactive)
-  (agda2-go t t "cmd_compile"
-            agda2-backend
+  (agda2-go t t t "cmd_compile"
             (agda2-string-quote (buffer-file-name))
             (agda2-list-quote agda2-include-dirs)
             ))
@@ -601,7 +591,7 @@ of new goals."
 
 (defun agda2-auto ()
  "Simple proof search" (interactive)
- (agda2-goal-cmd "cmd_auto" 'goal))
+ (agda2-goal-cmd "cmd_auto"))
 
 (defun agda2-make-case ()
   "Refine the pattern var given in the goal.
@@ -652,11 +642,11 @@ in the buffer's mode line."
 
 (defun agda2-show-goals()
   "Show all goals." (interactive)
-  (agda2-go t t "cmd_metas"))
+  (agda2-go t t t "cmd_metas"))
 
 (defun agda2-show-constraints()
   "Show constraints." (interactive)
-  (agda2-go t t "cmd_constraints"))
+  (agda2-go t t t "cmd_constraints"))
 
 (defun agda2-remove-annotations ()
   "Removes buffer annotations (overlays and text properties)."
@@ -707,8 +697,8 @@ With a prefix argument the result is not explicitly normalised.")
 COMMENT is used to build the function's comments. The function
 NAME takes a prefix argument which tells whether it should
 normalise types or not when running CMD (through
-`agda2-go' t nil; the string PROMPT is used as the goal command
-prompt)."
+`agda2-go' nil t nil; the string PROMPT is used as the goal
+command prompt)."
   (let ((eval (make-symbol "eval")))
     `(defun ,name (not-normalise expr)
        ,(concat comment ".
@@ -716,7 +706,7 @@ prompt)."
 With a prefix argument the result is not explicitly normalised.")
        (interactive ,(concat "P\nM" prompt ": "))
        (let ((,eval (if not-normalise "Instantiated" "Normalised")))
-         (agda2-go t nil
+         (agda2-go nil t nil
                    (concat ,cmd " Agda.Interaction.BasicOps." ,eval " "
                            (agda2-string-quote expr)))))))
 
@@ -767,35 +757,10 @@ top-level scope."
  "cmd_context"
  nil)
 
-(defun agda2-module-contents ()
-  "Shows all the top-level names in the given module.
-Along with their types."
-  (interactive)
-  (agda2-goal-cmd "cmd_show_module_contents" "Module name"))
-
-(defun agda2-module-contents-toplevel (module)
-  "Shows all the top-level names in the given module.
-Along with their types."
-  (interactive "MModule name: ")
-  (agda2-go t nil
-            "cmd_show_module_contents_toplevel"
-            (agda2-string-quote module)))
-
-(defun agda2-module-contents-maybe-toplevel ()
-  "Shows all the top-level names in the given module.
-Along with their types.
-
-Uses either the scope of the current goal or, if point is not in
-a goal, the top-level scope."
-  (interactive)
-  (call-interactively (if (agda2-goal-at (point))
-                          'agda2-module-contents
-                        'agda2-module-contents-toplevel)))
-
 (defun agda2-solveAll ()
   "Solves all goals that are already instantiated internally."
   (interactive)
-  (agda2-go t t "cmd_solveAll"))
+  (agda2-go t t t "cmd_solveAll"))
 
 (defun agda2-solveAll-action (iss)
   (save-excursion
@@ -822,7 +787,7 @@ With a prefix argument \"abstract\" is ignored during the computation."
   (let ((cmd (concat "cmd_compute_toplevel"
                      (if arg " True" " False")
                      " ")))
-    (agda2-go t nil (concat cmd (agda2-string-quote expr)))))
+    (agda2-go nil t nil (concat cmd (agda2-string-quote expr)))))
 
 (defun agda2-compute-normalised-maybe-toplevel ()
   "Computes the normal form of the given expression,
@@ -843,23 +808,23 @@ If there is any to load."
   (let ((highlighting (make-temp-file "agda2-mode")))
     (unwind-protect
         (progn
-          (agda2-go nil highlighting
+          (agda2-go highlighting nil t
                     "cmd_write_highlighting_info"
                     (agda2-string-quote (buffer-file-name))
                     (agda2-string-quote highlighting)))
       (delete-file highlighting))))
 
-(defun agda2-goals-action (goals)
+(defun agda2-annotate ()
   "Annotates the goals in the current buffer with text properties.
-GOALS is a list of the buffer's goal numbers, in the order in
-which they appear in the buffer. Note that this function should
-be run /after/ syntax highlighting information has been loaded,
-because the two highlighting mechanisms interact in unfortunate
-ways."
+Note that this function should be run /after/ syntax highlighting
+information has been loaded, because the two highlighting
+mechanisms interact in unfortunate ways."
   (agda2-forget-all-goals)
   (agda2-let
       (stk
-       top)
+       top
+       (goals (agda2-ask "cmd_goals"
+                         (agda2-string-quote (buffer-file-name)))))
       ((delims() (re-search-forward "[?]\\|[{][-!]\\|[-!][}]\\|--" nil t))
        (is-lone-questionmark ()
           (save-excursion
@@ -1067,6 +1032,38 @@ To do: dealing with semicolon separated decls."
   (goto-char (agda2-decl-beginning)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Indentation
+
+(defun agda2-indent ()
+  "This is what happens when TAB is pressed.
+Depends on the setting of `agda2-indentation'."
+  (interactive)
+  (cond ((eq agda2-indentation 'haskell) (haskell-indent-cycle))
+        ((eq agda2-indentation 'eri) (eri-indent))))
+
+(defun agda2-indent-reverse ()
+  "This is what happens when S-TAB is pressed.
+Depends on the setting of `agda2-indentation'."
+  (interactive)
+  (cond ((eq agda2-indentation 'eri) (eri-indent-reverse))))
+
+(defun agda2-indent-setup ()
+  "Set up and start the indentation subsystem.
+Depends on the setting of `agda2-indentation'."
+  (interactive)
+  (cond ((eq agda2-indentation 'haskell)
+         (labels ((setl (var val) (set (make-local-variable var) val)))
+           (setl 'indent-line-function 'haskell-indent-cycle)
+           (setl 'haskell-indent-off-side-keywords-re
+                 "\\<\\(do\\|let\\|of\\|where\\|sig\\|struct\\)\\>[ \t]*"))
+         (local-set-key "\177"  'backward-delete-char-untabify)
+         (set (make-local-variable 'haskell-literate)
+              (if (string-match "\\.lagda$" (buffer-file-name))
+                  'latex))
+         (setq haskell-indent-mode t)
+         (run-hooks 'haskell-indent-hook))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Comments and paragraphs
 
 (defun agda2-comments-and-paragraphs-setup nil
@@ -1134,10 +1131,10 @@ invoked."
 With prefix argument, turn on display of implicit arguments if
 the argument is a positive number, otherwise turn it off."
   (interactive "P")
-  (cond ((eq arg nil)       (agda2-go t t "toggleImplicitArgs"))
+  (cond ((eq arg nil)       (agda2-go t t t "toggleImplicitArgs"))
         ((and (numberp arg)
-              (> arg 0))    (agda2-go t t "showImplicitArgs" "True"))
-        (t                  (agda2-go t t "showImplicitArgs" "False"))))
+              (> arg 0))    (agda2-go t t t "showImplicitArgs" "True"))
+        (t                  (agda2-go t t t "showImplicitArgs" "False"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;
