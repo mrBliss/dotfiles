@@ -32,8 +32,8 @@
   (eproject-mode -1)
   (flyspell-mode 1)
   (define-key TeX-mode-map (kbd "M-d") 'TeX-font)
-  (define-key TeX-mode-map (kbd "C-c C-p") 'flymake-goto-prev-error)
-  (define-key TeX-mode-map (kbd "C-c C-n") 'flymake-goto-next-error)
+  (define-key TeX-mode-map (kbd "M-P") 'flymake-goto-prev-error)
+  (define-key TeX-mode-map (kbd "M-N") 'flymake-goto-next-error)
   (define-key TeX-mode-map (kbd "C-c C-l") 'TeX-next-error)
   ;; Quickly type {|} with | being the point.
   (key-chord-define LaTeX-mode-map "((" "{}\C-b")
@@ -46,7 +46,7 @@
   (push (list 'output-pdf (caar TeX-view-program-list)) TeX-view-program-selection))
 
 
-(add-hook 'LaTeX-mode-hook 'latex-hook)
+(add-hook 'TeX-mode-hook 'latex-hook)
 
 
 (provide 'custom-latex)
