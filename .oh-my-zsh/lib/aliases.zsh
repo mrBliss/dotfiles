@@ -50,7 +50,8 @@ alias lujar='lein uberjar'
 # Emacs
 alias em='emacsclient -t -a ""'
 alias emg='emacsclient -c -n -a ""'
-alias emsudo='sudo emacs -nw -q'
+alias emq='emacs -nw -Q'
+alias emsudo='sudo emacs -nw -Q'
 
 # Make things safer with these aliases
 alias mv='mv -i'
@@ -72,8 +73,8 @@ alias space='find . -maxdepth 1 -mindepth 1 -print0  | xargs -0 -n1 du -ks | sor
 alias gitgui='git gui'
 alias gits='git status'
 alias gitll='git log -n2'
-alias gitpullorig='git pull origin master'
 alias gpo='git pull origin master'
+alias gpu='git push origin'
 
 # GNU Screen
 alias scr='screen'
@@ -106,9 +107,5 @@ alias pingg='ping -c 3 www.google.com'
 
 # Frequently used directories
 alias cdclj='cd ~/Documents/Clojure/'
-alias cdpo='cd ~/Documents/PO/'
-alias cdso='cd ~/Documents/SO/'
-alias cdhask='cd ~/Documents/DT/Haskell/'
-alias cdprol='cd ~/Documents/DT/Prolog/'
 alias cddl='cd ~/Downloads'
 alias cdem='cd ~/.emacs.d/'
