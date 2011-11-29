@@ -81,7 +81,8 @@
 (setq ido-enable-flex-matching t
       ido-use-filename-at-point 'guess
       ido-create-new-buffer 'always
-      ido-default-buffer-method 'samewindow)
+      ido-default-buffer-method 'selected-window
+      ido-default-file-method 'selected-window)
 
 ;; Ido *actually* everywhere!
 (require 'ido-ubiquitous)
