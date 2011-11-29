@@ -400,4 +400,18 @@ subfolders of the folders in `epsrt-tvshow-folders'."
     (find-file episode)))
 
 
+
+;; Mark additional regions in buffer matching current region.
+(require 'mark-more-like-this)
+
+;; C-> is easier to use than C-< on AZERTY keyboards, that's why I
+;; switched them.
+(global-set-key (kbd "C-<") 'mark-next-like-this)
+(global-set-key (kbd "C->") 'mark-previous-like-this)
+
+;; Edit a rectangle selection inline.
+(require 'inline-string-rectangle)
+(global-set-key (kbd "C-x r t") 'inline-string-rectangle)
+
+
 (provide 'custom-misc)
