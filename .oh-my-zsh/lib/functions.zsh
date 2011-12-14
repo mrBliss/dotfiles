@@ -122,19 +122,19 @@ map(){
 
 
 # Kill emacs and remove server file in /tmp
-killem () {
+killem() {
     killall emacs
     rm -rf /tmp/emacs*
 }
 
 # Use emacs' woman command as man viewer
-women () {
+women() {
     emacsclient -t -e "(woman \"$1\")'"
 }
 
 # Reattach a screen session. If multiple, presents a menu for
 # choosing.
-reattach () {
+reattach() {
     OPTS=`screen -ls | grep "[0-9]\." | while read line ; do echo "$line" | sed -e 's/\s/_/g' ; done`
 
     case $(echo $OPTS | wc -w) in
@@ -160,7 +160,7 @@ reattach () {
 
 # Starts a simple (Python) webserver in the current directory on port
 # 8000. Tries python2 first (ArchLinux), then python.
-serve () {
+serve() {
     type -a python2 &>/dev/null && python2 -m SimpleHTTPServer || python -m SimpleHTTPServer
 }
 
@@ -173,7 +173,7 @@ fixperms() {
 # Backup a remote svn repository.
 # Usage: backup_svn svn+ssh://url.to.re/mote/repo /home/user/path/to/local/destination
 # Example: backup_svn svn+ssh://repocs/repos/swop-groep-01 /home/thomas/Documents/SO/backup
-backup_svn () {
+backup_svn() {
     svnadmin create "$2"
     echo '#!/bin/bash' > "$2/hooks/pre-revprop-change"
     chmod +x "$2/hooks/pre-revprop-change"
