@@ -209,5 +209,8 @@
 ;; Find a file using ido-locate with C-x M-l
 (global-set-key (kbd "C-x M-l") 'ido-locate)
 
+;; Delete all spaces
+(global-set-key (kbd "M-S-SPC") (lambda () (interactive) (just-one-space 0)))
+
 
 (provide 'custom-bindings)
