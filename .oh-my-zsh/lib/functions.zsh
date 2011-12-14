@@ -11,7 +11,12 @@ mkcd() {
 
 # Connect to KULeuven
 kulssh() {
-    ssh -A -X -C -c blowfish -t s0202013@st.cs.kuleuven.be ssh -A s0202013@$1.cs.kotnet.kuleuven.be
+    ssh -YCc blowfish -t s0202013@st.cs.kuleuven.be ssh -A s0202013@$1.cs.kotnet.kuleuven.be
+}
+
+# Connect to KULeuven from within Kotnet
+kotssh() {
+    ssh -YCc blowfish s0202013@$1.cs.kotnet.kuleuven.be
 }
 
 # Extract files
