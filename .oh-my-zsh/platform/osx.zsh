@@ -26,7 +26,7 @@ alias kultunnel='ssh -C -c blowfish -D 8080 -N gent.cs.kotnet.kuleuven.be'
 alias ql='qlmanage -p 2>/dev/null'
 
 # View 'man' in Preview.app
-pman () {
+pman() {
     man -t "${1}" | open -f -a /Applications/Preview.app/
 }
 
@@ -49,20 +49,29 @@ alias bruses='brew uses'
 
 
 # Easy way to mount my samba share
-mnt_win () {
-  if [ -d "/Volumes/$1/" ]; then
-    echo "Already mounted"
-  else
-    # Windows share on 192.168.1.3
-    echo -n "Password for the share: "
-    stty -echo
-    read password
-    stty echo
-    echo ""
-    if [ ! -d "/Volumes/$1" ]; then
-        mkdir "/Volumes/$1"
+mnt_win() {
+    if [ -z "$2" ]; then
+        USR="Thomas"
+    else
+        USR="$2"
     fi
-    mount_smbfs "//Thomas:$password@192.168.1.3/$1" "/Volumes/$1"
-  fi
+
+    if [ -d "/Volumes/$1/" ]; then
+        echo "Already mounted"
+    else
+        # Windows share on 192.168.1.3
+        echo -n "Password for the share: "
+        stty -echo
+        read password
+        stty echo
+        echo ""
+        if [ ! -d "/Volumes/$1" ]; then
+            mkdir "/Volumes/$1"
+        fi
+        mount_smbfs "//$USR:$password@192.168.1.3/$1" "/Volumes/$1"
+    fi
+
 }
 
+alias dhcpstart='sudo /bin/launchctl load -w /System/Library/LaunchDaemons/bootps.plist'
+alias dhcpstop='sudo /bin/launchctl unload -w /System/Library/LaunchDaemons/bootps.plist'
