@@ -261,6 +261,18 @@
 
 ;; Save which buffers were opened
 (desktop-save-mode 1)
+(setq deskop-dirname (expand-file-name "~/.emacs.d/"))
+
+(defadvice desktop-owner (after pry-from-cold-dead-hands activate)
+  "Don't allow dead emacsen to own the desktop file."
+  (setq ad-return-value nil))
+
+(defun auto-save-desktop ()
+    (interactive)
+    ;; Don't call desktop-save-in-desktop-dir, as it prints a message.
+    (desktop-save desktop-dirname))
+(add-hook 'auto-save-hook 'auto-save-desktop)
+
 
 ;; Create missing parent directories after opening a new file. A
 ;; warning is still shown, but can be ignored
