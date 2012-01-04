@@ -24,7 +24,6 @@
 
 (add-hook 'c-mode-common-hook 'local-comment-auto-fill)
 (add-hook 'c-mode-common-hook 'add-watchwords)
-;;(add-hook 'c-mode-common-hook 'smart-operator-mode)
 (add-hook 'c-mode-common-hook 'idle-highlight)
 
 ;; Please don't
