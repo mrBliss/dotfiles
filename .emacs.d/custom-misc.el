@@ -435,5 +435,8 @@ subfolders of the folders in `epsrt-tvshow-folders'."
 (require 'inline-string-rectangle)
 (global-set-key (kbd "C-x r t") 'inline-string-rectangle)
 
+;; Let ediff split horizontally.
+(setq ediff-split-window-function 'split-window-horizontally)
+
 
 (provide 'custom-misc)
