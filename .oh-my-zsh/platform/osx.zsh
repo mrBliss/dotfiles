@@ -75,3 +75,6 @@ mnt_win() {
 
 alias dhcpstart='sudo /bin/launchctl load -w /System/Library/LaunchDaemons/bootps.plist'
 alias dhcpstop='sudo /bin/launchctl unload -w /System/Library/LaunchDaemons/bootps.plist'
+
+# Fancy ls: ls++
+alias lll='~/.bin/ls--/ls++'
