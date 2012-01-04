@@ -4,14 +4,12 @@
 export SHELL=/bin/zsh
 
 # Use Cocoa Emacs
-alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs'
-alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
-alias emd='/Applications/Emacs.app/Contents/MacOS/Emacs --daemon'
-alias em='emacsclient -t -a "emd"'
+alias em='emacsclient -t -a emacsserver'
+alias emg='emacsclient -c -n -a emacsserver-gui'
 
 # Use emacsclient in a terminal window or nano
-export EDITOR='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t'
-export ALTERNATE_EDITOR='/Applications/Emacs.app/Contents/MacOS/Emacs --daemon; /Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t -a ""'
+export EDITOR='emacsclient -t'
+export ALTERNATE_EDITOR='emacsserver'
 
 # Environment variables
 export JAVA_HOME=/Library/Java/Home
