@@ -89,7 +89,7 @@
 (ido-ubiquitous 1)
 ;; Just kidding, not *everywhere*
 (setq ido-ubiquitous-command-exceptions '(TeX-command-master))
-
+(ido-ubiquitous-disable-in tmm-menubar)
 
 ;; Ignore some buffers when switching buffers
 (setq ido-ignore-buffers '("\\` " "^\*slime-events" "^\*Messages*"
