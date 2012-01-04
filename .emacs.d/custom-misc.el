@@ -223,10 +223,20 @@
 (setq ns-pop-up-frames nil)
 
 ;; Beter colors for diff in magit
-(eval-after-load 'magit
+(eval-after-load "magit"
   '(progn
      (set-face-foreground 'magit-diff-add "green3")
      (set-face-foreground 'magit-diff-del "red3")))
+
+;; Wrap commit messages after 72 chars.
+(eval-after-load "magit"
+  '(progn
+     (defun magit-log-edit-mode-custom ()
+       (auto-fill-mode 1)
+       (setq fill-column 72))
+     (add-hook 'magit-log-edit-mode-hook
+               'magit-log-edit-mode-custom)))
+
 
 ;; Don't ask whether we want to kill the server
 (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
