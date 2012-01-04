@@ -29,6 +29,34 @@
 ;; Please don't
 (setq flymake-gui-warnings-enabled nil)
 
+
+;; CEDET
+(add-to-list 'load-path "~/.emacs.d/vendor/cedet/eieio")
+(add-to-list 'load-path "~/.emacs.d/vendor/cedet/semantic")
+(add-to-list 'load-path "~/.emacs.d/vendor/cedet/srecode")
+(add-to-list 'load-path "~/.emacs.d/vendor/cedet/ede")
+(add-to-list 'load-path "~/.emacs.d/vendor/cedet/speedbar")
+(load-file "~/.emacs.d/vendor/cedet/common/cedet.el")
+
+;; Load everything
+(semantic-load-enable-excessive-code-helpers)
+
+;; Except for the annoying bits
+(global-semantic-stickyfunc-mode -1)
+(global-semantic-decoration-mode -1)
+(global-semantic-idle-completions-mode -1)
+(global-semantic-idle-local-symbol-highlight-mode -1)
+
+(require 'semantic-ia)
+(require 'semantic-gcc)
+
+(eval-after-load "semantic-mode"
+  ;; Don't overline function definitions
+  '(set-face-attribute 'semantic-tag-boundary-face
+                       nil
+                       :overline nil))
+
+
 ;; ECB
 
 (require 'ecb-autoloads)
@@ -82,6 +110,8 @@ rename."
   (define-key c-mode-map (kbd "M-N") 'flymake-goto-next-error)
   (define-key c-mode-map (kbd "M-P") 'flymake-goto-prev-error)
   (define-key c-mode-map (kbd "M-R") 'c-rename-variable)
+  (define-key c-mode-map (kbd "M-.") 'semantic-complete-jump)
+  (define-key c-mode-map (kbd "M-,") 'semantic-mrub-switch-tags)
   (setq ac-sources
         (append '(ac-source-yasnippet ac-source-clang)
                 (remq 'ac-source-yasnippet
@@ -90,27 +120,6 @@ rename."
 
 ;; Indentation
 (setq c-default-style '((java-mode . "java") (awk-mode . "awk") (other . "k&r")))
-
-;; CEDET
-(require 'semantic/sb)
-(semantic-mode 1)
-(global-ede-mode 1)
-
-(setq semantic-default-submodes
-      '(global-semanticdb-minor-mode
-        global-semantic-idle-scheduler-mode
-        global-semantic-idle-summary-mode
-        global-semantic-idle-completions-mode
-        global-semantic-decoration-mode
-        global-semantic-highlight-func-mode
-        global-semantic-mru-bookmark-mode))
-
-
-(eval-after-load "semantic-mode"
-  ;; Don't overline function definitions
-  '(set-face-attribute 'semantic-tag-boundary-face
-                       nil
-                       :overline nil))
 
 
 ;;##############################################################################

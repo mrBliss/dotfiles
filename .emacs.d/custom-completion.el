@@ -67,6 +67,9 @@
              '(border-width "thin" "medium" "thick" "inherit"))
 (setq ac-modes (remq 'css-mode ac-modes))
 
+;; Also use Semantic for completion
+(add-to-list 'ac-sources 'ac-source-semantic)
+
 
 ;;##############################################################################
 ;; Ido
