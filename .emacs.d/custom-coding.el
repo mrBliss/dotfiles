@@ -239,6 +239,15 @@ rename."
 
 
 ;;##############################################################################
+;; Octave
+
+(setq inferior-octave-program
+      (if (eq system-type 'darwin)
+          "/Applications/Octave.app/Contents/Resources/bin/octave"
+        "octave"))
+
+
+;;##############################################################################
 ;; Prolog
 
 (autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
