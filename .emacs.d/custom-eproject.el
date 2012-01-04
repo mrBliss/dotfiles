@@ -8,6 +8,14 @@
 (require 'eproject)
 (require 'eproject-extras)
 
+;; Don't turn it on for all files
+(remove-hook 'find-file-hook 'eproject-maybe-turn-on)
+(remove-hook 'dired-mode-hook 'eproject-maybe-turn-on)
+(remove-hook 'after-change-major-mode-hook
+             'eproject--after-change-major-mode-hook)
+(add-hook 'c-mode-common-hook 'eproject-maybe-turn-on)
+(add-hook 'lisp-common-hook 'eproject-maybe-turn-on)
+
 ;; Use ido's completing-read function
 (setq eproject-completing-read-function 'eproject--ido-completing-read)
 
@@ -31,6 +39,11 @@
   (look-for "_region_.tex")
   :relevant-files ("\\.tex")
   :irrelevant-files ("auto" "_region_.tex"))
+
+;; Scala (ENSIME) eprojects
+(define-project-type ensime (generic)
+  (look-for ".ensime")
+  :relevant-files ("\\.scala"))
 
 
 (provide 'custom-eproject)

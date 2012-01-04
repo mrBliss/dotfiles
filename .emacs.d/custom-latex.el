@@ -29,7 +29,6 @@
   (auto-fill-mode 1)
   (flymake-mode 1)
   (ispell-change-dictionary "dutch")
-  (eproject-mode -1)
   (flyspell-mode 1)
   (define-key TeX-mode-map (kbd "M-d") 'TeX-font)
   (define-key TeX-mode-map (kbd "M-P") 'flymake-goto-prev-error)
