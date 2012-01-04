@@ -241,6 +241,13 @@ rename."
 
 
 ;;##############################################################################
+;; Matlab
+
+(require 'matlab-load)
+(matlab-cedet-setup)
+
+
+;;##############################################################################
 ;; NuSMV
 
 (autoload 'nusmv-mode "nusmv-mode" "Major mode for NuSMV specification files." t)
