@@ -438,5 +438,8 @@ subfolders of the folders in `epsrt-tvshow-folders'."
 ;; Let ediff split horizontally.
 (setq ediff-split-window-function 'split-window-horizontally)
 
+;; Ack should treat folders containing a Makefile as project roots.
+(push "Makefile" ack-project-root-file-patterns)
+
 
 (provide 'custom-misc)
