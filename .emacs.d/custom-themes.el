@@ -1144,6 +1144,8 @@ Pfeil, edited by mrBliss."
        (highlight ((t (:background ,base2))))
        (hl-line ((t (:background ,base2))))
        (isearch ((t (:foreground ,yellow :inverse-video t))))
+       (highlight-80+
+        ((t (:background ,magenta :foreground ,base2))))
 
        (minibuffer-prompt ((t (:foreground ,blue))))
        (link ((t (:foreground ,violet :underline t))))
