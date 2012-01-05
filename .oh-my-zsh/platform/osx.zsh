@@ -7,8 +7,8 @@ export SHELL=/bin/zsh
 alias em='emacsclient -t -a emacsserver'
 alias emg='emacsclient -c -n -a emacsserver-gui'
 
-# Use emacsclient in a terminal window or nano
-export EDITOR='emacsclient -t'
+# Not a typo, emacsclientt is a script that calls emacsclient -t
+export EDITOR='emacsclientt'
 export ALTERNATE_EDITOR='emacsserver'
 
 # Environment variables
