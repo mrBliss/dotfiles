@@ -101,6 +101,8 @@
 ;; Ignore .DS_Store files
 (add-to-list 'ido-ignore-files "\\.DS_Store")
 
+(require 'ibuffer)
+
 ;; Group buffers in Ibuffer
 (setq ibuffer-saved-filter-groups
       '(("default"
