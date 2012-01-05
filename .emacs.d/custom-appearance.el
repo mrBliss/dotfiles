@@ -36,7 +36,7 @@ a light color-theme when passed a prefix argument."
            (case system-type
              ('windows-nt "Envy Code R-8")
              ('gnu/linux "QuadraatSMono-Regular-9")
-             ('darwin "QuadraatSMono-Regular-12")
+             ('darwin "Inconsolata-14")
              ('cygwin "QuadraatSMono-Regular-9")))
           (tool-bar-mode -1)
           (set-scroll-bar-mode nil)
