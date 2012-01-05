@@ -186,3 +186,12 @@ backup_svn() {
     svnsync sync "file:///$2"
 }
 
+# Open a file as root in Emacs
+sem() {
+    filename=$1
+    without_beg_slash="${1##/}"
+    if [[ $without_beg_slash == $1 ]];then
+        filename="${PWD%//}/$1"
+    fi
+    $EDITOR "/sudo:root@localhost:$1"
+}
