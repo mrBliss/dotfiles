@@ -34,12 +34,6 @@
   (look-for ".project")
   :relevant-files ("\\.java"))
 
-;; Latex eproject
-(define-project-type latex (generic)
-  (look-for "_region_.tex")
-  :relevant-files ("\\.tex")
-  :irrelevant-files ("auto" "_region_.tex"))
-
 ;; Scala (ENSIME) eprojects
 (define-project-type ensime (generic)
   (look-for ".ensime")
