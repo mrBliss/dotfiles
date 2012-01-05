@@ -245,6 +245,8 @@ rename."
 
 (require 'matlab-load)
 (matlab-cedet-setup)
+(when (eq system-type 'darwin)
+  (setq semantic-matlab-root-directory "/Applications/MATLAB_R2011b.app/bin"))
 
 
 ;;##############################################################################
