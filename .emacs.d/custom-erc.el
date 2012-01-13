@@ -38,9 +38,9 @@ the erc arguments.
 
  Available properties: `nick', `host', `tld', `channel' and
 `reason'. The `reason' property will be changed: if it is the
-same as the channel, it will be nil. ERC returns '\"ERC Version
-5.3\" (IRC client for Emacs)' as `reason', since we know ERC, the
-'IRC clie..' part will be stripped from the `reason'.
+same as the channel name, it will be nil. ERC returns '\"ERC
+Version 5.3\" (IRC client for Emacs)' as `reason', since we know
+ERC, the 'IRC clie..' part will be stripped from the `reason'.
 
 The `tld' property is extracted from the `host' property: the
 alphanumeric characters after the last '.' in lowercase. Will be
@@ -116,7 +116,9 @@ in parentheses. A non-empty reason will also be displayed."
 
 ;; Show the number of members in a channel in the mode line
 (define-minor-mode erc-members-mode "" nil
-  (:eval (format " %S users" (hash-table-count erc-channel-users))))
+  (:eval (format " %S users" (if (hash-table-p erc-channel-users)
+                                 (hash-table-count erc-channel-users)
+                               0))))
 (add-hook 'erc-mode-hook 'erc-members-mode)
 
 (defun irc-connect (&optional arg)
@@ -130,4 +132,51 @@ killed before connecting."
     (erc :server "irc.freenode.net" :port 6667 :nick "mrBliss" :password pwd)))
 
 
+;; ZNC configuration
+
+(require 'znc)
+
+(defun znc ()
+  "Connect to ZNC.
+Prompt for password first."
+  (interactive)
+  (let ((pwd (read-passwd "Password: ")))
+    (znc-erc-connect `(znc "192.168.1.3" 6668 t "mrBliss" ,pwd))))
+
+;; Make playback messages look like the originals
+
+(require 'erc-replace)
+
+(defun erc-replace-replay-join (s)
+  (save-match-data
+    (let ((nick (match-string 2))
+          (host (match-string 3)))
+      (erc-propertize (format "%s%s" erc-notice-prefix
+                              (erc-message-join-format 110 nick 104 host))
+                      'face
+                      'erc-notice-face))))
+
+(defun erc-replace-replay-quit (s)
+  (save-match-data
+    (let ((nick (match-string 2))
+          (host (match-string 3))
+          (reason (match-string 4)))
+      (erc-propertize (format "%s%s" erc-notice-prefix
+                              (erc-message-quit-format 110 nick 104 host 114 reason))
+                      'face
+                      'erc-notice-face))))
+
+(setq erc-replace-alist
+      `((,(concat "<\\*buffextras> \\(\\[[0-9][0-9]:[0-9][0-9]\\]\\)"
+                  " \\([^!]+\\)!\\(.+\\) joined")
+         . erc-replace-replay-join)
+        (,(concat "<\\*buffextras> \\(\\[[0-9][0-9]:[0-9][0-9]\\]\\)"
+                  " \\([^!]+\\)!\\(.+\\) \\(quit\\|parted\\) with message:"
+                  " \\[\\(.*\\)\\]")
+         . erc-replace-replay-quit)))
+
+(erc-replace-mode 1)
+
+
 (provide 'custom-erc)
+
