@@ -403,16 +403,17 @@ Will open the subtitle file (.srt) associated with the episode.
 If no subtitle file exists, the episode will not be among the
 candidates to select.  TV Show folders aren't required to have
 season folders, the season question will be skipped when the TV
-Show folder doesn't have any subfolders.  Starts with the
-subfolders of the folders in `epsrt-tvshow-folders'."
+Show folder doesn't have any subfolders or there is only one.
+Starts with the subfolders of the folders in
+`epsrt-tvshow-folders'."
   (interactive)
   (let* ((tvshow-folder (epsrt-choose-file
                          (mapcan 'epsrt-subdirs epsrt-tvshow-folders)
                          "TV Show: "))
          (season-folders (epsrt-subdirs tvshow-folder))
-         (season-folder (if (null season-folders)
-                            tvshow-folder
-                          (epsrt-choose-file season-folders "Season: ")))
+         (season-folder (cond ((null season-folders) tvshow-folder)
+                              ((null (cdr season-folders)) (car season-folders))
+                              (t (epsrt-choose-file season-folders "Season: "))))
          (episodes (remove-if-not (lambda (f) (string-match ".+\\.srt$" f))
                                   (remove-if 'file-directory-p
                                              (directory-files season-folder t))))
