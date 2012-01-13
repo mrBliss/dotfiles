@@ -1,12 +1,12 @@
-;;; minimap.el --- Minimap sidebar for Emacs
+;;; minimap.el --- Sidebar showing a "mini-map" of a buffer
 
-;; Copyright (C) 2009, 2010  David Engster
+;; Copyright (C) 2009-2011 Free Software Foundation, Inc.
 
 ;; Author: David Engster <dengste@eml.cc>
 ;; Keywords:
-;; Version: 0.7
+;; Version: 1.0
 
-;; This file is NOT part of GNU Emacs.
+;; This file is part of GNU Emacs.
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -24,23 +24,19 @@
 ;;; Commentary:
 
 ;; This file is an implementation of a minimap sidebar, i.e., a
-;; smaller display of the current buffer on the left side. It
+;; smaller display of the current buffer on the left side.  It
 ;; highlights the currently shown region and updates its position
-;; automatically. You can navigate in the minibar by dragging the
+;; automatically.  You can navigate in the minibar by dragging the
 ;; active region with the mouse, which will scroll the corresponding
 ;; edit buffer.
 
+;; To create the minimap sidebar, type M-x minimap-create.
+;; To dismiss it, type M-x minimap-kill.
+
 ;; Usage:
-;;  * Put minimap.el in your load path.
-;;  * (require 'minimap)
 ;;  * Use 'M-x minimap-create' in a buffer you're currently editing.
 ;;  * Use 'M-x minimap-kill' to kill the minimap.
 ;;  * Use 'M-x customize-group RET minimap RET' to adapt minimap to your needs.
-
-;; Download:
-;;  You can always get the latest version from the git repository:
-;;       git://randomsample.de/minimap.git
-;;  or   http://randomsample.de/minimap.git
 
 ;;; KNOWN BUGS:
 
@@ -388,9 +384,10 @@ When FORCE, enforce update of the active region."
 	   (start-point (posn-point end-posn))
 	   (make-cursor-line-fully-visible nil)
 	   (cursor-type nil)
-	   (pcselmode pc-selection-mode)
+	   (pcselmode (when (boundp 'pc-selection-mode)
+			pc-selection-mode))
            pt ev)
-      (when pcselmode
+      (when (and pcselmode (fboundp 'pc-selection-mode))
 	(pc-selection-mode -1))
       (move-overlay minimap-active-overlay start-point minimap-end)
       (track-mouse
@@ -403,7 +400,7 @@ When FORCE, enforce update of the active region."
 	    (minimap-set-overlay pt))))
       (select-window (get-buffer-window (buffer-base-buffer)))
       (minimap-update)
-      (when pcselmode
+      (when (and pcselmode (fboundp 'pc-selection-mode))
 	(pc-selection-mode 1)))))
 
 (defun minimap-set-overlay (pt)
