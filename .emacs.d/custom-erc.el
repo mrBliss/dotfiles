@@ -168,11 +168,11 @@ Prompt for password first."
 
 (setq erc-replace-alist
       `((,(concat "<\\*buffextras> \\(\\[[0-9][0-9]:[0-9][0-9]\\]\\)"
-                  " \\([^!]+\\)!\\(.+\\) joined")
+                  "\\s-+\\([^!]+\\)!\\(.+\\)\\s-+joined")
          . erc-replace-replay-join)
         (,(concat "<\\*buffextras> \\(\\[[0-9][0-9]:[0-9][0-9]\\]\\)"
-                  " \\([^!]+\\)!\\(.+\\) \\(quit\\|parted\\) with message:"
-                  " \\[\\(.*\\)\\]")
+                  "\\s-+\\([^!]+\\)!\\(.+\\)\\s-+\\(quit\\|parted\\)\\s-+with"
+                  "\\s-+message:\\s-+\\[\\([^]]*\\)\\]")
          . erc-replace-replay-quit)))
 
 (erc-replace-mode 1)
