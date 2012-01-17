@@ -43,9 +43,9 @@
      (define-key clojure-mode-map (kbd "C-c t") 'clojure-jump-to-test)
      (define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)))
 
-;; Beter REPL behaviour
+;; Better REPL behaviour
 (defun slime-clojure-repl-setup ()
-  (when (string-equal "clojure" (slime-connection-name))
+  (when (string-match-p "clojure.+" (slime-connection-name))
     (message "Setting up repl for clojure")
     (when (slime-inferior-process)
       (slime-redirect-inferior-output))
