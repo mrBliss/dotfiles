@@ -444,4 +444,9 @@ Starts with the subfolders of the folders in
 (push "Makefile" ack-project-root-file-patterns)
 
 
+;; Load pkgbuild-mode for PKGBUILD files on Arch Linux
+(autoload 'pkgbuild-mode "pkgbuild-mode.el" "PKGBUILD mode." t)
+(add-to-list 'auto-mode-alist '("/PKGBUILD$" . pkgbuild-mode))
+
+
 (provide 'custom-misc)
