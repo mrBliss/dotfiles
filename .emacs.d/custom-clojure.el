@@ -45,7 +45,7 @@
 
 ;; Better REPL behaviour
 (defun slime-clojure-repl-setup ()
-  (when (string-match-p "clojure.+" (slime-connection-name))
+  (when (string-match-p "clojure.*" (slime-connection-name))
     (message "Setting up repl for clojure")
     (when (slime-inferior-process)
       (slime-redirect-inferior-output))
