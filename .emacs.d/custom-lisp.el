@@ -64,6 +64,10 @@
   (interactive)
   (ignore-errors (while (close-matching))))
 
+;; Blue parentheses
+(setq hl-paren-colors
+      '("#31658C" "#477AB3" "#5EA6EA" "#6096BF"))
+
 
 ;;##############################################################################
 ;; Emacs Lisp
