@@ -91,7 +91,7 @@
 (require 'ido-ubiquitous)
 (ido-ubiquitous 1)
 ;; Just kidding, not *everywhere*
-(setq ido-ubiquitous-command-exceptions '(TeX-command-master))
+(setq ido-ubiquitous-command-exceptions '(TeX-command-master kill-ring-search))
 (ido-ubiquitous-disable-in tmm-menubar)
 
 ;; Ignore some buffers when switching buffers
