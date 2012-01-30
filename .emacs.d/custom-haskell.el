@@ -6,7 +6,7 @@
 
 
 ;; Haskell-mode
-(autoload 'haskell-mode "haskell-mode" "Haskell mode" t)
+(load-file "~/.emacs.d/vendor/haskell-mode/haskell-site-file.el")
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
@@ -21,7 +21,9 @@
   (define-key haskell-mode-map (kbd "C-c C-k")
     (lambda () (interactive)
       (inferior-haskell-load-file)
-      (switch-to-haskell))))
+      (switch-to-haskell)))
+  (define-key haskell-mode-map (kbd "M-N") 'flymake-goto-next-error)
+  (define-key haskell-mode-map (kbd "M-P") 'flymake-goto-prev-error))
 (add-hook 'haskell-mode-hook 'haskell-bindings)
 
 ;; Flymake-mode for Haskell
