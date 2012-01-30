@@ -43,6 +43,12 @@
      (define-key clojure-mode-map (kbd "C-c t") 'clojure-jump-to-test)
      (define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)))
 
+;; Undo the overriding of M-p/n in clojure-test-mode
+(eval-after-load "clojure-test-mode"
+  '(progn
+     (define-key clojure-test-mode-map (kbd "M-p") 'backward-paragraph)
+     (define-key clojure-test-mode-map (kbd "M-n") 'forward-paragraph)))
+
 ;; Better REPL behaviour
 (defun slime-clojure-repl-setup ()
   (when (string-match-p "clojure.*" (slime-connection-name))
