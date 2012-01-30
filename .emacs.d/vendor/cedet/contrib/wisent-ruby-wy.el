@@ -2,8 +2,8 @@
 
 ;;; Copyright (C) 2007 Daniel Debertin (debertin@gmail.com)
 
-;; Author: Thomas Winant <Thomas@MacBookPro.local>
-;; Created: 2011-12-24 19:09:44+0100
+;; Author: Eric M. Ludlam <zappo@projectile>
+;; Created: 2012-01-09 21:18:34-0500
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

@@ -1,9 +1,9 @@
 ;;; ede-simple.el --- Overlay an EDE structure on an existing project
 
-;; Copyright (C) 2007, 2008, 2009, 2010 Eric M. Ludlam
+;; Copyright (C) 2007, 2008, 2009, 2010, 2012 Eric M. Ludlam
 
 ;; Author: Eric M. Ludlam <eric@siege-engine.com>
-;; X-RCS: $Id: ede-simple.el,v 1.12 2010/07/25 13:03:54 zappo Exp $
+;; X-RCS: $Id: ede-simple.el,v 1.12 2010-07-25 13:03:54 zappo Exp $
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -51,7 +51,8 @@
 	      :name "Simple" :file 'ede-simple
 	      :proj-file 'ede-simple-projectfile-for-dir
 	      :load-type 'ede-simple-load
-	      :class-sym 'ede-simple-project)
+	      :class-sym 'ede-simple-project
+	      :safe-p nil)
 	     t)
 
 (defcustom ede-simple-save-directory "~/.ede"

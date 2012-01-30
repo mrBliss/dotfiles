@@ -4,7 +4,7 @@
 
 ;; Author: Eric M. Ludlam <zappo@gnu.org>
 ;; Keywords: tags
-;; X-RCS: $Id: semanticdb.el,v 1.142 2010/05/03 01:13:16 zappo Exp $
+;; X-RCS: $Id: semanticdb.el,v 1.142 2010-05-03 01:13:16 zappo Exp $
 
 ;; This file is not part of GNU Emacs.
 

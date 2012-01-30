@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010 Eric M. Ludlam
 
-;; Author: Thomas Winant <Thomas@MacBookPro.local>
-;; Created: 2011-12-24 19:07:07+0100
+;; Author: Eric M. Ludlam <zappo@projectile>
+;; Created: 2012-01-09 21:18:24-0500
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

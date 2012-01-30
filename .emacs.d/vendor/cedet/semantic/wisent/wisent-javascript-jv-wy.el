@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2005 Joakim Verona, Eric Ludlam
 
-;; Author: Thomas Winant <Thomas@MacBookPro.local>
-;; Created: 2011-12-24 19:07:02+0100
+;; Author: Eric M. Ludlam <zappo@projectile>
+;; Created: 2012-01-09 21:18:22-0500
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

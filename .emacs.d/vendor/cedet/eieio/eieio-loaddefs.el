@@ -3,7 +3,17 @@
 ;;; Code:
 
 
-;;;### (autoloads (chart-test-it-all) "chart" "chart.el" (19575 43633))
+;;;### (autoloads (call-tree) "call-tree" "call-tree.el" (20235 40909))
+;;; Generated autoloads from call-tree.el
+
+(autoload 'call-tree "call-tree" "\
+Build a call tree to show all functions called by FUNC.
+
+\(fn FUNC)" t nil)
+
+;;;***
+
+;;;### (autoloads (chart-test-it-all) "chart" "chart.el" (20235 40909))
 ;;; Generated autoloads from chart.el
 
 (autoload 'chart-test-it-all "chart" "\
@@ -15,7 +25,7 @@ Test out various charting features.
 
 ;;;### (autoloads (data-debug-show data-debug-insert-object-button
 ;;;;;;  data-debug-insert-object-slots) "eieio-datadebug" "eieio-datadebug.el"
-;;;;;;  (19575 43633))
+;;;;;;  (20235 40909))
 ;;; Generated autoloads from eieio-datadebug.el
 
 (autoload 'data-debug-insert-object-slots "eieio-datadebug" "\
@@ -40,7 +50,7 @@ Run ddebug against any EIEIO object OBJ
 
 ;;;### (autoloads (eieio-describe-generic eieio-build-class-alist
 ;;;;;;  eieio-describe-constructor eieio-describe-class eieio-browse)
-;;;;;;  "eieio-opt" "eieio-opt.el" (19575 43633))
+;;;;;;  "eieio-opt" "eieio-opt.el" (20235 40909))
 ;;; Generated autoloads from eieio-opt.el
 
 (autoload 'eieio-browse "eieio-opt" "\
@@ -89,7 +99,7 @@ Also extracts information about all methods specific to this generic.
 ;;;***
 
 ;;;### (autoloads (eieio-perftest-onemethodcall eieio-perftest-methodcall)
-;;;;;;  "eieio-perftest" "eieio-perftest.el" (19575 43633))
+;;;;;;  "eieio-perftest" "eieio-perftest.el" (20235 40909))
 ;;; Generated autoloads from eieio-perftest.el
 
 (autoload 'eieio-perftest-methodcall "eieio-perftest" "\
@@ -104,8 +114,22 @@ Test and time performance of method invocation.
 
 ;;;***
 
+;;;### (autoloads (object-write-xml) "eieio-xml" "eieio-xml.el" (20235
+;;;;;;  40909))
+;;; Generated autoloads from eieio-xml.el
+
+(autoload 'object-write-xml "eieio-xml" "\
+Write object THIS out to the current stream as XML.
+  If optional COMMENT is non-nil, include comments when outputting
+this object.
+@todo - support arbitrary schema output
+
+\(fn (THIS eieio-default-superclass) &optional COMMENT)" nil nil)
+
+;;;***
+
 ;;;### (autoloads (enable-visual-studio-bookmarks) "linemark" "linemark.el"
-;;;;;;  (19575 43633))
+;;;;;;  (20235 40909))
 ;;; Generated autoloads from linemark.el
 
 (autoload 'enable-visual-studio-bookmarks "linemark" "\
@@ -121,7 +145,7 @@ Bind the viss bookmark functions to F2 related keys.
 ;;;***
 
 ;;;### (autoloads (lmcompile-do-highlight) "lmcompile" "lmcompile.el"
-;;;;;;  (19575 43633))
+;;;;;;  (20235 40909))
 ;;; Generated autoloads from lmcompile.el
 
 (autoload 'lmcompile-do-highlight "lmcompile" "\
@@ -132,10 +156,33 @@ Works on grep, compile, or other type mode.
 
 ;;;***
 
+;;;### (autoloads (directory-tree-thing eieio-class-tree tree-test-it-all)
+;;;;;;  "tree" "tree.el" (20235 40909))
+;;; Generated autoloads from tree.el
+
+(autoload 'tree-test-it-all "tree" "\
+Try using various features of tree mode in a demo of it's display.
+
+\(fn)" t nil)
+
+(autoload 'eieio-class-tree "tree" "\
+Displays a class tree using the TREE package in another buffer.
+Optional argument ROOT-CLASS is the starting point.
+
+\(fn &optional ROOT-CLASS)" t nil)
+
+(autoload 'directory-tree-thing "tree" "\
+Start at the current directory, and build a giant tree of files.
+Argument PPATH is the path to the directory we are going to analyze.
+
+\(fn PPATH)" t nil)
+
+;;;***
+
 ;;;### (autoloads nil nil ("eieio-base.el" "eieio-comp.el" "eieio-custom.el"
 ;;;;;;  "eieio-doc.el" "eieio-load.el" "eieio-speedbar.el" "eieio-test-methodinvoke.el"
-;;;;;;  "eieio-test-mro.el" "eieio-tests.el" "eieio.el") (20214 5277
-;;;;;;  394877))
+;;;;;;  "eieio-test-mro.el" "eieio-tests.el" "eieio.el" "eieiocomp.el"
+;;;;;;  "psql.el") (20236 56535 541999))
 
 ;;;***
 

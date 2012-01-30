@@ -1,13 +1,13 @@
 ;;; cedet.el --- Setup CEDET environment
 
-;; Copyright (C) 2007, 2008, 2009, 2010 by Eric M. Ludlam
+;; Copyright (C) 2007, 2008, 2009, 2010, 2012 by Eric M. Ludlam
 ;; Copyright (C) 2002, 2003, 2004, 2005, 2006 by David Ponce
 
 ;; Author: David Ponce <david@dponce.com>
 ;; Maintainer: CEDET developers <http://sf.net/projects/cedet>
 ;; Created: 09 Dec 2002
 ;; Keywords: syntax
-;; X-RCS: $Id: cedet.el,v 1.42 2010/07/17 13:34:12 zappo Exp $
+;; X-RCS: $Id: cedet.el,v 1.42 2010-07-17 13:34:12 zappo Exp $
 
 ;; This file is not part of Emacs
 
@@ -81,7 +81,7 @@
   (require 'cl)
   )
 
-(defconst cedet-version "1.0"
+(defconst cedet-version "1.0.1"
   "Current version of CEDET.")
 
 (defconst cedet-emacs-min-version "21.1"
@@ -96,7 +96,7 @@
     (eieio         "1.3"           nil       "eieio"       )
     (semantic      "2.0"           nil       "semantic/doc")
     (srecode       "1.0"           nil       "srecode"     ) 
-    (ede           "1.0"           nil       "ede"    	   )    
+    (ede           "1.0.1"         nil       "ede"    	   )    
     (speedbar      "1.0.3"         nil       "speedbar"    )
     (cogre         "1.0"           nil       "cogre"  	   )
     (cedet-contrib "1.0"           "contrib" nil           )

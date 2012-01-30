@@ -5,7 +5,7 @@
 ;;;   David Ponce
 
 ;; Author: David Ponce <david@dponce.com>
-;; X-RCS: $Id: semantic-java.el,v 1.21 2010/03/26 22:18:06 xscript Exp $
+;; X-RCS: $Id: semantic-java.el,v 1.21 2010-03-26 22:18:06 xscript Exp $
 
 ;; This file is not part of GNU Emacs.
 

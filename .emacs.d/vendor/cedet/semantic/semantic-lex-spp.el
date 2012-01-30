@@ -2,7 +2,7 @@
 
 ;;; Copyright (C) 2006, 2007, 2008, 2009, 2010 Eric M. Ludlam
 
-;; X-CVS: $Id: semantic-lex-spp.el,v 1.53 2010/04/18 20:40:15 zappo Exp $
+;; X-CVS: $Id: semantic-lex-spp.el,v 1.53 2010-04-18 20:40:15 zappo Exp $
 
 ;; This file is not part of GNU Emacs.
 
