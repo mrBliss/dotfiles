@@ -341,21 +341,6 @@ Otherwise, use the original definition of `yank'."
       deft-auto-save-interval 0.0
       deft-use-filename-as-title t)
 
-;; Breadcrumb
-(autoload 'bc-set               "breadcrumb" "Set bookmark in current point."   t)
-(autoload 'bc-previous          "breadcrumb" "Go to previous bookmark."         t)
-(autoload 'bc-next              "breadcrumb" "Go to next bookmark."             t)
-(autoload 'bc-local-previous    "breadcrumb" "Go to previous local bookmark."   t)
-(autoload 'bc-local-next        "breadcrumb" "Go to next local bookmark."       t)
-(autoload 'bc-goto-current      "breadcrumb" "Go to the current bookmark."      t)
-(autoload 'bc-list              "breadcrumb" "List all bookmarks in menu mode." t)
-(autoload 'bc-clear             "breadcrumb" "Clear all bookmarks."             t)
-(setq bc-bookmark-limit 64)
-
-(global-set-key (kbd "S-SPC") 'bc-set)
-(global-set-key (kbd "C-x C-SPC") 'bc-previous)
-(global-set-key (kbd "C-x SPC") 'bc-next)
-
 ;; sysuplist-mode
 (autoload 'sysuplist-mode "sysuplist-mode.el"
   "Major mode for selection Yaourt updates" t)
