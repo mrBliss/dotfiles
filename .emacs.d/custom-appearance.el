@@ -37,7 +37,7 @@ a light color-theme when passed a prefix argument."
              ('windows-nt "Envy Code R-8")
              ('gnu/linux "QuadraatSMono-Regular-9")
              ('darwin "Inconsolata-14")
-             ('cygwin "m-8")))
+             ('cygwin "m-9")))
           (tool-bar-mode -1)
           (set-scroll-bar-mode nil)
           (funcall next-color-theme))
