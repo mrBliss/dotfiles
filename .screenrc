@@ -74,5 +74,8 @@ screen 0 zsh
 # Don't flash
 vbell off
 
-# Shift PgUp/PgDn scrolling
-termcapinfo rxvt-unicode ti@:te@
+# Scroll with scrollbar
+termcapinfo xterm* ti@:te@
+
+# Don't display the previous emacs/nano/vim session
+altscreen on
