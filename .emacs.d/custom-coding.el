@@ -247,6 +247,13 @@ rename."
 (when (eq system-type 'darwin)
   (setq semantic-matlab-root-directory "/Applications/MATLAB_R2011b.app/"))
 
+;;##############################################################################
+;; ML
+
+(load-file "~/.emacs.d/vendor/sml-mode/sml-mode-startup.el")
+
+;; Add sml-mode Info directory
+(push (expand-file-name "~/.emacs.d/vendor/sml-mode") Info-directory-list)
 
 ;;##############################################################################
 ;; NuSMV
