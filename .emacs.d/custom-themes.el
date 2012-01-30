@@ -1018,6 +1018,10 @@ created 2009-06-23."
      (diredp-executable-tag ((t (:foreground "#BF4D80"))))
      (diredp-symlink ((t (:foreground "#287373"))))
 
+     (speedbar-button-face ((t (:foreground "#BF4D80"))))
+     (speedbar-file-face ((t (:foreground "#A9D1DF"))))
+     (speedbar-directory-face ((t (:foreground "#6096BF"))))
+
      (magit-section-title ((t (:foreground "#86A2BE"))))
      (magit-branch ((t (:foreground "#D7AFD7"))))
      (magit-item-highlight ((t (:background "#353535"))))
