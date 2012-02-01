@@ -76,3 +76,9 @@ alias dhcpstop='sudo /bin/launchctl unload -w /System/Library/LaunchDaemons/boot
 
 # Fancy ls: ls++
 alias lll='~/.bin/ls--/ls++'
+
+# Seriously ncmpcpp?
+alias nc=ncmpcpp
+
+# Stream music with VLC
+alias streamvlc='/Applications/VLC.app/Contents/MacOS/VLC -I ncurses http://localhost:8000'
