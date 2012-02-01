@@ -1117,6 +1117,7 @@ Pfeil, edited by mrBliss."
        (mode-line-inactive
         ((t (:foreground ,base00  :background ,base3
                          :box (:color ,base3 :style nil)))))
+       (linum ((t (:background ,base2))))
 
        (font-lock-builtin-face ((t (:foreground ,magenta))))
        (font-lock-comment-face ((t (:foreground ,base1 :italic t
@@ -1217,7 +1218,7 @@ Pfeil, edited by mrBliss."
        (erc-pal-face ((t (:foreground ,blue))))
        (erc-input-face ((t (:foreground ,cyan :italic t))))
        (erc-current-nick-face ((t (:foreground ,magenta))))
-       (erc-nick-default-face ((t (:foreground ,violet))))
+       (erc-nick-default-face ((t (:foreground ,blue))))
        (erc-my-nick-face ((t (:foreground ,violet :italic t))))
        (erc-prompt-face ((t (:background nil :foreground ,blue))))
 
