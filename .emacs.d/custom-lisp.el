@@ -31,6 +31,36 @@
 (add-hook 'lisp-common-hook 'turn-on-highlight-parentheses-mode)
 
 
+(defun lisp-fill-or-indent (&optional justify region)
+  "Fill when in text, indent when in code.
+Fill the paragraph when the point is in a comment, string or a
+doc string.  Indent otherwise.  Indents or fills the active region.
+When no region is active, the whole function is indented or the
+paragraph is filled. Optional arguments are only passed to
+`fill-paragraph'."
+  (interactive (progn
+		 (barf-if-buffer-read-only)
+		 (list (if current-prefix-arg 'full) t)))
+  (save-excursion
+    ;; Fill the paragraph when in a comment, string or doc string
+    (if (memq (get-text-property (point) 'face)
+              '(font-lock-string-face
+                font-lock-comment-face
+                font-lock-doc-face))
+        (fill-paragraph justify region)
+      ;; otherwise, indent.
+      ;; If there's an active region, only indent the region
+      (if (and region transient-mark-mode mark-active
+               (not (eq (region-beginning) (region-end))))
+          (indent-region (region-beginning) (region-end))
+        ;; otherwise, indent the whole function we're in.
+        (progn
+          (beginning-of-defun)
+          (indent-sexp))))))
+
+(define-key lisp-mode-shared-map (kbd "M-q") 'lisp-fill-or-indent)
+
+
 ;;##############################################################################
 ;; Parentheses
 
