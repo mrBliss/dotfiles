@@ -55,7 +55,6 @@
 (require 'tramp)
 
 ;; Load up other customizations
-;;(require 'custom-eproject)
 (require 'custom-appearance)
 (require 'custom-bindings)
 (require 'custom-coding)
