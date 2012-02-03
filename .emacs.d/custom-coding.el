@@ -7,7 +7,6 @@
 (require 'flymake)
 (require 'flymake-cursor)
 (require 'full-ack)
-;;(require 'swop-helpers)
 
 (defun local-comment-auto-fill ()
   (set (make-local-variable 'comment-auto-fill-only-comments) t)
