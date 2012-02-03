@@ -112,10 +112,6 @@
 (global-set-key (kbd "<C-M-right>") 'enlarge-window-horizontally)
 (global-set-key (kbd "<C-M-left>") 'shrink-window-horizontally)
 
-;; Kill the word under the point with C-c d
-(global-set-key (kbd "C-c d") (lambda () (interactive)
-                                (backward-word) (kill-word 1)))
-
 ;; Isearch with regular expressions
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
