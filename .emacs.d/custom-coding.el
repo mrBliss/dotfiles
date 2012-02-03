@@ -37,6 +37,10 @@
 (add-to-list 'load-path "~/.emacs.d/vendor/cedet/speedbar")
 (load-file "~/.emacs.d/vendor/cedet/common/cedet.el")
 
+(defun only-semantic-for-c ()
+  (not (member major-mode '(c-mode c++-mode))))
+(setq semantic-inhibit-functions '(only-semantic-for-c))
+
 ;; Load everything
 (semantic-load-enable-excessive-code-helpers)
 

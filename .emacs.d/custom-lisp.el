@@ -105,6 +105,10 @@ paragraph is filled. Optional arguments are only passed to
 ;; Show arguments in the minibuffer
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 
+;; Restore the default imenu function
+(setq-mode-local emacs-lisp-mode imenu-create-index-function
+                 'imenu-default-create-index-function)
+
 ;; Remove outdated .elc
 (defun esk-remove-elc-on-save ()
   "If you're saving an elisp file, likely the .elc is no longer valid."
