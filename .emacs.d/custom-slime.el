@@ -12,12 +12,6 @@
 (require 'ac-slime)
 (add-to-list 'ac-modes 'slime-repl-mode)
 
-(defun set-up-slime-fuzzy-ac ()
-  "Add fuzzy slime completion source to the
-front of `ac-sources' for the current buffer."
-  (interactive)
-  (set-up-slime-ac t))
-
 ;; Snippet from Bill Clementson
 ;; http://bc.tech.coop/blog/070424.html
 (defun slime-send-dwim (arg)
@@ -120,10 +114,11 @@ connection of the REPL is chosen as the default."
      (define-key slime-repl-mode-map (kbd "M-s") 'ace-jump-char-mode)
      ;; Use a modern encoding
      (setq slime-net-coding-system 'utf-8-unix)
-
-     ;; Use fuzzy completion
+     ;; Enable the Swank server to evaluate things in Emacs
+     (setq slime-enable-evaluate-in-emacs t)
+     ;; Completion
      (setq slime-complete-symbol*-fancy t)
-     (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
+     (setq slime-complete-symbol-function 'slime-simple-complete-symbol)
 
      (add-hook 'slime-repl-mode-hook 'slime-clojure-repl-setup)
      (tweak-clojure-syntax 'slime-repl-mode)))
@@ -133,8 +128,8 @@ connection of the REPL is chosen as the default."
      (define-key slime-repl-mode-map (kbd "C-c C-x C-c")
        'select-default-slime-connection)))
 
-(add-hook 'slime-mode-hook 'set-up-slime-fuzzy-ac)
-(add-hook 'slime-repl-mode-hook 'set-up-slime-fuzzy-ac)
+(add-hook 'slime-mode-hook 'set-up-slime-ac)
+(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
 
 
 (provide 'custom-slime)
