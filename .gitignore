@@ -19,3 +19,7 @@
 .emacs.d/image-dired
 .emacs.d/tetris-scores
 .emacs.d/semanticdb
+.emacs.d/elim
+.emacs.d/url
+.emacs.d/history
+.conkerorrc/sessions
