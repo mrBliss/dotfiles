@@ -428,10 +428,17 @@ Starts with the subfolders of the folders in
 ;; Ack should treat folders containing a Makefile as project roots.
 (push "Makefile" ack-project-root-file-patterns)
 
-
 ;; Load pkgbuild-mode for PKGBUILD files on Arch Linux
 (autoload 'pkgbuild-mode "pkgbuild-mode.el" "PKGBUILD mode." t)
 (add-to-list 'auto-mode-alist '("/PKGBUILD$" . pkgbuild-mode))
+
+;; Enable projectile
+(require 'projectile)
+(projectile-global-mode)
+
+(add-to-list 'projectile-project-root-files "project.clj")
+(dolist (e '("class" "jar"))
+  (add-to-list 'projectile-ignored-file-extenstions e))
 
 
 (provide 'custom-misc)
