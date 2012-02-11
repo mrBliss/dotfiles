@@ -438,7 +438,7 @@ Starts with the subfolders of the folders in
 
 (add-to-list 'projectile-project-root-files "project.clj")
 (dolist (e '("class" "jar"))
-  (add-to-list 'projectile-ignored-file-extenstions e))
+  (add-to-list 'projectile-ignored-file-extensions e))
 
 
 (provide 'custom-misc)
