@@ -42,21 +42,24 @@ paragraph is filled. Optional arguments are only passed to
 		 (barf-if-buffer-read-only)
 		 (list (if current-prefix-arg 'full) t)))
   (save-excursion
-    ;; Fill the paragraph when in a comment, string or doc string
-    (if (memq (get-text-property (point) 'face)
-              '(font-lock-string-face
-                font-lock-comment-face
-                font-lock-doc-face))
-        (fill-paragraph justify region)
-      ;; otherwise, indent.
-      ;; If there's an active region, only indent the region
-      (if (and region transient-mark-mode mark-active
-               (not (eq (region-beginning) (region-end))))
-          (indent-region (region-beginning) (region-end))
-        ;; otherwise, indent the whole function we're in.
-        (progn
-          (beginning-of-defun)
-          (indent-sexp))))))
+    (let ((faces (get-text-property (point) 'face))
+          (comment-faces '(font-lock-string-face
+                           font-lock-comment-face
+                           font-lock-doc-face
+                           font-lock-comment-delimiter-face)))
+      ;; Fill the paragraph when in a comment, string or doc string
+      (if (intersection (if (listp faces) faces (list faces))
+                        comment-faces)
+          (fill-paragraph justify region)
+        ;; otherwise, indent.
+        ;; If there's an active region, only indent the region
+        (if (and region transient-mark-mode mark-active
+                 (not (eq (region-beginning) (region-end))))
+            (indent-region (region-beginning) (region-end))
+          ;; otherwise, indent the whole function we're in.
+          (progn
+            (beginning-of-defun)
+            (indent-sexp)))))))
 
 (define-key lisp-mode-shared-map (kbd "M-q") 'lisp-fill-or-indent)
 
