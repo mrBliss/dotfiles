@@ -49,7 +49,11 @@
   (setq browse-url-browser-function 'browse-url-generic
         browse-url-generic-program "/usr/bin/conkeror")
   ;; Extra Info directory
-  (push (expand-file-name "~/.info") Info-directory-list))
+  (push (expand-file-name "~/.info") Info-directory-list)
+  ;; Open with
+  (require 'openwith)
+  (openwith-mode t)
+  (setq openwith-associations '(("\\.pdf\\'" "zathura" (file)))))
 
 ;; Run a server on Windows, work with a daemon on Linux and Mac OS X
 (when (eq system-type 'windows-nt)
