@@ -208,5 +208,8 @@
 ;; Delete all spaces
 (global-set-key (kbd "M-S-SPC") (lambda () (interactive) (just-one-space 0)))
 
+;; Go to the previous match with p when query-replacing.
+(define-key query-replace-map "p" 'backup)
+
 
 (provide 'custom-bindings)
