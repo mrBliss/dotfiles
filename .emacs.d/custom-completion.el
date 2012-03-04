@@ -220,6 +220,19 @@ open among the results. Files matching any of the patterns in
                    (message "No file chosen")
                  (find-file chosen)))))))
 
+(defun ido-goto-dot-emacsd (count)
+  "Set the current directory of the ido prompt to \"~/.emacs.d\"."
+  (interactive "P")
+  (setq ido-exit 'refresh)
+  (setq ido-current-directory "~/.emacs.d/")
+  (exit-minibuffer))
+
+(defun ido-my-keys ()
+  (define-key ido-file-completion-map (kbd "M-e") 'ido-goto-dot-emacsd)
+  (define-key ido-file-dir-completion-map (kbd "M-e") 'ido-goto-dot-emacsd))
+
+(add-hook 'ido-setup-hook 'ido-my-keys)
+
 
 ;;##############################################################################
 ;; Smex
