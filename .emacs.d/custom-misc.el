@@ -441,4 +441,19 @@ Starts with the subfolders of the folders in
   (add-to-list 'projectile-ignored-file-extensions e))
 
 
+;; Quick way to look at all the spelling mistakes
+(defadvice flyspell-goto-next-error (around flyspell-goto-next-error-around)
+  "Push the mark, go to the next error and recenter.
+Before going to the next error, move one word forward, otherwise
+going to the next error after correcting a word would go to the
+same word.  Pushing the mark before going to the next word, allows
+going to the previous error by popping the mark (C-u SPC)."
+  (push-mark)
+  (forward-word)
+  ad-do-it
+  (recenter))
+
+(ad-activate 'flyspell-goto-next-error)
+
+
 (provide 'custom-misc)
