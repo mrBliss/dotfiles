@@ -11,6 +11,15 @@
 (define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
 (define-key lisp-mode-shared-map (kbd "M-RET") 'close-all-matching)
 
+;; Sometimes I'm still holding down my shift key when typing ')'.
+(defun insert-close-paren ()
+  (interactive)
+  (insert ")"))
+
+;; ('°' = Shift + ')' on AZERTY).
+(define-key lisp-mode-shared-map (kbd "°") 'insert-close-paren)
+
+
 (defcustom lisp-common-hook nil
   "A hook for all Lisp dialects."
   :type 'hook)
