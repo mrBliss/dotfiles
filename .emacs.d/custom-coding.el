@@ -10,10 +10,13 @@
 
 (defun local-comment-auto-fill ()
   (set (make-local-variable 'comment-auto-fill-only-comments) t)
-  (auto-fill-mode t))
+  (auto-fill-mode 1))
 
 (defun turn-on-whitespace ()
-  (whitespace-mode t))
+  (whitespace-mode 1))
+
+(defun turn-on-outline ()
+  (outline-minor-mode 1))
 
 (defun add-watchwords ()
   (font-lock-add-keywords
@@ -23,6 +26,8 @@
 (add-hook 'c-mode-common-hook 'local-comment-auto-fill)
 (add-hook 'c-mode-common-hook 'add-watchwords)
 (add-hook 'c-mode-common-hook 'idle-highlight)
+(add-hook 'c-mode-common-hook 'turn-on-outline)
+
 
 ;; Please don't
 (setq flymake-gui-warnings-enabled nil)

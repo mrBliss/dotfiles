@@ -475,4 +475,11 @@ position."
 (define-key jump-char-isearch-map (kbd "<return>") 'jump-char-exit)
 
 
+;; Easy folding
+(require 'fold-dwim)
+(global-set-key (kbd "C-c C-f TAB") 'fold-dwim-toggle)
+(global-set-key (kbd "C-c C-f h")   'fold-dwim-hide-all)
+(global-set-key (kbd "C-c C-f s")   'fold-dwim-show-all)
+
+
 (provide 'custom-misc)
