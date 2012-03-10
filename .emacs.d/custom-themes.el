@@ -1073,6 +1073,9 @@ created 2009-06-23."
      (w3m-header-line-location-content ((t (:foreground "#D7AF87"))))
      (w3m-image-anchor ((t (:background "#31658C" :foreground "#DDEEDD"))))
 
+     (sml-modeline-end-face ((t (:background "#222222"))))
+     (sml-modeline-vis-face ((t (:background "#808080"))))
+
      (clojure-parens ((t (:foreground "#4E4E4E"))))
      (clojure-keyword ((t (:foreground "#45b8f2"))))
      (clojure-double-quote ((t (:foreground "#5E468C"))))
