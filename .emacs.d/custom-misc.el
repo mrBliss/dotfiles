@@ -487,5 +487,24 @@ position."
 (add-to-list 'auto-mode-alist '(".ssh/config\\'"  . ssh-config-mode))
 (add-to-list 'auto-mode-alist '("sshd?_config\\'" . ssh-config-mode))
 
+;; Ack
+(require 'full-ack)
+
+(defun my-ack (&optional arg)
+  "Like `ack', but ask for a directory when passed a prefix
+argument.  The initial directory will be the directory the file
+associated with the current buffer is located in.  When no file is
+associated with the buffer, the `default-directory' will be the
+initial directory.  The pattern will be interpreted as a regex."
+  (interactive "P")
+  (if arg
+      (ack (ack--read t) t
+           (read-directory-name
+            "In directory: "
+            (if (buffer-file-name)
+                (file-name-directory (buffer-file-name))
+              default-directory)))
+    (call-interactively 'ack)))
+
 
 (provide 'custom-misc)
