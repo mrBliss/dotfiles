@@ -130,6 +130,9 @@ putting it in parentheses."
 
 (add-hook 'escreen-goto-screen-hook 'escreen-display-active-screen)
 
+;; Pretty display of `^L'
+(require 'pp-c-l)
+(pretty-control-l-mode 1)
 
 
 (provide 'custom-appearance)
