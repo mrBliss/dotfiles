@@ -37,10 +37,6 @@
 (global-set-key (kbd "M-z") 'zap-to-char)
 (global-set-key (kbd "C-M-z") 'zap-back-to-char)
 
-;; Quickly navigate to a word or letter
-(global-set-key (kbd "M-s") 'ace-jump-char-mode)
-(global-set-key (kbd "M-S") 'ace-jump-word-mode)
-
 ;; The reverse of C-k
 (global-set-key (kbd "M-k") 'kill-line-backwards)
 (global-set-key (kbd "M-K") 'kill-line-backwards-and-jump-up)
@@ -115,10 +111,6 @@
 ;; Isearch with regular expressions
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
-
-;; Isearch in the other window
-(global-set-key (kbd "C-M-s") 'isearch-forward-regexp-other-window)
-(global-set-key (kbd "C-M-r") 'isearch-backward-regexp-other-window)
 
 ;; Activate occur easily inside isearch
 (define-key isearch-mode-map (kbd "C-o")

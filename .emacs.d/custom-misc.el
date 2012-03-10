@@ -7,7 +7,6 @@
 (autoload 'magit-status "magit" nil t)
 (autoload 'regex-tool "regex-tool" nil t)
 
-(require 'ace-jump-mode)
 (require 'eldoc-eval)
 (require 'goto-last-change)
 (require 'minimap)
@@ -454,6 +453,26 @@ going to the previous error by popping the mark (C-u SPC)."
   (recenter))
 
 (ad-activate 'flyspell-goto-next-error)
+
+;; Fast character movement
+(require 'ace-jump-mode)
+(require 'jump-char)
+
+(defun jump-char-exit ()
+  "Exit `jump-char-mode', leaving the point on its current
+position."
+  (interactive)
+  (let ((search-nonincremental-instead nil))
+    (isearch-exit)))
+
+(global-set-key (kbd "M-S") 'jump-char-backward)
+(global-set-key (kbd "M-s") 'jump-char-forward)
+(global-set-key (kbd "C-M-s") 'ace-jump-char-mode)
+(define-key jump-char-isearch-map (kbd ".") 'jump-char-repeat-forward)
+(define-key jump-char-isearch-map (kbd "?") 'jump-char-repeat-backward)
+(define-key jump-char-isearch-map (kbd "M-s") 'jump-char-switch-to-ace)
+(define-key jump-char-isearch-map (kbd "C-M-s") 'jump-char-switch-to-ace)
+(define-key jump-char-isearch-map (kbd "<return>") 'jump-char-exit)
 
 
 (provide 'custom-misc)
