@@ -25,11 +25,14 @@
             (("(\\(\\.[^ \n)]*\\|[^ \n)]+\\.\\|new\\)\\([ )\n]\\|$\\)" 1
               'clojure-java-call))
             (("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 'font-lock-warning-face t))
-            (("(\\(fn\\>\\)" 0 (progn (compose-region (match-beginning 1)
-                                                      (match-end 1) "ƒ") nil)))
-            (("(\\(complement\\>\\)" 0 (progn (compose-region
+            (("(\\(\\<fn\\>\\)" 0 (progn (compose-region (match-beginning 1)
+                                              (match-end 1)
+                                              "\u0192"
+                                              'decompose-region))))
+            (("(\\(\\<complement\\>\\)" 0 (progn (compose-region
                                                (match-beginning 1)
-                                               (match-end 1) "¬") nil)))
+                                               (match-end 1) "¬")
+                                                 'decompose-region)))
             (("^[a-zA-Z0-9-.*+!_?]+?>" . 'slime-repl-prompt-face)))))
 
 
