@@ -482,4 +482,10 @@ position."
 (global-set-key (kbd "C-c C-f s")   'fold-dwim-show-all)
 
 
+;; Highlight ssh config files
+(autoload 'ssh-config-mode "ssh-config-mode" t)
+(add-to-list 'auto-mode-alist '(".ssh/config\\'"  . ssh-config-mode))
+(add-to-list 'auto-mode-alist '("sshd?_config\\'" . ssh-config-mode))
+
+
 (provide 'custom-misc)
