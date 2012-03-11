@@ -42,7 +42,7 @@
 (load-file "~/.emacs.d/vendor/cedet/common/cedet.el")
 
 (defun only-semantic-for-c ()
-  (not (member major-mode '(c-mode c++-mode))))
+  (not (member major-mode '(c-mode c++-mode matlab-mode))))
 (setq semantic-inhibit-functions '(only-semantic-for-c))
 
 ;; Load everything
@@ -254,7 +254,11 @@ rename."
 (require 'matlab-load)
 (matlab-cedet-setup)
 (when (eq system-type 'darwin)
-  (setq semantic-matlab-root-directory "/Applications/MATLAB_R2011b.app/"))
+  (setq semantic-matlab-root-directory "/Applications/MATLAB_R2011b.app/")
+  (setq matlab-shell-command "/Applications/MATLAB_R2011b.app/bin/matlab"))
+
+(add-to-list 'ac-modes 'matlab-mode)
+
 
 ;;##############################################################################
 ;; ML

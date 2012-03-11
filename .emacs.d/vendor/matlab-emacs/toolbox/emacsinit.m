@@ -1,6 +1,6 @@
 function emacsinit(clientcommand)
 % EMACSINIT Initialize the current MATLAB session for matlab-shell-mode
-    
+
     if usejava('jvm')
         % Disable built-in editor showing up for debugging
         com.mathworks.services.Prefs.setBooleanPref('EditorGraphicalDebugging', false);
@@ -9,7 +9,7 @@ function emacsinit(clientcommand)
         % Use emacsclient no-wait to send edit requests to a
         % running emacs.
         if nargin == 0
-            clientcommand = 'emacsclient -n';
+            clientcommand = 'emacsclient -c -n';
         end
         com.mathworks.services.Prefs.setStringPref('EditorOtherEditor', clientcommand);
     end
