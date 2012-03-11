@@ -19,6 +19,11 @@ kotssh() {
     ssh -YCc blowfish s0202013@$1.cs.kotnet.kuleuven.be
 }
 
+# Establish a SOCKS proxy on port 8080 for the given SSH host
+sshproxy() {
+    ssh -C -c blowfish -D 8080 -N "$1"
+}
+
 # Extract files
 extract() {
     if [ -f $1 ] ; then
