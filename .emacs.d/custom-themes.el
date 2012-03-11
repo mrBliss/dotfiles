@@ -1125,7 +1125,7 @@ Pfeil, edited by mrBliss."
        (font-lock-builtin-face ((t (:foreground ,magenta))))
        (font-lock-comment-face ((t (:foreground ,base1 :italic t
                                                 :background ,base25))))
-       (font-lock-constant-face ((t (:foreground ,cyan))))
+       (font-lock-constant-face ((t (:foreground ,magenta))))
        (font-lock-string-face ((t (:foreground ,cyan :background nil))))
        (font-lock-function-name-face ((t (:foreground ,blue))))
        (font-lock-keyword-face ((t (:foreground ,green))))
