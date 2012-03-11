@@ -34,7 +34,7 @@
 ;; Smart-tab knows when to indent and when to complete
 (setq smart-tab-completion-functions-alist
       '((emacs-lisp-mode . lisp-complete-symbol)
-        (text-mode . dabbrev-cgompletion)
+        (text-mode . dabbrev-completion)
         (clojure-mode . slime-complete-symbol)
         (slime-repl-mode . slime-complete-symbol)))
 
