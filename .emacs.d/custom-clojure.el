@@ -35,6 +35,22 @@
                                                  'decompose-region)))
             (("^[a-zA-Z0-9-.*+!_?]+?>" . 'slime-repl-prompt-face)))))
 
+;; Allow file local custom clojure indentation hints to be evaluated.
+;; E.g.: `eval: (define-clojure-indent (on-click 'defun))`
+(defadvice hack-one-local-variable-eval-safep
+  (after hack-one-local-variable-eval-safep-clojure-indent)
+  (when (null ad-return-value)
+    (let ((exp (ad-get-arg 0)))
+      (destructuring-bind (a (b (quote c))) exp
+        (when (and (eq a 'define-clojure-indent)
+                   (symbolp b)
+                   (symbolp c))
+          ;; exp looks like (define-clojure-indent (on-click 'defun))
+          ;; but with a different value for `on-click'
+          (setq ad-return-value t))))))
+
+(ad-activate 'hack-one-local-variable-eval-safep)
+
 
 ;; Tweak clojure syntax, replace (fn by (ƒ, highlight characters
 ;; beyond the 80 char limit and define some bindings
