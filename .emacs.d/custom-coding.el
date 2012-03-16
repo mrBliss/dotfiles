@@ -66,13 +66,27 @@
 
 
 ;; ECB
+(require 'ecb)
 
-(require 'ecb-autoloads)
-
-(setq ecb-tip-of-the-day nil)
-(setq ecb-layout-name "left3")
+(setq ecb-tip-of-the-day nil
+      ecb-layout-name "left3"
+      ;; Discrete compilation window
+      ecb-compile-window-temporally-enlarge 'both
+      ecb-enlarged-compilation-window-max-height 'best
+      ecb-compile-window-height 5)
 
 (push (expand-file-name "~/.emacs.d/vendor/ecb/doc") Info-directory-list)
+
+(defun selected-frame-has-ecb ()
+  "Return t when the selected frame contains a window displaying
+a buffer related to ECB."
+  (when (or (null ecb-frame) (frame-live-p ecb-frame))
+    (let ((f (selected-frame)))
+      (some (lambda (ecb-buffer)
+              (let ((w (get-buffer-window ecb-buffer)))
+                (when w (eq f (window-frame w)))))
+            (ecb-get-current-visible-ecb-buffers)))))
+
 
 ;;##############################################################################
 ;; Agda

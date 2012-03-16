@@ -55,9 +55,9 @@
 (require 'tramp)
 
 ;; Load up other customizations
+(require 'custom-coding)
 (require 'custom-appearance)
 (require 'custom-bindings)
-(require 'custom-coding)
 (require 'custom-completion)
 (require 'custom-defuns)
 (require 'custom-dired)

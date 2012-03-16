@@ -98,17 +98,44 @@ a light color-theme when passed a prefix argument."
 
 ;; Close pop-up windows with C-g
 (require 'popwin)
-(setq display-buffer-function 'popwin:display-buffer)
+;; Except when using ECB on the active frame
+(defun popwin:display-buffer-ecb-compat (buffer &optional not-this-window)
+  "Run `popwin:display-buffer' unless the active frame is using
+ECB.  In that case, fallback to the original with
+`popwin:original-display-buffer'."
+  (interactive "BDisplay buffer:\n")
+  (if (selected-frame-has-ecb)
+      (popwin:original-display-buffer buffer not-this-window)
+    (popwin:display-buffer buffer not-this-window)))
+(setq display-buffer-function 'popwin:display-buffer-ecb-compat)
+
 
 ;; Escreen, screen for Emacs
 (require 'escreen)
+;; ECB support
+(ecb-winman-escreen-enable-support)
+(setq ecb-winman-escreen-number 9)
 (escreen-install)
 (setq escreen-prefix-char (kbd "C-z"))
 (global-set-key escreen-prefix-char 'escreen-prefix)
 
+(defun escreen-create-ecb-screen ()
+  "Create a new screen for ECB and switch to it.
+A new screen with `ecb-winman-escreen-number' as number will be
+created, unless it already exists.  ECB will be enabled for that
+screen."
+  (interactive)
+  (if (escreen-screen-defined ecb-winman-escreen-number)
+      (message "ECB (%d) screen already created"
+               ecb-winman-escreen-number)
+    (flet ((escreen-first-unused-screen-number () ecb-winman-escreen-number))
+      (call-interactively 'escreen-create-screen))))
+
 ;; C-z is now the prefix char for escreen, so to use its previous
 ;; function, suspending the frame, use C-z C-z.
 (define-key escreen-map "\C-z" 'suspend-frame)
+;; Create a new screen with ECB enabled with C-z e.
+(define-key escreen-map (kbd "e") 'escreen-create-ecb-screen)
 
 ;; Modified version of Vinh Nguyen's
 ;; escreen-get-active-screen-numbers-with-emphasis.

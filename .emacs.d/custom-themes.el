@@ -1021,6 +1021,8 @@ created 2009-06-23."
      (speedbar-button-face ((t (:foreground "#BF4D80"))))
      (speedbar-file-face ((t (:foreground "#A9D1DF"))))
      (speedbar-directory-face ((t (:foreground "#6096BF"))))
+     (ecb-default-highlight-face
+      ((t (:background "#BF4D80" :foreground "#FFFFFF"))))
 
      (magit-section-title ((t (:foreground "#86A2BE"))))
      (magit-branch ((t (:foreground "#D7AFD7"))))
