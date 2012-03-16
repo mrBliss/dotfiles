@@ -47,8 +47,8 @@ minibuffer_auto_complete_default = true;
 // Enable middle click
 clicks_in_new_buffer_target = OPEN_NEW_BUFFER_BACKGROUND;
 
-// Open links opened in applications in a new buffer
-url_remoting_fn = load_url_in_new_buffer;
+// Open links opened in applications in a new window
+url_remoting_fn = load_url_in_new_window;
 
 // Sessions
 let (dir = cwd.clone()) {
