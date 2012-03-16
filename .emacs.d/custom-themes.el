@@ -969,6 +969,7 @@ created 2009-06-23."
      (link ((t (:foreground "#6096BF" :underline t))))
      (comint-highlight-prompt ((t (:foreground "#6096BF"))))
      (geiser-font-lock-doc-link ((t (:foreground "#6096BF" :underline t))))
+     (org-link ((t (:foreground "#6096BF" :underline t))))
 
      (info-menu-star ((t (:foreground "#BF4D80"))))
      (escape-glyph ((t (:foreground "#BF4D80"))))
