@@ -58,7 +58,7 @@ export ANT_HOME=/usr/share/java/apache-ant
 export PATH=$PATH:$ANT_HOME/bin
 
 # Man with colors
-export MANPAGER=most
+export MANPAGER=less
 
 # Start the X server with x
 alias x='startx'
