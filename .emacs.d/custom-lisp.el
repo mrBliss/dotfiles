@@ -122,6 +122,11 @@ paragraph is filled. Optional arguments are only passed to
 (setq-mode-local emacs-lisp-mode imenu-create-index-function
                  'imenu-default-create-index-function)
 
+(defun sentence-end-double-space-hook ()
+  (setq sentence-end-double-space t))
+
+(add-hook 'emacs-lisp-mode-hook 'sentence-end-double-space-hook)
+
 ;; Remove outdated .elc
 (defun esk-remove-elc-on-save ()
   "If you're saving an elisp file, likely the .elc is no longer valid."
