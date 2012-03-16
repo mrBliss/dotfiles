@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sysout
+# --
+System.out.println("$1");
+$0
