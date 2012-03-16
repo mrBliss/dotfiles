@@ -166,6 +166,15 @@ Prompt for password first."
                       'face
                       'erc-notice-face))))
 
+(defun erc-replace-replay-rename (s)
+  (save-match-data
+    (let ((prev-nick (match-string 2))
+          (new-nick (match-string 4)))
+      (erc-propertize (format "%s%s -> %s" erc-notice-prefix
+                              prev-nick new-nick)
+                      'face
+                      'erc-notice-face))))
+
 (setq erc-replace-alist
       `((,(concat "<\\*buffextras> \\(\\[[0-9][0-9]:[0-9][0-9]\\]\\)"
                   "\\s-+\\([^!]+\\)!\\(.+\\)\\s-+joined")
@@ -173,7 +182,11 @@ Prompt for password first."
         (,(concat "<\\*buffextras> \\(\\[[0-9][0-9]:[0-9][0-9]\\]\\)"
                   "\\s-+\\([^!]+\\)!\\(.+\\)\\s-+\\(quit\\|parted\\)\\s-+with"
                   "\\s-+message:\\s-+\\[\\([^]]*\\)\\]")
-         . erc-replace-replay-quit)))
+         . erc-replace-replay-quit)
+        (,(concat "<\\*buffextras> \\(\\[[0-9][0-9]:[0-9][0-9]\\]\\)"
+                  "\\s-+\\([^!]+\\)!\\(.+\\)\\s-+is\\s-+now\\s-+known"
+                  "\\s-+as\\s-+\\(.+\\)")
+         . erc-replace-replay-rename)))
 
 (erc-replace-mode 1)
 
