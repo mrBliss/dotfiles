@@ -5,10 +5,12 @@
 ;; Keywords: clojure, lisp
 
 
-;; Autoload clojure-mode and clojure-test-mode
+;; Autoload clojure-mode, clojure-test-mode and clojurescript-mode
 (add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
+(add-to-list 'auto-mode-alist '("\\.cljs$" . clojurescript-mode))
 (autoload 'clojure-mode "clojure-mode" nil t)
 (autoload 'clojure-test-mode "clojure-test-mode" nil t)
+(autoload 'clojurescript-mode "clojurescript-mode" nil t)
 
 ;; Autoload align-cljlet
 (autoload 'align-cljlet "align-cljlet" nil t)
