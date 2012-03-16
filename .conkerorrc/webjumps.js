@@ -28,6 +28,8 @@ define_webjump("bier", "http://www.bierdopje.com/search/shows/%s",
                $description = "Search subtitles for tv shows on Bierdopje.com");
 define_webjump("cov", "http://images.google.com/images?q=%s%20imagesize%3A300x300",
                $description = "Search for 300x300 album covers with Google Images");
+define_webjump("cljd", "http://clojuredocs.org/search?q=%s",
+               $description = "Search documentation for a Clojure symbol");
 define_webjump("dict", "http://www.google.com/dictionary?q=%s&hl=en&langpair=en|en&spell=1&oi=spell",
                $description = "Look up a word in Google's dictionary");
 define_webjump("elbow", "http://elbo.ws/mp3s/?q=%s",
