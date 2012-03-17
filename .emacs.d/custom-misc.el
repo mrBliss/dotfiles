@@ -507,4 +507,30 @@ initial directory.  The pattern will be interpreted as a regex."
     (call-interactively 'ack)))
 
 
+;; Easy filling of use case steps
+
+(defun fill-use-case-step ()
+  "Fills the current use case step.
+A use case step has the following format: \" 1) text ...\". It is
+indented four spaces and the next lines start at the same column
+as the first text character following the step number."
+  (interactive)
+  (let* ((number-re "^ +[0-9a-z]+) ")
+         (prefix-n 0)
+         (start (save-excursion
+                  (re-search-backward number-re)
+                  (re-search-forward number-re)
+                  ;; Side-effect!
+                  (setq prefix-n (current-column))
+                  (point)))
+         (end (save-excursion
+                (re-search-forward number-re)
+                (end-of-line 0)
+                (point)))
+         (fill-prefix (format (format "%%%ds" prefix-n) " ")))
+    (fill-region start end)))
+
+(define-key text-mode-map (kbd "C-M-q") 'fill-use-case-step)
+
+
 (provide 'custom-misc)
