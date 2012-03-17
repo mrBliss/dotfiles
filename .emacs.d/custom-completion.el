@@ -227,9 +227,22 @@ open among the results. Files matching any of the patterns in
   (setq ido-current-directory "~/.emacs.d/")
   (exit-minibuffer))
 
+(defun ido-restrict-to-dired-buffers ()
+  "Remove all non dired buffers from the buffer list."
+  (interactive)
+  (let ((filtered (remove-if-not (lambda (buf-name)
+                                   (with-current-buffer (get-buffer buf-name)
+                                     (eq major-mode 'dired-mode)))
+                                 ido-cur-list)))
+    (setq ido-cur-list filtered
+          ido-rescan t
+          ido-exit 'refresh)))
+
 (defun ido-my-keys ()
   (define-key ido-file-completion-map (kbd "M-e") 'ido-goto-dot-emacsd)
-  (define-key ido-file-dir-completion-map (kbd "M-e") 'ido-goto-dot-emacsd))
+  (define-key ido-file-dir-completion-map (kbd "M-e") 'ido-goto-dot-emacsd)
+  (define-key ido-buffer-completion-map (kbd "M-d") 'ido-restrict-to-dired-buffers))
+
 
 (add-hook 'ido-setup-hook 'ido-my-keys)
 
