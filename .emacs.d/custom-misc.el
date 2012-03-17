@@ -528,7 +528,8 @@ as the first text character following the step number."
                 (end-of-line 0)
                 (point)))
          (fill-prefix (format (format "%%%ds" prefix-n) " ")))
-    (fill-region start end)))
+    (save-excursion
+      (fill-region start end))))
 
 (define-key text-mode-map (kbd "C-M-q") 'fill-use-case-step)
 
