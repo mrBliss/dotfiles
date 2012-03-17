@@ -424,9 +424,6 @@ Starts with the subfolders of the folders in
 ;; Let ediff split horizontally.
 (setq ediff-split-window-function 'split-window-horizontally)
 
-;; Ack should treat folders containing a Makefile as project roots.
-(push "Makefile" ack-project-root-file-patterns)
-
 ;; Load pkgbuild-mode for PKGBUILD files on Arch Linux
 (autoload 'pkgbuild-mode "pkgbuild-mode.el" "PKGBUILD mode." t)
 (add-to-list 'auto-mode-alist '("/PKGBUILD$" . pkgbuild-mode))
@@ -487,8 +484,12 @@ position."
 (add-to-list 'auto-mode-alist '(".ssh/config\\'"  . ssh-config-mode))
 (add-to-list 'auto-mode-alist '("sshd?_config\\'" . ssh-config-mode))
 
+
 ;; Ack
 (require 'full-ack)
+
+;; Ack should treat folders containing a Makefile as project roots.
+(push "Makefile" ack-project-root-file-patterns)
 
 (defun my-ack (&optional arg)
   "Like `ack', but ask for a directory when passed a prefix
