@@ -82,3 +82,5 @@ alias nc=ncmpcpp
 
 # Stream music with VLC
 alias streamvlc='/Applications/VLC.app/Contents/MacOS/VLC -I ncurses http://localhost:8000'
+
+alias tmux='tmux -f ~/.tmux.mac.conf'
