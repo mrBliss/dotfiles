@@ -235,8 +235,7 @@ open among the results. Files matching any of the patterns in
                                      (eq major-mode 'dired-mode)))
                                  ido-cur-list)))
     (setq ido-cur-list filtered
-          ido-rescan t
-          ido-exit 'refresh)))
+          ido-rescan t)))
 
 (defun ido-my-keys ()
   (define-key ido-file-completion-map (kbd "M-e") 'ido-goto-dot-emacsd)
