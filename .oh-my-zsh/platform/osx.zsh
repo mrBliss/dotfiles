@@ -83,4 +83,9 @@ alias nc=ncmpcpp
 # Stream music with VLC
 alias streamvlc='/Applications/VLC.app/Contents/MacOS/VLC -I ncurses http://localhost:8000'
 
+# Load mac specific tmux config
 alias tmux='tmux -f ~/.tmux.mac.conf'
+
+# UTF-8 locale
+export LANG="en_GB.UTF-8"
+export LC_CTYPE="en_GB.UTF-8"
