@@ -28,5 +28,38 @@
 (define-key shell-mode-map (kbd "M-p") 'comint-previous-matching-input-from-input)
 (define-key shell-mode-map (kbd "M-n") 'comint-next-matching-input-from-input)
 
+;; Don't limit ourself to one shell buffer. Also display the current
+;; directory in the buffer name.
+(defadvice shell (after shell-renamed first nil activate)
+  "Rename a newly created shell to \"*shell-x|dir*\".
+Where \"x\" is a number which is unique for every shell buffer
+and \"dir\" is the current directory. The user's home directory
+will be shortened to \"~\"."
+  (let* ((shell-buffers (remove-if-not (lambda (buf)
+                                         (string-prefix-p "*shell-"
+                                                          (buffer-name buf)))
+                                       (buffer-list)))
+         (numbers (mapcar (lambda (buf)
+                            (let ((s (buffer-name buf)))
+                              (string-match "\\\*shell-\\([0-9]+\\)|.+" s)
+                              (string-to-int (match-string 1 s))))
+                          shell-buffers))
+         (new-n (1+ (reduce #'max numbers :initial-value 0))))
+    (with-current-buffer ad-return-value
+      (rename-buffer (format "*shell-%d|%s*" new-n
+                             (replace-in-string*
+                              (getenv "HOME") "~" default-directory))))))
+
+(defadvice shell-process-cd
+  (after reflect-pwd-in-shell-buf-name first nil activate)
+  "Update the name of the shell buffer after every cd command."
+  (let* ((current-dir (replace-in-string* (getenv "HOME") "~"
+                                          default-directory))
+         (new-name (replace-regexp-in-string
+                    "|.+*$"
+                    (concat "|" current-dir "*")
+                    (buffer-name))))
+    (rename-buffer new-name)))
+
 
 (provide 'custom-shell)
