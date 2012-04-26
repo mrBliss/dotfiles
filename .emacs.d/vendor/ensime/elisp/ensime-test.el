@@ -85,8 +85,8 @@
   (let* ((root-dir (file-name-as-directory
 		    (make-temp-file "ensime_test_proj_" t)))
 	 (config (append
-		  (list :sources '("src")
-			:project-package "com.test"
+		  (list :source-roots '("src")
+			:package "com.test"
 			:compile-jars ensime-test-env-classpath
 			:disable-index-on-startup t)
 		  extra-config))
@@ -578,28 +578,28 @@
 
       ;; object method completion
       (ensime-test-eat-label "1")
-      (let* ((candidates (ensime-ac-member-candidates "")))
+      (let* ((candidates (ensime-ac-completion-candidates "")))
 	(ensime-assert (member "add" candidates)))
 
       ;; Try completion when a method begins without target
       ;; on next line.
       (ensime-test-eat-label "2")
-      (let* ((candidates (ensime-ac-member-candidates "")))
+      (let* ((candidates (ensime-ac-completion-candidates "")))
 	(ensime-assert (member "blarg" candidates)))
 
       ;; Instance completion with prefix
       (ensime-test-eat-label "3")
-      (let* ((candidates (ensime-ac-member-candidates "pri")))
+      (let* ((candidates (ensime-ac-completion-candidates "pri")))
 	(ensime-assert (member "println" candidates)))
 
       ;; Complete member of argument
       (ensime-test-eat-label "4")
-      (let* ((candidates (ensime-ac-member-candidates "s")))
+      (let* ((candidates (ensime-ac-completion-candidates "s")))
 	(ensime-assert (member "substring" candidates)))
 
       ;; Chaining of calls
       (ensime-test-eat-label "5")
-      (let* ((candidates (ensime-ac-member-candidates "hea")))
+      (let* ((candidates (ensime-ac-completion-candidates "hea")))
 	(ensime-assert (member "headOption" candidates)))
 
       (ensime-test-cleanup proj)
@@ -645,12 +645,12 @@
 
       ;; constructor completion
       (ensime-test-eat-label "1")
-      (let* ((candidates (ensime-ac-name-candidates "Fi")))
+      (let* ((candidates (ensime-ac-completion-candidates "Fi")))
 	(ensime-assert (member "File" candidates)))
 
       ;; local method name completion.
       (ensime-test-eat-label "2")
-      (let* ((candidates (ensime-ac-name-candidates "bl")))
+      (let* ((candidates (ensime-ac-completion-candidates "bl")))
 	(ensime-assert (member "blarg" candidates)))
 
       (ensime-test-cleanup proj)
@@ -666,11 +666,15 @@
 		     :contents ,(ensime-test-concat-lines
 				 "package com.helloworld"
 				 "import java.ut/*1*/"
+				 "import Vec/*3*/"
+				 "import java.util.{ List, Vec/*4*/}"
 				 "class HelloWorld{"
 				 "import sc/*2*/"
 				 "}"
 				 )
-		     ))))
+		     ))
+		  '(:disable-index-on-startup nil)
+		  ))
 	   (src-files (plist-get proj :src-files)))
       (ensime-test-var-put :proj proj)
       (find-file (car src-files))
@@ -678,7 +682,7 @@
 
     ((:connected connection-info))
 
-    ((:full-typecheck-finished val)
+    ((:indexer-ready status)
      (ensime-test-with-proj
       (proj src-files)
 
@@ -686,12 +690,25 @@
 
       ;; complete java package member
       (ensime-test-eat-label "1")
-      (let* ((candidates (ensime-ac-package-decl-candidates "ut")))
+      (let* ((candidates (ensime-ac-completion-candidates "ut")))
 	(ensime-assert (member "util" candidates)))
+      (insert "il.HashMap")
+      (ensime-write-buffer)
+
+      ;; complete java package member by class name
+      (ensime-test-eat-label "3")
+      (let* ((candidates (ensime-ac-completion-candidates "Vec"))
+	     (to-inserts (mapcar 'ensime-ac-candidate-to-insert candidates)))
+	(ensime-assert (member "java.util.Vector" to-inserts)))
+
+      ;; complete java package member by class name in name list
+      (ensime-test-eat-label "4")
+      (let* ((candidates (ensime-ac-completion-candidates "Vec")))
+	(ensime-assert (member "Vector" candidates)))
 
       ;; complete scala package
       (ensime-test-eat-label "2")
-      (let* ((candidates (ensime-ac-package-decl-candidates "sc")))
+      (let* ((candidates (ensime-ac-completion-candidates "sc")))
 	(ensime-assert (member "scala" candidates)))
 
       (ensime-test-cleanup proj)
@@ -1070,27 +1087,6 @@
       ))
     )
 
-   (ensime-async-test
-    "Test get debug config."
-    (let* ((proj (ensime-create-tmp-project
-		  ensime-tmp-project-hello-world)))
-      (ensime-test-init-proj proj))
-
-    ((:connected connection-info))
-
-    ((:compiler-ready status)
-     (ensime-test-with-proj
-      (proj src-files)
-
-      (let ((conf (ensime-rpc-debug-config)))
-	(ensime-assert (not (null conf)))
-	(ensime-assert (not (null (plist-get conf :classpath))))
-	(ensime-assert (not (null (plist-get conf :sourcepath))))
-	)
-
-      (ensime-test-cleanup proj)
-      ))
-    )
 
    (ensime-async-test
     "Test interactive search."
@@ -1285,31 +1281,34 @@
 
     )
 
-
-   (ensime-async-test
-    "Test compiling sbt-deps test project. Has sbt subprojects."
-    (let* ((root-dir (concat ensime-test-dev-home "/test_projects/sbt-deps/"))
-	   (proj (list
-		  :src-files
-		  (list
-		   (concat
-		    root-dir
-		    "web/src/main/scala/code/model/User.scala"))
-		  :root-dir root-dir
-		  :conf-file (concat root-dir ".ensime"))))
-      (ensime-assert (file-exists-p (plist-get proj :conf-file)))
-      (ensime-test-init-proj proj))
-
-    ((:connected connection-info))
-
-    ((:full-typecheck-finished val)
-     (ensime-test-with-proj
-      (proj src-files)
-      (let* ((notes (ensime-all-notes)))
-	(ensime-assert-equal (length notes) 0))
-      (ensime-test-cleanup proj t)
-      ))
-    )
+;;
+;; TODO:
+;; Needs to be fixed to account for new sbt project generator.
+;;
+;;   (ensime-async-test
+;;    "Test compiling sbt-deps test project. Has sbt subprojects."
+;;    (let* ((root-dir (concat ensime-test-dev-home "/test_projects/sbt-deps/"))
+;;	   (proj (list
+;;		  :src-files
+;;		  (list
+;;		   (concat
+;;		    root-dir
+;;		    "web/src/main/scala/code/model/User.scala"))
+;;		  :root-dir root-dir
+;;		  :conf-file (concat root-dir ".ensime"))))
+;;      (ensime-assert (file-exists-p (plist-get proj :conf-file)))
+;;      (ensime-test-init-proj proj))
+;;
+;;    ((:connected connection-info))
+;;
+;;    ((:full-typecheck-finished val)
+;;     (ensime-test-with-proj
+;;      (proj src-files)
+;;      (let* ((notes (ensime-all-notes)))
+;;	(ensime-assert-equal (length notes) 0))
+;;      (ensime-test-cleanup proj t)
+;;      ))
+;;    )
 
 
    (ensime-async-test

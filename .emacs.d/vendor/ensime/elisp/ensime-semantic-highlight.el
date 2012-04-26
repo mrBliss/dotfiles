@@ -38,7 +38,7 @@
 (defvar ensime-sem-high-default-faces
   '())
 
-(defvar ensime-sem-high-faces 
+(defvar ensime-sem-high-faces
   ensime-sem-high-default-faces
   "Faces for semantic highlighting. Symbol types not mentioned here
  will not be requested from server.")
@@ -122,9 +122,9 @@
 (defun ensime-sem-high-inspect-highlight ()
   (interactive)
   (let ((ovs (overlays-at (point))))
-    (message "%S" (mapcar 
+    (message "%S" (mapcar
 		   (lambda (ov)
-		     (format "%S %S %S" 
+		     (format "%S %S %S"
 			     (overlay-get ov 'face)
 			     (overlay-get ov 'ensime-sem-high-overlay)
 			     (overlay-get ov 'ensime-sym-type)))
@@ -133,7 +133,7 @@
 (defun ensime-sem-high-sym-types-at-point ()
   (interactive)
   (let ((ovs (overlays-at (point))))
-    (mapcar 
+    (mapcar
      (lambda (ov)
        (overlay-get ov 'ensime-sym-type))
      ovs)))

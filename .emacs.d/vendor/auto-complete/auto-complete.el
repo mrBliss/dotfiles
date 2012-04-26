@@ -1375,14 +1375,12 @@ that have been made before in this function."
            (prefix-def (nth 0 info))
            (point (nth 1 info))
            (sources (nth 2 info))
-           (prefix (or (null point)
-		       (buffer-substring-no-properties point (point))))
+           prefix
            (init (or force-init (not (eq ac-point point)))))
 
       (if (or (null point)
-              (member prefix ac-ignores)
-	      (and (integerp ac-auto-start)
-		   (<= (length prefix) ac-auto-start)))
+              (member (setq prefix (buffer-substring-no-properties point (point)))
+                      ac-ignores))
           (prog1 nil
             (ac-abort))
         (unless ac-cursor-color

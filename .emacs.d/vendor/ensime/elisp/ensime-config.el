@@ -164,15 +164,12 @@
     ))
 
 (defun ensime-config-build-sbt (root)
-  (let ((conf '()))
-
-    (ensime-set-key conf :project-package
-                    (ensime-config-read-proj-package))
-
-    (ensime-set-key conf :use-sbt t)
-
-    conf
-    ))
+  (message (concat
+	    "Use the sbt command 'ensime generate' to create a .ensime file."
+	    "\nThen, run M-x ensime."
+	    ))
+  nil
+  )
 
 (defun ensime-config-build-custom (root)
   (let ((conf '()))
@@ -216,13 +213,14 @@
 			 (symbol-name proj-type))))
 	 (conf (funcall builder-func root))
 	 (conf-file (concat root "/" ensime-config-file-name)))
-    (with-temp-file conf-file
-      (ensime-config-insert-config conf))
-    (message (concat "Your project config "
-		     "has been written to %s. "
-		     "Use 'M-x ensime' to launch "
-		     "ENSIME.") conf-file)
-    ))
+    (when conf
+      (with-temp-file conf-file
+	(ensime-config-insert-config conf))
+      (message (concat "Your project config "
+		       "has been written to %s. "
+		       "Use 'M-x ensime' to launch "
+		       "ENSIME.") conf-file)
+      )))
 
 (defun ensime-config-insert-config (conf)
   (insert (concat ";; This config was generated using "
@@ -274,10 +272,10 @@
   (let* ((dir (file-name-directory file-name))
 	 (possible-path (concat dir ensime-config-file-name)))
     (when (and dir (file-directory-p dir))
-	(if (file-exists-p possible-path)
-	    possible-path
-	  (if (not (equal dir (directory-file-name dir)))
-	      (ensime-config-find-file (directory-file-name dir)))))))
+      (if (file-exists-p possible-path)
+	  possible-path
+	(if (not (equal dir (directory-file-name dir)))
+	    (ensime-config-find-file (directory-file-name dir)))))))
 
 (defun ensime-config-find-and-load (&optional force-dir)
   "Query the user for the path to a config file, then load it."
@@ -338,37 +336,38 @@
 	       )))
 	;; We use the project file's location as the project root.
 	(ensime-set-key config :root-dir dir)
-	(ensime-config-maybe-set-active-sbt-subproject config)
+	(ensime-config-maybe-set-active-subproject config)
 	config)
       )))
 
-(defun ensime-config-maybe-set-active-sbt-subproject (config)
-  "If the sbt-subprojects key exists in the config, prompt the
- user for the desired subproject, and add an sbt-active-subproject
+(defun ensime-config-maybe-set-active-subproject (config)
+  "If the subprojects key exists in the config, prompt the
+ user for the desired subproject, and add an active-subproject
  value to the config."
-  (when-let (sps (plist-get config :sbt-subprojects))
+  (when-let (sps (plist-get config :subprojects))
 
     ;; For testing purposes..
-    (if ensime-prefer-noninteractive
+    (if (or ensime-prefer-noninteractive
+	    (= (length sps) 1))
 	(ensime-set-key
-	 config :sbt-active-subproject
-	 (plist-get (car sps) :name))
+	 config :active-subproject
+	 (plist-get (car sps) :module-name))
 
       ;; Otherwise prompt the user
       (let* ((options
 	      (mapcar
 	       (lambda (sp)
-		 (let ((nm (plist-get sp :name)))
+		 (let ((nm (plist-get sp :module-name)))
 		   `(,nm . ,nm)))  sps))
 	     (keys (mapcar (lambda (opt) (car opt)) options)))
 	(let ((key (when keys
 		     (completing-read
-		      (concat "Which sbt subproject? ("
+		      (concat "Which project? ("
 			      (mapconcat #'identity keys ", ")
 			      "): ")
 		      keys nil t (car keys)))))
 	  (when-let (chosen (cdr (assoc key options)))
-	    (ensime-set-key config :sbt-active-subproject chosen)
+	    (ensime-set-key config :active-subproject chosen)
 	    ))
 	))))
 

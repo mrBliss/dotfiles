@@ -61,6 +61,32 @@ browsing the documentation for those objects."
         (when (integerp (string-match re (ensime-type-full-name type)))
           (throw 'return (funcall func type member)))))))
 
+(defun ensime-make-doc-url-for-sym (sym)
+  "Given a symbol, yield a http url for
+browsing the documentation for that symbol."
+  (let* ((owner-type-id (ensime-symbol-owner-type-id sym))
+	 (is-member (and (ensime-symbol-is-callable sym)
+			 (integerp owner-type-id)))
+	 (tpe
+	  (if is-member (ensime-rpc-get-type-by-id
+			 owner-type-id)
+	    (ensime-symbol-type sym))))
+    (ensime-make-doc-url tpe (when is-member sym))))
+
+
+(defun ensime-show-doc-for-symbol-at-point ()
+  "Browse to documentation for the symbol at current point."
+  (interactive)
+  (let* ((sym (ensime-rpc-symbol-at-point))
+	 (url (ensime-make-doc-url-for-sym sym)))
+    (if url
+	(progn
+	  (message "Looking up doc for %s..."
+		   (ensime-symbol-name sym))
+	  (browse-url url))
+      (message "No documentation found."))))
+
+
 
 (defun ensime-make-android-doc-url (type &optional member)
   "Given a scala type, and optionally a type member, construct the

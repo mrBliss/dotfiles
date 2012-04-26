@@ -128,7 +128,7 @@
 	    name ,name))))
 
 (defun ensime-refactor-add-import (&optional qual-name)
-  "Rename a symbol, project-wide."
+  "Insert import statement."
   (interactive)
   (let ((sym (ensime-sym-at-point)))
     (if sym

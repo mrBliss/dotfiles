@@ -57,6 +57,11 @@
   :type 'string
   :group 'ensime-sbt)
 
+(defcustom ensime-sbt-compile-on-save t
+  "Compile on save?"
+  :type 'boolean
+  :group 'ensime-sbt)
+
 (defun ensime-sbt-build-buffer-name ()
   "If no connection return the default base name. Otherwise,
  return name of project-specific sbt buffer."
@@ -74,55 +79,63 @@
 (defun ensime-sbt ()
   "Setup and launch sbt."
   (interactive)
-  (let ((root-path (ensime-sbt-find-path-to-project)))
+  (ensime-with-conn-interactive
+   conn
+   (let ((root-path (ensime-sbt-find-path-to-project))
+	 (buf (get-buffer-create (ensime-sbt-build-buffer-name))))
 
-    (switch-to-buffer-other-window
-     (get-buffer-create (ensime-sbt-build-buffer-name)))
+     (switch-to-buffer-other-window buf)
 
-    (add-hook 'ensime-source-buffer-saved-hook 'ensime-sbt-maybe-auto-compile)
+     (add-hook 'ensime-source-buffer-saved-hook 'ensime-sbt-maybe-auto-compile)
 
-    (add-hook 'kill-buffer-hook
-	      '(lambda ()
-		 (remove-hook
-		  'ensime-source-buffer-saved-hook
-		  'ensime-sbt-maybe-auto-compile)) nil t)
+     (add-hook 'kill-buffer-hook
+	       '(lambda ()
+		  (remove-hook
+		   'ensime-source-buffer-saved-hook
+		   'ensime-sbt-maybe-auto-compile)) nil t)
 
-    (comint-mode)
+     (comint-mode)
 
-    (set (make-local-variable 'compilation-error-regexp-alist)
-	 '(("^\\[error\\] \\([_.a-zA-Z0-9/-]+[.]scala\\):\\([0-9]+\\):"
-	    1 2 nil 2 nil)))
-    (set (make-local-variable 'compilation-mode-font-lock-keywords)
-	 '(("^\\[error\\] Error running compile:"
-	    (0 compilation-error-face))
-	   ("^\\[warn\\][^\n]*"
-	    (0 compilation-warning-face))
-	   ("^\\(\\[info\\]\\)\\([^\n]*\\)"
-	    (0 compilation-info-face)
-	    (1 compilation-line-face))
-	   ("^\\[success\\][^\n]*"
-	    (0 compilation-info-face))))
-    (set (make-local-variable 'comint-process-echoes) nil)
-    (set (make-local-variable 'compilation-auto-jump-to-first-error) t)
-    (set (make-local-variable 'comint-scroll-to-bottom-on-output) t)
-    (set (make-local-variable 'comint-prompt-read-only) t)
-    (set (make-local-variable 'comint-output-filter-functions)
-	 '(ansi-color-process-output comint-postoutput-scroll-to-bottom))
+     (setq ensime-buffer-connection conn)
 
-    (if ensime-sbt-comint-ansi-support
-	(set (make-local-variable 'ansi-color-for-comint-mode) t)
-      (set (make-local-variable 'ansi-color-for-comint-mode) 'filter))
 
-    (compilation-shell-minor-mode t)
-    (cd root-path)
-    (ensime-assert-executable-on-path ensime-sbt-program-name)
-    (comint-exec (current-buffer)
-		 ensime-sbt-program-name
-		 ensime-sbt-program-name
-		 nil nil)
+     (set (make-local-variable 'compilation-error-regexp-alist)
+	  '(("^\\[error\\] \\([_.a-zA-Z0-9/-]+[.]scala\\):\\([0-9]+\\):"
+	     1 2 nil 2 nil)))
+     (set (make-local-variable 'compilation-mode-font-lock-keywords)
+	  '(("^\\[error\\] Error running compile:"
+	     (0 compilation-error-face))
+	    ("^\\[warn\\][^\n]*"
+	     (0 compilation-warning-face))
+	    ("^\\(\\[info\\]\\)\\([^\n]*\\)"
+	     (0 compilation-info-face)
+	     (1 compilation-line-face))
+	    ("^\\[success\\][^\n]*"
+	     (0 compilation-info-face))))
+     (set (make-local-variable 'comint-process-echoes) nil)
+     (set (make-local-variable 'compilation-auto-jump-to-first-error) t)
+     (set (make-local-variable 'comint-scroll-to-bottom-on-output) t)
+     (set (make-local-variable 'comint-prompt-read-only) t)
+     (set (make-local-variable 'comint-output-filter-functions)
+	  '(ansi-color-process-output comint-postoutput-scroll-to-bottom))
 
-    (let ((proc (get-buffer-process (current-buffer))))
-      (ensime-set-query-on-exit-flag proc))))
+     (if ensime-sbt-comint-ansi-support
+	 (set (make-local-variable 'ansi-color-for-comint-mode) t)
+       (set (make-local-variable 'ansi-color-for-comint-mode) 'filter))
+
+     (compilation-shell-minor-mode t)
+     (cd root-path)
+     (ensime-assert-executable-on-path ensime-sbt-program-name)
+     (comint-exec (current-buffer)
+		  ensime-sbt-program-name
+		  ensime-sbt-program-name
+		  nil nil)
+
+     (let ((proc (get-buffer-process (current-buffer))))
+       (ensime-set-query-on-exit-flag proc))
+
+     (current-buffer)
+     )))
 
 (defun ensime-sbt-switch ()
   "Switch to the sbt shell (create if necessary) if or if already there, back.
@@ -135,6 +148,17 @@
           (switch-to-buffer-other-window sbt-buf)
 	(ensime-sbt))))
   (goto-char (point-max)))
+
+(defun ensime-sbt-get-or-start-buffer ()
+  "Return buffer of active sbt process, or create and return."
+  (let ((buf (get-buffer (ensime-sbt-build-buffer-name))))
+    (if (and buf (ensime-sbt-process-live-p buf))
+	buf
+      (ensime-sbt))))
+
+(defun ensime-sbt-get-buffer ()
+  "Return buffer of active sbt process."
+  (get-buffer (ensime-sbt-build-buffer-name)))
 
 (defun ensime-sbt-process-live-p (buffer-name)
   "Check if the process associated with the buffer is living."
@@ -153,23 +177,36 @@
   (interactive)
   (when (and
 	 (ensime-connected-p)
-	 (plist-get (ensime-config
-		     (ensime-connection))
-		    :sbt-compile-on-save))
+	 ensime-sbt-compile-on-save)
     (ensime-sbt-action "compile")))
 
 (defun ensime-sbt-action (action)
   "Run an sbt action. Where action is a string in the set of valid
    SBT actions names, e.g. 'compile', 'run'"
+  (when-let (buf (ensime-sbt-get-buffer))
+    (with-current-buffer buf (goto-char (point-max)))
+    (comint-send-string buf (concat action "\n"))))
+
+(defun ensime-sbt-do-compile ()
   (interactive)
-  (ensime-sbt-clear)
-  (comint-send-string
-   (get-buffer (ensime-sbt-build-buffer-name))
-   (concat action "\n")))
+  (ensime-sbt-switch)
+  (ensime-sbt-action "compile"))
+
+(defun ensime-sbt-do-clean ()
+  (interactive)
+  (ensime-sbt-switch)
+  (ensime-sbt-action "clean"))
+
+(defun ensime-sbt-do-package ()
+  (interactive)
+  (ensime-sbt-switch)
+  (ensime-sbt-action "package"))
+
 
 (defun ensime-sbt-project-dir-p (path)
-  "If path an sbt project?"
+  "Is path an sbt project?"
   (or (not (null (directory-files path nil "\\.sbt$")))
+      (file-exists-p (concat path "/project/Build.scala" ))
       (file-exists-p (concat path "/project/boot" ))
       (file-exists-p (concat path "/project/build.properties" ))))
 
