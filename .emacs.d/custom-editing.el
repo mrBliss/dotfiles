@@ -58,7 +58,6 @@
 
 (eval-after-load "cc-mode"
   '(key-chord-define c-mode-base-map ";;" "\C-e;"))
-(key-chord-define-global "jj" 'ace-jump-char-mode)
 
 
 (provide 'custom-editing)
