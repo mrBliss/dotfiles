@@ -157,6 +157,9 @@ putting it in parentheses."
 
 (add-hook 'escreen-goto-screen-hook 'escreen-display-active-screen)
 
+;; Update the escreen number in the mode line
+(add-hook 'escreen-goto-screen-hook 'escreen-enable-number-mode-if-more-than-one-screen)
+
 ;; Pretty display of `^L'
 (require 'pp-c-l)
 (pretty-control-l-mode 1)
