@@ -19,6 +19,9 @@ bindkey "^[[4~" end-of-line
 bindkey ' ' magic-space    # also do history expansion on space
 
 
+# Shift-Tab while completing
+bindkey '^[[Z' reverse-menu-complete
+
 # consider emacs keybindings:
 
 #bindkey -e  ## emacs key bindings
