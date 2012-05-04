@@ -341,14 +341,18 @@ rename."
 
 
 (eval-after-load "scala-mode"
-  ;; Override the function bound to RET to reindent and indent
-  '(defun scala-newline ()
-     (interactive)
-     (if (scala-in-multi-line-comment-p)
-         (progn
-           (newline-and-indent)
-           (insert "* "))
-       (reindent-then-newline-and-indent))))
+  '(progn
+     (when (string= user-login-name "s0202013")
+       (setq scala-interpreter
+             "/localhost/packages/scala/scala-2.9.0.1/bin/scala"))
+     ;; Override the function bound to RET to reindent and indent
+     (defun scala-newline ()
+       (interactive)
+       (if (scala-in-multi-line-comment-p)
+           (progn
+             (newline-and-indent)
+             (insert "* "))
+         (newline-and-indent)))))
 
 (eval-after-load "ensime"
   '(progn
