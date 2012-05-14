@@ -172,4 +172,14 @@ putting it in parentheses."
       sml-modeline-borders nil)
 
 
+;; Proper colors in tmux
+(defun terminal-init-screen ()
+  "Terminal initialization function for screen."
+  (unless (fboundp 'xterm-register-default-colors)
+    (load "term/xterm"))
+  ;; Use the xterm color initialization code.
+  (xterm-register-default-colors)
+  (tty-set-up-initial-frame-faces))
+
+
 (provide 'custom-appearance)

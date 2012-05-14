@@ -9,7 +9,7 @@ else
     # Enable 256 colors unless we're being used as ansi-term in emacs
     if [ "$TERM" != "eterm-color" ]
     then
-        export TERM=xterm-256color
+        export TERM=screen-256color
     fi
     # ls colors
     autoload colors; colors;
