@@ -50,6 +50,8 @@
       `((".*" . ,(expand-file-name "~/.emacs.d/auto-saves/")))
       tramp-backup-directory-alist
       `((".*" . ,(expand-file-name "~/.emacs.d/auto-saves/")))
+      tramp-auto-save-directory
+      (expand-file-name "~/.emacs.d/auto-saves")
       auto-save-file-name-transforms
       `((".*" ,(expand-file-name "~/.emacs.d/auto-saves/") t)))
 
