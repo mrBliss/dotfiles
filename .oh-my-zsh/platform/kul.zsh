@@ -35,3 +35,7 @@ alias tmux='tmux -f ~/.tmux.kul.conf'
 
 # Make git use Emacs
 export GIT_EDITOR=$EDITOR
+
+# Enable the locally installed mosh
+export PERL5LIB=/home/s0202013/bin/bin.linux/lib/perl/5.10.1
+export LD_LIBRARY_PATH=/home/s0202013/bin/bin.linux/lib:$LD_LIBRARY_PATH
