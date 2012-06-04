@@ -26,6 +26,9 @@
 (set-language-environment "UTF-8")
 (setq current-language-environment "UTF-8")
 
+;; Load new CEDET before the built-in one
+(load-file "~/.emacs.d/vendor/cedet/common/cedet.el")
+
 ;; Load path etc.
 (setq dot-dir "~/.emacs.d/")
 (add-to-list 'load-path dot-dir)

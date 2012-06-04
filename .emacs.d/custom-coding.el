@@ -34,18 +34,12 @@
 
 
 ;; CEDET
-(add-to-list 'load-path "~/.emacs.d/vendor/cedet/eieio")
-(add-to-list 'load-path "~/.emacs.d/vendor/cedet/semantic")
-(add-to-list 'load-path "~/.emacs.d/vendor/cedet/srecode")
-(add-to-list 'load-path "~/.emacs.d/vendor/cedet/ede")
-(add-to-list 'load-path "~/.emacs.d/vendor/cedet/speedbar")
-(load-file "~/.emacs.d/vendor/cedet/common/cedet.el")
 
-(defun only-semantic-for-c ()
-  (not (member major-mode '(c-mode c++-mode matlab-mode))))
-(setq semantic-inhibit-functions '(only-semantic-for-c))
+(defun only-semantic-for ()
+  (not (member major-mode '(c-mode c++-mode matlab-mode java-mode))))
+(setq semantic-inhibit-functions '(only-semantic-for))
 
-;; Load everything
+;; ;; Load everything
 (semantic-load-enable-excessive-code-helpers)
 
 ;; Except for the annoying bits
@@ -64,9 +58,16 @@
                        nil
                        :overline nil))
 
+;; Fixes
+(require 'eieio-opt)
+(unless (boundp 'x-max-tooltip-size)
+  (setq x-max-tooltip-size '(80 . 40)))
 
 ;; ECB
 (require 'ecb)
+
+;; Make it work with CEDET version 1.1
+(setq ecb-cedet-required-version-max '(1 1 3 0))
 
 (setq ecb-tip-of-the-day nil
       ecb-layout-name "left3"
@@ -134,10 +135,9 @@ rename."
   (define-key c-mode-map (kbd "M-R") 'c-rename-variable)
   (define-key c-mode-map (kbd "M-.") 'semantic-complete-jump)
   (define-key c-mode-map (kbd "M-,") 'semantic-mrub-switch-tags)
-  (setq ac-sources
-        (append '(ac-source-yasnippet ac-source-clang)
-                (remq 'ac-source-yasnippet
-                      (remq 'ac-source-clang ac-sources)))))
+  (push 'ac-source-clang ac-sources)
+  (push 'ac-source-yasnippet ac-sources)
+  (push 'ac-source-semantic ac-sources))
 (add-hook 'c-mode-hook 'c-mode-customisations)
 
 ;; Indentation
@@ -192,6 +192,8 @@ rename."
 ;; java-mode rebinds C-M-h to something else than backward-kill-word
 (defun java-custom ()
   (define-key java-mode-map (kbd "C-M-h") 'backward-kill-word)
+  (define-key java-mode-map (kbd "M-.") 'semantic-complete-jump)
+  (define-key java-mode-map (kbd "M-,") 'semantic-mrub-switch-tags)
   (setq tab-width 4)
   ;; Treat Java 1.5 @-style annotations as comments
   (setq c-comment-start-regexp "(@|/(/|[*][*]?))")

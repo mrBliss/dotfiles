@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (bison->wisent) "bison-wisent" "wisent/bison-wisent.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from wisent/bison-wisent.el
 
 (autoload 'bison->wisent "bison-wisent" "\
@@ -18,7 +18,7 @@ Deletes all actions, replacing them with small comments.
 ;;;***
 
 ;;;### (autoloads (semantic-bovine-debug-create-frame) "bovine-debug"
-;;;;;;  "bovine/bovine-debug.el" (20235 40909))
+;;;;;;  "bovine/bovine-debug.el" (20362 59692))
 ;;; Generated autoloads from bovine/bovine-debug.el
 
 (autoload 'semantic-bovine-debug-create-frame "bovine-debug" "\
@@ -44,7 +44,7 @@ LEXTOKEN, is a token returned by the lexer which is being matched.
 ;;;***
 
 ;;;### (autoloads (bovine-grammar-mode) "bovine-grammar" "bovine/bovine-grammar.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59692))
 ;;; Generated autoloads from bovine/bovine-grammar.el
 
 (autoload 'bovine-grammar-mode "bovine-grammar" "\
@@ -60,7 +60,7 @@ Major mode for editing Bovine grammars.
 
 ;;;### (autoloads (semantic-bovinate-toplevel semantic-refresh-tags-safe
 ;;;;;;  semantic-fetch-tags semantic-parse-region-default) "semantic"
-;;;;;;  "semantic.el" (20235 40909))
+;;;;;;  "semantic.el" (20362 59690))
 ;;; Generated autoloads from semantic.el
 
 (autoload 'semantic-parse-region-default "semantic" "\
@@ -119,7 +119,7 @@ new tags when they become available." semantic--buffer-cache)
 ;;;;;;  data-debug-insert-find-results-button data-debug-insert-find-results
 ;;;;;;  data-debug-insert-tag-list-button data-debug-insert-tag-list
 ;;;;;;  data-debug-insert-tag data-debug-insert-tag-parts-from-point)
-;;;;;;  "semantic-adebug" "semantic-adebug.el" (20235 40909))
+;;;;;;  "semantic-adebug" "semantic-adebug.el" (20362 59691))
 ;;; Generated autoloads from semantic-adebug.el
 
 (autoload 'data-debug-insert-tag-parts-from-point "semantic-adebug" "\
@@ -189,7 +189,7 @@ Report debug info for checking STARTFILE for up-to-date tags.
 
 ;;;### (autoloads (semantic-adebug-analyze semantic-analyze-current-context
 ;;;;;;  semantic-analyze-current-symbol) "semantic-analyze" "semantic-analyze.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semantic-analyze.el
 
 (autoload 'semantic-analyze-current-symbol "semantic-analyze" "\
@@ -232,7 +232,7 @@ Optional argument CTXT is the context to show.
 
 ;;;### (autoloads (semantic-analyze-possible-completions semantic-analyze-tags-of-class-list
 ;;;;;;  semantic-analyze-type-constants) "semantic-analyze-complete"
-;;;;;;  "semantic-analyze-complete.el" (20235 40909))
+;;;;;;  "semantic-analyze-complete.el" (20362 59691))
 ;;; Generated autoloads from semantic-analyze-complete.el
 
 (autoload 'semantic-analyze-type-constants "semantic-analyze-complete" "\
@@ -272,7 +272,7 @@ in a buffer.
 ;;;***
 
 ;;;### (autoloads (semantic-analyze-debug-assist) "semantic-analyze-debug"
-;;;;;;  "semantic-analyze-debug.el" (20235 40909))
+;;;;;;  "semantic-analyze-debug.el" (20362 59691))
 ;;; Generated autoloads from semantic-analyze-debug.el
 
 (autoload 'semantic-analyze-debug-assist "semantic-analyze-debug" "\
@@ -284,7 +284,7 @@ Debug semantic analysis at the current point.
 
 ;;;### (autoloads (semantic-analyze-proto-impl-toggle semantic-analyze-current-tag
 ;;;;;;  semantic-analyze-tag-references) "semantic-analyze-refs"
-;;;;;;  "semantic-analyze-refs.el" (20235 40909))
+;;;;;;  "semantic-analyze-refs.el" (20362 59691))
 ;;; Generated autoloads from semantic-analyze-refs.el
 
 (autoload 'semantic-analyze-tag-references "semantic-analyze-refs" "\
@@ -311,7 +311,7 @@ Toggle between the implementation, and a prototype of tag under point.
 ;;;***
 
 ;;;### (autoloads (semantic-bovinate-stream semantic-lambda) "semantic-bovine"
-;;;;;;  "bovine/semantic-bovine.el" (20235 40909))
+;;;;;;  "bovine/semantic-bovine.el" (20362 59692))
 ;;; Generated autoloads from bovine/semantic-bovine.el
 
 (defvar semantic-bovinate-nonterminal-check-obarray nil "\
@@ -341,7 +341,7 @@ list of semantic tokens found.
 ;;;### (autoloads (semantic-c-add-preprocessor-symbol semantic-default-c-setup
 ;;;;;;  semantic-c-member-of-autocast semantic-lex-c-preprocessor-symbol-file
 ;;;;;;  semantic-lex-c-preprocessor-symbol-map) "semantic-c" "bovine/semantic-c.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59692))
 ;;; Generated autoloads from bovine/semantic-c.el
 
 (defvar semantic-lex-c-preprocessor-symbol-map nil "\
@@ -415,11 +415,13 @@ Add a preprocessor symbol SYM with a REPLACEMENT value.
 
 (add-hook 'c++-mode-hook 'semantic-default-c-setup)
 
+(add-hook 'arduino-mode-hook 'semantic-default-c-setup)
+
 ;;;***
 
 ;;;### (autoloads (semantic-chart-analyzer semantic-chart-tag-complexity
 ;;;;;;  semantic-chart-database-size semantic-chart-tags-by-class)
-;;;;;;  "semantic-chart" "semantic-chart.el" (20235 40909))
+;;;;;;  "semantic-chart" "semantic-chart.el" (20362 59691))
 ;;; Generated autoloads from semantic-chart.el
 
 (autoload 'semantic-chart-tags-by-class "semantic-chart" "\
@@ -455,6 +457,17 @@ Chart the extent of the context analysis.
 
 ;;;***
 
+;;;### (autoloads (semantic-clang-activate) "semantic-clang" "bovine/semantic-clang.el"
+;;;;;;  (20362 59692))
+;;; Generated autoloads from bovine/semantic-clang.el
+
+(autoload 'semantic-clang-activate "semantic-clang" "\
+Activate clang completions for C/C++.
+
+\(fn)" t nil)
+
+;;;***
+
 ;;;### (autoloads (semantic-complete-self-insert semantic-complete-analyze-inline-idle
 ;;;;;;  semantic-complete-analyze-inline semantic-complete-analyze-and-replace
 ;;;;;;  semantic-complete-jump-local-members semantic-complete-jump
@@ -462,9 +475,10 @@ Chart the extent of the context analysis.
 ;;;;;;  semantic-complete-inline-analyzer semantic-complete-read-tag-analyzer
 ;;;;;;  semantic-complete-inline-tag-project semantic-complete-read-tag-project
 ;;;;;;  semantic-complete-read-tag-local-members semantic-complete-read-tag-buffer-deep
+;;;;;;  semantic-displayor-tooltip-initial-max-tags semantic-displayor-tooltip-mode
 ;;;;;;  semantic-complete-inline-force-display semantic-complete-read-tag-engine
 ;;;;;;  semantic-completion-inline-active-p) "semantic-complete"
-;;;;;;  "semantic-complete.el" (20235 40909))
+;;;;;;  "semantic-complete.el" (20362 59691))
 ;;; Generated autoloads from semantic-complete.el
 
 (autoload 'semantic-completion-inline-active-p "semantic-complete" "\
@@ -492,6 +506,31 @@ Force the display of whatever the current completions are.
 DO NOT CALL THIS IF THE INLINE COMPLETION ENGINE IS NOT ACTIVE.
 
 \(fn)" nil nil)
+
+(defvar semantic-displayor-tooltip-mode 'standard "\
+Mode for the tooltip inline completion.
+
+Standard: Show only `semantic-displayor-tooltip-initial-max-tags'
+number of completions initially.  Pressing TAB will show the
+extended set.
+
+Quiet: Only show completions when we have narrowed all
+posibilities down to a maximum of
+`semantic-displayor-tooltip-initial-max-tags' tags.  Pressing TAB
+multiple times will also show completions.
+
+Verbose: Always show all completions available.
+
+The absolute maximum number of completions for all mode is
+determined through `semantic-displayor-tooltip-max-tags'.")
+
+(custom-autoload 'semantic-displayor-tooltip-mode "semantic-complete" t)
+
+(defvar semantic-displayor-tooltip-initial-max-tags 5 "\
+Maximum number of tags to be displayed initially.
+See doc-string of `semantic-displayor-tooltip-mode' for details.")
+
+(custom-autoload 'semantic-displayor-tooltip-initial-max-tags "semantic-complete" t)
 
 (autoload 'semantic-complete-read-tag-buffer-deep "semantic-complete" "\
 Ask for a tag by name from the current buffer.
@@ -638,7 +677,7 @@ use `semantic-complete-analyze-inline' to complete.
 
 ;;;***
 
-;;;### (autoloads nil "semantic-ctxt" "semantic-ctxt.el" (20235 40909))
+;;;### (autoloads nil "semantic-ctxt" "semantic-ctxt.el" (20362 59691))
 ;;; Generated autoloads from semantic-ctxt.el
 
 (defvar semantic-command-separation-character ";" "\
@@ -650,7 +689,7 @@ Used for identifying the end of a single command.")
 ;;;### (autoloads (semantic-tag-customize semantic-tag-widget-to-external
 ;;;;;;  semantic-tag-widget-to-internal semantic-tag-widget-value-get
 ;;;;;;  semantic-tag-widget-value-create semantic-tag-widget-match)
-;;;;;;  "semantic-custom" "semantic-custom.el" (20235 40909))
+;;;;;;  "semantic-custom" "semantic-custom.el" (20362 59691))
 ;;; Generated autoloads from semantic-custom.el
 
 (define-widget 'tag-edit 'group "\
@@ -696,7 +735,7 @@ If TAG is not provided, then the tag under point is used.
 ;;;***
 
 ;;;### (autoloads (semantic-debug semantic-debug-break) "semantic-debug"
-;;;;;;  "semantic-debug.el" (20235 40909))
+;;;;;;  "semantic-debug.el" (20362 59691))
 ;;; Generated autoloads from semantic-debug.el
 
 (defvar semantic-debug-parser-source nil "\
@@ -740,7 +779,7 @@ Parse the current buffer and run in debug mode.
 ;;;;;;  semantic-set-tag-intangible semantic-tag-invisible-p semantic-set-tag-invisible
 ;;;;;;  semantic-set-tag-face semantic-momentary-highlight-tag semantic-momentary-highlight-one-tag-line
 ;;;;;;  semantic-unhighlight-tag semantic-highlight-tag) "semantic-decorate"
-;;;;;;  "semantic-decorate.el" (20235 40909))
+;;;;;;  "semantic-decorate.el" (20362 59691))
 ;;; Generated autoloads from semantic-decorate.el
 
 (autoload 'semantic-highlight-tag "semantic-decorate" "\
@@ -874,7 +913,7 @@ Non-nil if TAG is currently folded.
 
 ;;;### (autoloads (semantic-decoration-unparsed-include-do-reset
 ;;;;;;  semantic-decoration-include-visit) "semantic-decorate-include"
-;;;;;;  "semantic-decorate-include.el" (20235 40909))
+;;;;;;  "semantic-decorate-include.el" (20362 59691))
 ;;; Generated autoloads from semantic-decorate-include.el
 
 (autoload 'semantic-decoration-include-visit "semantic-decorate-include" "\
@@ -892,7 +931,7 @@ Do a reset of unparsed includes in the current buffer.
 ;;;### (autoloads (semantic-build-decoration-mode-menu semantic-decoration-mode
 ;;;;;;  global-semantic-decoration-mode global-semantic-decoration-mode
 ;;;;;;  semantic-decorate-flush-pending-decorations) "semantic-decorate-mode"
-;;;;;;  "semantic-decorate-mode.el" (20235 40909))
+;;;;;;  "semantic-decorate-mode.el" (20362 59691))
 ;;; Generated autoloads from semantic-decorate-mode.el
 
 (autoload 'semantic-decorate-flush-pending-decorations "semantic-decorate-mode" "\
@@ -944,7 +983,7 @@ IGNORE any input arguments.
 ;;;### (autoloads (semantic-dependency-find-file-on-path semantic-customize-system-include-path
 ;;;;;;  semantic-reset-system-include semantic-remove-system-include
 ;;;;;;  semantic-add-system-include defcustom-mode-local-semantic-dependency-system-include-path)
-;;;;;;  "semantic-dep" "semantic-dep.el" (20235 40909))
+;;;;;;  "semantic-dep" "semantic-dep.el" (20362 59691))
 ;;; Generated autoloads from semantic-dep.el
 
 (defvar semantic-dependency-include-path nil "\
@@ -1034,7 +1073,7 @@ provided mode, not from the current major mode.
 
 ;;;### (autoloads (semantic-documentation-comment-preceeding-tag
 ;;;;;;  semantic-documentation-for-tag) "semantic-doc" "semantic-doc.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semantic-doc.el
 
 (autoload 'semantic-documentation-for-tag "semantic-doc" "\
@@ -1063,8 +1102,8 @@ just the lexical token and not the string.
 ;;;***
 
 ;;;### (autoloads (semantic-load-enable-primary-exuberent-ctags-support)
-;;;;;;  "semantic-ectag-lang" "ctags/semantic-ectag-lang.el" (20235
-;;;;;;  40909))
+;;;;;;  "semantic-ectag-lang" "ctags/semantic-ectag-lang.el" (20362
+;;;;;;  59692))
 ;;; Generated autoloads from ctags/semantic-ectag-lang.el
 
 (autoload 'semantic-load-enable-primary-exuberent-ctags-support "semantic-ectag-lang" "\
@@ -1077,8 +1116,8 @@ semantic parser.
 ;;;***
 
 ;;;### (autoloads (semantic-load-enable-secondary-exuberent-ctags-support)
-;;;;;;  "semantic-ectag-lang2" "ctags/semantic-ectag-lang2.el" (20235
-;;;;;;  40909))
+;;;;;;  "semantic-ectag-lang2" "ctags/semantic-ectag-lang2.el" (20362
+;;;;;;  59692))
 ;;; Generated autoloads from ctags/semantic-ectag-lang2.el
 
 (autoload 'semantic-load-enable-secondary-exuberent-ctags-support "semantic-ectag-lang2" "\
@@ -1091,7 +1130,7 @@ Any mode that has been tested to work will be added to this function.
 ;;;***
 
 ;;;### (autoloads (semantic-ectag-parse-buffer) "semantic-ectag-parse"
-;;;;;;  "ctags/semantic-ectag-parse.el" (20235 40909))
+;;;;;;  "ctags/semantic-ectag-parse.el" (20362 59692))
 ;;; Generated autoloads from ctags/semantic-ectag-parse.el
 
 (autoload 'semantic-ectag-parse-buffer "semantic-ectag-parse" "\
@@ -1102,8 +1141,22 @@ Convert the output tags into Semantic tags.
 
 ;;;***
 
+;;;### (autoloads (cedet-ectag-version-check) "semantic-ectag-util"
+;;;;;;  "ctags/semantic-ectag-util.el" (20362 59692))
+;;; Generated autoloads from ctags/semantic-ectag-util.el
+
+(autoload 'cedet-ectag-version-check "semantic-ectag-util" "\
+Check the version of the installed ctags command.
+If optional programatic argument NOERROR is non-nil, then
+instead of throwing an error if ctags isn't available, then
+return nil.
+
+\(fn &optional NOERROR)" t nil)
+
+;;;***
+
 ;;;### (autoloads nil "semantic-ede-grammar" "semantic-ede-grammar.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semantic-ede-grammar.el
 
 (eieio-defclass-autoload 'semantic-ede-proj-target-grammar '(ede-proj-target-makefile) "semantic-ede-grammar" "This target consists of a group of grammar files.\nA grammar target consists of grammar files that build Emacs Lisp programs for\nparsing different languages.")
@@ -1118,7 +1171,7 @@ Target class for Emacs/Semantic grammar files." nil nil)
 ;;;### (autoloads (semantic-edits-incremental-parser semantic-edits-flush-changes
 ;;;;;;  semantic-edits-change-function-handle-changes semantic-change-function
 ;;;;;;  semantic-edits-verbose-flag) "semantic-edit" "semantic-edit.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59690))
 ;;; Generated autoloads from semantic-edit.el
 
 (defvar semantic-edits-verbose-flag nil "\
@@ -1164,7 +1217,7 @@ the semantic cache to see what needs to be changed.
 ;;;***
 
 ;;;### (autoloads (semantic-default-elisp-setup) "semantic-el" "bovine/semantic-el.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59692))
 ;;; Generated autoloads from bovine/semantic-el.el
 
 (autoload 'semantic-default-elisp-setup "semantic-el" "\
@@ -1181,7 +1234,7 @@ Setup hook function for Emacs Lisp files and Semantic.
 ;;;***
 
 ;;;### (autoloads (semantic-elp-load-old-run semantic-elp-analyze)
-;;;;;;  "semantic-elp" "semantic-elp.el" (20235 40909))
+;;;;;;  "semantic-elp" "semantic-elp.el" (20362 59691))
 ;;; Generated autoloads from semantic-elp.el
 
 (autoload 'semantic-elp-analyze "semantic-elp" "\
@@ -1196,6 +1249,19 @@ Load an old run from FILE, and show it.
 
 ;;;***
 
+;;;### (autoloads (semantic-default-f90-setup) "semantic-f90" "bovine/semantic-f90.el"
+;;;;;;  (20362 59692))
+;;; Generated autoloads from bovine/semantic-f90.el
+
+(autoload 'semantic-default-f90-setup "semantic-f90" "\
+Set up a buffer for semantic parsing of the F90 language.
+
+\(fn)" nil nil)
+
+(add-hook 'f90-mode-hook 'semantic-default-f90-setup)
+
+;;;***
+
 ;;;### (autoloads (semantic-brute-find-innermost-tag-by-position
 ;;;;;;  semantic-brute-find-tag-by-position semantic-brute-find-first-tag-by-function
 ;;;;;;  semantic-brute-find-tag-by-function semantic-brute-find-tag-by-attribute-value
@@ -1204,15 +1270,15 @@ Load an old run from FILE, and show it.
 ;;;;;;  semantic-brute-find-tag-by-type semantic-brute-find-tag-standard
 ;;;;;;  semantic-brute-find-tag-by-class semantic-brute-find-first-tag-by-name
 ;;;;;;  semantic-deep-find-tags-by-name-regexp semantic-deep-find-tags-for-completion
-;;;;;;  semantic-deep-find-tags-by-name semantic-find-tags-by-scope-protection
-;;;;;;  semantic-find-tags-of-compound-type semantic-find-tags-by-type
-;;;;;;  semantic-find-tags-by-class semantic-find-tags-by-name-regexp
+;;;;;;  semantic-deep-find-tags-by-name semantic-find-tags-included
+;;;;;;  semantic-find-tags-by-scope-protection semantic-find-tags-of-compound-type
+;;;;;;  semantic-find-tags-by-type semantic-find-tags-by-class semantic-find-tags-by-name-regexp
 ;;;;;;  semantic-find-tags-for-completion semantic-find-tags-by-name
 ;;;;;;  semantic-current-tag-of-class semantic-current-tag-parent
 ;;;;;;  semantic-current-tag semantic-find-tag-parent-by-overlay
 ;;;;;;  semantic-find-tag-by-overlay-prev semantic-find-tag-by-overlay-next
 ;;;;;;  semantic-find-tag-by-overlay-in-region semantic-find-tag-by-overlay)
-;;;;;;  "semantic-find" "semantic-find.el" (20235 40909))
+;;;;;;  "semantic-find" "semantic-find.el" (20362 59691))
 ;;; Generated autoloads from semantic-find.el
 
 (autoload 'semantic-find-tag-by-overlay "semantic-find" "\
@@ -1343,9 +1409,11 @@ See `semantic-tag-protected-p' for details on which tags are returned.
 
 \(fn SCOPEPROTECTION PARENT &optional TABLE)" nil nil)
 
-(defsubst semantic-find-tags-included (&optional table) "\
+(autoload 'semantic-find-tags-included "semantic-find" "\
 Find all tags in TABLE that are of the 'include class.
-TABLE is a tag table.  See `semantic-something-to-tag-table'." (semantic-find-tags-by-class (quote include) table))
+TABLE is a tag table.  See `semantic-something-to-tag-table'.
+
+\(fn &optional TABLE)" nil nil)
 
 (autoload 'semantic-deep-find-tags-by-name "semantic-find" "\
 Find all tags with NAME in TABLE.
@@ -1543,37 +1611,15 @@ details are available of findable.
 
 ;;;***
 
-;;;### (autoloads (semantic-folding-mode global-semantic-folding-mode
-;;;;;;  global-semantic-folding-mode) "semantic-fold" "semantic-fold.el"
-;;;;;;  (20235 40909))
-;;; Generated autoloads from semantic-fold.el
+;;;### (autoloads (semantic-fmt-utest) "semantic-fmt-utest" "semantic-fmt-utest.el"
+;;;;;;  (20362 59691))
+;;; Generated autoloads from semantic-fmt-utest.el
 
-(autoload 'global-semantic-folding-mode "semantic-fold" "\
-Toggle global use of option `semantic-folding-mode'.
-If ARG is positive, enable, if it is negative, disable.
-If ARG is nil, then toggle.
+(autoload 'semantic-fmt-utest "semantic-fmt-utest" "\
+Visit all file entries, and run formatting test.
+Files to visit are in `semantic-fmt-utest-file-list'.
 
-\(fn &optional ARG)" t nil)
-
-(defvar global-semantic-folding-mode nil "\
-*If non-nil enable global use of variable `semantic-folding-mode'.
-With this mode enabled, a new folding decoration mode is added.
-Clicking on a + or - in the fringe will fold that tag.")
-
-(custom-autoload 'global-semantic-folding-mode "semantic-fold" nil)
-
-(autoload 'semantic-folding-mode "semantic-fold" "\
-Minor mode for highlighting changes made in a buffer.
-Changes are tracked by semantic so that the incremental parser can work
-properly.
-This mode will display +/- icons in the fringe.  Clicking on them
-will fold the current tag.
-With prefix argument ARG, turn on if positive, otherwise off.  The
-minor mode can be turned on only if semantic feature is available and
-the current buffer was set up for parsing.  Return non-nil if the
-minor mode is enabled.
-
-\(fn &optional ARG)" t nil)
+\(fn)" t nil)
 
 ;;;***
 
@@ -1583,7 +1629,7 @@ minor mode is enabled.
 ;;;;;;  semantic-format-tag-summarize-with-file semantic-format-tag-summarize
 ;;;;;;  semantic-format-tag-abbreviate semantic-format-tag-name semantic-format-tag-prin1
 ;;;;;;  semantic-format-tag-type) "semantic-format" "semantic-format.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semantic-format.el
 
 (defvar semantic-format-tag-functions '(semantic-format-tag-name semantic-format-tag-canonical-name semantic-format-tag-abbreviate semantic-format-tag-summarize semantic-format-tag-summarize-with-file semantic-format-tag-short-doc semantic-format-tag-prototype semantic-format-tag-concise-prototype semantic-format-tag-uml-abbreviate semantic-format-tag-uml-prototype semantic-format-tag-uml-concise-prototype semantic-format-tag-prin1) "\
@@ -1694,7 +1740,7 @@ Optional argument COLOR means highlight the prototype with font-lock colors.
 
 ;;;### (autoloads (semantic-gcc-test-output-parser-this-machine semantic-gcc-test-output-parser
 ;;;;;;  semantic-gcc-setup) "semantic-gcc" "bovine/semantic-gcc.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59692))
 ;;; Generated autoloads from bovine/semantic-gcc.el
 
 (autoload 'semantic-gcc-setup "semantic-gcc" "\
@@ -1715,7 +1761,7 @@ Test the output parser against the machine currently running Emacs.
 ;;;***
 
 ;;;### (autoloads (semantic-grammar-batch-build-packages) "semantic-grammar"
-;;;;;;  "semantic-grammar.el" (20235 40909))
+;;;;;;  "semantic-grammar.el" (20362 59691))
 ;;; Generated autoloads from semantic-grammar.el
 
 (autoload 'semantic-grammar-batch-build-packages "semantic-grammar" "\
@@ -1734,7 +1780,7 @@ See also the variable `semantic-grammar-file-regexp'.
 ;;;***
 
 ;;;### (autoloads (semantic-default-html-setup) "semantic-html" "semantic-html.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semantic-html.el
 
 (autoload 'semantic-default-html-setup "semantic-html" "\
@@ -1750,7 +1796,7 @@ Set up a buffer for parsing of HTML files.
 ;;;;;;  semantic-ia-fast-mouse-jump semantic-ia-fast-jump semantic-ia-show-variants
 ;;;;;;  semantic-ia-show-summary semantic-ia-complete-tip semantic-ia-complete-symbol-menu
 ;;;;;;  semantic-ia-complete-symbol) "semantic-ia" "semantic-ia.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semantic-ia.el
 
 (autoload 'semantic-ia-complete-symbol "semantic-ia" "\
@@ -1810,7 +1856,7 @@ parts of the parent classes are displayed.
 ;;;***
 
 ;;;### (autoloads (semantic-speedbar-analysis) "semantic-ia-sb" "semantic-ia-sb.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semantic-ia-sb.el
 
 (autoload 'semantic-speedbar-analysis "semantic-ia-sb" "\
@@ -1823,7 +1869,7 @@ list of possible completions.
 ;;;***
 
 ;;;### (autoloads (semantic-ia-utest) "semantic-ia-utest" "semantic-ia-utest.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semantic-ia-utest.el
 
 (autoload 'semantic-ia-utest "semantic-ia-utest" "\
@@ -1841,7 +1887,7 @@ Argument ARG specifies which set of tests to run.
 ;;;### (autoloads (global-semantic-idle-scheduler-mode semantic-idle-scheduler-remove
 ;;;;;;  semantic-idle-scheduler-add semantic-idle-scheduler-mode
 ;;;;;;  global-semantic-idle-scheduler-mode) "semantic-idle" "semantic-idle.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semantic-idle.el
 
 (defvar global-semantic-idle-scheduler-mode nil "\
@@ -1890,7 +1936,7 @@ If ARG is nil, then toggle.
 
 ;;;### (autoloads (semantic-create-imenu-index semantic-imenu-expand-type-members
 ;;;;;;  semantic-imenu-bucketize-file semantic-imenu-summary-function)
-;;;;;;  "semantic-imenu" "semantic-imenu.el" (20235 40909))
+;;;;;;  "semantic-imenu" "semantic-imenu.el" (20362 59691))
 ;;; Generated autoloads from semantic-imenu.el
 
 (defvar semantic-imenu-summary-function 'semantic-format-tag-abbreviate "\
@@ -1927,7 +1973,7 @@ Optional argument STREAM is an optional stream of tags used to create menus.
 ;;;### (autoloads (define-lex-block-analyzer define-lex-simple-regex-analyzer
 ;;;;;;  define-lex-regex-analyzer define-lex-analyzer semantic-lex
 ;;;;;;  semantic-lex-init define-lex) "semantic-lex" "semantic-lex.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59690))
 ;;; Generated autoloads from semantic-lex.el
 
 (defvar semantic-lex-analyzer 'semantic-flex "\
@@ -2036,7 +2082,7 @@ symbols returned in open and close tokens.
 ;;;***
 
 ;;;### (autoloads (semantic-lex-spp-write-utest semantic-lex-spp-table-write-slot-value)
-;;;;;;  "semantic-lex-spp" "semantic-lex-spp.el" (20235 40909))
+;;;;;;  "semantic-lex-spp" "semantic-lex-spp.el" (20362 59690))
 ;;; Generated autoloads from semantic-lex-spp.el
 
 (autoload 'semantic-lex-spp-table-write-slot-value "semantic-lex-spp" "\
@@ -2053,7 +2099,7 @@ Unit test using the test spp file to test the slot write fcn.
 ;;;***
 
 ;;;### (autoloads (semantic-load-enable-all-exuberent-ctags-support)
-;;;;;;  "semantic-load" "semantic-load.el" (20235 40909))
+;;;;;;  "semantic-load" "semantic-load.el" (20362 59690))
 ;;; Generated autoloads from semantic-load.el
 
 (autoload 'semantic-load-enable-all-exuberent-ctags-support "semantic-load" "\
@@ -2068,8 +2114,35 @@ If you just want to add new languages, use
 
 ;;;***
 
+;;;### (autoloads (semantic-m3-ref-items semantic-m3-context-items
+;;;;;;  semantic-m3-add-whatisit semantic-m3-install) "semantic-m3"
+;;;;;;  "semantic-m3.el" (20362 59691))
+;;; Generated autoloads from semantic-m3.el
+
+(autoload 'semantic-m3-install "semantic-m3" "\
+Install ourselves into the `cedet-m3' system.
+
+\(fn)" t nil)
+
+(autoload 'semantic-m3-add-whatisit "semantic-m3" "\
+Return a menu item for the 'whatisit' function.
+
+\(fn)" nil nil)
+
+(autoload 'semantic-m3-context-items "semantic-m3" "\
+Return a list of menu items if the cursor is on some useful code constrct.
+
+\(fn)" nil nil)
+
+(autoload 'semantic-m3-ref-items "semantic-m3" "\
+Return a list of menu items for dealing with analyzer refs.
+
+\(fn)" nil nil)
+
+;;;***
+
 ;;;### (autoloads (semantic-default-make-setup) "semantic-make" "bovine/semantic-make.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59692))
 ;;; Generated autoloads from bovine/semantic-make.el
 
 (autoload 'semantic-default-make-setup "semantic-make" "\
@@ -2083,7 +2156,7 @@ Set up a Makefile buffer for parsing with semantic.
 
 ;;;### (autoloads (semantic-mru-bookmark-mode global-semantic-mru-bookmark-mode
 ;;;;;;  global-semantic-mru-bookmark-mode) "semantic-mru-bookmark"
-;;;;;;  "semantic-mru-bookmark.el" (20235 40909))
+;;;;;;  "semantic-mru-bookmark.el" (20362 59691))
 ;;; Generated autoloads from semantic-mru-bookmark.el
 
 (autoload 'global-semantic-mru-bookmark-mode "semantic-mru-bookmark" "\
@@ -2118,7 +2191,7 @@ minor mode is enabled.
 
 ;;;### (autoloads (semantic-regtest-cmp-results semantic-regtest-create-output
 ;;;;;;  semantic-regtest-run-test) "semantic-regtest" "semantic-regtest.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semantic-regtest.el
 
 (autoload 'semantic-regtest-run-test "semantic-regtest" "\
@@ -2168,7 +2241,7 @@ file-names. See this function for details about the optional argument
 ;;;***
 
 ;;;### (autoloads (semantic-default-scheme-setup) "semantic-scm"
-;;;;;;  "bovine/semantic-scm.el" (20235 40909))
+;;;;;;  "bovine/semantic-scm.el" (20362 59692))
 ;;; Generated autoloads from bovine/semantic-scm.el
 
 (autoload 'semantic-default-scheme-setup "semantic-scm" "\
@@ -2182,7 +2255,7 @@ Setup hook function for Emacs Lisp files and Semantic.
 
 ;;;### (autoloads (semantic-calculate-scope semantic-scope-tag-clone-with-scope
 ;;;;;;  semantic-scope-reset-cache) "semantic-scope" "semantic-scope.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semantic-scope.el
 
 (autoload 'semantic-scope-reset-cache "semantic-scope" "\
@@ -2191,7 +2264,7 @@ Get the current cached scope, and reset it.
 \(fn)" nil nil)
 
 (autoload 'semantic-scope-tag-clone-with-scope "semantic-scope" "\
-Close TAG, and return it.  Add SCOPETAGS as a tag-local scope.
+Clone TAG, and return it.  Add SCOPETAGS as a tag-local scope.
 Stores the SCOPETAGS as a set of tag properties on the cloned tag.
 
 \(fn TAG SCOPETAGS)" nil nil)
@@ -2207,7 +2280,7 @@ The class returned from the scope calculation is variable
 ;;;***
 
 ;;;### (autoloads (semantic-default-skel-setup) "semantic-skel" "bovine/semantic-skel.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59692))
 ;;; Generated autoloads from bovine/semantic-skel.el
 
 (autoload 'semantic-default-skel-setup "semantic-skel" "\
@@ -2226,7 +2299,7 @@ Set up a buffer for semantic parsing of the skeleton language.
 ;;;;;;  semantic-sort-tags-by-name-decreasing-ci semantic-sort-tags-by-name-increasing-ci
 ;;;;;;  semantic-sort-tags-by-type-decreasing semantic-sort-tags-by-type-increasing
 ;;;;;;  semantic-sort-tags-by-name-decreasing semantic-sort-tags-by-name-increasing)
-;;;;;;  "semantic-sort" "semantic-sort.el" (20235 40909))
+;;;;;;  "semantic-sort" "semantic-sort.el" (20362 59691))
 ;;; Generated autoloads from semantic-sort.el
 
 (autoload 'semantic-sort-tags-by-name-increasing "semantic-sort" "\
@@ -2425,7 +2498,7 @@ likely derived, then this function is needed.
 ;;;### (autoloads (semantic-symref-find-text semantic-symref-find-file-references-by-name
 ;;;;;;  semantic-symref-find-tags-by-completion semantic-symref-find-tags-by-regexp
 ;;;;;;  semantic-symref-find-tags-by-name semantic-symref-find-references-by-name)
-;;;;;;  "semantic-symref" "symref/semantic-symref.el" (20235 40909))
+;;;;;;  "semantic-symref" "symref/semantic-symref.el" (20362 59691))
 ;;; Generated autoloads from symref/semantic-symref.el
 
 (autoload 'semantic-symref-find-references-by-name "semantic-symref" "\
@@ -2440,7 +2513,7 @@ to perform the search.  This was added for use by a test harness.
 \(fn NAME &optional SCOPE TOOL-RETURN)" t nil)
 
 (autoload 'semantic-symref-find-tags-by-name "semantic-symref" "\
-Find a list of references to NAME in the current project.
+Find a list of tags by NAME in the current project.
 Optional SCOPE specifies which file set to search.  Defaults to 'project.
 Refers to `semantic-symref-tool', to determine the reference tool to use
 for the current buffer.
@@ -2488,7 +2561,7 @@ Returns an object of class `semantic-symref-result'.
 ;;;***
 
 ;;;### (autoloads nil "semantic-symref-cscope" "symref/semantic-symref-cscope.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from symref/semantic-symref-cscope.el
 
 (eieio-defclass-autoload 'semantic-symref-tool-cscope '(semantic-symref-tool-baseclass) "semantic-symref-cscope" "A symref tool implementation using CScope.\nThe CScope command can be used to generate lists of tags in a way\nsimilar to that of `grep'.  This tool will parse the output to generate\nthe hit list.\n\nSee the function `cedet-cscope-search' for more details.")
@@ -2497,7 +2570,7 @@ Returns an object of class `semantic-symref-result'.
 
 ;;;### (autoloads (semantic-symref-rename-local-variable semantic-symref-test-count-hits-in-tag
 ;;;;;;  semantic-symref-hits-in-region) "semantic-symref-filter"
-;;;;;;  "symref/semantic-symref-filter.el" (20235 40909))
+;;;;;;  "symref/semantic-symref-filter.el" (20362 59691))
 ;;; Generated autoloads from symref/semantic-symref-filter.el
 
 (autoload 'semantic-symref-hits-in-region "semantic-symref-filter" "\
@@ -2527,7 +2600,7 @@ Depends on the SRecode Field editing API.
 ;;;***
 
 ;;;### (autoloads nil "semantic-symref-global" "symref/semantic-symref-global.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from symref/semantic-symref-global.el
 
 (eieio-defclass-autoload 'semantic-symref-tool-global '(semantic-symref-tool-baseclass) "semantic-symref-global" "A symref tool implementation using GNU Global.\nThe GNU Global command can be used to generate lists of tags in a way\nsimilar to that of `grep'.  This tool will parse the output to generate\nthe hit list.\n\nSee the function `cedet-gnu-global-search' for more details.")
@@ -2535,7 +2608,7 @@ Depends on the SRecode Field editing API.
 ;;;***
 
 ;;;### (autoloads nil "semantic-symref-grep" "symref/semantic-symref-grep.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from symref/semantic-symref-grep.el
 
 (eieio-defclass-autoload 'semantic-symref-tool-grep '(semantic-symref-tool-baseclass) "semantic-symref-grep" "A symref tool implementation using grep.\nThis tool uses EDE to find he root of the project, then executes\nfind-grep in the project.  The output is parsed for hits\nand those hits returned.")
@@ -2543,7 +2616,7 @@ Depends on the SRecode Field editing API.
 ;;;***
 
 ;;;### (autoloads nil "semantic-symref-idutils" "symref/semantic-symref-idutils.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from symref/semantic-symref-idutils.el
 
 (eieio-defclass-autoload 'semantic-symref-tool-idutils '(semantic-symref-tool-baseclass) "semantic-symref-idutils" "A symref tool implementation using ID Utils.\nThe udutils command set can be used to generate lists of tags in a way\nsimilar to that of `grep'.  This tool will parse the output to generate\nthe hit list.\n\nSee the function `cedet-idutils-search' for more details.")
@@ -2552,7 +2625,7 @@ Depends on the SRecode Field editing API.
 
 ;;;### (autoloads (semantic-symref-results-mode semantic-symref-regexp
 ;;;;;;  semantic-symref-symbol semantic-symref) "semantic-symref-list"
-;;;;;;  "symref/semantic-symref-list.el" (20235 40909))
+;;;;;;  "symref/semantic-symref-list.el" (20362 59691))
 ;;; Generated autoloads from symref/semantic-symref-list.el
 
 (autoload 'semantic-symref "semantic-symref-list" "\
@@ -2596,7 +2669,7 @@ RESULTS is an object of class `semantic-symref-results'.
 ;;;### (autoloads (semantic-insert-foreign-tag semantic-obtain-foreign-tag
 ;;;;;;  semantic-tag-components-with-overlays semantic-tag-components
 ;;;;;;  semantic-tag-alias-definition) "semantic-tag" "semantic-tag.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semantic-tag.el
 
 (defsubst semantic-tag-p (tag) "\
@@ -2652,7 +2725,7 @@ This function is overridable with the symbol `insert-foreign-tag'.
 
 ;;;### (autoloads (semantic-prototype-file semantic-dependency-tag-file
 ;;;;;;  semantic-go-to-tag) "semantic-tag-file" "semantic-tag-file.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semantic-tag-file.el
 
 (autoload 'semantic-go-to-tag "semantic-tag-file" "\
@@ -2683,7 +2756,7 @@ file prototypes belong in.
 ;;;### (autoloads (semantic-tag-full-name semantic-tag-prototype-p
 ;;;;;;  semantic-tag-static-p semantic-tag-leaf-p semantic-tag-abstract-p
 ;;;;;;  semantic-tag-protected-p semantic-tag-protection semantic-tag-calculate-parent)
-;;;;;;  "semantic-tag-ls" "semantic-tag-ls.el" (20235 40909))
+;;;;;;  "semantic-tag-ls" "semantic-tag-ls.el" (20362 59691))
 ;;; Generated autoloads from semantic-tag-ls.el
 
 (autoload 'semantic-tag-calculate-parent "semantic-tag-ls" "\
@@ -2785,7 +2858,7 @@ STREAM-OR-BUFFER with a tag stream value, or nil.
 ;;;***
 
 ;;;### (autoloads (semantic-tag-write-list-slot-value semantic-tag-write-tag-list)
-;;;;;;  "semantic-tag-write" "semantic-tag-write.el" (20235 40909))
+;;;;;;  "semantic-tag-write" "semantic-tag-write.el" (20362 59691))
 ;;; Generated autoloads from semantic-tag-write.el
 
 (autoload 'semantic-tag-write-tag-list "semantic-tag-write" "\
@@ -2804,7 +2877,7 @@ The VALUE is a list of tags.
 ;;;***
 
 ;;;### (autoloads (semantic-default-texi-setup) "semantic-texi" "semantic-texi.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semantic-texi.el
 
 (autoload 'semantic-default-texi-setup "semantic-texi" "\
@@ -2817,7 +2890,7 @@ Set up a buffer for parsing of Texinfo files.
 ;;;***
 
 ;;;### (autoloads (semantic-utest-main) "semantic-utest" "semantic-utest.el"
-;;;;;;  (20235 43319))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semantic-utest.el
 
 (autoload 'semantic-utest-main "semantic-utest" "\
@@ -2828,7 +2901,7 @@ Not documented
 ;;;***
 
 ;;;### (autoloads (semantic-utest-c) "semantic-utest-c" "semantic-utest-c.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semantic-utest-c.el
 
 (autoload 'semantic-utest-c "semantic-utest-c" "\
@@ -2846,7 +2919,7 @@ Run parsing test for C from the test directory.
 ;;;;;;  global-semantic-show-unmatched-syntax-mode global-semantic-show-unmatched-syntax-mode
 ;;;;;;  semantic-highlight-edits-mode global-semantic-highlight-edits-mode
 ;;;;;;  global-semantic-highlight-edits-mode) "semantic-util-modes"
-;;;;;;  "semantic-util-modes.el" (20235 40909))
+;;;;;;  "semantic-util-modes.el" (20362 59691))
 ;;; Generated autoloads from semantic-util-modes.el
 
 (autoload 'global-semantic-highlight-edits-mode "semantic-util-modes" "\
@@ -3005,7 +3078,7 @@ minor mode is enabled.
 
 ;;;### (autoloads (semanticdb-file-stream semanticdb-file-table-object
 ;;;;;;  semanticdb-current-database) "semanticdb" "semanticdb.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semanticdb.el
 
 (autoload 'semanticdb-current-database "semanticdb" "\
@@ -3032,7 +3105,7 @@ If file does not have tags available, then load the file, and create them.
 ;;;***
 
 ;;;### (autoloads (semanticdb-enable-cscope-databases) "semanticdb-cscope"
-;;;;;;  "semanticdb-cscope.el" (20235 40909))
+;;;;;;  "semanticdb-cscope.el" (20362 59691))
 ;;; Generated autoloads from semanticdb-cscope.el
 
 (autoload 'semanticdb-enable-cscope-databases "semanticdb-cscope" "\
@@ -3040,7 +3113,14 @@ Enable the use of the CScope back end for all files in C/C++.
 This will add an instance of a CScope database to each buffer in a
 CScope supported hierarchy.
 
-\(fn)" nil nil)
+Two sanity checks are performed to assure (a) that cscope program exists
+and (b) that the cscope program version is compatibility with the database
+version.  If optional NOERROR is nil, then an error may be signalled on version
+mismatch.  If NOERROR is not nil, then no error will be signlled.  Instead
+return value will indicate success or failure with non-nil or nil respective
+values.
+
+\(fn &optional NOERROR)" nil nil)
 
 ;;;***
 
@@ -3048,7 +3128,7 @@ CScope supported hierarchy.
 ;;;;;;  semanticdb-table-oob-sanity-check semanticdb-adebug-project-database-list
 ;;;;;;  semanticdb-adebug-current-table semanticdb-adebug-current-database
 ;;;;;;  semanticdb-dump-all-table-summary) "semanticdb-debug" "semanticdb-debug.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semanticdb-debug.el
 
 (autoload 'semanticdb-dump-all-table-summary "semanticdb-debug" "\
@@ -3092,7 +3172,7 @@ Validate the current semantic database.
 
 ;;;### (autoloads (semanticdb-ebrowse-load-helper semanticdb-load-ebrowse-caches
 ;;;;;;  semanticdb-create-ebrowse-database) "semanticdb-ebrowse"
-;;;;;;  "semanticdb-ebrowse.el" (20235 40909))
+;;;;;;  "semanticdb-ebrowse.el" (20362 59691))
 ;;; Generated autoloads from semanticdb-ebrowse.el
 
 (autoload 'semanticdb-create-ebrowse-database "semanticdb-ebrowse" "\
@@ -3117,7 +3197,7 @@ warn instead.
 ;;;***
 
 ;;;### (autoloads (semanticdb-enable-exuberent-ctags) "semanticdb-ectag"
-;;;;;;  "ctags/semanticdb-ectag.el" (20235 40909))
+;;;;;;  "ctags/semanticdb-ectag.el" (20362 59692))
 ;;; Generated autoloads from ctags/semanticdb-ectag.el
 
 (autoload 'semanticdb-enable-exuberent-ctags "semanticdb-ectag" "\
@@ -3133,7 +3213,7 @@ version needed by Semantic ctags support.
 ;;;### (autoloads (semanticdb-full-filename semanticdb-live-p semanticdb-file-loaded-p
 ;;;;;;  semanticdb-persistent-path semanticdb-default-save-directory
 ;;;;;;  semanticdb-default-file-name) "semanticdb-file" "semanticdb-file.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semanticdb-file.el
 
 (defvar semanticdb-default-file-name "semantic.cache" "\
@@ -3196,7 +3276,7 @@ Fetch the full filename that OBJ refers to.
 ;;;;;;  semanticdb-find-adebug-scanned-includes semanticdb-test-current-database-list
 ;;;;;;  semanticdb-find-test-translate-path semanticdb-find-table-for-include
 ;;;;;;  semanticdb-find-translate-path-default semanticdb-find-default-throttle)
-;;;;;;  "semanticdb-find" "semanticdb-find.el" (20235 40909))
+;;;;;;  "semanticdb-find" "semanticdb-find.el" (20362 59691))
 ;;; Generated autoloads from semanticdb-find.el
 
 (defvar semanticdb-find-throttle-custom-list '(repeat (radio (const 'local) (const 'project) (const 'unloaded) (const 'system) (const 'recursive) (const 'omniscience))) "\
@@ -3459,7 +3539,7 @@ associated with that tag should be loaded into a buffer.
 ;;;***
 
 ;;;### (autoloads (semanticdb-enable-gnu-global-databases) "semanticdb-global"
-;;;;;;  "semanticdb-global.el" (20235 40909))
+;;;;;;  "semanticdb-global.el" (20362 59691))
 ;;; Generated autoloads from semanticdb-global.el
 
 (autoload 'semanticdb-enable-gnu-global-databases "semanticdb-global" "\
@@ -3467,13 +3547,20 @@ Enable the use of the GNU Global SemanticDB back end for all files of MODE.
 This will add an instance of a GNU Global database to each buffer
 in a GNU Global supported hierarchy.
 
-\(fn MODE)" t nil)
+Two sanity checks are performed to assure (a) that GNU global program exists
+and (b) that the GNU global program version is compatibility with the database
+version.  If optional NOERROR is nil, then an error may be signalled on version
+mismatch.  If NOERROR is not nil, then no error will be signlled.  Instead
+return value will indicate success or failure with non-nil or nil respective
+values.
+
+\(fn MODE &optional NOERROR)" t nil)
 
 ;;;***
 
 ;;;### (autoloads (global-semanticdb-minor-mode semanticdb-minor-mode-p
 ;;;;;;  semanticdb-global-mode) "semanticdb-mode" "semanticdb-mode.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semanticdb-mode.el
 
 (defvar semanticdb-current-database nil "\
@@ -3502,7 +3589,7 @@ If ARG is nil, then toggle.
 ;;;***
 
 ;;;### (autoloads (semanticdb-add-reference) "semanticdb-ref" "semanticdb-ref.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from semanticdb-ref.el
 
 (autoload 'semanticdb-add-reference "semanticdb-ref" "\
@@ -3518,7 +3605,7 @@ will be added to the database that INCLUDE-TAG refers to.
 ;;;;;;  semanticdb-find-nonterminal-by-extra-spec semanticdb-find-nonterminal-by-property
 ;;;;;;  semanticdb-find-nonterminal-by-type semanticdb-find-nonterminal-by-name-regexp
 ;;;;;;  semanticdb-find-nonterminal-by-name semanticdb-find-nonterminal-by-token)
-;;;;;;  "semanticdb-search" "semanticdb-search.el" (20235 40909))
+;;;;;;  "semanticdb-search" "semanticdb-search.el" (20362 59691))
 ;;; Generated autoloads from semanticdb-search.el
 
 (autoload 'semanticdb-find-nonterminal-by-token "semanticdb-search" "\
@@ -3608,7 +3695,7 @@ Return a list ((DB-TABLE . TOKEN-OR-TOKEN-LIST) ...).
 ;;;;;;  semanticdb-typecache-merge-streams semanticdb-get-typecache
 ;;;;;;  semanticdb-get-typecache semanticdb-typecache-add-dependant
 ;;;;;;  semanticdb-typecache-notify-reset) "semanticdb-typecache"
-;;;;;;  "semanticdb-typecache.el" (20235 40909))
+;;;;;;  "semanticdb-typecache.el" (20362 59691))
 ;;; Generated autoloads from semanticdb-typecache.el
 
 (eieio-defclass-autoload 'semanticdb-typecache 'nil "semanticdb-typecache" "Structure for maintaining a typecache.")
@@ -3674,8 +3761,8 @@ Dump the typecache for the current buffer's database.
 ;;;;;;  senator-search-forward senator-completion-menu-popup senator-complete-symbol
 ;;;;;;  senator-jump-regexp senator-jump senator-previous-tag senator-next-tag
 ;;;;;;  senator-step-at-start-end-tag-classes senator-step-at-tag-classes
-;;;;;;  global-senator-minor-mode) "senator" "senator.el" (20235
-;;;;;;  40909))
+;;;;;;  global-senator-minor-mode) "senator" "senator.el" (20362
+;;;;;;  59691))
 ;;; Generated autoloads from senator.el
 
 (defvar global-senator-minor-mode nil "\
@@ -3842,7 +3929,7 @@ found, nil otherwise.
 ;;;***
 
 ;;;### (autoloads (wisent-parse-toggle-verbose-flag) "wisent" "wisent/wisent.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from wisent/wisent.el
 
 (defvar wisent-parse-verbose-flag nil "\
@@ -3855,19 +3942,8 @@ Toggle whether to issue more messages while parsing.
 
 ;;;***
 
-;;;### (autoloads (wisent-c-default-setup) "wisent-c" "wisent/wisent-c.el"
-;;;;;;  (20235 40909))
-;;; Generated autoloads from wisent/wisent-c.el
-
-(autoload 'wisent-c-default-setup "wisent-c" "\
-Setup buffer for parse.
-
-\(fn)" nil nil)
-
-;;;***
-
 ;;;### (autoloads (wisent-calc-utest wisent-calc) "wisent-calc" "wisent/wisent-calc.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from wisent/wisent-calc.el
 
 (autoload 'wisent-calc "wisent-calc" "\
@@ -3885,7 +3961,7 @@ Test the wisent calculator.
 
 ;;;### (autoloads (wisent-byte-compile-grammar wisent-compile-grammar
 ;;;;;;  wisent-toggle-verbose-flag) "wisent-comp" "wisent/wisent-comp.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from wisent/wisent-comp.el
 
 (defvar wisent-verbose-flag nil "\
@@ -3946,13 +4022,11 @@ Automatically called by the Emacs Lisp byte compiler as a
 
 \(fn FORM)" nil nil)
 
-(put 'wisent-compile-grammar 'byte-compile 'wisent-byte-compile-grammar)
-
 ;;;***
 
 ;;;### (autoloads (wisent-debug-show-entry wisent-cancel-debug-on-entry
 ;;;;;;  wisent-debug-on-entry) "wisent-debug" "wisent/wisent-debug.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from wisent/wisent-debug.el
 
 (autoload 'wisent-debug-on-entry "wisent-debug" "\
@@ -3976,7 +4050,7 @@ FUNCTION must be a semantic action symbol that exists in AUTOMATON.
 ;;;***
 
 ;;;### (autoloads (wisent-grammar-mode) "wisent-grammar" "wisent/wisent-grammar.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from wisent/wisent-grammar.el
 
 (autoload 'wisent-grammar-mode "wisent-grammar" "\
@@ -3990,8 +4064,16 @@ Major mode for editing Wisent grammars.
 
 ;;;***
 
+;;;### (autoloads nil "wisent-java" "wisent/wisent-java.el" (20362
+;;;;;;  59691))
+;;; Generated autoloads from wisent/wisent-java.el
+
+(eval-after-load "semanticdb" '(require 'semanticdb-javap))
+
+;;;***
+
 ;;;### (autoloads (wisent-java-default-setup) "wisent-java-tags"
-;;;;;;  "wisent/wisent-java-tags.el" (20235 40909))
+;;;;;;  "wisent/wisent-java-tags.el" (20362 59691))
 ;;; Generated autoloads from wisent/wisent-java-tags.el
 
 (autoload 'wisent-java-default-setup "wisent-java-tags" "\
@@ -4005,7 +4087,7 @@ Use the alternate LALR(1) parser.
 ;;;***
 
 ;;;### (autoloads (wisent-javascript-setup-parser) "wisent-javascript"
-;;;;;;  "wisent/wisent-javascript.el" (20235 40909))
+;;;;;;  "wisent/wisent-javascript.el" (20362 59691))
 ;;; Generated autoloads from wisent/wisent-javascript.el
 
 (autoload 'wisent-javascript-setup-parser "wisent-javascript" "\
@@ -4017,10 +4099,14 @@ Setup buffer for parse.
 
 (add-hook 'ecmascript-mode-hook 'wisent-javascript-setup-parser)
 
+(add-hook 'js-mode-hook 'wisent-javascript-setup-parser)
+
+(add-hook 'js2-mode-hook 'wisent-javascript-setup-parser)
+
 ;;;***
 
 ;;;### (autoloads (wisent-python-default-setup) "wisent-python" "wisent/wisent-python.el"
-;;;;;;  (20235 40909))
+;;;;;;  (20362 59691))
 ;;; Generated autoloads from wisent/wisent-python.el
 
 (autoload 'wisent-python-default-setup "wisent-python" "\
@@ -4032,20 +4118,18 @@ Setup buffer for parse.
 
 ;;;***
 
-;;;### (autoloads nil nil ("bovine/bovine-grammar-macros.el" "bovine/erlang-edoc.el"
-;;;;;;  "bovine/semantic-c-by.el" "bovine/semantic-erlang-by.el"
-;;;;;;  "bovine/semantic-erlang.el" "bovine/semantic-java.el" "bovine/semantic-make-by.el"
-;;;;;;  "bovine/semantic-scm-by.el" "bovine/semantic-skeleton-by.el"
-;;;;;;  "ctags/semantic-ectag-util.el" "semantic-analyze-fcn.el"
-;;;;;;  "semantic-ast.el" "semantic-example.el" "semantic-fw.el"
-;;;;;;  "semantic-grammar-wy.el" "semantic-inc.el" "semantic-sb.el"
-;;;;;;  "semantic-util.el" "semanticdb-el.el" "semanticdb-java.el"
+;;;### (autoloads nil nil ("bovine/bovine-grammar-macros.el" "bovine/semantic-c-by.el"
+;;;;;;  "bovine/semantic-erlang-by.el" "bovine/semantic-erlang.el"
+;;;;;;  "bovine/semantic-f90-by.el" "bovine/semantic-java.el" "bovine/semantic-make-by.el"
+;;;;;;  "bovine/semantic-scm-by.el" "semantic-analyze-fcn.el" "semantic-ast.el"
+;;;;;;  "semantic-example.el" "semantic-fw.el" "semantic-grammar-wy.el"
+;;;;;;  "semantic-sb.el" "semantic-util.el" "semanticdb-el.el" "semanticdb-javap.el"
 ;;;;;;  "semanticdb-javascript.el" "semanticdb-mk.el" "semanticdb-skel.el"
-;;;;;;  "semanticdb-system.el" "wisent/semantic-wisent.el" "wisent/wisent-awk-wy.el"
-;;;;;;  "wisent/wisent-calc-wy.el" "wisent/wisent-cim-wy.el" "wisent/wisent-expr.el"
-;;;;;;  "wisent/wisent-grammar-macros.el" "wisent/wisent-java-tags-wy.el"
-;;;;;;  "wisent/wisent-java-wy.el" "wisent/wisent-java.el" "wisent/wisent-javascript-jv-wy.el"
-;;;;;;  "wisent/wisent-python-wy.el") (20236 56535 656112))
+;;;;;;  "wisent/semantic-wisent.el" "wisent/wisent-awk-wy.el" "wisent/wisent-calc-wy.el"
+;;;;;;  "wisent/wisent-cim-wy.el" "wisent/wisent-expr.el" "wisent/wisent-grammar-macros.el"
+;;;;;;  "wisent/wisent-java-tags-wy.el" "wisent/wisent-java-wy.el"
+;;;;;;  "wisent/wisent-javascript-jv-wy.el" "wisent/wisent-python-wy.el")
+;;;;;;  (20429 5113 348383))
 
 ;;;***
 

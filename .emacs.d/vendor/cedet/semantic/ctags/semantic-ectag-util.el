@@ -141,7 +141,7 @@ The returned buffer will be recycled in future calls to this function."
       (setq str (save-excursion
 		  (set-buffer b)
 		  (goto-char (point-min))
-		  (if (re-search-forward "Exuberant Ctags \\([0-9.]+\\)," nil t)
+		  (if (re-search-forward "Exuberant Ctags \\([0-9.]+\\)\\(~svn[0-9]+\\)?," nil t)
 		      (match-string 1)
 		    nil)
 		  )
@@ -188,7 +188,22 @@ The returned buffer will be recycled in future calls to this function."
 	     v semantic-ectag-min-version))
     (when (not r)
       (error "CTags was not compiled with +regex support"))
-    ))
+    t))
+
+;;;###autoload
+(defun cedet-ectag-version-check (&optional noerror)
+  "Check the version of the installed ctags command.
+If optional programatic argument NOERROR is non-nil, then
+instead of throwing an error if ctags isn't available, then
+return nil."
+  (interactive)
+  (let ((res (if noerror
+		 (condition-case nil
+		     (semantic-ectag-test-version)
+		   (error nil))
+	       (semantic-ectag-test-version))))
+    (when (and res (cedet-called-interactively-p 'interactive))
+      (message "Exuberent CTags %s  - Good enough for CEDET." (car (semantic-ectag-version))))))
 
 (provide 'semantic-ectag-util)
 ;;; semantic-ectag-util.el ends here
