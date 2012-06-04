@@ -489,11 +489,12 @@ character, '-'."
 (defun as-nums* (f &rest args)
   "Convert `args' from strings to numbers, apply `f' on them, and
 convert the result back to a string.  Useful for `query-replace'."
-  (number-to-string (apply f (mapcar #'string-to-number args))))
+  (format "%s" (apply f (mapcar #'string-to-number args))))
+
 
 (defmacro as-nums (bindings &rest body)
   "Execute `body' with the `bindings' converted from strings to
-numbers.  Return the result converted from a number to a string.
+numbers.  Return the result as a string.
 Useful for `query-replace'.
 
 E.g. `(as-nums ((x \"1\") (y \"2\")) (+ x y))'
