@@ -1262,6 +1262,9 @@ Pfeil, edited by mrBliss."
        (show-paren-match-face ((t (:background ,magenta :foreground ,base3))))
        (paren-face-match ((t (:background ,blue :foreground ,base3))))
 
+       (sml-modeline-end-face ((t (:background ,base01 :foreground ,base3))))
+       (sml-modeline-vis-face ((t (:background ,base03 :foreground ,base3))))
+
        (clojure-parens ((t (:foreground ,base1))))
        (clojure-braces ((t (:foreground ,violet))))
        (clojure-brackets ((t (:foreground ,blue))))
