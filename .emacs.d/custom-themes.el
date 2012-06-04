@@ -1274,57 +1274,139 @@ Pfeil, edited by mrBliss."
        (clojure-special ((t (:foreground ,magenta))))))))
 
 
-;; Tomorrow Theme
-;;
-;; Originally by Chris Kempson https://github.com/ChrisKempson/Tomorrow-Theme
-;; Ported to GNU Emacs by Chris Charles
-(defun color-theme-tomorrow-real (background current-line
-selection foreground comment red orange yellow green aqua blue
-purple)
-  "GNU Emacs port of Chris Kempson's Tomorrow theme. Port by Chris Charles."
+(defun color-theme-tomorrow-real
+  (background current-line selection foreground comment red orange yellow green aqua blue purple)
+  "GNU Emacs port of Chris Kempson's Tomorrow theme. Port by
+Chris Charles. Improvements by mrBliss."
 
-    (color-theme-install
-     `(color-theme-tomorrow-real
-       ((background . ,background)
-        (background-mode . dark)
-        (border-color . "black")
-        (cursor-color . "black")
-        (foreground-color . ,foreground))
+  (color-theme-install
+   `(color-theme-tomorrow-real
+     ((background . ,background)
+      (background-mode . dark)
+      (border-color . "black")
+      (cursor-color . "black")
+      (foreground-color . ,foreground))
 
-       ;; Built-in stuff (Emacs 23)
-       (default ((t (:background ,background :foreground ,foreground))))
-       (fringe ((t (:background ,current-line))))
-       (minibuffer-prompt ((t (:foreground ,blue))))
-       (mode-line ((t (:background ,current-line :foreground ,foreground))))
-       (region ((t (:background ,selection))))
+     ;; Built-in stuff (Emacs 23)
+     (default ((t (:background ,background :foreground ,foreground))))
+     (fringe ((t (:background ,current-line))))
+     (minibuffer-prompt ((t (:foreground ,blue))))
+     (mode-line ((t (:background ,current-line :foreground ,foreground
+                                 :box (:line-width 1 :color ,current-line :style nil)))))
+     (mode-line-inactive ((t (:background ,background :foreground ,foreground
+                                          :box (:line-width 1 :color ,selection :style nil)))))
+     (region ((t (:background ,selection))))
+     (fringe ((t (:background ,background))))
 
-       ;; Font-lock stuff
-       (font-lock-comment-face ((t (:foreground ,comment))))
-       (font-lock-constant-face ((t (:foreground ,green))))
-       (font-lock-doc-string-face ((t (:foreground ,comment))))
-       (font-lock-function-name-face ((t (:foreground ,blue))))
-       (font-lock-keyword-face ((t (:foreground ,purple))))
-       (font-lock-string-face ((t (:foreground ,green))))
-       (font-lock-type-face ((t (:foreground ,yellow))))
-       (font-lock-variable-name-face ((t (:foreground ,red))))
-       (font-lock-warning-face ((t (:foreground ,red))))
+     ;; sml-modeline
+     (sml-modeline-end-face ((t (:background ,background))))
+     (sml-modeline-vis-face ((t (:background ,selection))))
 
-       ;; hl-line-mode
-       (hl-line ((t (:background ,current-line))))
+     ;; Font-lock stuff
+     (font-lock-comment-face ((t (:foreground ,comment))))
+     (font-lock-constant-face ((t (:foreground ,orange))))
+     (font-lock-doc-string-face ((t (:foreground ,comment))))
+     (font-lock-doc-face ((t (:foreground ,green))))
+     (font-lock-function-name-face ((t (:foreground ,blue :bold t))))
+     (font-lock-keyword-face ((t (:foreground ,purple))))
+     (font-lock-string-face ((t (:foreground ,green))))
+     (font-lock-type-face ((t (:foreground ,aqua))))
+     (font-lock-variable-name-face ((t (:foreground ,red))))
+     (font-lock-warning-face ((t (:foreground ,red))))
 
-       ;; linum-mode
-       (linum ((t (:background ,current-line :foreground ,foreground))))
+     ;; hl-line-mode
+     (hl-line ((t (:background ,current-line))))
 
-       ;; org-mode
-       (org-date ((t (:foreground ,purple))))
-       (org-done ((t (:foreground ,green))))
-       (org-hide ((t (:foreground ,current-line))))
-       (org-link ((t (:foreground ,blue))))
-       (org-todo ((t (:foreground ,red))))
+     ;; linum-mode
+     (linum ((t (:background ,current-line :foreground ,foreground))))
 
-       ;; show-paren-mode
-       (show-paren-match-face ((t (:background ,blue :foreground ,current-line))))
-       (show-paren-mismatch-face ((t (:background ,orange :foreground ,current-line)))))))
+     ;; org-mode
+     (org-date ((t (:foreground ,purple))))
+     (org-done ((t (:foreground ,green))))
+     (org-hide ((t (:foreground ,current-line))))
+     (org-link ((t (:foreground ,blue))))
+     (org-todo ((t (:foreground ,red))))
+
+     ;; info-mode
+     (info-xref ((t (:foreground ,blue))))
+     (info-menu-star ((t (:foreground ,red))))
+     (info-header-node ((t (:foreground ,red))))
+
+     ;; ido-mode
+     (ido-subdir ((t (:foreground ,blue))))
+     (ido-only-match ((t (:foreground ,purple))))
+
+     ;; undo-tree
+     (undo-tree-visualizer-current-face ((t (:foreground ,red))))
+
+     ;; flyspell
+     (flyspell-duplicate
+      ((t (:foreground ,orange :bold t :underline t))))
+     (flyspell-incorrect
+      ((t (:foreground ,red :bold t :underline t))))
+
+     ;; show-paren-mode
+     (show-paren-match-face ((t (:background ,blue :foreground ,current-line))))
+     (show-paren-mismatch-face ((t (:background ,orange :foreground ,current-line))))
+     ;; mic-paren-mode
+     (paren-face-match ((t (:background ,purple :foreground ,background))))
+
+     ;; clojure-mode
+     (clojure-parens ((t (:foreground ,comment))))
+     (clojure-braces ((t (:foreground ,blue))))
+     (clojure-brackets ((t (:foreground ,aqua))))
+     (clojure-keyword ((t (:foreground ,aqua))))
+     (clojure-double-quote ((t (:foreground ,green))))
+     (clojure-special ((t (:foreground ,purple))))
+     (clojure-java-call ((t (:foreground ,blue))))
+
+     ;; magit
+     (magit-section-title ((t (:foreground ,purple))))
+     (magit-branch ((t (:foreground ,aqua))))
+     (magit-item-highlight ((t (:background ,current-line))))
+     (magit-log-sha1 ((t (:foreground ,green))))
+     (magit-log-head-label-local
+      ((t (:background ,blue :foreground ,background))))
+     (magit-log-head-label-remote
+      ((t (:background ,aqua :foreground ,background))))
+     (magit-log-head-label-tags
+      ((t (:background ,purple :foreground ,background))))
+
+     ;; diff
+     (diff-added ((t (:foreground ,green))))
+     (diff-indicator-added ((t (:foreground ,green))))
+     (diff-changed ((t (:foreground ,orange))))
+     (diff-indicator-changed ((t (:foreground ,orange))))
+     (diff-removed ((t (:foreground ,red))))
+     (diff-indicator-removed ((t (:foreground ,red))))
+
+     ;; flymake
+     (flymake-errline ((t (:underline ,red :background nil))))
+
+     ;; dired
+     (diredp-dir-heading
+      ((t (:background nil :underline t :foreground ,green))))
+     (diredp-inode+size ((t (:foreground ,comment :italic t))))
+     (diredp-file-name ((t (:foreground ,blue))))
+     (diredp-file-suffix ((t (:foreground ,purple))))
+     (diredp-dir-priv
+      ((t (:background nil :bold t :foreground ,blue))))
+     (diredp-link-priv ((t (:foreground ,yellow))))
+     ;; (diredp-rare-priv ((t (:foreground "#BF4D80" :background nil))))
+     (diredp-other-priv ((t (:foreground ,yellow :background nil))))
+     (diredp-read-priv ((t (:background nil :foreground ,green))))
+     (diredp-write-priv ((t (:background nil :foreground ,red))))
+     (diredp-exec-priv ((t (:background nil :foreground ,orange))))
+     (diredp-no-priv ((t (:background nil))))
+     (diredp-flag-mark ((t (:background ,purple :foreground ,background))))
+     (diredp-flag-mark-line ((t (:background ,purple :foreground ,background))))
+     (diredp-deletion ((t (:background ,red :foreground ,background))))
+     (diredp-deletion-file-name ((t (:background ,red :foreground ,background))))
+     (diredp-ignored-file-name ((t (:foreground ,comment))))
+     (diredp-compressed-file-suffix ((t (:foreground ,orange))))
+     (diredp-executable-tag ((t (:foreground ,red))))
+     (diredp-symlink ((t (:foreground ,orange)))))))
+
 
 (defun color-theme-tomorrow ()
   "Base light Tomorrow theme."
