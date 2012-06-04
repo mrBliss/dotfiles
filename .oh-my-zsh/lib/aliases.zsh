@@ -105,7 +105,5 @@ alias tree='tree -C'
 # Check internet connection by pinging google
 alias pingg='ping -c 3 www.google.com'
 
-# Frequently used directories
-alias cdclj='cd ~/Documents/Clojure/'
-alias cddl='cd ~/Downloads'
-alias cdem='cd ~/.emacs.d/'
+# Mosh on the KUL workstations
+alias moshkul='mosh --server=/home/s0202013/bin/bin.linux/bin/mosh-server'
