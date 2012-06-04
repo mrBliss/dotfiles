@@ -536,5 +536,8 @@ as the first text character following the step number."
 
 (define-key text-mode-map (kbd "C-M-q") 'fill-use-case-step)
 
+;; Separate line numbers and code with a unicode line
+(setq linum-format (format "%%4d%c " 9474))
+
 
 (provide 'custom-misc)
