@@ -540,4 +540,38 @@ as the first text character following the step number."
 (setq linum-format (format "%%4d%c " 9474))
 
 
+;; Improved version of `comment-dwim'
+(defun comment-dwim* ()
+  "Call the comment command you want (Do What I Mean).
+If the region is active and `transient-mark-mode' is on, call
+  `comment-region' (unless it only consists of comments, in which
+  case it calls `uncomment-region').
+Else, if the current line is empty, call `comment-insert-comment-function'
+if it is defined, otherwise insert a comment and indent it.
+Else, comment or uncomment the current line.
+You can configure `comment-style' to change the way regions are commented."
+  (interactive "*")
+  (comment-normalize-vars)
+  (if (and mark-active transient-mark-mode)
+      (comment-or-uncomment-region (region-beginning) (region-end))
+    (if (save-excursion (beginning-of-line) (not (looking-at "\\s-*$")))
+        ;; A non blank line
+        (comment-or-uncomment-region (line-beginning-position) (line-end-position))
+      ;; Inserting a comment on a blank line. comment-indent calls
+      ;; c-i-c-f if needed in the non-blank case.
+      (if comment-insert-comment-function
+          (funcall comment-insert-comment-function)
+        (let ((add (comment-add nil)))
+          ;; Some modes insist on keeping column 0 comment in column 0
+          ;; so we need to move away from it before inserting the comment.
+          (indent-according-to-mode)
+          (insert (comment-padright comment-start add))
+          (save-excursion
+            (unless (string= "" comment-end)
+              (insert (comment-padleft comment-end add)))
+            (indent-according-to-mode)))))))
+
+(global-set-key (kbd "M-;") 'comment-dwim*)
+
+
 (provide 'custom-misc)
