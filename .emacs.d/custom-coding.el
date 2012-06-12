@@ -205,9 +205,20 @@ rename."
 ;;##############################################################################
 ;; JavaScript
 
-;; js2-mode binds C-M-h to something else; undo this
-(eval-after-load "js2-mode"
-  '(define-key js2-mode-map (kbd "C-M-h") 'backward-kill-word))
+;; MozRepl
+(autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
+
+ ;; js2-mode binds C-M-h to something else; undo this
+ (eval-after-load "js2-mode"
+  '(progn
+     (define-key js2-mode-map (kbd "C-M-h") 'backward-kill-word)))
+
+(defun js-custom ()
+  (moz-minor-mode 1))
+(add-hook 'js2-mode-hook 'js-custom)
+(add-hook 'js2-mode-hook 'local-comment-auto-fill)
+(add-hook 'js2-mode-hook 'add-watchwords)
+(add-hook 'js2-mode-hook 'idle-highlight)
 
 
 ;;##############################################################################
