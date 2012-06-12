@@ -577,6 +577,7 @@ created 2009-06-23."
          (diredp-ignored-file-name ,(color *region*))
          (diredp-compressed-file-suffix ,(color *constant*))
          (diredp-executable-tag ,(color *constant*))
+         (diredp-number ,(color *type*))
          (nxml-processing-instruction-delimiter-face ,(color *keyword*))
          (nxml-tag-delimiter-face ,(color *builtin*))
          (nxml-element-local-name-face ,(color *keyword*))
@@ -1018,6 +1019,7 @@ created 2009-06-23."
      (diredp-compressed-file-suffix ((t (:foreground "#D7AF87"))))
      (diredp-executable-tag ((t (:foreground "#BF4D80"))))
      (diredp-symlink ((t (:foreground "#287373"))))
+     (diredp-number ((t (:foreground "#D7AFD7"))))
 
      (speedbar-button-face ((t (:foreground "#BF4D80"))))
      (speedbar-file-face ((t (:foreground "#A9D1DF"))))
@@ -1210,6 +1212,7 @@ Pfeil, edited by mrBliss."
        (diredp-compressed-file-suffix ((t (:foreground ,yellow))))
        (diredp-executable-tag ((t (:foreground ,magenta))))
        (diredp-symlink ((t (:foreground ,cyan))))
+       (diredp-number ((t (:foreground ,base01))))
 
        (magit-section-title ((t (:foreground ,blue))))
        (magit-branch ((t (:foreground ,magenta))))
@@ -1405,7 +1408,9 @@ Chris Charles. Improvements by mrBliss."
      (diredp-ignored-file-name ((t (:foreground ,comment))))
      (diredp-compressed-file-suffix ((t (:foreground ,orange))))
      (diredp-executable-tag ((t (:foreground ,red))))
-     (diredp-symlink ((t (:foreground ,orange)))))))
+     (diredp-symlink ((t (:foreground ,orange))))
+     (diredp-number ((t (:foreground ,blue)))))))
+
 
 
 (defun color-theme-tomorrow ()
