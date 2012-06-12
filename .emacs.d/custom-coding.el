@@ -106,9 +106,10 @@ a buffer related to ECB."
 
 
 ;; Backport from emacs 24: gcc 4.5 and later also display the column number
-(add-to-list 'flymake-err-line-patterns
-'(" *\\(\\[javac\\] *\\)?\\(\\([a-zA-Z]:\\)?[^:(\t\n]+\\)\:\\([0-9]+\\)\\(?:\:[0-9]+\\)?\:[ \t\n]*\\(.+\\)"
-  2 4 nil 5))
+(when (version< "24.1.1" emacs-version)
+  (add-to-list 'flymake-err-line-patterns
+               '(" *\\(\\[javac\\] *\\)?\\(\\([a-zA-Z]:\\)?[^:(\t\n]+\\)\:\\([0-9]+\\)\\(?:\:[0-9]+\\)?\:[ \t\n]*\\(.+\\)"
+                 2 4 nil 5)))
 
 (defun c-rename-variable ()
   "Rename all occurences of a variable within the current
@@ -195,9 +196,10 @@ rename."
   (define-key java-mode-map (kbd "M-.") 'semantic-complete-jump)
   (define-key java-mode-map (kbd "M-,") 'semantic-mrub-switch-tags)
   (setq tab-width 4)
-  ;; Treat Java 1.5 @-style annotations as comments
-  (setq c-comment-start-regexp "(@|/(/|[*][*]?))")
-  (modify-syntax-entry ?@ "< b" java-mode-syntax-table))
+  (when (version< "24.1.1" emacs-version)
+    ;; Treat Java 1.5 @-style annotations as comments
+    (setq c-comment-start-regexp "(@|/(/|[*][*]?))")
+    (modify-syntax-entry ?@ "< b" java-mode-syntax-table)))
 
 (add-hook 'java-mode-hook 'java-custom)
 

@@ -574,4 +574,17 @@ You can configure `comment-style' to change the way regions are commented."
 (global-set-key (kbd "M-;") 'comment-dwim*)
 
 
+;; Enable wrap-region for all buffers
+(require 'wrap-region)
+(wrap-region-global-mode t)
+
+;; Also enable wrap-region for earmuffs and `
+(wrap-region-add-punctuation "*" "*")
+(wrap-region-add-punctuation "`" "`")
+
+
+;; Treat CamelCaseWords as distinct words
+(global-subword-mode 1)
+
+
 (provide 'custom-misc)

@@ -85,7 +85,8 @@
       ido-use-filename-at-point 'guess
       ido-create-new-buffer 'always
       ido-default-buffer-method 'selected-window
-      ido-default-file-method 'selected-window)
+      ido-default-file-method 'selected-window
+      ido-use-virtual-buffers t)
 
 ;; Ido *actually* everywhere!
 (require 'ido-ubiquitous)

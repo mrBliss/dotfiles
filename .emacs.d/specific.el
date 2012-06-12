@@ -62,29 +62,5 @@
 (when (eq system-type 'windows-nt)
   (server-start))
 
-;; Only available in Emacs 23.2 and higher
-(when (version<= "23.2" emacs-version)
-
-  ;; Enable wrap-region for all buffers
-  (require 'wrap-region)
-  (wrap-region-global-mode t)
-
-  ;; Also enable wrap-region for earmuffs and `
-  (wrap-region-add-punctuation "*" "*")
-  (wrap-region-add-punctuation "`" "`")
-
-  ;; Treat CamelCaseWords as distinct words
-  (global-subword-mode 1))
-
-
-;; Backport to Emacs 23.1
-(when (version< emacs-version "23.2")
-  (defun string-prefix-p (str1 str2 &optional ignore-case)
-    "Return non-nil if STR1 is a prefix of STR2.
-If IGNORE-CASE is non-nil, the comparison is done without paying attention
-to case differences."
-    (eq t (compare-strings str1 nil nil
-                           str2 0 (length str1) ignore-case))))
-
 
 (provide 'specific)
