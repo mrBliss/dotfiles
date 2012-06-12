@@ -1,6 +1,6 @@
 ;;; deft.el --- quickly browse, filter, and edit plain text notes
 
-;; Copyright (C) 2011 Jason R. Blevins <jrblevin@sdf.org>
+;;; Copyright (C) 2011-2012 Jason R. Blevins <jrblevin@sdf.org>
 ;; All rights reserved.
 
 ;; Redistribution and use in source and binary forms, with or without
@@ -26,10 +26,10 @@
 ;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;; POSSIBILITY OF SUCH DAMAGE.
 
-;; Version: 0.4
-;; Author: Jason R. Blevins <jrblevin@sdf.org>
-;; Keywords: plain text, notes, Simplenote, Notational Velocity
-;; URL: http://jblevins.org/projects/deft/
+;;; Version: 0.4
+;;; Author: Jason R. Blevins <jrblevin@sdf.org>
+;;; Keywords: plain text, notes, Simplenote, Notational Velocity
+;;; URL: http://jblevins.org/projects/deft/
 
 ;; This file is not part of GNU Emacs.
 
@@ -99,6 +99,13 @@
 ;; Press `C-c C-c` to clear the filter string and display all files
 ;; and `C-c C-g` to refresh the file browser using the current filter
 ;; string.
+
+;; By default, Deft filters files in incremental string search mode,
+;; where "search string" will match all files containing both "search"
+;; and "string" in any order.  Alternatively, Deft supports direct
+;; regex filtering.  Pressing `C-c C-t` will toggle between these two
+;; modes of operation.  Regex mode is indicated by an "R" in the mode
+;; line.
 
 ;; Static filtering is also possible by pressing `C-c C-l`.  This is
 ;; sometimes useful on its own, and it may be preferable in some
@@ -187,6 +194,23 @@
 ;; properties from the standard font-lock faces defined by your current
 ;; color theme.
 
+;; Incremental string search is the default method of filtering on
+;; startup, but you can set `deft-incremental-search' to nil to make
+;; regex search the default.
+
+;; The title of each file is taken to be the first line of the file,
+;; with certain characters removed from the beginning (hash
+;; characters, as used in Markdown headers, and asterisks, as in Org
+;; Mode headers).  The substrings to remove are specified in
+;; `deft-strip-title-regex'.
+
+;; More generally, the title post-processing function itself can be
+;; customized by setting `deft-parse-title-function', which accepts
+;; the first line of the file as an argument and returns the parsed
+;; title to display in the file browser.  The default function is
+;; `deft-strip-title', which removes all occurrences of
+;; `deft-strip-title-regex' as described above.
+
 ;; Acknowledgments
 ;; ---------------
 
@@ -266,6 +290,26 @@ Set to nil to hide."
   :type 'boolean
   :group 'deft)
 
+(defcustom deft-incremental-search t
+  "Use incremental string search when non-nil and regex search when nil.
+During incremental string search, substrings separated by spaces are
+treated as subfilters, each of which must match a file.  They need
+not be adjacent and may appear in any order.  During regex search, the
+entire filter string is interpreted as a single regular expression."
+  :type 'boolean
+  :group 'deft)
+
+(defcustom deft-parse-title-function 'deft-strip-title
+  "Function for post-processing file titles."
+  :type 'function
+  :group 'deft)
+
+(defcustom deft-strip-title-regex "^[#\* ]*"
+  "Regular expression to remove from file titles."
+  :type 'regexp
+  :safe 'stringp
+  :group 'deft)
+
 ;; Faces
 
 (defgroup deft-faces nil
@@ -305,7 +349,7 @@ Set to nil to hide."
 
 ;; Constants
 
-(defconst deft-version "0.3")
+(defconst deft-version "0.4")
 
 (defconst deft-buffer "*Deft*"
   "Deft buffer name.")
@@ -345,6 +389,38 @@ Set to nil to hide."
 (defvar deft-window-width nil
   "Width of Deft buffer.")
 
+;; Helpers
+
+(defun deft-whole-filter-regexp ()
+  "Join incremental filters into one."
+  (mapconcat 'identity (reverse deft-filter-regexp) " "))
+
+(defun deft-search-forward (str)
+  "Function to use when matching files against filter strings.
+This function calls `search-forward' when `deft-incremental-search'
+is non-nil and `re-search-forward' otherwise."
+  (if deft-incremental-search
+      (search-forward str nil t)
+    (re-search-forward str nil t)))
+
+(defun deft-set-mode-name ()
+  (if deft-incremental-search
+      (setq mode-name "Deft")
+    (setq mode-name "Deft/R")))
+
+(defun deft-toggle-incremental-search ()
+  "Toggle the `deft-incremental-search' setting."
+  (interactive)
+  (cond
+   (deft-incremental-search
+    (setq deft-incremental-search nil)
+    (message "Regex search"))
+   (t
+    (setq deft-incremental-search t)
+    (message "Incremental string search")))
+  (deft-filter (deft-whole-filter-regexp) t)
+  (deft-set-mode-name))
+
 ;; File processing
 
 (defun deft-chomp (str)
@@ -374,6 +450,10 @@ Set to nil to hide."
             (setq result (cons file result))))
         result)))
 
+(defun deft-strip-title (title)
+  "Remove all strings matching `deft-strip-title-regex' from TITLE."
+  (replace-regexp-in-string deft-strip-title-regex "" title))
+
 (defun deft-parse-title (file contents)
   "Parse the given FILE and CONTENTS and determine the title.
 According to `deft-use-filename-as-title', the title is taken to
@@ -382,7 +462,8 @@ be the first non-empty line of a file or the file name."
       (deft-base-filename file)
     (let ((begin (string-match "^.+$" contents)))
       (if begin
-        (substring contents begin (match-end 0))
+          (funcall deft-parse-title-function
+                   (substring contents begin (match-end 0)))
         (deft-base-filename file)))))
 
 (defun deft-parse-summary (contents title)
@@ -436,10 +517,15 @@ title."
   (setq deft-hash-titles (make-hash-table :test 'equal))
   (setq deft-hash-summaries (make-hash-table :test 'equal)))
 
-(defun deft-cache-update ()
-  "Update cached file information."
+(defun deft-cache-update-all ()
+  "Update file list and update cached information for each file."
   (setq deft-all-files (deft-find-all-files))             ; List all files
   (mapc 'deft-cache-file deft-all-files)                  ; Cache contents
+  (setq deft-all-files (deft-sort-files deft-all-files))) ; Sort by mtime
+
+(defun deft-cache-update-file (file)
+  "Update cached information for a single file."
+  (deft-cache-file file)                                  ; Cache contents
   (setq deft-all-files (deft-sort-files deft-all-files))) ; Sort by mtime
 
 ;; Cache access
@@ -469,7 +555,7 @@ title."
         (widget-insert
          (propertize "Deft: " 'face 'deft-header-face))
         (widget-insert
-         (propertize deft-filter-regexp 'face 'deft-filter-string-face)))
+         (propertize (deft-whole-filter-regexp) 'face 'deft-filter-string-face)))
     (widget-insert
          (propertize "Deft" 'face 'deft-header-face)))
   (widget-insert "\n\n"))
@@ -540,14 +626,19 @@ title."
 (defun deft-refresh ()
   "Update the file cache, reapply the filter, and refresh the *Deft* buffer."
   (interactive)
-  (when (get-buffer deft-buffer)
-    (set-buffer deft-buffer)
-    (deft-cache-update)
-    (deft-filter-update)
-    (deft-buffer-setup)))
+  (deft-cache-update-all)
+  (deft-refresh-filter))
+
+(defun deft-refresh-filter ()
+  "Reapply the filter and refresh the *Deft* buffer.
+Call this after any actions which update the cache."
+  (interactive)
+  (deft-filter-update)
+  (deft-refresh-browser))
 
 (defun deft-refresh-browser ()
-  "Refresh the *Deft* buffer in the background."
+  "Refresh the *Deft* buffer in the background.
+Call this function after any actions which update the filter and file list."
   (when (get-buffer deft-buffer)
     (with-current-buffer deft-buffer
       (deft-buffer-setup))))
@@ -570,7 +661,9 @@ title."
     (funcall deft-text-mode)
     (add-to-list 'deft-auto-save-buffers (buffer-name))
     (add-hook 'after-save-hook
-              (lambda () (save-excursion (deft-refresh)))
+              (lambda () (save-excursion
+                           (deft-cache-update-file buffer-file-name)
+                           (deft-refresh-filter)))
               nil t)))
 
 (defun deft-find-file (file)
@@ -588,9 +681,10 @@ use it as the title."
   (if (file-exists-p file)
       (message (concat "Aborting, file already exists: " file))
     (when (and deft-filter-regexp (not deft-use-filename-as-title))
-      (write-region deft-filter-regexp nil file nil))
+      (write-region (deft-whole-filter-regexp) nil file nil))
     (deft-open-file file)))
 
+;;;###autoload
 (defun deft-new-file ()
   "Create a new file quickly, with an automatically generated filename
 or the filter string if non-nil and deft-use-filename-as-title is set.
@@ -599,7 +693,7 @@ use it as the title."
   (interactive)
   (let (filename)
     (if (and deft-use-filename-as-title deft-filter-regexp)
-	(setq filename (concat (file-name-as-directory deft-directory) deft-filter-regexp "." deft-extension))
+	(setq filename (concat (file-name-as-directory deft-directory) (deft-whole-filter-regexp) "." deft-extension))
       (let (fmt counter temp-buffer)
 	(setq counter 0)
 	(setq fmt (concat "deft-%d." deft-extension))
@@ -611,7 +705,7 @@ use it as the title."
 	  (setq filename (concat (file-name-as-directory deft-directory)
 				 (format fmt counter))))
 	(when deft-filter-regexp
-	  (write-region (concat deft-filter-regexp "\n\n") nil filename nil))))
+	  (write-region (concat (deft-whole-filter-regexp) "\n\n") nil filename nil))))
     (deft-open-file filename)
     (with-current-buffer (get-file-buffer filename)
       (goto-char (point-max)))))
@@ -662,18 +756,26 @@ If the point is not on a file widget, do nothing."
   "Update the filtered files list using the current filter regexp."
   (if (not deft-filter-regexp)
       (setq deft-current-files deft-all-files)
-    (setq deft-current-files (mapcar 'deft-filter-match-file deft-all-files))
+    (setq deft-current-files (mapcar (lambda (file)
+				       (deft-filter-match-file file t))
+				     deft-all-files))
     (setq deft-current-files (delq nil deft-current-files))))
 
-(defun deft-filter-match-file (file)
+(defun deft-filter-match-file (file &optional batch)
   "Return FILE if FILE matches the current filter regexp."
   (with-temp-buffer
     (insert file)
     (insert (deft-file-title file))
     (insert (deft-file-contents file))
-    (goto-char (point-min))
-    (if (search-forward deft-filter-regexp nil t)
-        file)))
+    (if batch
+	(if (every (lambda (filter)
+		     (goto-char (point-min))
+                     (deft-search-forward filter))
+		   deft-filter-regexp)
+	    file)
+      (goto-char (point-min))
+      (if (deft-search-forward (car deft-filter-regexp))
+	  file))))
 
 ;; Filters that cause a refresh
 
@@ -686,14 +788,24 @@ If the point is not on a file widget, do nothing."
     (deft-refresh))
   (message "Filter cleared."))
 
-(defun deft-filter (str)
-  "Set the filter string to STR and update the file browser."
+(defun deft-filter (str &optional reset)
+  "Update the filter string with STR and update the file browser.
+In incremental search mode, STR will be added to the list of
+filter strings.  If STR has zero length, one element is removed
+from the list.  In regex search mode, the current filter string
+will be replaced with STR.  When called interactively, or when
+RESET is non-nil, always replace the entire filter string."
   (interactive "sFilter: ")
-  (if (= (length str) 0)
-      (setq deft-filter-regexp nil)
-    (setq deft-filter-regexp str)
-    (setq deft-current-files (mapcar 'deft-filter-match-file deft-all-files))
-    (setq deft-current-files (delq nil deft-current-files)))
+  (if deft-incremental-search
+      (if (or (called-interactively-p 'any) reset)
+          (if (= (length str) 0)
+              (setq deft-filter-regexp nil)
+            (setq deft-filter-regexp (reverse (split-string str " "))))
+        (if str
+            (setcar deft-filter-regexp str)
+          (setq deft-filter-regexp (cdr deft-filter-regexp))))
+    (setq deft-filter-regexp (list str)))
+  (deft-filter-update)
   (deft-refresh-browser))
 
 (defun deft-filter-increment ()
@@ -703,17 +815,24 @@ If the point is not on a file widget, do nothing."
     (if (= char ?\S-\ )
 	(setq char ?\s))
     (setq char (char-to-string char))
-    (setq deft-filter-regexp (concat deft-filter-regexp char))
-    (setq deft-current-files (mapcar 'deft-filter-match-file deft-current-files))
-    (setq deft-current-files (delq nil deft-current-files)))
-  (deft-refresh-browser))
+    (if (and deft-incremental-search (string= char " "))
+	(setq deft-filter-regexp (cons "" deft-filter-regexp))
+      (progn
+	(if (car deft-filter-regexp)
+	    (setcar deft-filter-regexp (concat (car deft-filter-regexp) char))
+	  (setq deft-filter-regexp (list char)))
+	(setq deft-current-files (mapcar 'deft-filter-match-file deft-current-files))
+	(setq deft-current-files (delq nil deft-current-files))
+	(deft-refresh-browser)))))
 
 (defun deft-filter-decrement ()
   "Remove last character from the filter regexp and update `deft-current-files'."
   (interactive)
-  (if (> (length deft-filter-regexp) 1)
-      (deft-filter (substring deft-filter-regexp 0 -1))
-    (deft-filter-clear)))
+  (cond ((> (length (car deft-filter-regexp)) 0)
+	 (deft-filter (substring (car deft-filter-regexp) 0 -1)))
+	((> (length deft-filter-regexp) 1)
+	 (deft-filter nil))
+	(t (deft-filter-clear))))
 
 (defun deft-complete ()
   "Complete the current action.
@@ -788,6 +907,8 @@ Otherwise, quick create a new file."
     (define-key map (kbd "C-c C-d") 'deft-delete-file)
     (define-key map (kbd "C-c C-r") 'deft-rename-file)
     (define-key map (kbd "C-c C-f") 'deft-find-file)
+    ;; Settings
+    (define-key map (kbd "C-c C-t") 'deft-toggle-incremental-search)
     ;; Miscellaneous
     (define-key map (kbd "C-c C-g") 'deft-refresh)
     (define-key map (kbd "C-c C-q") 'quit-window)
@@ -811,10 +932,10 @@ Turning on `deft-mode' runs the hook `deft-mode-hook'.
   (setq default-directory deft-directory)
   (use-local-map deft-mode-map)
   (deft-cache-initialize)
-  (deft-cache-update)
+  (deft-cache-update-all)
   (deft-filter-initialize)
   (setq major-mode 'deft-mode)
-  (setq mode-name "Deft")
+  (deft-set-mode-name)
   (deft-buffer-setup)
   (when (> deft-auto-save-interval 0)
     (run-with-idle-timer deft-auto-save-interval t 'deft-auto-save))
