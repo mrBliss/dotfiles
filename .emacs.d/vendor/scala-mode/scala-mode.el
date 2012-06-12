@@ -1,4 +1,3 @@
-;;; -*-Emacs-Lisp-*-
 ;;; scala-mode.el - Major mode for editing Scala code.
 
 ;; Copyright (C) 2009-2011 Scala Dev Team at EPFL
@@ -8,29 +7,29 @@
 ;;; License
 
 ;; SCALA LICENSE
-;;  
+;;
 ;; Copyright (c) 2002-2011 EPFL, Lausanne, unless otherwise specified.
 ;; All rights reserved.
-;;  
+;;
 ;; This software was developed by the Programming Methods Laboratory of the
 ;; Swiss Federal Institute of Technology (EPFL), Lausanne, Switzerland.
-;;  
+;;
 ;; Permission to use, copy, modify, and distribute this software in source
 ;; or binary form for any purpose with or without fee is hereby granted,
 ;; provided that the following conditions are met:
-;;  
+;;
 ;;    1. Redistributions of source code must retain the above copyright
 ;;       notice, this list of conditions and the following disclaimer.
-;;  
+;;
 ;;    2. Redistributions in binary form must reproduce the above copyright
 ;;       notice, this list of conditions and the following disclaimer in the
 ;;       documentation and/or other materials provided with the distribution.
-;;  
+;;
 ;;    3. Neither the name of the EPFL nor the names of its contributors
 ;;       may be used to endorse or promote products derived from this
 ;;       software without specific prior written permission.
-;;  
-;;  
+;;
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
 ;; ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 ;; IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -134,18 +133,18 @@ through `mail-user-agent'."
 
   ;; special characters
   (modify-syntax-entry ?\_ "_" scala-mode-syntax-table)
-  
+
   (dolist (char scala-all-special-chars)
     (modify-syntax-entry char "." scala-mode-syntax-table))
 
   (modify-syntax-entry ?\. "." scala-mode-syntax-table)
-  
+
   ;; comments
   ;; the `n' means that comments can be nested
-  (modify-syntax-entry ?\/  ". 124nb" scala-mode-syntax-table)
+  (modify-syntax-entry ?\/  ". 124b" scala-mode-syntax-table)
   (modify-syntax-entry ?\*  ". 23n"   scala-mode-syntax-table)
-  (modify-syntax-entry ?\n  "> bn" scala-mode-syntax-table)
-  (modify-syntax-entry ?\r  "> bn" scala-mode-syntax-table))
+  (modify-syntax-entry ?\n  "> b" scala-mode-syntax-table)
+  (modify-syntax-entry ?\r  "> b" scala-mode-syntax-table))
 
 
 ;;; Mode
@@ -183,6 +182,7 @@ When started, run `scala-mode-hook'.
                                        nil
                                        (font-lock-syntactic-keywords . scala-font-lock-syntactic-keywords)
                                        (parse-sexp-lookup-properties . t))
+    font-lock-multiline           t
 	paragraph-separate            (concat "^\\s *$\\|" page-delimiter)
 	paragraph-start               (concat "^\\s *$\\|" page-delimiter)
 	paragraph-ignore-fill-prefix  t
@@ -204,4 +204,8 @@ When started, run `scala-mode-hook'.
 
 
 
+;; Local Variables:
+;; mode: emacs-lisp
+;; End:
 
+;;; scala-mode.el ends here
