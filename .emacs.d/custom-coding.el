@@ -316,10 +316,6 @@ rename."
 ;;##############################################################################
 ;; Prolog
 
-(autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
-(autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
-(autoload 'mercury-mode "prolog" "Major mode for editing Mercury programs.")
-
 ;; Use SWI Prolog by default and .pl files are prolog files
 (setq prolog-system 'swi)
 (add-to-list 'auto-mode-alist '("\\.pl$" . prolog-mode))
