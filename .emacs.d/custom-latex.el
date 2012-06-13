@@ -4,6 +4,10 @@
 ;; Created: Sat Dec 11 2010
 ;; Keywords: latex, auctex, settings
 
+;; Auto-complete
+(require 'auto-complete-latex)
+(add-to-list 'ac-modes 'latex-mode)
+(add-hook 'latex-mode-hook 'ac-l-setup)
 
 
 ;; Use flymake with chktex
