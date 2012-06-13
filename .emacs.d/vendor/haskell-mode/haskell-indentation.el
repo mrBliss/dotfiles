@@ -35,6 +35,7 @@
 
 ;;; Code:
 
+(eval-when-compile (require 'cl)) ;needed for def of incf
 (require 'syntax nil t)			; Emacs 21 add-on
 
 (defgroup haskell-indentation nil
@@ -206,6 +207,7 @@ Preserves indentation and removes extra whitespace"
        (skip-syntax-forward "-")
        (if (prog1 (and (eolp)
                        (not (= (haskell-current-column) ci)))
+             (delete-horizontal-space)
              (newline))
            (haskell-indentation-reindent
             (max (haskell-indentation-butlast indentations)
