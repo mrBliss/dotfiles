@@ -54,21 +54,25 @@
 (require 'auto-complete-config)
 (require 'auto-complete-extension)
 
-(add-to-list 'ac-dictionary-directories
-             (expand-file-name "~/.emacs.d/auto-complete/ac-dict"))
 (ac-config-default)
 (setq ac-use-quick-help t)
 (ac-set-trigger-key "TAB")
 (setq ac-auto-start 1)
 (ac-flyspell-workaround)
 
-;; CSS autocomplete inifinite loop hacks
+;; CSS auto-complete inifinite loop hacks
 (add-to-list 'ac-css-value-classes
              '(border-width "thin" "medium" "thick" "inherit"))
-(setq ac-modes (remq 'css-mode ac-modes))
 
 ;; Also use Semantic for completion
 (add-to-list 'ac-sources 'ac-source-semantic)
+
+;; Don't complete numbers
+(defun ac-stop-word-p (word)
+  (or (string-match "^[0-9]+$" word)
+      (member word ac-stop-words)
+      (if ac-use-dictionary-as-stop-words
+          (member word (ac-buffer-dictionary)))))
 
 
 ;;##############################################################################
