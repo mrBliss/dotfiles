@@ -587,4 +587,12 @@ You can configure `comment-style' to change the way regions are commented."
 (global-subword-mode 1)
 
 
+;; Viewing of RFCs
+(autoload 'rfc-index "rfc" nil t)
+(setq rfc-url-save-directory "~/.rfcs"
+      rfc-index-url "http://www.ietf.org/rfc/rfc-index.txt"
+      rfc-archive-alist (list rfc-url-save-directory "http://www.ietf.org/rfc/")
+      rfc-insert-content-url-hook '(rfc-url-save))
+
+
 (provide 'custom-misc)
