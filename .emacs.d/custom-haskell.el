@@ -20,9 +20,6 @@
 ;; Pretty unicode symbols (messes up indentation for other people)
 (setq haskell-font-lock-symbols t)
 
-;; Flymake
-(add-hook 'haskell-mode-hook 'flymake-mode)
-
 (defun haskell-hook ()
   ;; Use C-c C-k to load Haskell files
   (define-key haskell-mode-map (kbd "C-c C-k")
@@ -33,7 +30,11 @@
   (define-key haskell-mode-map (kbd "M-P") 'flymake-goto-prev-error)
   (define-key haskell-mode-map (kbd "M-n") 'forward-paragraph)
   (define-key haskell-mode-map (kbd "M-p") 'backward-paragraph)
-  (setq ghc-ghc-options '("-XGADTs" "-XKindSignatures")))
+  (setq ghc-ghc-options '("-XGADTs" "-XKindSignatures"))
+  (setq haskell-program-name "ghci -XGADTs -XKindSignatures")
+  (flymake-mode 1))
+
 (add-hook 'haskell-mode-hook 'haskell-hook)
+
 
 (provide 'custom-haskell)
