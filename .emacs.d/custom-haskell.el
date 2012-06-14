@@ -18,7 +18,10 @@
 (add-to-list 'ac-modes 'haskell-mode)
 
 ;; Pretty unicode symbols (messes up indentation for other people)
-;;(setq haskell-font-lock-symbols t)
+(setq haskell-font-lock-symbols t)
+
+;; Flymake
+(add-hook 'haskell-mode-hook 'flymake-mode)
 
 (defun haskell-hook ()
   ;; Use C-c C-k to load Haskell files
