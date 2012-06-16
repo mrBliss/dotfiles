@@ -16,6 +16,7 @@
 
 ;; Turn off welcome screen
 (setq inhibit-startup-message t)
+(setq font-lock-verbose nil)
 
 ;; Unicode FTW
 (setq locale-coding-system 'utf-8)

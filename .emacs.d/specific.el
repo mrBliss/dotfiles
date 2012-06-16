@@ -27,9 +27,6 @@
   (setq ns-alternate-modifier 'none)
   (setq ns-command-modifier 'meta)
 
-  ;; No more "Fontifying..."
-  (setq font-lock-verbose nil)
-
   ;; Add some folders to the PATH on OS X
   (setenv "PATH"
           (concat (getenv "PATH")
