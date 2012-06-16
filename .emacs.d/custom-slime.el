@@ -131,5 +131,12 @@ connection of the REPL is chosen as the default."
 (add-hook 'slime-mode-hook 'set-up-slime-ac)
 (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
 
+;; Customizations
+(defun slime-custom ()
+  ;; Don't use the dictionary, rely on the correct completions by ac-slime
+  (setq ac-sources (remq 'ac-source-dictionary ac-sources)))
+(add-hook 'slime-mode-hook 'slime-custom)
+(add-hook 'slime-repl-mode-hook 'slime-custom)
+
 
 (provide 'custom-slime)
