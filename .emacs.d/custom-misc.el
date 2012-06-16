@@ -595,4 +595,13 @@ You can configure `comment-style' to change the way regions are commented."
       rfc-insert-content-url-hook '(rfc-url-save))
 
 
+;; Mic-paren is incompatible with Calc
+(defadvice calcDigit-start (around mic-paren activate)
+  (let ((minibuffer-setup-hook (remq 'mic-paren-minibuffer-setup-hook
+                                     minibuffer-setup-hook))
+        (minibuffer-exit-hook (remq 'mic-paren-minibuffer-exit-hook
+                                    minibuffer-exit-hook)))
+    ad-do-it))
+
+
 (provide 'custom-misc)
