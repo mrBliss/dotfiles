@@ -355,6 +355,20 @@ rename."
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 (add-hook 'scala-mode-hook 'add-watchwords)
 (add-hook 'scala-mode-hook 'idle-highlight)
+(add-hook 'scala-mode-hook 'scala-electric-mode)
+
+(defun scala-custom ()
+  (setq imenu-generic-expression
+        '((nil "\\(var +\\)\\([^(): ]+\\)" 2)
+          (nil "\\(val +\\)\\([^(): ]+\\)" 2)
+          (nil "^[ \\t]*\\(override\\) +\\(def +\\)\\([^(): ]+\\)" 3)
+          (nil "^[ \\t]*\\(implicit\\) +\\(def +\\)\\([^(): ]+\\)" 3)
+          (nil "^[ \\t]*\\(def +\\)\\([^(): ]+\\)" 2)
+          (nil "\\(trait +\\)\\([^(): ]+\\)" 2)
+          (nil "^[ \\t]*\\(class +\\)\\([^(): ]+\\)" 2)
+          (nil "^[ \\t]*\\(case class +\\)\\([^(): ]+\\)" 2)
+          (nil "\\(object +\\)\\([^(): ]+\\)" 2))))
+(add-hook 'scala-mode-hook 'scala-custom)
 
 
 (eval-after-load "scala-mode"
