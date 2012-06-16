@@ -152,9 +152,15 @@ rename."
 ;; Coffee-mode hook
 (defun coffee-custom ()
   ;; Use two spaces
-  (set (make-local-variable 'tab-width) 2)
+  (setq tab-width 2)
+  ;; 79 chars max
+  (setq fill-column 79)
+  ;; Start a repl
+  (define-key coffee-mode-map (kbd "C-c C-z") 'coffee-repl)
   ;; Compile the buffer in coffee-mode
-  (define-key coffee-mode-map (kbd "C-c C-k") 'coffee-compile-buffer))
+  (define-key coffee-mode-map (kbd "C-c C-k") 'coffee-compile-file)
+  ;; Compile a region
+  (define-key coffee-mode-map (kbd "C-c M-r") 'coffee-compile-region))
 (add-hook 'coffee-mode-hook 'coffee-custom)
 
 
