@@ -66,8 +66,6 @@
 ;; ECB
 (require 'ecb)
 
-;; Make it work with CEDET version 1.1
-(setq ecb-cedet-required-version-max '(1 1 3 0))
 
 (setq ecb-tip-of-the-day nil
       ecb-layout-name "left3"
