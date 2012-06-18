@@ -20,8 +20,6 @@
 ;;     MA 02111-1307, USA.
 
 
-(require 'ensime)
-
 (defvar ensime-testing-buffer "*ensime-tests*"
   "Contains the output of all the tests. Also tracks all the testing-specific
    buffer-local variables.")

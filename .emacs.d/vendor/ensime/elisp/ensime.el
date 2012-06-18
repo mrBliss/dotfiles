@@ -54,6 +54,7 @@
 (require 'ensime-refactor)
 (require 'ensime-undo)
 (require 'ensime-search)
+(require 'ensime-scalex)
 (require 'ensime-doc)
 (require 'ensime-semantic-highlight)
 (require 'ensime-ui)
@@ -256,6 +257,7 @@ Do not show 'Writing..' message."
       (define-key prefix-map (kbd "C-v f") 'ensime-format-source)
       (define-key prefix-map (kbd "C-v u") 'ensime-undo-peek)
       (define-key prefix-map (kbd "C-v v") 'ensime-search)
+      (define-key prefix-map (kbd "C-v x") 'ensime-scalex)
       (define-key prefix-map (kbd "C-v t") 'ensime-show-doc-for-symbol-at-point)
       (define-key prefix-map (kbd "C-v .") 'ensime-expand-selection-command)
 
@@ -353,7 +355,8 @@ Do not show 'Writing..' message."
      ["Backward compilation note" ensime-backward-note]
      ["Forward compilation note" ensime-forward-note]
      ["Expand selection" ensime-expand-selection-command]
-     ["Search" ensime-search])
+     ["Search" ensime-search]
+     ["Scalex-Search" ensime-scalex])
 
     ("Documentation"
      ["Browse documentation of symbol" ensime-show-doc-for-symbol-at-point])
@@ -911,7 +914,7 @@ The default condition handler for timer functions (see
 			  (find-file-other-window ,file-path)
 			  (if (integerp ,line)
 			      (ensime-goto-line ,line)
-			    (goto-char ,offset))
+			    (goto-char (or ,offset 0)))
 			  )))
 
 (defun ensime-make-code-hyperlink (start end http-path &optional face)
@@ -2556,6 +2559,13 @@ any buffer visiting the given file."
 		   (ensime-files-equal-p file window-file))
 	  (throw 'result w))))))
 
+(defun ensime-window-showing-buffer (buffer)
+  (catch 'result
+    (dolist (w (window-list))
+      (let* ((buf (window-buffer w)))
+	(when (equal buf buffer)
+	  (throw 'result w))))))
+
 (defun ensime-point-at-bol (file line)
   (with-current-buffer (find-buffer-visiting file)
     (save-excursion
@@ -2799,6 +2809,14 @@ any buffer visiting the given file."
 	      ))
 	  )))
     ))
+
+(defvar ensime-dir (file-name-directory load-file-name)
+  "The root dir of the Ensime distribution.")
+
+(defun ensime-recompile-el ()
+  "Byte-recompilation of all Emacs Lisp files."
+  (interactive)
+  (byte-recompile-directory ensime-dir 0))
 
 ;; Source Formatting
 
@@ -3277,7 +3295,7 @@ with the current project's dependencies loaded. Returns a property list."
 			(ensime-make-doc-url type)
 			)))
 	  (ensime-insert-link " doc" url
-			      (+ (ensime-pos-offset pos)
+			      (+ (or (ensime-pos-offset pos) 0)
 				 ensime-ch-fix))))
 
       )))
@@ -3317,7 +3335,7 @@ with the current project's dependencies loaded. Returns a property list."
 	(progn
 	  (ensime-insert-link
 	   (format "%s" member-name) url
-	   (+ (ensime-pos-offset pos) ensime-ch-fix)
+	   (+ (or (ensime-pos-offset pos) 0) ensime-ch-fix)
 	   font-lock-function-name-face)
 	  (tab-to-tab-stop)
 	  (ensime-inspector-insert-linked-type type nil nil))
@@ -3869,16 +3887,16 @@ It should be used for \"background\" messages such as argument lists."
   (plist-get pos :file))
 
 (defun ensime-pos-offset (pos)
-  (or (plist-get pos :offset) -1))
+  (plist-get pos :offset))
 
 (defun ensime-pos-line (pos)
-  (or (plist-get pos :line) -1))
+  (plist-get pos :line))
 
 (defun ensime-pos-valid-local-p (pos)
   (and (stringp (ensime-pos-file pos))
        (file-exists-p (ensime-pos-file pos))
        (integerp (ensime-pos-offset pos))
-       (> (ensime-pos-offset pos) 0)))
+       (integerp (ensime-pos-offset pos))))
 
 (defun ensime-note-file (note)
   (plist-get note :file))

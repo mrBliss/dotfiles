@@ -132,7 +132,7 @@ be used later to give contextual help when entering arguments."
     ;; If an alternate to-insert string is available, delete the
     ;; candidate inserted into buffer and replace with to-insert
     (when to-insert
-      (delete-backward-char (length name))
+      (delete-char (- (length name)))
       (insert to-insert))
 
     ;; If this member is callable, use the type-id to lookup call completion
