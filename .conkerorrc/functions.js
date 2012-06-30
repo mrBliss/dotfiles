@@ -142,6 +142,32 @@ interactive("subscribe-rss",
                 if(!found) I.minibuffer.message('Couldn\'t find a feed.');
             });
 
+// Load MozRepl on demand
+interactive("moz-repl",
+            "Starts the MozRepl",
+            function (I) {
+                if ('@hyperstruct.net/mozlab/mozrepl;1' in Cc) {
+                    let mozrepl = Cc['@hyperstruct.net/mozlab/mozrepl;1']
+                        .getService(Ci.nsIMozRepl);
+                    if (mozrepl.isActive()) {
+                        I.minibuffer.message("MozRepl already started");
+                    } else {
+                        let port = (yield I.minibuffer.read(
+                                        $prompt = "Port: ",
+                                        $validator = function (input, I) {
+                                            let num = input - 0;
+                                            return !isNaN(num) && 1024 <= num <= 65536;
+                                        },
+                                        $initial_value = 4242));
+                        I.minibuffer.message("Starting MozRepl on port " + port);
+                        mozrepl.start(port);
+                    }
+                } else {
+                    I.minibuffer.message("MozRepl not available");    
+                }
+            });
+                
+                
 
 // To check if this page was successfully loaded
 loaded_functions = true;
