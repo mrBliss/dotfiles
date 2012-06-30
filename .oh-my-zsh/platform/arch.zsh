@@ -1,7 +1,5 @@
 # Linux specific options
 
-# Welcome message
-fortune chucknorris futurama himym tbbt | cowsay -f flaming-sheep
 
 # Needed for ssh (ProxyCommand)
 export SHELL=/bin/zsh
@@ -42,11 +40,8 @@ alias lls='~/.bin/lls'
 # Seriously ncmpcpp?
 alias nc=ncmpcpp
 
-# Put /usr/local/bin on the PATH
-export PATH=/usr/local/bin:$PATH
-
-# Put cljr on the PATH
-export PATH=~/.cljr/bin:$PATH
+# Put .bin and .cabal/bin on the PATH
+export PATH=~/.bin:~/.cabal/bin:$PATH
 
 # Maven
 export MAVEN_OPTS=-Xmx512m
@@ -79,4 +74,4 @@ alias mpdreset='mpc clear; mpc ls | mpc add'
 alias updb="sudo updatedb --database-root='/home/thomas' --prunepaths='/home/thomas/.emacs.d/auto-saves /home/thomas/.emacs.d/auto-save-list /home/thomas/.git /home/thomas/.m2 /home/thomas/.local /home/thomas/.cache'"
 
 # Enable stderred
-export LD_PRELOAD="/usr/lib/stderred.so"
+export LD_PRELOAD="/usr/lib/libstderred.so"
