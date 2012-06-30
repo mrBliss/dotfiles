@@ -547,9 +547,14 @@ created 2009-06-23."
          (erc-my-nick-face ,(color *red*))
          (erc-prompt-face ,(color *red* *background*))
          (erc-header-line ((t (:underline nil))))
+         (garak-system-message-face ,(color *comment*))
+         (garak-nick-face ,(color *keyword*))
+         (garak-own-nick-face ,(color *red*))
+         (lui-time-stamp-face ,(color *red*))
          ;; TODO
          (flyspell-duplicate ((t (:underline nil :foreground ,*type*))))
          (flyspell-incorrect ((t (:underline nil :foreground ,*red*))))
+         (flymake-warnline ((t (:underline nil :background ,*mouse* :foreground ,*background*))))
          (font-latex-italic-face
           ((t (:foreground ,*builtin* :italic t :underline nil))))
          (font-latex-bold-face
@@ -1043,6 +1048,12 @@ created 2009-06-23."
      (erc-nick-default-face ((t (:foreground "#477AB3"))))
      (erc-my-nick-face ((t (:foreground "#BF4D80" :italic t))))
      (erc-prompt-face ((t (:background nil :foreground "#6096BF"))))
+
+     (garak-system-message-face ((t (:foreground "#3D3D3D"))))
+     (garak-nick-face ((t (:foreground "#477AB3"))))
+     (garak-own-nick-face ((t (:foreground "#BF4D80"))))
+     (lui-time-stamp-face ((t (:foreground "#BF4D80"))))
+     (lui-button-face ((t (:foreground "#6096BF" :underline t))))
 
      (font-latex-warning-face ((t (:foreground "#FF00FF"))))
      (font-latex-italic-face
