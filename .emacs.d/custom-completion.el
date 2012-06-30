@@ -121,6 +121,8 @@
           (or
            (mode . clojure-mode)
            (name . "^\\*slime-repl clojure\\*")))
+         ("ClojureScript"
+           (mode . clojurescript-mode))
          ("Elisp"
           (or
            (name . "^\\*scratch\\*$")
