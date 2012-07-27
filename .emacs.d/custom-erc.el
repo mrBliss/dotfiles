@@ -141,7 +141,7 @@ killed before connecting."
 Prompt for password first."
   (interactive)
   (let ((pwd (read-passwd "Password: ")))
-    (znc-erc-connect `(znc "192.168.1.3" 6668 nil "mrBliss" ,pwd))))
+    (znc-erc-connect `(znc "192.168.1.5" 7000 nil "mrBliss" ,pwd))))
 
 ;; Make playback messages look like the originals
 
@@ -192,4 +192,3 @@ Prompt for password first."
 
 
 (provide 'custom-erc)
-
