@@ -1,6 +1,8 @@
 # TODO: Explain what some of this does..
 
 bindkey -e
+# C-M-k kill the next word
+bindkey "^[^K" kill-word
 bindkey '\ew' kill-region
 bindkey -s '\el' "ls\n"
 bindkey -s '\e.' "..\n"
