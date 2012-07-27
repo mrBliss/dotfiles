@@ -43,15 +43,6 @@ alias nc=ncmpcpp
 # Put .bin and .cabal/bin on the PATH
 export PATH=~/.bin:~/.cabal/bin:$PATH
 
-# Maven
-export MAVEN_OPTS=-Xmx512m
-export M2_HOME=/opt/maven
-export PATH=$PATH:$M2_HOME/bin
-
-# Ant
-export ANT_HOME=/usr/share/java/apache-ant
-export PATH=$PATH:$ANT_HOME/bin
-
 # Man with colors
 export MANPAGER=less
 
@@ -74,4 +65,6 @@ alias mpdreset='mpc clear; mpc ls | mpc add'
 alias updb="sudo updatedb --database-root='/home/thomas' --prunepaths='/home/thomas/.emacs.d/auto-saves /home/thomas/.emacs.d/auto-save-list /home/thomas/.git /home/thomas/.m2 /home/thomas/.local /home/thomas/.cache'"
 
 # Enable stderred
-export LD_PRELOAD="/usr/lib/libstderred.so"
+if [ -f "/usr/lib/libstderred.so" ]; then
+    export LD_PRELOAD="/usr/lib/libstderred.so"
+fi
