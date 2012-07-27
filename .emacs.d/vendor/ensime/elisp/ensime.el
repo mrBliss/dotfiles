@@ -1058,6 +1058,11 @@ The default condition handler for timer functions (see
 	      (,name (if matchedp (match-string 2 ,str) nil)))
 	 ,@body))))
 
+(defun ensime-last-name-component (str)
+  (if (integerp (string-match "^.*?\\.\\([^\\.]+\\)$"str))
+      (match-string 1 str)
+    str))
+
 (defun ensime-strip-dollar-signs (str)
   (replace-regexp-in-string "\\$" "" str))
 
@@ -1248,6 +1253,7 @@ The functions are called with the process as their argument.")
   "Make a buffer suitable for a network process."
   (let ((buffer (generate-new-buffer name)))
     (with-current-buffer buffer
+      (set-buffer-multibyte t)
       (buffer-disable-undo)
       (set (make-local-variable 'kill-buffer-query-functions) nil))
     buffer))
@@ -1305,8 +1311,12 @@ The functions are called with the process as their argument.")
 (defun ensime-net-have-input-p ()
   "Return true if a complete message is available."
   (goto-char (point-min))
-  (and (>= (buffer-size) 6)
-       (>= (- (buffer-size) 6) (ensime-net-decode-length))))
+  (and (>= (ensime-buffer-size-in-bytes) 6)
+       (>= (- (ensime-buffer-size-in-bytes) 6)
+	   (ensime-net-decode-length))))
+
+(defun ensime-buffer-size-in-bytes ()
+  (- (position-bytes (point-max)) 1))
 
 (defun ensime-run-when-idle (function &rest args)
   "Call FUNCTION as soon as Emacs is idle."
@@ -1329,10 +1339,12 @@ The functions are called with the process as their argument.")
 	 (start (+ 6 (point)))
 	 (end (+ start length)))
     (assert (plusp length))
-    (prog1 (save-restriction
-	     (narrow-to-region start end)
-	     (read (current-buffer)))
-      (delete-region (point-min) end))))
+    (goto-char (byte-to-position start))
+    (prog1 (read (current-buffer))
+      (delete-region (- (byte-to-position start) 6)
+		     (byte-to-position end)))
+    ))
+
 
 (defun ensime-net-decode-length ()
   "Read a 24-bit hex-encoded integer from buffer."
@@ -1852,6 +1864,7 @@ versions cannot deal with that."
 
 (defun ensime-eval (sexp)
   "Evaluate EXPR on the superior Lisp and return the result."
+  (message "start ensime-eval")
   (let* ((tag (gensym (format "ensime-result-%d-sym"
 			      (1+ (ensime-continuation-counter)))))
 	 (ensime-stack-eval-tags (cons tag ensime-stack-eval-tags)))
@@ -2748,29 +2761,38 @@ any buffer visiting the given file."
 	      :name (buffer-substring-no-properties start end))))))
 
 
-
 (defun ensime-insert-import (qualified-name)
   "A simple, hacky import insertion."
   (save-excursion
-    (goto-char (point-min))
-    (search-forward-regexp "^\\s-*package\\s-" nil t)
-    (goto-char (point-at-eol))
 
-    ;; Advance past all imports that should sort before
-    ;; the new one lexicographically.
-    (while (progn
+  (let ((starting-point (point)))
+    (search-backward-regexp "^\\s-*package\\s-" nil t)
+    (search-forward-regexp "^\\s-*import\\s-" starting-point t)
+    (goto-char (point-at-bol))
+
+    ;; No imports yet
+    (when (looking-at "^\\s-*package\\s-")
+      (goto-char (point-at-eol))
+      (newline)
+      )
+
+    (when (looking-at "^\\s-*import\\s-")
+      (left-char 1)
+      (while (progn
 	     (if (looking-at "[\n\t ]*import\\s-\\(.+\\)\n")
 		 (let ((imported-name (match-string 1)))
 		   (string< imported-name qualified-name)
 		   )))
-      (search-forward-regexp "import" nil t)
-      (goto-char (point-at-eol)))
+        (search-forward-regexp "^\\s-*import\\s-" starting-point t)
+        (goto-char (point-at-eol)))
+      )
+    )
 
-    (newline)
-    (insert (format (cond ((ensime-visiting-scala-file-p) "import %s")
-			  ((ensime-visiting-java-file-p) "import %s;"))
-		    qualified-name))
-    (indent-region (point-at-bol) (point-at-eol))))
+  (newline)
+  (insert (format (cond ((ensime-visiting-scala-file-p) "import %s")
+                        ((ensime-visiting-java-file-p) "import %s;"))
+                  qualified-name))
+  (indent-region (point-at-bol) (point-at-eol))))
 
 
 
@@ -2933,6 +2955,10 @@ any buffer visiting the given file."
   (ensime-eval
    `(swank:debug-value-for-field ,object-id ,name)))
 
+(defun ensime-rpc-debug-value-for-stack-var (thread-id frame offset)
+  (ensime-eval
+   `(swank:debug-value-for-stack-var ,thread-id ,frame ,offset)))
+
 (defun ensime-rpc-debug-value-for-index (object-id index)
   (ensime-eval
    `(swank:debug-value-for-index ,object-id ,index)))
@@ -2944,6 +2970,10 @@ any buffer visiting the given file."
 (defun ensime-rpc-debug-start (command-line)
   (ensime-eval
    `(swank:debug-start ,command-line)))
+
+(defun ensime-rpc-debug-attach (hostname port)
+  (ensime-eval
+   `(swank:debug-attach ,hostname ,port)))
 
 (defun ensime-rpc-debug-stop ()
   (ensime-eval
@@ -3031,6 +3061,7 @@ with the current project's dependencies loaded. Returns a property list."
      ,(ensime-computed-point)
      ,(or max-results 0)
      ,case-sens
+     t ;; reload
      )))
 
 (defun ensime-rpc-import-suggestions-at-point (names max-results)
