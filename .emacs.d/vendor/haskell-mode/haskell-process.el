@@ -108,7 +108,8 @@ has changed?"
 (defun haskell-process-clear ()
   "Clear the current process."
   (interactive)
-  (haskell-process-reset (haskell-process)))
+  (haskell-process-reset (haskell-process))
+  (haskell-process-set (haskell-process) 'command-queue nil))
 
 (defun haskell-process-generate-tags (&optional and-then-find-this-tag)
   "Regenerate the TAGS table."
@@ -139,15 +140,23 @@ has changed?"
   (interactive "P")
   (haskell-process-do-simple-echo
    insert-value
-   (format ":type (%s)" (haskell-ident-at-point))))
+   (let ((ident (haskell-ident-at-point)))
+     (format (if (string-match "^[a-z][A-Z]" ident)
+                 ":type %s"
+               ":type (%s)")
+             ident))))
 
 (defun haskell-process-do-info (&optional ident)
   "Print the info of the given expression."
   (interactive)
   (haskell-process-do-simple-echo
    nil
-   (format ":info %s" (or ident
-                          (haskell-ident-at-point)))))
+   (let ((ident (haskell-ident-at-point)))
+     (format (if (string-match "^[a-z][A-Z]" ident)
+                 ":info %s"
+               ":info (%s)")
+             (or ident
+                 (haskell-ident-at-point))))))
 
 (defun haskell-process-do-try-info (sym)
   "Get info of `sym' and echo in the minibuffer."
@@ -485,6 +494,7 @@ changed. Restarts the process if that is the case."
 (defun haskell-process-restart ()
   "Restart the inferior Haskell process."
   (interactive)
+  (haskell-process-clear)
   (haskell-process-start (haskell-session)))
 
 (defun haskell-process-make (name)

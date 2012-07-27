@@ -21,6 +21,7 @@
 (setq haskell-font-lock-symbols t)
 
 (defun haskell-hook ()
+  (turn-on-haskell-indent)
   ;; Use C-c C-k to load Haskell files
   (define-key haskell-mode-map (kbd "C-c C-k")
     (lambda () (interactive)
@@ -30,8 +31,10 @@
   (define-key haskell-mode-map (kbd "M-P") 'flymake-goto-prev-error)
   (define-key haskell-mode-map (kbd "M-n") 'forward-paragraph)
   (define-key haskell-mode-map (kbd "M-p") 'backward-paragraph)
-  (setq ghc-ghc-options '("-XGADTs" "-XKindSignatures"))
-  (setq haskell-program-name "ghci -XGADTs -XKindSignatures")
+  (define-key haskell-mode-map (kbd "M-.") 'haskell-mode-tag-find)
+  (define-key haskell-mode-map (kbd "C-c c-w") 'haskell-indent-insert-where)
+  (setq ghc-ghc-options '("-XGADTs" "-XKindSignatures" "-XTypeFamilies"))
+  (setq haskell-program-name "ghci -XGADTs -XKindSignatures -XTypeFamilies")
   (flymake-mode 1))
 
 (add-hook 'haskell-mode-hook 'haskell-hook)
