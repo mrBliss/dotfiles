@@ -9,6 +9,7 @@
 
 (require 'eldoc-eval)
 (require 'goto-last-change)
+(require 'maven-mode)
 (require 'minimap)
 (require 'scratch)
 (require 'typing-speed)
