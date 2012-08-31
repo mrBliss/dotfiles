@@ -415,6 +415,10 @@ Do not show 'Writing..' message."
         (add-hook 'ensime-source-buffer-loaded-hook
                   'ensime-sem-high-refresh-hook t)
 
+        (add-hook 'ensime-source-buffer-loaded-hook
+                  'ensime-typecheck-current-file)
+
+
         (when ensime-tooltip-hints
           (add-hook 'tooltip-functions 'ensime-tooltip-handler)
           (make-local-variable 'track-mouse)
@@ -441,6 +445,9 @@ Do not show 'Writing..' message."
 
       (remove-hook 'ensime-source-buffer-loaded-hook
                    'ensime-sem-high-refresh-hook)
+
+      (remove-hook 'ensime-source-buffer-loaded-hook
+                   'ensime-typecheck-current-file)
 
       (remove-hook 'tooltip-functions 'ensime-tooltip-handler)
       (make-local-variable 'track-mouse)
@@ -673,8 +680,7 @@ Analyzer will be restarted. All source will be recompiled."
 
 
 (defvar ensime-inferior-server-args nil
-  "A buffer local variable in the inferior proccess.
-See `ensime-start'.")
+  "A buffer local variable in the inferior proccess. See `ensime-start'.")
 
 (defun ensime-inferior-server-args (process)
   "Return the initial process arguments.
@@ -760,8 +766,8 @@ If not, message the user."
 
 (defun ensime-temp-file-name (name)
   "Return the path of a temp file with filename 'name'."
-  (concat (file-name-as-directory (ensime-temp-directory))
-	  name))
+  (expand-file-name
+   (concat (file-name-as-directory (ensime-temp-directory)) name)))
 
 (defun ensime-temp-directory ()
   "Return the directory name of the system's temporary file dump."
@@ -1864,7 +1870,6 @@ versions cannot deal with that."
 
 (defun ensime-eval (sexp)
   "Evaluate EXPR on the superior Lisp and return the result."
-  (message "start ensime-eval")
   (let* ((tag (gensym (format "ensime-result-%d-sym"
 			      (1+ (ensime-continuation-counter)))))
 	 (ensime-stack-eval-tags (cons tag ensime-stack-eval-tags)))
@@ -2033,7 +2038,8 @@ This idiom is preferred over `lexical-let'."
 	   (ensime-clear-notes 'java))
 
 	  ((:debug-event evt)
-	   (ensime-db-handle-event evt))
+	   (ensime-db-handle-event evt)
+	   (ensime-event-sig :debug-event evt))
 
 	  ((:channel-send id msg)
 	   (ensime-channel-send (or (ensime-find-channel id)
@@ -2935,6 +2941,10 @@ any buffer visiting the given file."
 
 ;; Basic RPC calls
 
+(defun ensime-rpc-method-bytecode (file line)
+  (ensime-eval
+   `(swank:method-bytecode ,file ,line)))
+
 (defun ensime-rpc-debug-active-vm ()
   (ensime-eval
    `(swank:debug-active-vm)))
@@ -2951,21 +2961,13 @@ any buffer visiting the given file."
   (ensime-eval
    `(swank:debug-value-for-name ,thread-id ,name)))
 
-(defun ensime-rpc-debug-value-for-field (object-id name)
+(defun ensime-rpc-debug-value (location)
   (ensime-eval
-   `(swank:debug-value-for-field ,object-id ,name)))
+   `(swank:debug-value ,location)))
 
-(defun ensime-rpc-debug-value-for-stack-var (thread-id frame offset)
+(defun ensime-rpc-debug-set-value (location new-val)
   (ensime-eval
-   `(swank:debug-value-for-stack-var ,thread-id ,frame ,offset)))
-
-(defun ensime-rpc-debug-value-for-index (object-id index)
-  (ensime-eval
-   `(swank:debug-value-for-index ,object-id ,index)))
-
-(defun ensime-rpc-debug-value-for-id (object-id)
-  (ensime-eval
-   `(swank:debug-value-for-id ,object-id)))
+   `(swank:debug-set-value ,location ,new-val)))
 
 (defun ensime-rpc-debug-start (command-line)
   (ensime-eval
@@ -4254,6 +4256,15 @@ PROP is the name of a text property."
   (assert (get-text-property (point) prop))
   (let ((end (next-single-char-property-change (point) prop)))
     (list (previous-single-char-property-change end prop) end)))
+
+(defun ensime-chomp (str)
+  "Chomp leading and tailing whitespace from STR."
+  (while (string-match "\\`\n+\\|^\\s-+\\|\\s-+$\\|\n+\\'"
+		       str)
+    (setq str (replace-match "" t t str)))
+  str)
+
+
 
 
 ;; Testing helpers

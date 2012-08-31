@@ -116,7 +116,9 @@
      (set (make-local-variable 'compilation-auto-jump-to-first-error) t)
      (set (make-local-variable 'comint-scroll-to-bottom-on-output) t)
      ;; `scala>' is for the repl launched from stb
-     (set (make-local-variable 'comint-prompt-regexp) "^\\(>\\|scala>\\) ")
+     (set (make-local-variable 'comint-prompt-regexp)
+          (let ((project-name (plist-get (ensime-config) :project-name)))
+            (concat "^\\(>\\|scala>\\|\\[" project-name "\\] \\$\\) ")))
      (set (make-local-variable 'comint-use-prompt-regexp) t)
      (set (make-local-variable 'comint-prompt-read-only) t)
      (set (make-local-variable 'comint-output-filter-functions)

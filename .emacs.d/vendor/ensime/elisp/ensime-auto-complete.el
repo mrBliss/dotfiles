@@ -57,7 +57,8 @@
 			    'type-id type-id
 			    'is-callable is-callable
 			    'to-insert to-insert
-			    'summary (ensime-ac-trunc-summary type-sig)
+			    'summary (ensime-ac-trunc-summary
+				      (ensime-ac-get-doc type-sig))
 			    )))
 	    completions)
     ))
@@ -96,7 +97,7 @@ changes will be forgotten."
 
 (defun ensime-ac-get-doc (item)
   "Return doc for given item."
-  (get-text-property 0 'type-sig item))
+  (format "%s" item))
 
 (defun ensime-ac-candidate-to-insert (item)
   "Return to-insert for given item."
