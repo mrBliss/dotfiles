@@ -40,7 +40,6 @@
        (cd (getenv "HOME")))
 
 ;; Load up ELPA, the package manager
-(load (concat dot-dir "elpa/package.el"))
 (setq package-user-dir (concat dot-dir "elpa"))
 (require 'package)
 (dolist (source '(("technomancy" . "http://repo.technomancy.us/emacs/")
