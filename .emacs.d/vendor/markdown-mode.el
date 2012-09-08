@@ -727,7 +727,7 @@ This will not take effect until Emacs is restarted."
   "Regular expression for a reference link [text][id].")
 
 (defconst markdown-regex-reference-definition
-  "^ \\{0,3\\}\\(\\[[^^]+?\\]\\):\\s *\\(.*?\\)\\s *\\( \"[^\"]*\"$\\|$\\)"
+  "^ \\{0,3\\}\\(\\[.*\\]\\):\\s *\\(.*?\\)\\s *\\( \"[^\"]*\"$\\|$\\)"
   "Regular expression for a link definition [id]: ...")
 
 (defconst markdown-regex-footnote
@@ -2314,7 +2314,10 @@ This is an exact copy of `line-number-at-pos' for use in emacs21."
   ;; Use visual-line-mode if available, fall back to longlines-mode:
   (if (fboundp 'visual-line-mode)
       (visual-line-mode 1)
-    (longlines-mode 1)))
+    (longlines-mode 1))
+  ;; do the initial link fontification
+  (markdown-fontify-buffer-wiki-links))
+
 
 (provide 'markdown-mode)
 
