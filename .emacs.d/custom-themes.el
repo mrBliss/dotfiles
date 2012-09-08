@@ -1092,6 +1092,8 @@ created 2009-06-23."
      (sml-modeline-end-face ((t (:background "#222222"))))
      (sml-modeline-vis-face ((t (:background "#808080"))))
 
+     (num3-face-even ((t (:background nil :foreground nil :underline t :weight bold))))
+
      (clojure-parens ((t (:foreground "#4E4E4E"))))
      (clojure-keyword ((t (:foreground "#45b8f2"))))
      (clojure-double-quote ((t (:foreground "#5E468C"))))

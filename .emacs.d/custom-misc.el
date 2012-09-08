@@ -11,6 +11,7 @@
 (require 'goto-last-change)
 (require 'maven-mode)
 (require 'minimap)
+(require 'num3-mode)
 (require 'scratch)
 (require 'typing-speed)
 (require 'unbound)
@@ -603,6 +604,10 @@ You can configure `comment-style' to change the way regions are commented."
         (minibuffer-exit-hook (remq 'mic-paren-minibuffer-exit-hook
                                     minibuffer-exit-hook)))
     ad-do-it))
+
+
+;; Globally enable num3-mode
+(global-num3-mode)
 
 
 (provide 'custom-misc)
