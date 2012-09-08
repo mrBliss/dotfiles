@@ -118,4 +118,36 @@ this is not done, the function would stop working after executing
 (ad-activate 'dired-details-toggle)
 
 
+
+(defun dired-move-beginning-of-line ()
+  "Move point to the beginning of the filename on the current
+line.  Execute this command twice to go to the real beginning of
+the line."
+  (interactive)
+  (if (and (eq last-command 'dired-move-beginning-of-line)
+           (< (point-at-bol) (point)))
+      (move-beginning-of-line nil)
+    (dired-move-to-filename)))
+
+(defun dired-move-end-of-line ()
+  "Move point to the end of the filename on the current line.
+Before the trailing slash in case of a directory.  Execute this
+command twice to go to the real end of the line."
+  (interactive)
+  (if (and (eq last-command 'dired-move-end-of-line)
+           (< (point) (point-at-eol)))
+      (move-end-of-line nil)
+    ;; Catch the error thrown when we're not on a file name, just move
+    ;; to the end of the line in that case.
+    (condition-case nil
+        (dired-move-to-end-of-filename)
+      (error (move-end-of-line nil)))))
+
+
+(define-key dired-mode-map (kbd "C-a") 'dired-move-beginning-of-line)
+(define-key dired-mode-map (kbd "C-e") 'dired-move-end-of-line)
+(define-key wdired-mode-map (kbd "C-a") 'dired-move-beginning-of-line)
+(define-key wdired-mode-map (kbd "C-e") 'dired-move-end-of-line)
+
+
 (provide 'custom-dired)
