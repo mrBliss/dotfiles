@@ -525,6 +525,10 @@ created 2009-06-23."
          (minibuffer-prompt ,(color *builtin*))
          (mode-line ,(color *background* *gui*))
          (mode-line-inactive ,(color *background* *gui2*))
+         (powerline-active1 ((t (:foreground ,*background* :background ,*gui2*))))
+         (powerline-active2 ((t (:foreground ,*normal* :background ,*gui*))))
+         (powerline-inactive1 ((t (:foreground ,*background* :background ,*comment*))))
+         (powerline-inactive2 ((t (:foreground ,*normal* :background ,*gui2*))))
          (highlight ,(color nil *current-line*))
          (highline-face ,(color nil *current-line*))
          (italic ((t (nil))))
@@ -1132,13 +1136,17 @@ Pfeil, edited by mrBliss."
        (header-line ((t (:foreground ,base00 :background ,base02))))
        (fringe ((t (:foreground ,base1 :background ,base2))))
 
-       (mode-line ((t (:foreground ,base01 :background ,base2
+       (mode-line ((t (:foreground ,base25 :background ,base01
                                    :box (:color ,base2 :style nil)))))
        (mode-line-buffer-id ((t (:foreground ,base01))))
        (mode-line-inactive
         ((t (:foreground ,base00  :background ,base3
                          :box (:color ,base3 :style nil)))))
        (linum ((t (:background ,base2))))
+       (powerline-active1 ((t (:foreground ,base3 :background ,base1))))
+       (powerline-active2 ((t (:foreground ,base00 :background ,base2))))
+       (powerline-inactive1 ((t (:foreground ,base3 :background ,base1))))
+       (powerline-inactive2 ((t (:foreground ,base00 :background ,base2))))
 
        (font-lock-builtin-face ((t (:foreground ,magenta))))
        (font-lock-comment-face ((t (:foreground ,base1 :italic t
