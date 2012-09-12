@@ -119,4 +119,4 @@ highlighting groups of 3 digits when font-lock is on."
   (font-lock-append-text-property lo hi 'face
                                   (if even 'num3-face-even 'num3-face-odd)))
 
-(provide 'num3)
+(provide 'num3-mode)
