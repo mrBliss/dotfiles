@@ -146,8 +146,11 @@ command twice to go to the real end of the line."
 
 (define-key dired-mode-map (kbd "C-a") 'dired-move-beginning-of-line)
 (define-key dired-mode-map (kbd "C-e") 'dired-move-end-of-line)
-(define-key wdired-mode-map (kbd "C-a") 'dired-move-beginning-of-line)
-(define-key wdired-mode-map (kbd "C-e") 'dired-move-end-of-line)
+
+(eval-after-load "wdired"
+  '(progn
+     (define-key wdired-mode-map (kbd "C-a") 'dired-move-beginning-of-line)
+     (define-key wdired-mode-map (kbd "C-e") 'dired-move-end-of-line)))
 
 
 (provide 'custom-dired)
