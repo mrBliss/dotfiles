@@ -62,6 +62,8 @@
 
 ;; Always use the cool undo-tree-mode
 (global-undo-tree-mode t)
+;; No lighter needed
+(setq undo-tree-mode-lighter "")
 
 ;; Kill ring tweaks
 (setq kill-ring-max 1000
@@ -217,10 +219,7 @@
 ;; tbemail for editing Thunderbird emails
 (require 'tbemail)
 
-;; Display el instead of Emacs Lisp in the mode-line
-(defun shorten-emacs-lisp-mode-name ()
-  (setq mode-name "el"))
-(add-hook 'emacs-lisp-mode-hook 'shorten-emacs-lisp-mode-name)
+(add-hook 'tbemail-mode-hook 'mail-customizations-hook)
 
 ;; When opened via cocoa (i.e drop file on icon, or dbl click) open in
 ;; a new window in an existing frame, rather than new frame

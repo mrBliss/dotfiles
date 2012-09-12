@@ -337,7 +337,7 @@
 
 ;;;###autoload
 (define-minor-mode projectile-mode "Minor mode to assist project management and navigation."
-  :lighter " P"
+  :lighter " Projectile"
   :keymap projectile-mode-map
   :group 'projectile
   (if projectile-mode

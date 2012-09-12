@@ -112,6 +112,70 @@ a light color-theme when passed a prefix argument."
 (powerline-my-theme)
 
 
+(defvar mode-line-cleaner-alist
+  '((yas/minor-mode . "")
+    (highlight-parentheses-mode . "")
+    (hi-lock-mode . "")
+    (wrap-region-mode . "")
+    (outline-minor-mode . "")
+    (eldoc-mode . "")
+    (abbrev-mode . "")
+    (projectile-mode . " Prj")
+    (haskell-indentation-mode . "")
+    (slime-mode . " Sli")
+    (flyspell-mode . " FlyS")
+    (num3-mode . "")
+    (compilation-minor-mode . " Cmpl")
+    ;; Major modes
+    (python-mode . "Py")
+    (emacs-lisp-mode . "EL")
+    (lisp-interaction-mode . "EL")
+    (haskell-mode . "Hs")
+    (inferior-haskell-mode . "iHs")
+    (clojure-mode . "Clj")
+    (text-mode . "Txt")
+    (markdown-mode . "Md")
+    (sh-mode . "Sh")
+    (js2-mode . "JS")
+   )
+  "Alist for `clean-mode-line'.
+
+When you add a new element to the alist, keep in mind that you
+must pass the correct minor/major mode symbol and a string you
+want to use in the modeline *in lieu of* the original.")
+
+
+(defun clean-mode-line ()
+  "Replace modeline lighters with new ones."
+  (interactive)
+  (loop for cleaner in mode-line-cleaner-alist
+        do (let ((mode (car cleaner))
+                 (mode-str (cdr cleaner)))
+             (when (memq mode minor-mode-list)
+               (setcar (cdr (assq mode minor-mode-alist)) mode-str))
+             ;; major mode
+             (when (eq mode major-mode)
+               (setq mode-name mode-str)))))
+
+(add-hook 'after-change-major-mode-hook 'clean-mode-line)
+
+;;; alias the new `flymake-report-status-slim' to
+;;; `flymake-report-status'
+(defalias 'flymake-report-status 'flymake-report-status-slim)
+(defun flymake-report-status-slim (e-w &optional status)
+  "Show \"slim\" flymake status in mode line."
+  (when e-w
+    (setq flymake-mode-line-e-w e-w))
+  (when status
+    (setq flymake-mode-line-status status))
+  (let* ((mode-line " FlyM"))
+    (when (> (length flymake-mode-line-e-w) 0)
+      (setq mode-line (concat mode-line ":" flymake-mode-line-e-w)))
+    (setq mode-line (concat mode-line flymake-mode-line-status))
+    (setq flymake-mode-line mode-line)
+    (force-mode-line-update)))
+
+
 ;; Change flyspell faces
 (eval-after-load "flyspell"
   ;; The faces in my color-themes are ignored :-(
