@@ -608,5 +608,9 @@ You can configure `comment-style' to change the way regions are commented."
 ;; Globally enable num3-mode
 (global-num3-mode)
 
+;; Use Python's regular expressions
+(require 'pyregexp)
+(global-set-key (kbd "C-c %") 'pyregexp-query-replace)
+
 
 (provide 'custom-misc)
