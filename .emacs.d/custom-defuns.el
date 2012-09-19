@@ -112,7 +112,7 @@ from http://amitp.blogspot.com/2007/03/emacs-dont-kill-unsaved-buffers.html."
     (isearch-backward-regexp)))
 
 (defun sudo-edit (&optional arg)
-  (interactive "p")
+  (interactive "P")
   (if arg
       (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
@@ -123,7 +123,7 @@ from http://amitp.blogspot.com/2007/03/emacs-dont-kill-unsaved-buffers.html."
                                (buffer-file-name (current-buffer)))))
 
 (defun sudo-dired (&optional arg)
-  (interactive "p")
+  (interactive "P")
   (dired (concat "/sudo:root@localhost:" (ido-read-directory-name "Directory: "))))
 
 (defun sum-column ()
