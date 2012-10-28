@@ -140,7 +140,8 @@ rename."
 (add-hook 'c-mode-hook 'c-mode-customisations)
 
 ;; Indentation
-(setq c-default-style '((java-mode . "java") (awk-mode . "awk") (other . "k&r")))
+(setq c-default-style '((java-mode . "java") (awk-mode . "awk") (other . "k&r"))
+      c-basic-offset 4)
 
 
 ;;##############################################################################
