@@ -95,12 +95,12 @@ If DIR-FLAG is non-nil, create a new empty directory instead of a file."
   (defmacro defface (sym val str &rest rest)
     `(defvar ,sym (make-face ',sym) ,str)))
 
-(defvar :group ':group)
-(defvar :type ':type)
-(defvar :copy ':copy)
-(defvar :dense ':dense)
-(defvar :inherit ':inherit)
-(defvar :suppress ':suppress)
+;; (defvar :group ':group)
+;; (defvar :type ':type)
+;; (defvar :copy ':copy)
+;; (defvar :dense ':dense)
+;; (defvar :inherit ':inherit)
+;; (defvar :suppress ':suppress)
 
 (provide 'sml-compat)
 
