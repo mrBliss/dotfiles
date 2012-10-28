@@ -171,6 +171,9 @@ rename."
 ;; Enable rainbow-mode for css files
 (add-hook 'css-mode-hook 'rainbow-mode)
 
+;; LESS
+(autoload 'less-css-mode "less-css-mode" nil t)
+
 
 ;;##############################################################################
 ;; Java
