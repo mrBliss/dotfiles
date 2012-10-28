@@ -64,7 +64,5 @@ alias mpdreset='mpc clear; mpc ls | mpc add'
 # Alias for updatedb with predefined paths
 alias updb="sudo updatedb --database-root='/home/thomas' --prunepaths='/home/thomas/.emacs.d/auto-saves /home/thomas/.emacs.d/auto-save-list /home/thomas/.git /home/thomas/.m2 /home/thomas/.local /home/thomas/.cache'"
 
-# Enable stderred
-if [ -f "/usr/lib/libstderred.so" ]; then
-    export LD_PRELOAD="/usr/lib/libstderred.so"
-fi
+# Let qtconfig detect the GTK+ theme
+export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
