@@ -16,7 +16,8 @@
 
 ;; Shell prompt should be read-only
 (setq comint-prompt-read-only t)
-
+;; Don't store duplicate history entries
+(setq comint-input-ignoredups t)
 
 (defun clear-shell ()
   "Clear the current shell buffer."
