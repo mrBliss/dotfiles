@@ -30,7 +30,6 @@
 ;; Enable TeX-fold-mode
 (defun latex-hook ()
   (TeX-fold-mode 1)
-  (auto-fill-mode 1)
   (flymake-mode 1)
   (ispell-change-dictionary "dutch")
   (flyspell-mode 1)
