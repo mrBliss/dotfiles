@@ -42,18 +42,19 @@
 
 
 ;; Arch specific
-(when (string= system-name "gideon")
+(when (string= system-name "thomas")
   ;; Mingus is a frontend for GNU Emacs to the Music Player daemon.
   (autoload 'mingus "mingus-stays-home" nil t)
-  ;; Use Conkeror as default browser
-  (setq browse-url-browser-function 'browse-url-generic
-        browse-url-generic-program "/usr/bin/conkeror")
   ;; Extra Info directory
   (push (expand-file-name "~/.info") Info-directory-list)
   ;; Open with
   (require 'openwith)
   (openwith-mode t)
-  (setq openwith-associations '(("\\.pdf\\'" "zathura" (file)))))
+  (setq openwith-associations '(("\\.pdf\\'" "evince" (file))))
+  (defadvice dired-do-copy (around dont-open-when-copying activate)
+    "Don't trigger openwith when copying files in dired."
+    (let (openwith-mode)
+      ad-do-it)))
 
 ;; Run a server on Windows, work with a daemon on Linux and Mac OS X
 (when (eq system-type 'windows-nt)
