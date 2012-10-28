@@ -57,7 +57,7 @@
 (ac-config-default)
 (setq ac-use-quick-help t)
 (ac-set-trigger-key "TAB")
-(setq ac-auto-start 1)
+(setq ac-auto-start 2)
 (ac-flyspell-workaround)
 
 ;; CSS auto-complete inifinite loop hacks
