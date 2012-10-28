@@ -30,7 +30,7 @@ elif [ "s0202013" = "$USER" ]; then
     source $ZSH/platform/kul.zsh
 elif [ "mrbliss" = "$USER" ]; then
     source $ZSH/platform/blink.zsh
-elif [ "$HOST" = "gideon" ]; then
+elif [ "$HOST" = "thomas" ]; then
     source $ZSH/platform/arch.zsh
 else
     source $ZSH/platform/linux.zsh
