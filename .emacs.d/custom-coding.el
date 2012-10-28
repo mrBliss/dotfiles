@@ -212,25 +212,6 @@ rename."
 (add-hook 'java-mode-hook 'java-custom)
 
 
-;;##############################################################################
-;; JavaScript
-
-;; MozRepl
-(autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
-
- ;; js2-mode binds C-M-h to something else; undo this
- (eval-after-load "js2-mode"
-  '(progn
-     (define-key js2-mode-map (kbd "C-M-h") 'backward-kill-word)))
-
-(defun js-custom ()
-  (moz-minor-mode 1))
-(add-hook 'js2-mode-hook 'js-custom)
-(add-hook 'js2-mode-hook 'local-comment-auto-fill)
-(add-hook 'js2-mode-hook 'add-watchwords)
-(add-hook 'js2-mode-hook 'idle-highlight)
-
-
 ;; Read .class files as bytecode
 (add-to-list 'file-name-handler-alist '("\\.class$" . javap-handler))
 
@@ -261,6 +242,52 @@ rename."
         (inhibit-file-name-operation operation))
     (apply operation args)))
 
+
+
+;;##############################################################################
+;; JavaScript
+
+(autoload 'js2-mode "js2-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(require 'nodejs-mode)
+
+(define-key nodejs-mode-map (kbd "C-c C-l") 'clear-shell)
+
+;; MozRepl
+(autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
+
+(eval-after-load "js2-mode"
+  '(progn
+     (require 'js2-imenu-extras)
+     (js2-imenu-extras-setup)
+     ;; js2-mode binds C-M-h to something else; undo this
+     (define-key js2-mode-map (kbd "C-M-h") 'backward-kill-word)
+     (defun nodejs-load-file ()
+       "Let the node.js process load the current file."
+       (interactive)
+       (comint-send-string (get-process nodejs-process-name)
+                           (format ".load %s\n" (buffer-file-name))))
+     (defun nodejs-eval-region ()
+       "Let the node.js process evaluate the current active region."
+       (interactive)
+       (if (region-active-p)
+           (comint-send-string
+            (get-process nodejs-process-name)
+            (concat (s-trim
+                     (buffer-substring-no-properties
+                      (region-beginning) (region-end)))
+                    "\n"))
+         (message "No active region")))
+     (define-key js2-mode-map (kbd "C-c C-k") 'nodejs-load-file)
+     (define-key js2-mode-map (kbd "C-x C-e") 'nodejs-eval-region)))
+
+(defun js-custom ()
+  (moz-minor-mode 1))
+
+(add-hook 'js2-mode-hook 'js-custom)
+(add-hook 'js2-mode-hook 'local-comment-auto-fill)
+(add-hook 'js2-mode-hook 'add-watchwords)
+(remove-hook 'js2-mode-hook 'wisent-javascript-setup-parser)
 
 
 ;;##############################################################################
