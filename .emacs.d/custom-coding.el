@@ -411,14 +411,15 @@ rename."
 ;;##############################################################################
 ;; Scala
 
+
 (require 'scala-mode-auto)
 (require 'ensime)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 (add-hook 'scala-mode-hook 'add-watchwords)
 (add-hook 'scala-mode-hook 'idle-highlight)
-(add-hook 'scala-mode-hook 'scala-electric-mode)
 
 (defun scala-custom ()
+  (linum-mode 1)
   (setq imenu-generic-expression
         '((nil "\\(var +\\)\\([^(): ]+\\)" 2)
           (nil "\\(val +\\)\\([^(): ]+\\)" 2)
@@ -434,9 +435,6 @@ rename."
 
 (eval-after-load "scala-mode"
   '(progn
-     (when (string= user-login-name "s0202013")
-       (setq scala-interpreter
-             "/localhost/packages/scala/scala-2.9.0.1/bin/scala"))
      ;; Override the function bound to RET to reindent and indent
      (defun scala-newline ()
        (interactive)
@@ -451,8 +449,8 @@ rename."
      (define-key ensime-mode-map (kbd "M-p") 'backward-paragraph)
      (define-key ensime-mode-map (kbd "M-n") 'forward-paragraph)
      (define-key ensime-mode-map (kbd "M-P") 'ensime-backward-note)
-     (define-key ensime-mode-map (kbd "M-N") 'ensime-forward-note)))
-
+     (define-key ensime-mode-map (kbd "M-N") 'ensime-forward-note)
+     (define-key ensime-mode-map (kbd "C-c C-z") 'ensime-inf-switch)))
 
 ;;##############################################################################
 ;; Shell scripts
