@@ -87,6 +87,7 @@ is looked at."
   (define-key haskell-mode-map (kbd "M-n") 'forward-paragraph)
   (define-key haskell-mode-map (kbd "M-p") 'backward-paragraph)
   (define-key haskell-mode-map (kbd "M-.") 'find-tag)
+  (define-key haskell-mode-map (kbd "M-,") 'pop-tag-mark)
   ;;  (define-key haskell-mode-map (kbd "M-.") 'haskell-mode-tag-find)
   (define-key haskell-mode-map (kbd "C-c C-,") 'haskell-indent-insert-comma)
   (define-key haskell-mode-map (kbd "C-c C-a") 'haskell-next-argument)
