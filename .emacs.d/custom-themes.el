@@ -958,6 +958,8 @@ created 2009-06-23."
      (mode-line-inactive
       ((t (:background "#353535" :foreground "#DDEEDD"
                        :box (:line-width 1 :color "#454545")))))
+     (fringe ((t (:background "#303030"))))
+     (linum ((t (:background "#303030"))))
 
      (font-lock-builtin-face ((t (:foreground "#D7AFD7"))))
      (font-lock-comment-face ((t (:foreground "#808080" :background "#1A1A1A"))))
