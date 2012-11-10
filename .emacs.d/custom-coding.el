@@ -175,6 +175,20 @@ rename."
 (autoload 'less-css-mode "less-css-mode" nil t)
 (add-to-list 'ac-modes 'less-css-mode)
 
+(defun auto-reload-firefox ()
+  (comint-send-string
+   (inferior-moz-process)
+   "setTimeout(BrowserReload(), \"1000\");"))
+
+(defun auto-reload-firefox-when-saving ()
+  "Toggle auto-reload Firefox after saving the current buffer."
+  (interactive)
+  (if (memq 'auto-reload-firefox after-save-hook)
+      (progn
+        (remove-hook 'after-save-hook 'auto-reload-firefox t)
+        (message "Disabled auto-reloading"))
+    (add-hook 'after-save-hook 'auto-reload-firefox t t)
+    (message "Enabled auto-reloading")))
 
 ;;##############################################################################
 ;; Java
@@ -250,42 +264,57 @@ rename."
 
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
+;;; Node.js
 (require 'nodejs-mode)
 
 (define-key nodejs-mode-map (kbd "C-c C-l") 'clear-shell)
 
-;; MozRepl
+(defun nodejs-load-file ()
+  "Let the node.js process load the current file."
+  (interactive)
+  (comint-send-string (get-process nodejs-process-name)
+                      (format ".load %s\n" (buffer-file-name))))
+
+(defun nodejs-eval-region ()
+  "Let the node.js process evaluate the current active region."
+  (interactive)
+  (if (region-active-p)
+      (comint-send-string
+       (get-process nodejs-process-name)
+       (concat (s-trim
+                (buffer-substring-no-properties
+                 (region-beginning) (region-end)))
+               "\n"))
+    (message "No active region")))
+
+(defvar nodejs-minor-mode-map
+  (let ((map (make-keymap)))
+     (define-key map (kbd "C-c C-k") 'nodejs-load-file)
+     (define-key map (kbd "C-x C-e") 'nodejs-eval-region)
+     map))
+
+(define-minor-mode nodejs-minor-mode
+  "Minor mode for node.js"
+  :lighter " Node"
+  :keymap nodejs-minor-mode-map)
+
+;;; MozRepl
 (autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
+;; Turn it on with M-x moz-minor-mode
+
+;;; Skewer-mode
+(autoload 'run-skewer "skewer-mode" nil t)
+(autoload 'skewer-repl "skewer-repl" nil t)
+;; Start a session with M-x run-skewer
 
 (eval-after-load "js2-mode"
   '(progn
      (require 'js2-imenu-extras)
      (js2-imenu-extras-setup)
      ;; js2-mode binds C-M-h to something else; undo this
-     (define-key js2-mode-map (kbd "C-M-h") 'backward-kill-word)
-     (defun nodejs-load-file ()
-       "Let the node.js process load the current file."
-       (interactive)
-       (comint-send-string (get-process nodejs-process-name)
-                           (format ".load %s\n" (buffer-file-name))))
-     (defun nodejs-eval-region ()
-       "Let the node.js process evaluate the current active region."
-       (interactive)
-       (if (region-active-p)
-           (comint-send-string
-            (get-process nodejs-process-name)
-            (concat (s-trim
-                     (buffer-substring-no-properties
-                      (region-beginning) (region-end)))
-                    "\n"))
-         (message "No active region")))
-     (define-key js2-mode-map (kbd "C-c C-k") 'nodejs-load-file)
-     (define-key js2-mode-map (kbd "C-x C-e") 'nodejs-eval-region)))
+     (define-key js2-mode-map (kbd "C-M-h") 'backward-kill-word)))
 
-(defun js-custom ()
-  (moz-minor-mode 1))
-
-(add-hook 'js2-mode-hook 'js-custom)
 (add-hook 'js2-mode-hook 'local-comment-auto-fill)
 (add-hook 'js2-mode-hook 'add-watchwords)
 (remove-hook 'js2-mode-hook 'wisent-javascript-setup-parser)
