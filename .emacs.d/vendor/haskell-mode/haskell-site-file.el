@@ -339,6 +339,12 @@ Get the current process from the current session.
 
 \(fn)" nil nil)
 
+(autoload 'haskell-process-generate-tags "haskell-process" "\
+Regenerate the TAGS table.
+
+\(fn &optional AND-THEN-FIND-THIS-TAG)" nil nil)
+
+
 ;;;***
 
 ;;;### (autoloads (haskell-session-process haskell-session) "haskell-session"

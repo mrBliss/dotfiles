@@ -21,6 +21,10 @@
 ;; Pretty unicode symbols (messes up indentation for other people)
 (setq haskell-font-lock-symbols t)
 
+;; Rebuild TAGS on save
+(setq haskell-tags-on-save t)
+
+
 (defun haskell-indent-insert-comma ()
   "Insert a comma and indent.  Start a new line unless the current
 line is blank."
@@ -74,27 +78,39 @@ is looked at."
     (insert decl-name " ")))
 
 
+(defun haskell-interactive-switch-and-focus ()
+  "Switch to the interactive mode for this session."
+  (interactive)
+  (let ((session (haskell-session)))
+    (let ((buffer (haskell-session-interactive-buffer session)))
+      (pop-to-buffer (haskell-session-interactive-buffer session)))))
 
 (defun haskell-hook ()
   (turn-on-haskell-indent)
   ;; Use C-c C-k to load Haskell files
   (define-key haskell-mode-map (kbd "C-c C-k")
     (lambda () (interactive)
-      (inferior-haskell-load-file)
-      (switch-to-haskell)))
+      ;; (inferior-haskell-load-file)
+      ;; (switch-to-haskell)
+      (haskell-process-load-file)
+      (haskell-interactive-switch-and-focus)))
+  (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-file)
+  (define-key haskell-mode-map (kbd "C-c C-z") 'haskell-interactive-switch-and-focus)
+  (define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)
   (define-key haskell-mode-map (kbd "M-N") 'flymake-goto-next-error)
   (define-key haskell-mode-map (kbd "M-P") 'flymake-goto-prev-error)
   (define-key haskell-mode-map (kbd "M-n") 'forward-paragraph)
   (define-key haskell-mode-map (kbd "M-p") 'backward-paragraph)
-  (define-key haskell-mode-map (kbd "M-.") 'find-tag)
+  (define-key haskell-mode-map (kbd "M-.") 'haskell-mode-tag-find)
   (define-key haskell-mode-map (kbd "M-,") 'pop-tag-mark)
-  ;;  (define-key haskell-mode-map (kbd "M-.") 'haskell-mode-tag-find)
   (define-key haskell-mode-map (kbd "C-c C-,") 'haskell-indent-insert-comma)
   (define-key haskell-mode-map (kbd "C-c C-a") 'haskell-next-argument)
   (define-key haskell-mode-map (kbd "C-c C-n") 'haskell-implement-or-next-case)
-  ;;  (define-key haskell-mode-map (kbd "C-x C-s") 'haskell-mode-save-buffer)
-  (setq ghc-ghc-options '("-XGADTs" "-XKindSignatures" "-XTypeFamilies"))
-  (setq haskell-program-name "ghci -XGADTs -XKindSignatures -XTypeFamilies")
+  (define-key haskell-mode-map (kbd "C-x C-s")
+    (lambda () (interactive)
+      (if (buffer-modified-p)
+          (call-interactively 'haskell-mode-save-buffer)
+        (flymake-start-syntax-check))))
   (flymake-mode 1))
 
 (add-hook 'haskell-mode-hook 'haskell-hook)
