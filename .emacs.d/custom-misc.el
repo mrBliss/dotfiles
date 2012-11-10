@@ -6,6 +6,7 @@
 
 (autoload 'magit-status "magit" nil t)
 (autoload 'regex-tool "regex-tool" nil t)
+(autoload 'gitconfig-mode "gitconfig-mode" nil t)
 
 (require 'eldoc-eval)
 (require 'goto-last-change)
