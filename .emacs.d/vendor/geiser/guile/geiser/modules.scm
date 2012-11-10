@@ -1,6 +1,6 @@
 ;;; modules.scm -- module metadata
 
-;; Copyright (C) 2009, 2010 Jose Antonio Ortega Ruiz
+;; Copyright (C) 2009, 2010, 2011 Jose Antonio Ortega Ruiz
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the Modified BSD License. You should
@@ -64,7 +64,7 @@
 
 (define (all-modules)
   (define (maybe-name m)
-    (and (module-kind m) (format "~A" (module-name m))))
+    (and (module-kind m) (format #f "~A" (module-name m))))
   (let* ((guile (resolve-module '(guile)))
          (roots (remove (lambda (m) (eq? m guile)) (root-modules)))
          (children (append-map all-child-modules roots)))
@@ -75,4 +75,3 @@
     (fold (lambda (m all) (append (all-child-modules m all) all))
           (list mod)
           cs)))
-

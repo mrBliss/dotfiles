@@ -1,6 +1,6 @@
 ;;; user.rkt -- global bindings visible to geiser users
 
-;; Copyright (C) 2010, 2011 Jose Antonio Ortega Ruiz
+;; Copyright (C) 2010, 2011, 2012 Jose Antonio Ortega Ruiz
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the Modified BSD License. You should
@@ -17,6 +17,7 @@
          mzlib/thread
          racket/tcp
          geiser
+         geiser/images
          geiser/enter
          geiser/eval
          geiser/modules)
@@ -50,21 +51,23 @@
 
 (define (geiser-eval)
   (define geiser-main (module->namespace 'geiser))
+  (define (eval-here form) (eval form geiser-main))
   (let* ([mod (read)]
          [lang (read)]
          [form (read)])
     (datum->syntax #f
                    (list 'quote
                          (cond [(equal? form '(unquote apply))
-                                (let* ([proc (eval (read) geiser-main)]
-                                       [args (read)])
-                                  (eval-in `(,proc ,@args) mod lang))]
+                                (let* ([proc (eval-here (read))]
+                                       [args (map eval-here (read))]
+                                       [ev (lambda () (apply proc args))])
+                                  (eval-in `(,ev) mod lang))]
                                [else ((geiser:eval lang) form mod)])))))
 
 (define ((geiser-read prompt))
   (prompt)
   (flush-output)
-  (let* ([in (current-input-port)]
+  (let* ([in ((current-get-interaction-input-port))]
 	 [form ((current-read-interaction) (object-name in) in)])
     (syntax-case form ()
       [(uq cmd) (eq? 'unquote (syntax-e #'uq))
@@ -74,6 +77,10 @@
          [(geiser-eval) (geiser-eval)]
          [(geiser-no-values) (datum->syntax #f (void))]
          [(add-to-load-path) (add-to-load-path (read))]
+         [(set-image-cache) (image-cache (read))]
+         [(image-cache) (image-cache)]
+         [(gcd) (current-directory)]
+         [(cd) (current-directory (read))]
          [else form])]
       [_ form])))
 
@@ -88,7 +95,8 @@
 (define (init-geiser-repl)
   (compile-enforce-module-constants #f)
   (current-load/use-compiled geiser-loader)
-  (current-prompt-read (geiser-prompt-read geiser-prompt)))
+  (current-prompt-read (geiser-prompt-read geiser-prompt))
+  (current-print maybe-print-image))
 
 (define (run-geiser-repl in out enforce-module-constants)
   (parameterize [(compile-enforce-module-constants enforce-module-constants)
@@ -96,23 +104,24 @@
                  (current-output-port out)
                  (current-error-port out)
                  (current-load/use-compiled geiser-loader)
-                 (current-prompt-read (geiser-prompt-read geiser-prompt))]
+                 (current-prompt-read (geiser-prompt-read geiser-prompt))
+                 (current-print maybe-print-image)]
     (read-eval-print-loop)))
 
 (define server-channel (make-channel))
 
-(define (run-geiser-server port enforce-module-constants)
+(define (run-geiser-server port enforce-module-constants (hostname #f))
   (run-server port
               (lambda (in out)
                 (run-geiser-repl in out enforce-module-constants))
               #f
               void
               (lambda (p _ __)
-                (let ([lsner (tcp-listen p)])
+                (let ([lsner (tcp-listen p 4 #f hostname)])
                   (let-values ([(_ p __ ___) (tcp-addresses lsner #t)])
                     (channel-put server-channel p)
                     lsner)))))
 
-(define (start-geiser (port 0) (enforce-module-constants #f))
-  (thread (lambda () (run-geiser-server port enforce-module-constants)))
+(define (start-geiser (port 0) (hostname #f) (enforce-module-constants #f))
+  (thread (lambda () (run-geiser-server port enforce-module-constants hostname)))
   (channel-get server-channel))

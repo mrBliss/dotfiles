@@ -1,6 +1,6 @@
 ;;; locations.rkt -- locating symbols
 
-;; Copyright (C) 2009, 2010 Jose Antonio Ortega Ruiz
+;; Copyright (C) 2009, 2010, 2012 Jose Antonio Ortega Ruiz
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the Modified BSD License. You should
@@ -29,10 +29,17 @@
           (module-path-index-resolve (car binding))))
         (cons sym #f))))
 
+(define (switch-extension path)
+  (if (regexp-match? "\\.rkt$" path)
+      (regexp-replace "\\.rkt$" path ".ss")
+      (regexp-replace "\\.ss$" path ".rkt")))
+
 (define (make-location name path line)
-  (list (cons "name" name)
-        (cons "file" (if (path? path) (path->string path) '()))
-        (cons "line" (or line '()))))
+  (let* ([path (if (path? path) (path->string path) #f)]
+         [path (and path (if (file-exists? path) path (switch-extension path)))])
+    (list (cons "name" name)
+          (cons "file" (or path '()))
+          (cons "line" (or line '())))))
 
 (define (symbol-location sym)
   (let* ([loc (symbol-location* sym)]

@@ -1,6 +1,6 @@
 ;; geiser-autodoc.el -- autodoc mode
 
-;; Copyright (C) 2009, 2010 Jose Antonio Ortega Ruiz
+;; Copyright (C) 2009, 2010, 2011 Jose Antonio Ortega Ruiz
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the Modified BSD License. You should
@@ -180,6 +180,12 @@ when `geiser-autodoc-display-module-p' is on."
   (and geiser-autodoc--inhibit-function
        (funcall geiser-autodoc--inhibit-function)))
 
+(defsubst geiser-autodoc--inhibit-autodoc ()
+  (setq geiser-autodoc--inhibit-function (lambda () t)))
+
+(defsubst geiser-autodoc--disinhibit-autodoc ()
+  (setq geiser-autodoc--inhibit-function nil))
+
 (defsubst geiser-autodoc--autodoc-at-point ()
   (geiser-autodoc--autodoc (geiser-syntax--scan-sexps)))
 
@@ -217,7 +223,7 @@ displayed in the minibuffer."
   (set (make-local-variable 'eldoc-minor-mode-string) nil)
   (set (make-local-variable 'eldoc-idle-delay) geiser-autodoc-delay)
   (eldoc-mode (if geiser-autodoc-mode 1 -1))
-  (when (interactive-p)
+  (when (called-interactively-p nil)
     (message "Geiser Autodoc %s"
              (if geiser-autodoc-mode "enabled" "disabled"))))
 

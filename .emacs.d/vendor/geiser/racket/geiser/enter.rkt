@@ -1,6 +1,6 @@
 ;;; enter.rkt -- custom module loaders
 
-;; Copyright (C) 2010 Jose Antonio Ortega Ruiz
+;; Copyright (C) 2010, 2012 Jose Antonio Ortega Ruiz
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the Modified BSD License. You should
@@ -18,6 +18,12 @@
 (provide get-namespace enter-module module-loader module-loaded?)
 
 (struct mod (name load-path timestamp depends))
+
+(define (make-mod name path ts code)
+  (let ([deps (if code
+                  (apply append (map cdr (module-compiled-imports code)))
+                  null)])
+    (mod name (path->string path) ts deps)))
 
 (define loaded (make-hash))
 
@@ -81,62 +87,59 @@
 
 (define ((enter-load/use-compiled orig re?) path name)
   (when (inhibit-eval)
-    (raise (make-exn:fail "namespace not found"
-                          (current-continuation-marks))))
-  (if name
+    (raise (make-exn:fail "namespace not found" (current-continuation-marks))))
+  (if (and name (or (not (list? name)) (car name))) ;; submodule names are lists
       ;; Module load:
-      (let ([code (get-module-code path "compiled" compile
-                                   (lambda (ext loader?)
-                                     (load-extension ext)
-                                     #f)
-                                   #:notify (lambda (chosen)
-                                              (notify re? chosen)))]
-            [path (normal-case-path
-                   (simplify-path
-                    (path->complete-path path
-                                         (or (current-load-relative-directory)
-                                             (current-directory)))))])
-        ;; Record module timestamp and dependencies:
-        (let ([m (mod name
-                      (path->string path)
-                      (get-timestamp path)
-                      (if code
-                          (apply append
-                                 (map cdr
-                                      (module-compiled-imports code)))
-                          null))])
-          (add-paths! m (resolve-paths path)))
-        ;; Evaluate the module:
-        (eval code))
+      (let* ([code (get-module-code
+                    path "compiled"
+                    (lambda (e)
+                      (parameterize ([compile-enforce-module-constants #f])
+                        (compile e)))
+                    (lambda (ext loader?) (load-extension ext) #f)
+                    #:notify (lambda (chosen) (notify re? chosen)))]
+             [dir (or (current-load-relative-directory) (current-directory))]
+             [path (path->complete-path path dir)]
+             [path (normal-case-path (simplify-path path))])
+        (define-values (ts real-path) (get-timestamp path))
+        (add-paths! (make-mod name path ts code) (resolve-paths path))
+        (parameterize ([current-module-declare-source real-path]) (eval code)))
       ;; Not a module:
-      (begin
-        (notify re? path)
-        (orig path name))))
+      (begin (notify re? path) (orig path name))))
+
 
 (define (get-timestamp path)
-  (file-or-directory-modify-seconds path #f (lambda () -inf.0)))
+  (let ([ts (file-or-directory-modify-seconds path #f (lambda () #f))])
+    (if ts
+        (values ts path)
+        (if (regexp-match? #rx#"[.]rkt$" (path->bytes path))
+            (let* ([alt-path (path-replace-suffix path #".ss")]
+                   [ts (file-or-directory-modify-seconds alt-path
+                                                         #f
+                                                         (lambda () #f))])
+              (if ts
+                  (values ts alt-path)
+                  (values -inf.0 path)))
+            (values -inf.0 path)))))
 
 (define (check-latest mod)
-  (let ([mpi (module-path-index-join mod #f)]
-        [done (make-hash)])
-    (let loop ([mpi mpi])
-      (let* ([rpath (module-path-index-resolve mpi)]
-             [path (resolved-module-path-name rpath)])
-        (when (path? path)
-	  (let ([path (normal-case-path path)])
-            (unless (hash-ref done path #f)
-              (hash-set! done path #t)
-              (let ([mod (hash-ref loaded path #f)])
-                (when mod
-                  (for-each loop (mod-depends mod))
-                  (let ([ts (get-timestamp path)])
-                    (when (ts . > . (mod-timestamp mod))
-                      (let ([orig (current-load/use-compiled)])
-                        (parameterize ([current-load/use-compiled
-                                        (enter-load/use-compiled orig #f)]
-                                       [current-module-declare-name rpath])
-                          ((enter-load/use-compiled orig #t)
-                           path
-                           (mod-name mod)))))))))))))))
-
-;;; enter.rkt ends here
+  (define mpi (module-path-index-join mod #f))
+  (define done (make-hash))
+  (let loop ([mpi mpi])
+    (define rpath (module-path-index-resolve mpi))
+    (define path (let ([p (resolved-module-path-name rpath)])
+                   (if (pair? p) (car p) p)))
+    (when (path? path)
+      (define npath (normal-case-path path))
+      (unless (hash-ref done npath #f)
+        (hash-set! done npath #t)
+        (define mod (hash-ref loaded npath #f))
+        (when mod
+          (for-each loop (mod-depends mod))
+          (define-values (ts actual-path) (get-timestamp npath))
+          (when (ts . > . (mod-timestamp mod))
+            (define orig (current-load/use-compiled))
+            (parameterize ([current-load/use-compiled
+                            (enter-load/use-compiled orig #f)]
+                           [current-module-declare-name rpath]
+                           [current-module-declare-source actual-path])
+              ((enter-load/use-compiled orig #t) npath (mod-name mod)))))))))

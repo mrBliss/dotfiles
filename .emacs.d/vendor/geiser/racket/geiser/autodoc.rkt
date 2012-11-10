@@ -1,6 +1,6 @@
 ;;; autodoc.rkt -- suport for autodoc echo
 
-;; Copyright (C) 2009, 2010 Jose Antonio Ortega Ruiz
+;; Copyright (C) 2009, 2010, 2011, 2012 Jose Antonio Ortega Ruiz
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the Modified BSD License. You should
@@ -102,9 +102,8 @@
     (dynamic-require mod id (const #f))))
 
 (define (autodoc ids)
-  (if (not (list? ids))
-      '()
-      (map (lambda (id) (or (autodoc* id) (list id))) ids)))
+  (map (lambda (id) (or (autodoc* id) (list id)))
+       (if (list? ids) ids '())))
 
 (define (autodoc* id (extra #t))
   (define (val)
@@ -200,6 +199,8 @@
       [`(define-syntax ,name (lambda ,_ (syntax-case ,_ . ,clauses)))
        (for-each (lambda (c) (add-syntax-signature! name (cdar c) store))
                  (reverse clauses))]
+      [`(define-type ,_ . ,cases)
+       (for-each (lambda (c) (add-signature! (car c) (cdr c) store)) cases)]
       [_ void])))
 
 (define (add-signature! name formals store)

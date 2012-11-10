@@ -23,5 +23,3 @@
 
 (define keyword->symbol (compose string->symbol keyword->string))
 (define (symbol->keyword sym) (string->keyword (format "~a" sym)))
-
-;;; utils.rkt ends here

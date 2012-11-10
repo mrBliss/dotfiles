@@ -71,11 +71,14 @@
 
 (define unknown-module-name "*unresolved module*")
 
+(define (unix-path->string path)
+  (regexp-replace* "\\\\" (path->string path) "/"))
+
 (define (module-path-name->name path)
-  (cond [(path? path) (module-path-name->name (path->string path))]
+  (cond [(path? path) (module-path-name->name (unix-path->string path))]
         ;; [(eq? path '#%kernel) "(kernel)"]
         [(string? path)
-         (let* ([cpaths (map (compose path->string path->directory-path)
+         (let* ([cpaths (map (compose unix-path->string path->directory-path)
                              (current-library-collection-paths))]
                 [prefix-len (lambda (p)
                               (let ((pl (string-length p)))
@@ -85,9 +88,9 @@
                 [lens (map prefix-len cpaths)]
                 [real-path (substring path (apply max lens))])
            (if (absolute-path? real-path)
-               (let-values ([(_ base __) (split-path path)])
-                 (path->string base))
-               (regexp-replace "\\.[^./]*$" real-path "")))]
+             (let-values ([(_ base __) (split-path path)])
+               (unix-path->string base))
+             (regexp-replace "\\.[^./]*$" real-path "")))]
         [(symbol? path) (symbol->string path)]
         [else unknown-module-name]))
 
@@ -116,16 +119,21 @@
     (lambda (_ basename __)
       (member (path->string basename) '(".svn" "compiled")))))
 
-(define path->symbol (compose string->symbol path->string))
+(define path->symbol (compose string->symbol unix-path->string))
 
 (define (path->entry path)
   (let ([ext (filename-extension path)])
     (and ext
          (or (bytes=? ext #"rkt") (bytes=? ext #"ss"))
          (not (bytes=? (bytes-append #"main" ext) (path->bytes path)))
-         (let* ([path (path->string path)]
+         (let* ([path (unix-path->string path)]
                 [len (- (string-length path) (bytes-length ext) 1)])
            (substring path 0 len)))))
+
+(define (ensure-path datum)
+  (if (string? datum)
+      (string->path datum)
+      datum))
 
 (define main-rkt (build-path "main.rkt"))
 (define main-ss (build-path "main.ss"))
@@ -144,7 +152,7 @@
     [(file) (let ([entry (path->entry path)])
               (if (not entry) acc (register entry path)))]
     [(dir) (cond [(skippable-dir? path) (values acc #f)]
-                 [(find-main path) => (curry register (path->string path))]
+                 [(find-main path) => (curry register (unix-path->string path))]
                  [else (values acc reg?)])]
     [else acc]))
 
@@ -175,7 +183,7 @@
        (let-values ([(dir base ign) (split-path path)])
          (and (or (equal? base main-rkt)
                   (equal? base main-ss))
-              (map (lambda (m) (path->string (build-path dir m)))
+              (map (lambda (m) (unix-path->string (build-path dir m)))
                    (remove "main" ((find-modules #f) dir '())))))))
 
 (define (known-modules)

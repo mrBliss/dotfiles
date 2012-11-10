@@ -60,7 +60,8 @@
                (lambda ()
                  (with-fluids ((*current-warning-port* (current-output-port))
                                (*current-warning-prefix* ""))
-                   (set! result (thunk)))))))
+                   (with-error-to-port (current-output-port)
+                     (lambda () (set! result (thunk)))))))))
     (write-result result output)))
 
 (define (ge:compile form module)

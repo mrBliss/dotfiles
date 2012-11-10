@@ -247,7 +247,8 @@ paragraph is filled. Optional arguments are only passed to
   "Add a Geiser completion source to the
 front of `ac-sources' for the current buffer."
   (interactive)
-  (setq ac-sources (add-to-list 'ac-sources 'ac-source-geiser)))
+  (setq ac-sources (add-to-list 'ac-sources 'ac-source-geiser))
+  (set-auto-complete-as-completion-at-point-function))
 
 (add-hook 'geiser-repl-mode-hook 'set-up-geiser-ac)
 (add-hook 'scheme-mode-hook 'set-up-geiser-ac)
@@ -255,6 +256,7 @@ front of `ac-sources' for the current buffer."
 
 ;; Enable auto-complete for Geiser
 (add-to-list 'ac-modes 'geiser-mode)
+(add-to-list 'ac-modes 'geiser-repl-mode)
 
 
 (provide 'custom-lisp)

@@ -1,6 +1,6 @@
 ;; geiser-racket.el -- geiser support for Racket scheme
 
-;; Copyright (C) 2009, 2010, 2011 Jose Antonio Ortega Ruiz
+;; Copyright (C) 2009, 2010, 2011, 2012 Jose Antonio Ortega Ruiz
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the Modified BSD License. You should
@@ -14,9 +14,11 @@
 (require 'geiser-edit)
 (require 'geiser-doc)
 (require 'geiser-eval)
+(require 'geiser-image)
 (require 'geiser-syntax)
 (require 'geiser-custom)
 (require 'geiser-base)
+(require 'geiser)
 
 
 ;;; Customization:
@@ -91,6 +93,25 @@ This function uses `geiser-racket-init-file' if it exists."
       "-f" ,(expand-file-name "geiser/startup.rkt" rackdir))))
 
 (defconst geiser-racket--prompt-regexp "\\(mzscheme\\|racket\\)@[^ ]*?> ")
+
+(defun geiser-racket--startup (remote)
+  (if geiser-image-cache-dir
+      (geiser-eval--send/wait
+       `(:eval (image-cache ,geiser-image-cache-dir) geiser/user))
+    (setq geiser-image-cache-dir
+          (geiser-eval--send/result '(:eval (image-cache) geiser/user)))))
+
+
+;;; Remote REPLs
+
+(defun connect-to-racket ()
+  "Start a Racket REPL connected to a remote process.
+
+The remote process needs to be running a REPL server started
+using start-geiser, a procedure in the geiser/server module."
+  (interactive)
+  (geiser-connect 'racket))
+
 
 
 ;;; Evaluation support:
@@ -213,13 +234,12 @@ This function uses `geiser-racket-init-file' if it exists."
   (when msg
     (let ((p (point)))
       (insert msg)
-      (when key
-        (let ((end (point)))
+      (let ((end (point)))
         (goto-char p)
-        (geiser-racket--purge-trace)
+        (when key (geiser-racket--purge-trace))
         (mapc 'geiser-edit--buttonize-files geiser-racket--file-rxs)
         (goto-char end)
-        (newline)))))
+        (newline))))
   (or key (not (zerop (length msg)))))
 
 
@@ -232,23 +252,53 @@ This function uses `geiser-racket-init-file' if it exists."
       (geiser-racket--explicit-module)))
 
 
-;;; Keywords
+;;; Keywords and syntax
 (defun geiser-racket--keywords ()
-  (cons '("^#lang\\>" . 0)
-        (when geiser-racket-extra-keywords
-          `((,(format "[[(]%s\\>" (regexp-opt geiser-racket-extra-keywords 1))
-             . 1)))))
+  (append '(("^#lang\\>" . 0)
+            ("\\[\\(else\\)\\>" . 1))
+          (when geiser-racket-extra-keywords
+            `((,(format "[[(]%s\\>" (regexp-opt geiser-racket-extra-keywords 1))
+               . 1)))))
 
-
-;;; Remote REPLs
-
-(defun connect-to-racket ()
-  "Start a Racket REPL connected to a remote process.
-
-The remote process needs to be running a REPL server started
-using start-geiser, a procedure in the geiser/server module."
-  (interactive)
-  (geiser-connect 'racket))
+(geiser-syntax--scheme-indent
+ (splicing-let 1)
+ (splicing-letrec 1)
+ (splicing-let-values 1)
+ (splicing-letrec-values 1)
+ (splicing-let-syntax 1)
+ (splicing-letrec-syntax 1)
+ (splicing-let-syntaxes 1)
+ (splicing-letrec-syntaxes 1)
+ (splicing-letrec-syntaxes+values 1)
+ (splicing-local 1)
+ (for 1)
+ (for/and 1)
+ (for/first 1)
+ (for/fold 2)
+ (for/hash 1)
+ (for/hasheq 1)
+ (for/hasheqv 1)
+ (for/last 1)
+ (for/list 1)
+ (for/lists 2)
+ (for/or 1)
+ (for/product 1)
+ (for/sum 1)
+ (for/vector 1)
+ (for* 1)
+ (for*/and 1)
+ (for*/first 1)
+ (for*/fold 2)
+ (for*/hash 1)
+ (for*/hasheq 1)
+ (for*/hasheqv 1)
+ (for*/last 1)
+ (for*/list 1)
+ (for*/lists 2)
+ (for*/or 1)
+ (for*/product 1)
+ (for*/sum 1)
+ (for*/vector 1))
 
 
 
@@ -258,6 +308,7 @@ using start-geiser, a procedure in the geiser/server module."
   (unsupported-procedures '(callers callees generic-methods))
   (binary geiser-racket--binary)
   (arglist geiser-racket--parameters)
+  (repl-startup geiser-racket--startup)
   (prompt-regexp geiser-racket--prompt-regexp)
   (marshall-procedure geiser-racket--geiser-procedure)
   (find-module geiser-racket--get-module)
