@@ -231,14 +231,13 @@
      (set-face-foreground 'magit-diff-add "green3")
      (set-face-foreground 'magit-diff-del "red3")))
 
-;; Wrap commit messages after 72 chars.
+
+(autoload 'git-commit-mode-magit-setup "git-commit-mode" nil t)
+
 (eval-after-load "magit"
-  '(progn
-     (defun magit-log-edit-mode-custom ()
-       (auto-fill-mode 1)
-       (setq fill-column 72))
-     (add-hook 'magit-log-edit-mode-hook
-               'magit-log-edit-mode-custom)))
+  '(add-hook 'magit-log-edit-mode-hook
+             'git-commit-mode-magit-setup))
+
 
 
 ;; Don't ask whether we want to kill the server
