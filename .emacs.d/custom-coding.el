@@ -173,6 +173,7 @@ rename."
 
 ;; LESS
 (autoload 'less-css-mode "less-css-mode" nil t)
+(add-to-list 'ac-modes 'less-css-mode)
 
 
 ;;##############################################################################
