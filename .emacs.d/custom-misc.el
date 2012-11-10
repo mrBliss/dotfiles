@@ -610,4 +610,8 @@ You can configure `comment-style' to change the way regions are commented."
 (global-set-key (kbd "C-c %") 'pyregexp-query-replace)
 
 
+;; Simple HTTP server
+(autoload 'httpd-start "simple-httpd" nil t)
+
+
 (provide 'custom-misc)
