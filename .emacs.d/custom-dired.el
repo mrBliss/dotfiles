@@ -143,9 +143,26 @@ command twice to go to the real end of the line."
         (dired-move-to-end-of-filename)
       (error (move-end-of-line nil)))))
 
+(defun dired-goto-first-item ()
+  "Go to the first item of a dired buffer."
+  (interactive)
+  (beginning-of-buffer)
+  (forward-line 2)
+  (dired-move-to-filename))
+
+(defun dired-goto-last-item ()
+  "Go to the last item of a dired buffer."
+  (interactive)
+  (end-of-buffer)
+  (forward-line -1)
+  (dired-move-to-filename))
+
 
 (define-key dired-mode-map (kbd "C-a") 'dired-move-beginning-of-line)
 (define-key dired-mode-map (kbd "C-e") 'dired-move-end-of-line)
+(define-key dired-mode-map (kbd "<") 'dired-goto-first-item)
+(define-key dired-mode-map (kbd ">") 'dired-goto-last-item)
+
 
 (eval-after-load "wdired"
   '(progn
