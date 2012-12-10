@@ -64,9 +64,6 @@
 (add-to-list 'ac-css-value-classes
              '(border-width "thin" "medium" "thick" "inherit"))
 
-;; Also use Semantic for completion
-(add-to-list 'ac-sources 'ac-source-semantic)
-
 ;; Don't complete numbers
 (defun ac-stop-word-p (word)
   (or (string-match "^[0-9]+$" word)

@@ -32,61 +32,6 @@
 ;; Please don't
 (setq flymake-gui-warnings-enabled nil)
 
-
-;; CEDET
-
-(defun only-semantic-for ()
-  (not (member major-mode '(c-mode c++-mode matlab-mode java-mode))))
-(setq semantic-inhibit-functions '(only-semantic-for))
-
-;; ;; Load everything
-(semantic-load-enable-excessive-code-helpers)
-
-;; Except for the annoying bits
-(global-semantic-stickyfunc-mode -1)
-(global-semantic-decoration-mode -1)
-(global-semantic-idle-completions-mode -1)
-(global-semantic-idle-local-symbol-highlight-mode -1)
-(setq semantic-imenu-bucketize-file nil)
-
-(require 'semantic-ia)
-(require 'semantic-gcc)
-
-(eval-after-load "semantic-mode"
-  ;; Don't overline function definitions
-  '(set-face-attribute 'semantic-tag-boundary-face
-                       nil
-                       :overline nil))
-
-;; Fixes
-(require 'eieio-opt)
-(unless (boundp 'x-max-tooltip-size)
-  (setq x-max-tooltip-size '(80 . 40)))
-
-;; ECB
-(require 'ecb)
-
-
-(setq ecb-tip-of-the-day nil
-      ecb-layout-name "left3"
-      ;; Discrete compilation window
-      ecb-compile-window-temporally-enlarge 'both
-      ecb-enlarged-compilation-window-max-height 'best
-      ecb-compile-window-height 5)
-
-(push (expand-file-name "~/.emacs.d/vendor/ecb/doc") Info-directory-list)
-
-(defun selected-frame-has-ecb ()
-  "Return t when the selected frame contains a window displaying
-a buffer related to ECB."
-  (when (or (null ecb-frame) (frame-live-p ecb-frame))
-    (let ((f (selected-frame)))
-      (some (lambda (ecb-buffer)
-              (let ((w (get-buffer-window ecb-buffer)))
-                (when w (eq f (window-frame w)))))
-            (ecb-get-current-visible-ecb-buffers)))))
-
-
 ;;##############################################################################
 ;; C
 
@@ -122,11 +67,8 @@ rename."
   (define-key c-mode-map (kbd "M-N") 'flymake-goto-next-error)
   (define-key c-mode-map (kbd "M-P") 'flymake-goto-prev-error)
   (define-key c-mode-map (kbd "M-R") 'c-rename-variable)
-  (define-key c-mode-map (kbd "M-.") 'semantic-complete-jump)
-  (define-key c-mode-map (kbd "M-,") 'semantic-mrub-switch-tags)
   (push 'ac-source-clang ac-sources)
-  (push 'ac-source-yasnippet ac-sources)
-  (push 'ac-source-semantic ac-sources))
+  (push 'ac-source-yasnippet ac-sources))
 (add-hook 'c-mode-hook 'c-mode-customisations)
 
 ;; Indentation
@@ -224,8 +166,6 @@ rename."
 ;; java-mode rebinds C-M-h to something else than backward-kill-word
 (defun java-custom ()
   (define-key java-mode-map (kbd "C-M-h") 'backward-kill-word)
-  (define-key java-mode-map (kbd "M-.") 'semantic-complete-jump)
-  (define-key java-mode-map (kbd "M-,") 'semantic-mrub-switch-tags)
   (setq tab-width 4)
   (when (version< "24.1.1" emacs-version)
     ;; Treat Java 1.5 @-style annotations as comments
@@ -386,9 +326,7 @@ rename."
 ;; Matlab
 
 (require 'matlab-load)
-(matlab-cedet-setup)
 (when (eq system-type 'darwin)
-  (setq semantic-matlab-root-directory "/Applications/MATLAB_R2011b.app/")
   (setq matlab-shell-command "/Applications/MATLAB_R2011b.app/bin/matlab"))
 
 (add-to-list 'ac-modes 'matlab-mode)
