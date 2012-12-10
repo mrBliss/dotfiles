@@ -395,13 +395,6 @@ rename."
 
 
 ;;##############################################################################
-;; NuSMV
-
-(autoload 'nusmv-mode "nusmv-mode" "Major mode for NuSMV specification files." t)
-(add-to-list 'auto-mode-alist '("\\.smv$" . nusmv-mode))
-
-
-;;##############################################################################
 ;; Octave
 
 (setq inferior-octave-program
