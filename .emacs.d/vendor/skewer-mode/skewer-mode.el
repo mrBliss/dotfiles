@@ -4,7 +4,7 @@
 
 ;; Author: Christopher Wellons <mosquitopsu@gmail.com>
 ;; URL: https://github.com/skeeto/skewer-mode
-;; Version: 1.0
+;; Version: 1.1
 ;; Package-Requires: ((simple-httpd "1.2.4") (js2-mode "20090723"))
 
 ;;; Commentary:
@@ -49,6 +49,14 @@
 ;; To work around the same origin policy, skewer can also be a proxy for
 ;; another site, where it will automatically inject it's own HTML. This
 ;; is experimental and a bit flaky right now. See skewer-proxy.el.
+
+;;; History:
+
+;; Version 1.1: features and fixes
+;;   * Added `list-skewer-clients'
+;;   * Reduce the number of HTTP requests needed
+;;   * Fix stringification issues
+;; Version 1.0: initial release
 
 ;;; Code:
 
@@ -129,21 +137,26 @@ trust. These whitelisted functions are considered safe.")
   (skewer-clients-mode)
   (tabulated-list-print))
 
+(defun skewer-queue-client (proc req)
+  "Add a client to the queue, given the HTTP header."
+  (let ((agent (second (assoc "User-Agent" req))))
+    (push (make-skewer-client :proc proc :agent agent) skewer-clients))
+  (skewer-process-queue))
+
 ;; Servlets
 
 (defservlet skewer text/javascript ()
   (insert-file-contents (expand-file-name "skewer.js" skewer-data-root)))
 
 (defun httpd/skewer/get (proc path query req &rest args)
-  (let ((agent (second (assoc "User-Agent" req))))
-    (push (make-skewer-client :proc proc :agent agent) skewer-clients))
-  (skewer-process-queue))
+  (skewer-queue-client proc req))
 
-(defservlet skewer/post text/plain (path args req)
+(defun httpd/skewer/post (proc path query req &rest args)
   (let* ((result (json-read-from-string (cadr (assoc "Content" req))))
          (callback (intern-soft (cdr (assoc 'callback result)))))
     (when (and callback (member callback skewer-callbacks))
-      (funcall callback result))))
+      (funcall callback result))
+    (skewer-queue-client proc req)))
 
 (defservlet skewer/demo text/html ()
   (insert-file-contents (expand-file-name "example.html" skewer-data-root)))
@@ -173,7 +186,11 @@ trust. These whitelisted functions are considered safe.")
 (defun skewer-post-minibuffer (result)
   "Report results in the minibuffer or the error buffer."
   (if (skewer-success-p result)
-      (message "%s" (cdr (assoc 'value result)))
+      (let ((value (cdr (assoc 'value result)))
+            (time (cdr (assoc 'time result))))
+        (if (> time 1.0)
+            (message "%s (%.3f seconds)" value time)
+          (message "%s" value)))
     (with-current-buffer (pop-to-buffer (get-buffer-create "*skewer-error*"))
       (let ((inhibit-read-only t)
             (error (cdr (assoc 'error result))))
@@ -218,6 +235,12 @@ string. The callback function must be listed in `skewer-callbacks'."
                                                    (js2-node-abs-end node))))
         (and (member code stricts) t)))))
 
+(defun skewer-flash-region (start end &optional timeout)
+  "Temporarily highlight region from START to END."
+  (let ((overlay (make-overlay start end)))
+    (overlay-put overlay 'face 'secondary-selection)
+    (run-with-timer (or timeout 0.2) nil 'delete-overlay overlay)))
+
 (defun skewer-eval-last-expression ()
   "Evaluate the JavaScript expression before the point in the
 waiting browser."
@@ -234,8 +257,7 @@ waiting browser."
           (error "no expression found"))
         (let ((start (js2-node-abs-pos node))
               (end (js2-node-abs-end node)))
-          (when (fboundp 'slime-flash-region)
-            (slime-flash-region start end))
+          (skewer-flash-region start end)
           (skewer-eval (buffer-substring-no-properties start end)
                        #'skewer-post-minibuffer))))))
 
@@ -256,8 +278,7 @@ waiting browser."
           (setf node (js2-node-parent node)))
         (let ((start (js2-node-abs-pos node))
               (end (js2-node-abs-end node)))
-          (when (fboundp 'slime-flash-region)
-            (slime-flash-region start end))
+          (skewer-flash-region start end)
           (skewer-eval (buffer-substring-no-properties start end)
                        #'skewer-post-minibuffer))))))
 

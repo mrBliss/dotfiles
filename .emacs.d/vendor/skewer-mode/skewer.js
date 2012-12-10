@@ -1,7 +1,7 @@
 /**
  * @fileOverview Live browser interaction with Emacs
  * @requires jQuery
- * @version 1.0
+ * @version 1.1
  */
 
 /**
@@ -10,10 +10,14 @@
  * @namespace Holds all of Skewer's functionality.
  */
 function skewer() {
-    $.get(skewer.host + "/skewer/get", function (str) {
-        var request = JSON.parse(str);
-        var result = {type: "eval", id: request.id,
-                      callback: request.callback, strict: request.strict};
+    function callback(request) {
+        var result = {
+            type: "eval",
+            id: request.id,
+            callback: request.callback,
+            strict: request.strict
+        };
+        var start = new Date();
         try {
             var prefix = request.strict ? '"use strict";\n' : "";
             var value = (eval, eval)(prefix + request.eval); // global eval
@@ -26,8 +30,11 @@ function skewer() {
                             "type": error.type, "message": error.message,
                             "eval": request.eval};
         }
-        $.post(skewer.host + "/skewer/post", JSON.stringify(result), skewer);
-    }, "text");
+        result.time = (new Date() - start) / 1000;
+        result = JSON.stringify(result);
+        $.post(skewer.host + "/skewer/post", result, callback, 'json');
+    };
+    $.get(skewer.host + "/skewer/get", callback, 'json');
 }
 
 /**
@@ -90,7 +97,11 @@ skewer.safeStringify = function (object, verbose) {
                 }
                 return "{" + pairs.join(',') + "}";
             } else {
-                return "Object";
+                try {
+                    return obj.toString();
+                } catch (error) {
+                    return ({}).toString();
+                }
             }
         }
     };
