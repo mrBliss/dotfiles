@@ -387,14 +387,6 @@ rename."
 
 
 ;;##############################################################################
-;; ML
-
-(load-file "~/.emacs.d/vendor/sml-mode/sml-mode-startup.el")
-
-;; Add sml-mode Info directory
-(push (expand-file-name "~/.emacs.d/vendor/sml-mode") Info-directory-list)
-
-;;##############################################################################
 ;; NuSMV
 
 (autoload 'nusmv-mode "nusmv-mode" "Major mode for NuSMV specification files." t)
