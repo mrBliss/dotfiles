@@ -190,6 +190,24 @@ rename."
     (add-hook 'after-save-hook 'auto-reload-firefox t t)
     (message "Enabled auto-reloading")))
 
+
+;;##############################################################################
+;; Erlang
+
+(require 'erlang-start)
+
+(add-to-list 'auto-mode-alist '("\\.erl?$" . erlang-mode))
+(add-to-list 'auto-mode-alist '("\\.hrl?$" . erlang-mode))
+
+(eval-after-load "erlang-mode"
+  '(progn
+     (setq erlang-root-dir "/usr/lib/erlang")
+     ;; (add-to-list 'exec-path "/usr/lib/erlang/bin")
+     (setq erlang-man-root-dir "/usr/lib/erlang/man")
+     (define-key erlang-mode-map (kbd "M-N") 'flymake-goto-next-error)
+     (define-key erlang-mode-map (kbd "M-P") 'flymake-goto-prev-error)))
+
+
 ;;##############################################################################
 ;; Java
 
