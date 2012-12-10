@@ -234,13 +234,6 @@ putting it in parentheses."
 (pretty-control-l-mode 1)
 
 
-;; Show scrollbar like position indicator in mode line
-;; (require 'sml-modeline)
-;; (sml-modeline-mode 1)
-;; (setq sml-modeline-len 8
-;;       sml-modeline-borders nil)
-
-
 ;; Proper colors in tmux
 (defun terminal-init-screen ()
   "Terminal initialization function for screen."
