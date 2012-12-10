@@ -2,7 +2,7 @@
 HISTFILE=$HOME/.zsh_history
 HISTFILESIZE=1000000
 HISTSIZE=1000000
-HISTCONTROL="ignoredups"
+HISTCONTROL="ignoredups:ignorespace"
 SAVEHIST=1000000
 
 unsetopt hist_beep
@@ -15,4 +15,3 @@ setopt inc_append_history
 setopt hist_verify
 setopt share_history
 setopt hist_fcntl_lock
-
