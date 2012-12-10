@@ -25,7 +25,7 @@
                            (buffer-string))))
       (if (string-match "\\.m:\\([0-9]+\\):" compilation-output)
           (progn
-            (goto-line (string-to-int (match-string 1 compilation-output)))
+            (goto-line (string-to-number (match-string 1 compilation-output)))
             (message compilation-output))
         (message "Successfully compiled.")))
     (kill-buffer compilation-buffer)))

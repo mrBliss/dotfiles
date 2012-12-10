@@ -43,7 +43,7 @@ will be shortened to \"~\"."
          (numbers (mapcar (lambda (buf)
                             (let ((s (buffer-name buf)))
                               (string-match "\\\*shell-\\([0-9]+\\)|.+" s)
-                              (string-to-int (match-string 1 s))))
+                              (string-to-number (match-string 1 s))))
                           shell-buffers))
          (new-n (1+ (reduce #'max numbers :initial-value 0))))
     (with-current-buffer ad-return-value
