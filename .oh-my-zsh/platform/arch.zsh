@@ -66,3 +66,19 @@ alias updb="sudo updatedb --database-root='/home/thomas' --prunepaths='/home/tho
 
 # Let qtconfig detect the GTK+ theme
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
+
+# No readline for Node.js
+export NODE_NO_READLINE=1
+
+
+
+# Open a YouTube video in SMPlayer
+yt() {
+    if test -z $1; then
+	echo "Usage: yt <YouTube video URL>"
+	echo "Plays a YouTube video in SMPlayer at the highest"
+	echo "available resolution up to 1080p."
+    else
+	nohup smplayer "`yturl $1 37`" 2>&1 > /dev/null &
+    fi
+}
