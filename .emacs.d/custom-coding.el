@@ -449,6 +449,45 @@ rename."
 
 
 ;;##############################################################################
+;; Ruby
+
+(autoload 'ruby-mode "ruby-mode" "Major mode for ruby files" t)
+(autoload 'ruby-electric-mode "ruby-electric" nil t)
+(autoload 'inf-ruby "inf-ruby" "Run an inferior Ruby process" t)
+(autoload 'inf-ruby-setup-keybindings "inf-ruby" "" t)
+
+(defun ruby-interpolate ()
+  "In a double quoted string, interpolate."
+  (interactive)
+  (insert "#")
+  (when (and
+         (looking-back "\".*")
+         (looking-at ".*\""))
+    (insert "{}")
+    (backward-char 1)))
+
+(defun ruby-insert-end ()
+  (interactive)
+  (insert "end")
+  (ruby-indent-line t)
+  (end-of-line))
+
+(eval-after-load 'ruby-mode
+  '(progn
+     (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
+     (define-key ruby-mode-map (kbd "#") 'ruby-interpolate)
+     (add-hook 'ruby-mode-hook 'inf-ruby-setup-keybindings)
+     (add-hook 'ruby-mode-hook 'ruby-electric-mode)))
+
+(eval-after-load 'inf-ruby-mode
+  '(progn
+     (define-key inf-ruby-mode-map (kbd "C-c C-l") 'clear-shell)))
+
+;; Is ruby-electric-mode loaded?
+
+
+
+;;##############################################################################
 ;; Scala
 
 
