@@ -40,7 +40,7 @@
 (defcustom haskell-interactive-mode-eval-mode
   nil
   "Use the given mode's font-locking to render some text."
-  :type 'boolean
+  :type '(choice function (const :tag "None" nil))
   :group 'haskell)
 
 (defvar haskell-interactive-greetings
@@ -53,7 +53,10 @@
 
 ;;;###autoload
 (defun haskell-interactive-mode (session)
-  "Interactive mode for Haskell."
+  "Interactive mode for Haskell.
+
+Key bindings:
+\\{haskell-interactive-mode-map}"
   (interactive)
   (kill-all-local-variables)
   (haskell-session-assign session)
@@ -155,28 +158,28 @@
         (goto-char (point-max))
         (haskell-process-queue-command
          process
-         (haskell-command-make
-          (list session process expr 0)
-          (lambda (state)
-            (haskell-process-send-string (cadr state)
-                                         (caddr state)))
-          (lambda (state buffer)
-            (unless (string= ":q" (caddr state))
-              (let* ((cursor (cadddr state))
-                     (next (replace-regexp-in-string
-                            haskell-process-prompt-regex
-                            "\n"
-                            (substring buffer cursor))))
-                (when (= 0 cursor) (insert "\n"))
-                (haskell-interactive-mode-eval-result (car state) next)
-                (setf (cdddr state) (list (length buffer)))
-                nil)))
-          (lambda (state response)
-            (if haskell-interactive-mode-eval-mode
-                (haskell-interactive-mode-eval-as-mode (car state) response)
-              (when haskell-interactive-mode-eval-pretty
-                (haskell-interactive-mode-eval-pretty-result (car state) response)))
-            (haskell-interactive-mode-prompt (car state)))))))))
+         (make-haskell-command
+          :state (list session process expr 0)
+          :go (lambda (state)
+                (haskell-process-send-string (cadr state)
+                                             (caddr state)))
+          :live (lambda (state buffer)
+                  (unless (string= ":q" (caddr state))
+                    (let* ((cursor (cadddr state))
+                           (next (replace-regexp-in-string
+                                  haskell-process-prompt-regex
+                                  "\n"
+                                  (substring buffer cursor))))
+                      (when (= 0 cursor) (insert "\n"))
+                      (haskell-interactive-mode-eval-result (car state) next)
+                      (setf (cdddr state) (list (length buffer)))
+                      nil)))
+          :complete (lambda (state response)
+                      (if haskell-interactive-mode-eval-mode
+                          (haskell-interactive-mode-eval-as-mode (car state) response)
+                        (when haskell-interactive-mode-eval-pretty
+                          (haskell-interactive-mode-eval-pretty-result (car state) response)))
+                      (haskell-interactive-mode-prompt (car state)))))))))
 
 (defun haskell-interactive-jump-to-error-line ()
   "Jump to the error line."
@@ -191,25 +194,26 @@
                   (src-path (haskell-session-current-dir session))
                   (cabal-relative-file (concat cabal-path "/" file))
                   (src-relative-file (concat src-path "/" file))
-                  (cabal-relative-file-rel (concat cabal-path "/" 
+                  (cabal-relative-file-rel (concat cabal-path "/"
                                                    (file-relative-name file
                                                                        cabal-path)))
-                  (src-relative-file-rel (concat src-path "/" 
+                  (src-relative-file-rel (concat src-path "/"
                                                  (file-relative-name file
                                                                      src-path))))
              (let ((file (cond ((file-exists-p cabal-relative-file)
                                 cabal-relative-file)
-                               ((file-exists-p src-relative-file) 
+                               ((file-exists-p src-relative-file)
                                 src-relative-file)
-                               ((file-exists-p src-relative-file-rel) 
+                               ((file-exists-p src-relative-file-rel)
                                 src-relative-file)
-                               ((file-exists-p cabal-relative-file-rel) 
+                               ((file-exists-p cabal-relative-file-rel)
                                 cabal-relative-file))))
                (when file
                  (other-window 1)
                  (find-file file)
                  (haskell-interactive-bring)
-                 (goto-line (string-to-number line))
+                 (goto-char (point-min))
+                 (forward-line (1- (string-to-number line)))
                  (goto-char (+ (point) (string-to-number col)))
                  (haskell-mode-message-line orig-line)
                  t)))))))
@@ -228,7 +232,7 @@
     (let ((inhibit-read-only t))
       (set-text-properties (point-min) (point-max) nil))
     (delete-region (point-min) (point-max))
-    (mapcar 'delete-overlay (overlays-in (point-min) (point-max)))
+    (mapc 'delete-overlay (overlays-in (point-min) (point-max)))
     (haskell-interactive-mode-prompt (haskell-session))))
 
 (defun haskell-interactive-mode-input ()
@@ -252,7 +256,7 @@
                         'prompt t))))
 
 (defun haskell-interactive-mode-eval-result (session text)
-  "Insert the result of an eval as plain text"
+  "Insert the result of an eval as plain text."
   (with-current-buffer (haskell-session-interactive-buffer session)
     (goto-char (point-max))
     (insert (propertize text
@@ -404,7 +408,7 @@
 (defun haskell-interactive-mode-tab ()
   "The tab command."
   (interactive)
-  (cond 
+  (cond
    ((get-text-property (point) 'collapsible)
     (let ((column (current-column)))
       (search-backward-regexp "^[^ ]")
@@ -445,7 +449,7 @@
   (with-current-buffer (haskell-session-interactive-buffer (haskell-session))
     (if (progn (goto-char (line-beginning-position))
                (looking-at "^[^:]+:[0-9]+:[0-9]+: "))
-        (progn (previous-line)
+        (progn (forward-line -1)
                (haskell-interactive-jump-to-error-line))
       (progn (goto-char (point-max))
              (haskell-interactive-mode-error-backward)
@@ -458,3 +462,5 @@
     (goto-char (point-max))))
 
 (provide 'haskell-interactive-mode)
+
+;;; haskell-interactive-mode.el ends here

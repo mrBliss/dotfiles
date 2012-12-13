@@ -69,7 +69,7 @@
 ;;
 ;; This mode is based on an editing mode by Simon Marlow 11/1/92
 ;; and heavily modified by Graeme E Moss and Tommy Thorn 7/11/98.
-;; 
+;;
 ;; If you have any problems or suggestions specific to a supported
 ;; module, consult that module for a list of known bugs, and an
 ;; author to contact via email.  For general problems or suggestions,
@@ -143,7 +143,7 @@
 ;;   Altered indent-line-function to indent-relative.
 ;;
 ;; Version 0.100:
-;; 
+;;
 ;;   First official release.
 
 ;; Present Limitations/Future Work (contributions are most welcome!):
@@ -176,8 +176,7 @@
 
 ;; Set load-path
 ;;;###autoload
-(add-to-list 'load-path
-             (or (file-name-directory load-file-name) (car load-path)))
+(when load-file-name (add-to-list 'load-path (file-name-directory load-file-name)))
 
 ;; Set up autoloads for the modules we supply
 (autoload 'turn-on-haskell-decl-scan "haskell-decl-scan"
@@ -195,6 +194,7 @@
 (autoload 'haskell-ds-create-imenu-index "haskell-decl-scan")
 (autoload 'haskell-font-lock-choose-keywords "haskell-font-lock")
 (autoload 'haskell-doc-current-info "haskell-doc")
+(autoload 'haskell-process-generate-tags "haskell-process")
 
 ;; Obsolete functions.
 (defun turn-on-haskell-font-lock ()
@@ -325,7 +325,7 @@ be set to the preferred literate style."
 	       (modify-syntax-entry i "_" table))
 	     (setq i (1+ i)))))
        (standard-syntax-table)))
-    
+
     (modify-syntax-entry ?\` "$`" table)
     (modify-syntax-entry ?\\ "\\" table)
     (mapc (lambda (x)
@@ -431,7 +431,7 @@ CONFIGURING INDENTATION
       link below), or
 
    3) some people prefer to add custom hooks like the below:
- 
+
       (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
   In order to test each one after enabling you can re-run M-x
@@ -454,9 +454,13 @@ CONFIGURING INDENTATION
 
 (defvar eldoc-print-current-symbol-info-function)
 
+;; For compatibility with Emacs < 24, derive conditionally
+(defalias 'haskell-parent-mode
+  (if (fboundp 'prog-mode) 'prog-mode 'fundamental-mode))
+
 ;; The main mode functions
 ;;;###autoload
-(define-derived-mode haskell-mode fundamental-mode "Haskell"
+(define-derived-mode haskell-mode haskell-parent-mode "Haskell"
   "Major mode for editing Haskell programs.
 Blank lines separate paragraphs, comments start with `-- '.
 \\<haskell-mode-map>
@@ -530,7 +534,12 @@ Invokes `haskell-mode-hook'."
   (set (make-local-variable 'dabbrev-case-distinction) nil)
   (set (make-local-variable 'dabbrev-case-replace) nil)
   (set (make-local-variable 'dabbrev-abbrev-char-regexp) "\\sw\\|[.]")
-  (setq haskell-literate nil))
+  (setq haskell-literate nil)
+  (make-local-variable 'before-save-hook)
+  (add-hook 'before-save-hook 'haskell-mode-before-save-handler)
+  (make-local-variable 'after-save-hook)
+  (add-hook 'after-save-hook 'haskell-mode-after-save-handler)
+  )
 
 (defun haskell-fill-paragraph (justify)
   (save-excursion
@@ -659,14 +668,12 @@ If nil, use the Hoogle web-site."
 		 (string :tag "Other command")))
 
 (defcustom haskell-stylish-on-save nil
-  "Whether to run stylish-haskell on the buffer before
-saving. Needs 'haskell-mode-save-buffer to be bound for C-x C-s."
+  "Whether to run stylish-haskell on the buffer before saving."
   :group 'haskell
   :type 'boolean)
 
 (defcustom haskell-tags-on-save nil
-  "Generate tags via hasktags on save. Needs
-'haskell-mode-save-buffer to be bound for C-x C-s."
+  "Generate tags via hasktags after saving."
   :group 'haskell
   :type 'boolean)
 
@@ -753,17 +760,18 @@ This function will be called with no arguments.")
            (haskell-process-do-try-info ident)))
         (t (insert " "))))
 
-(defun haskell-mode-save-buffer ()
-  "Save the current buffer."
-  (interactive)
-  (let ((modified (buffer-modified-p)))
-    (save-buffer)
-    (when haskell-stylish-on-save
-      (haskell-mode-stylish-buffer))
-    (save-buffer)
-    (when modified
-      (when haskell-tags-on-save
-        (haskell-process-generate-tags)))))
+(defun haskell-mode-before-save-handler ()
+  "Function that will be called before buffer's saving."
+  )
+
+(defun haskell-mode-after-save-handler ()
+  "Function that will be called after buffer's saving."
+  (when haskell-tags-on-save
+    (ignore-errors (haskell-process-generate-tags)))
+  (when haskell-stylish-on-save
+    (ignore-errors (haskell-mode-stylish-buffer)))
+  (set-buffer-modified-p nil)
+  )
 
 (defun haskell-mode-buffer-apply-command (cmd)
   "Execute shell command CMD with current buffer as input and
@@ -787,7 +795,7 @@ This function will be called with no arguments.")
 (defun haskell-mode-stylish-buffer ()
   "Apply stylish-haskell to the current buffer."
   (interactive)
-  (let ((column (current-column)) 
+  (let ((column (current-column))
         (line (line-number-at-pos)))
     (haskell-mode-buffer-apply-command "stylish-haskell")
     (goto-line line)
