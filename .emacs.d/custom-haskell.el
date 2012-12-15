@@ -19,7 +19,7 @@
 (add-to-list 'ac-modes 'haskell-mode)
 
 ;; Pretty unicode symbols (messes up indentation for other people)
-(setq haskell-font-lock-symbols t)
+(setq haskell-font-lock-symbols nil)
 
 ;; Rebuild TAGS on save
 (setq haskell-tags-on-save t)
