@@ -106,11 +106,6 @@ is looked at."
   (define-key haskell-mode-map (kbd "C-c C-,") 'haskell-indent-insert-comma)
   (define-key haskell-mode-map (kbd "C-c C-a") 'haskell-next-argument)
   (define-key haskell-mode-map (kbd "C-c C-n") 'haskell-implement-or-next-case)
-  (define-key haskell-mode-map (kbd "C-x C-s")
-    (lambda () (interactive)
-      (if (buffer-modified-p)
-          (call-interactively 'haskell-mode-save-buffer)
-        (flymake-start-syntax-check))))
   (flymake-mode 1))
 
 (add-hook 'haskell-mode-hook 'haskell-hook)
