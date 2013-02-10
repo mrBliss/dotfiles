@@ -215,7 +215,7 @@ paragraph is filled. Optional arguments are only passed to
              "/localhost/packages/racket/current/bin/racket")))
 
 ;; Add Geiser's info file
-(push (expand-file-name (concat vendor-dir "/geiser/doc"))
+(push (expand-file-name (concat vendor-dir "/geiser"))
       Info-directory-list)
 
 

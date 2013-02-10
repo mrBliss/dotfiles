@@ -66,7 +66,8 @@
 
 (define ((geiser-read prompt))
   (prompt)
-  (flush-output)
+  (flush-output (current-error-port))
+  (flush-output (current-output-port))
   (let* ([in ((current-get-interaction-input-port))]
 	 [form ((current-read-interaction) (object-name in) in)])
     (syntax-case form ()

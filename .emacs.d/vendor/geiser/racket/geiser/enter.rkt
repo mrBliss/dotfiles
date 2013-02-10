@@ -39,10 +39,6 @@
 (define (module-loader orig)
   (enter-load/use-compiled orig #f))
 
-(define (notify re? path)
-  (when re?
-    (fprintf (current-error-port) " [re-loading ~a]\n" path)))
-
 (define inhibit-eval (make-parameter #f))
 
 (define (get-namespace mod)
@@ -85,10 +81,14 @@
   (let ([cmps (explode-path path)])
     (find (car cmps) (cdr cmps))))
 
+(define (notify re? path)
+  (when re? (fprintf (current-error-port) " [re-loading ~a]\n" path)))
+
 (define ((enter-load/use-compiled orig re?) path name)
   (when (inhibit-eval)
     (raise (make-exn:fail "namespace not found" (current-continuation-marks))))
-  (if (and name (or (not (list? name)) (car name))) ;; submodule names are lists
+  ;; (printf "Loading ~s: ~s~%" name path)
+  (if (and name (not (list? name)))
       ;; Module load:
       (let* ([code (get-module-code
                     path "compiled"
@@ -106,7 +106,6 @@
       ;; Not a module:
       (begin (notify re? path) (orig path name))))
 
-
 (define (get-timestamp path)
   (let ([ts (file-or-directory-modify-seconds path #f (lambda () #f))])
     (if ts
@@ -120,6 +119,8 @@
                   (values ts alt-path)
                   (values -inf.0 path)))
             (values -inf.0 path)))))
+
+(define orig (current-load/use-compiled))
 
 (define (check-latest mod)
   (define mpi (module-path-index-join mod #f))

@@ -1,6 +1,6 @@
 ;;; completion.scm -- completing known symbols and module names
 
-;; Copyright (C) 2009 Jose Antonio Ortega Ruiz
+;; Copyright (C) 2009, 2012 Jose Antonio Ortega Ruiz
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the Modified BSD License. You should
@@ -25,5 +25,3 @@
          (matcher (lambda (s) (string-match prefix s)))
          (names (filter matcher (all-modules))))
     (sort! names string<?)))
-
-;;; completion.scm ends here

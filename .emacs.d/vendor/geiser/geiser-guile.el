@@ -237,11 +237,23 @@ This function uses `geiser-guile-init-file' if it exists."
     (re-search-forward geiser-guile--guess-re nil t)))
 
 
-;;; Keywords
+;;; Keywords and syntax
+
 (defun geiser-guile--keywords ()
   (when geiser-guile-extra-keywords
     `((,(format "[[(]%s\\>" (regexp-opt geiser-guile-extra-keywords 1))
        . 1))))
+
+(geiser-syntax--scheme-indent
+ (c-declare 0)
+ (c-lambda 2)
+ (pmatch defun)
+ (sigaction 1)
+ (with-fluid* 1)
+ (with-fluids 1)
+ (with-fluids* 1)
+ (with-method 1))
+
 
 
 ;;; Compilation shell regexps

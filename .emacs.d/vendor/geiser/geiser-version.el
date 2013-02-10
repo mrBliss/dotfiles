@@ -9,7 +9,7 @@
 
 
 
-(defvar geiser-version-string "Geiser 0.2.2"
+(defvar geiser-version-string "Geiser 0.3"
   "Geiser's version as a string.")
 
 (defun geiser-version ()
