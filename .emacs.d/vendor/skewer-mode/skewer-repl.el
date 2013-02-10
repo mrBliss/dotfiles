@@ -41,10 +41,8 @@
   :syntax-table emacs-lisp-mode-syntax-table
   (setq comint-prompt-regexp (concat "^" (regexp-quote skewer-repl-prompt)))
   (setq comint-input-sender 'skewer-input-sender)
-  (add-to-list 'skewer-callbacks 'skewer-post-repl)
-  (add-to-list 'skewer-callbacks 'skewer-post-log)
   (unless (comint-check-proc (current-buffer))
-    (start-process "ielm" (current-buffer) "hexl")
+    (start-process "skewer-repl" (current-buffer) nil)
     (set-process-query-on-exit-flag (skewer-repl-process) nil)
     (goto-char (point-max))
     (set (make-local-variable 'comint-inhibit-carriage-motion) t)
@@ -90,13 +88,26 @@
           (insert (concat "\n" output "")))))))
 
 ;;;###autoload
+(defun skewer-repl--response-hook (response)
+  "Catches all browser messages logging some to the REPL."
+  (let ((type (cdr (assoc 'type response))))
+    (when (member type '("log" "error"))
+      (skewer-post-log response))))
+
+;;;###autoload
 (defun skewer-repl ()
   "Start a JavaScript REPL to be evaluated in the visiting browser."
   (interactive)
   (when (not (get-buffer "*skewer-repl*"))
     (with-current-buffer (get-buffer-create "*skewer-repl*")
       (skewer-repl-mode)))
-  (switch-to-buffer (get-buffer "*skewer-repl*")))
+  (pop-to-buffer (get-buffer "*skewer-repl*")))
+
+;;;###autoload
+(eval-after-load 'skewer-mode
+  '(progn
+     (add-hook 'skewer-response-hook #'skewer-repl--response-hook)
+     (define-key skewer-mode-map (kbd "C-c C-z") #'skewer-repl)))
 
 (provide 'skewer-repl)
 

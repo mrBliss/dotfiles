@@ -1,11 +1,11 @@
-;;; skewer-mode.el --- live browser JavaScript interaction
+;;; skewer-mode.el --- live browser JavaScript and CSS interaction
 
 ;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Christopher Wellons <mosquitopsu@gmail.com>
 ;; URL: https://github.com/skeeto/skewer-mode
-;; Version: 1.1
-;; Package-Requires: ((simple-httpd "1.2.4") (js2-mode "20090723"))
+;; Version: 1.4
+;; Package-Requires: ((simple-httpd "1.4.0") (js2-mode "20090723"))
 
 ;;; Commentary:
 
@@ -24,9 +24,25 @@
 
 ;; The result of the expression is echoed in the minibuffer.
 
+;; Additionally, `css-mode' gets a similar set of bindings for
+;; modifying the CSS rules on the current page. They operate on
+;; declarations and rules.
+
 ;; Note: `run-skewer' uses `browse-url' to launch the browser. This
 ;; may require further setup depending on your operating system and
 ;; personal preferences.
+
+;; Multiple browsers and browser tabs can be attached to Emacs at
+;; once. JavaScript forms are sent to all attached clients
+;; simultaneously, and each will echo back the result
+;; individually. Use `list-skewer-clients' to see a list of all
+;; currently attached clients.
+
+;; Sometimes Skewer's long polls from the browser will timeout after a
+;; number of hours of inactivity. If you find the browser disconnected
+;; from Emacs for any reason, use the browser's console to call
+;; skewer() to reconnect. This avoids a page reload, which would lose
+;; any fragile browser state you might care about.
 
 ;; Manual version:
 
@@ -35,23 +51,52 @@
 ;;  1. Load the dependencies
 ;;  2. Load skewer-mode.el
 ;;  3. Start the HTTP server (`httpd-start')
-;;  4. Put your HTML document under the root (`httpd-root')
-;;  5. Include jQuery and "/skewer" as scripts (see `example.html')
-;;  6. Visit the document from your browser
+;;  4. Include "http://localhost:8080/skewer" as a script
+;;     (see `example.html' and check your `httpd-port')
+;;  5. Visit the document from your browser
 
-;; If your document isn't a static page but is instead hosted by its
-;; own server, you can still skewer the page. See the proxy below.
+;; Skewer fully supports CORS so the document need not be hosted by
+;; Emacs itself. A Greasemonkey userscript is provided for injecting
+;; Skewer into any arbitrary page you're visiting without needing to
+;; modify the page on the host.
 
 ;; With skewer-repl.el loaded, a REPL into the browser can be created
-;; with M-x `skewer-repl'. This should work just like a REPL in
-;; console within the browser.
+;; with M-x `skewer-repl', or C-c C-z. This should work just like a
+;; console within the browser. Messages can be logged to this REPL
+;; with `skewer.log()` (just like `console.log()`).
 
-;; To work around the same origin policy, skewer can also be a proxy for
-;; another site, where it will automatically inject it's own HTML. This
-;; is experimental and a bit flaky right now. See skewer-proxy.el.
+;; Extending Skewer:
+
+;; Skewer is flexible and open to extension. The REPL in
+;; skewer-repl.el is a partial example of this. You can extend
+;; skewer.js with your own request handlers and talk to them from
+;; Emacs using `skewer-eval' (or `skewer-eval-synchronously') with
+;; your own custom :type. The :type string chooses the dispatch
+;; function under the skewer.fn object. To inject your own JavaScript
+;; into skewer.js, use `skewer-js-hook'.
+
+;; You can also catch messages sent from the browser not in response
+;; to an explicit request. Use `skewer-response-hook' to see all
+;; incoming objects.
 
 ;;; History:
 
+;; Version 1.4: features
+;;   * Full CSS interaction
+;;   * Greasemonkey userscript for injection
+;;   * Full, working CORS support
+;;   * Better browser presence detection
+;; Version 1.3: features and fixes
+;;   * Full offline support
+;;   * No more callback registering
+;;   * Fix 64-bit support
+;;   * Two new hooks for improved extension support
+;;   * More uniform keybindings with other interactive modes
+;; Version 1.2: features
+;;   * Add a skewer-eval-print-last-expression
+;;   * Display evaluation time when it's long
+;;   * Flash the region on eval
+;;   * Improve JS stringification
 ;; Version 1.1: features and fixes
 ;;   * Added `list-skewer-clients'
 ;;   * Reduce the number of HTTP requests needed
@@ -61,9 +106,10 @@
 ;;; Code:
 
 (require 'cl)
+(require 'json)
 (require 'simple-httpd)
 (require 'js2-mode)
-(require 'json)
+(require 'cache-table)
 
 (defgroup skewer nil
   "Live browser JavaScript interaction."
@@ -80,16 +126,35 @@
 (defvar skewer-data-root (file-name-directory load-file-name)
   "Location of data files needed by impatient-mode.")
 
+(defvar skewer-js-hook ()
+  "Hook to run when skewer.js is being served to the browser.
+
+When hook functions are called, the current buffer is the buffer
+to be served to the client (a defservlet), with skewer.js script
+already inserted. This is the chance for other packages to insert
+their own JavaScript to extend skewer in the browser, such as
+adding a new type handler.")
+
+(defvar skewer-response-hook ()
+  "Hook to run when a response arrives from the browser. Used for
+catching messages from the browser with no associated
+callback. The response object is passed to the hook function.")
+
+(defvar skewer-timeout 3600
+  "Maximum time to wait on the browser to respond, in seconds.")
+
 (defvar skewer-clients ()
   "Browsers awaiting JavaScript snippets.")
 
-(defvar skewer-callbacks '(skewer-post-minibuffer)
-  "A whitelist of valid callback functions. The browser hands
-back the name of the callback function, which we can't
-trust. These whitelisted functions are considered safe.")
+(defvar skewer-callbacks (make-cache-table skewer-timeout :test 'equal)
+  "Maps evaluation IDs to local callbacks.")
 
 (defvar skewer-queue ()
   "Queued messages for the browser.")
+
+(defvar skewer--last-timestamp 0
+  "Timestamp of the last browser response. Use
+`skewer-last-seen-seconds' to access this.")
 
 (defstruct skewer-client
   "A client connection awaiting a response."
@@ -107,8 +172,9 @@ trust. These whitelisted functions are considered safe.")
                 (with-temp-buffer
                   (insert (json-encode message))
                   (httpd-send-header proc "text/plain" 200
-                                     '("Cache-Control" . "no-cache"))
-                  (httpd-send-buffer proc (current-buffer))))
+                                     :Cache-Control "no-cache"
+                                     :Access-Control-Allow-Origin "*")))
+              (setq skewer--last-timestamp (float-time))
               (setq sent t))
           (error nil)))
       (if (not sent) (push message skewer-queue)))
@@ -127,13 +193,27 @@ trust. These whitelisted functions are considered safe.")
   (setq tabulated-list-format [("Host" 12 t)
                                ("Port" 5 t)
                                ("User Agent" 0 t)])
-  (setq tabulated-list-entries #' skewer-clients-tabulate)
+  (setq tabulated-list-entries #'skewer-clients-tabulate)
   (tabulated-list-init-header))
 
+(define-key skewer-clients-mode-map (kbd "g")
+  (lambda ()
+    (interactive)
+    (skewer-ping)
+    (revert-buffer)))
+
+(defun skewer-update-list-buffer ()
+  "Revert the client list, due to an update."
+  (let ((list-buffer (get-buffer "*skewer-clients*")))
+    (when list-buffer
+      (with-current-buffer list-buffer
+        (revert-buffer)))))
+
+;;;###autoload
 (defun list-skewer-clients ()
   "List the attached browsers in a buffer."
   (interactive)
-  (switch-to-buffer (get-buffer-create "*skewer-clients*"))
+  (pop-to-buffer (get-buffer-create "*skewer-clients*"))
   (skewer-clients-mode)
   (tabulated-list-print))
 
@@ -141,22 +221,34 @@ trust. These whitelisted functions are considered safe.")
   "Add a client to the queue, given the HTTP header."
   (let ((agent (second (assoc "User-Agent" req))))
     (push (make-skewer-client :proc proc :agent agent) skewer-clients))
+  (skewer-update-list-buffer)
   (skewer-process-queue))
 
 ;; Servlets
 
 (defservlet skewer text/javascript ()
-  (insert-file-contents (expand-file-name "skewer.js" skewer-data-root)))
+  (insert-file-contents (expand-file-name "skewer.js" skewer-data-root))
+  (goto-char (point-max))
+  (run-hooks 'skewer-js-hook))
 
 (defun httpd/skewer/get (proc path query req &rest args)
   (skewer-queue-client proc req))
 
 (defun httpd/skewer/post (proc path query req &rest args)
   (let* ((result (json-read-from-string (cadr (assoc "Content" req))))
-         (callback (intern-soft (cdr (assoc 'callback result)))))
-    (when (and callback (member callback skewer-callbacks))
+         (id (cdr (assoc 'id result)))
+         (type (cdr (assoc 'type result)))
+         (callback (get-cache-table id skewer-callbacks)))
+    (setq skewer--last-timestamp (float-time))
+    (when callback
       (funcall callback result))
-    (skewer-queue-client proc req)))
+    (if id
+        (skewer-queue-client proc req)
+      (with-temp-buffer
+        (httpd-send-header proc "text/plain" 200
+                           :Access-Control-Allow-Origin "*")))
+    (dolist (hook skewer-response-hook)
+      (funcall hook result))))
 
 (defservlet skewer/demo text/html ()
   (insert-file-contents (expand-file-name "example.html" skewer-data-root)))
@@ -181,6 +273,7 @@ trust. These whitelisted functions are considered safe.")
   :group 'skewer)
 
 (defun skewer--error (string)
+  "Return STRING propertized as an error message."
   (propertize string 'font-lock-face 'skewer-error-face))
 
 (defun skewer-post-minibuffer (result)
@@ -188,7 +281,7 @@ trust. These whitelisted functions are considered safe.")
   (if (skewer-success-p result)
       (let ((value (cdr (assoc 'value result)))
             (time (cdr (assoc 'time result))))
-        (if (> time 1.0)
+        (if (and time (> time 1.0))
             (message "%s (%.3f seconds)" value time)
           (message "%s" value)))
     (with-current-buffer (pop-to-buffer (get-buffer-create "*skewer-error*"))
@@ -206,20 +299,44 @@ trust. These whitelisted functions are considered safe.")
 
 ;; Evaluation functions
 
-(defun* skewer-eval (string &optional callback &key verbose strict)
-  "Evaluate STRING in the waiting browsers, giving the result to
-CALLBACK. VERBOSE controls the verbosity of the returned
-string. The callback function must be listed in `skewer-callbacks'."
-  (let ((request `((eval . ,string)
-                   (callback . ,callback)
-                   (id . ,(random most-positive-fixnum))
-                   (verbose . ,verbose)
-                   (strict . ,strict))))
-    (if (or (not callback) (member callback skewer-callbacks))
-        (prog1 request
-          (setq skewer-queue (append skewer-queue (list request)))
-          (skewer-process-queue))
-      (error "Provided callback is not whitelisted in `skewer-callbacks'."))))
+(defun* skewer-eval (string &optional callback
+                            &key verbose strict (type "eval") extra)
+  "Evaluate STRING in the waiting browsers, giving the result to CALLBACK.
+
+:VERBOSE -- if T, the return will try to be JSON encoded
+:STRICT  -- if T, expression is evaluated with 'use strict'
+:TYPE    -- chooses the JavaScript handler (default: eval)
+:EXTRA   -- additional alist keys to append to the request object"
+  (let* ((id (format "%x" (random most-positive-fixnum)))
+         (request `((type . ,type)
+                    (eval . ,string)
+                    (id . ,id)
+                    (verbose . ,verbose)
+                    (strict . ,strict)
+                    ,@extra)))
+    (prog1 request
+      (setf (get-cache-table id skewer-callbacks) callback)
+      (setq skewer-queue (append skewer-queue (list request)))
+      (skewer-process-queue))))
+
+(defun skewer-eval-synchronously (string &rest args)
+  "Just like `skewer-eval' but synchronously, so don't provide a
+callback. Use with caution."
+  (lexical-let ((result nil))
+    (apply #'skewer-eval string (lambda (v) (setq result v)) args)
+    (loop until result
+          do (accept-process-output nil 0.01)
+          finally (return result))))
+
+(defun* skewer-ping ()
+  "Ping the browser to test that it's still alive."
+  (unless (null skewer-clients) ; don't queue pings
+    (skewer-eval (prin1-to-string (float-time)) nil :type "ping")))
+
+(defun skewer-last-seen-seconds ()
+  "Return the number of seconds since the browser was last seen."
+  (skewer-ping) ; make sure it's still alive next request
+  (- (float-time) skewer--last-timestamp))
 
 (defun skewer-mode-strict-p ()
   "Return T if buffer contents indicates strict mode."
@@ -241,25 +358,49 @@ string. The callback function must be listed in `skewer-callbacks'."
     (overlay-put overlay 'face 'secondary-selection)
     (run-with-timer (or timeout 0.2) nil 'delete-overlay overlay)))
 
-(defun skewer-eval-last-expression ()
+(defun skewer-get-last-expression ()
+  "Return the JavaScript expression before the point as a
+list: (string start end)."
+  (save-excursion
+    (js2-backward-sws)
+    (backward-char)
+    (let ((node (js2-node-at-point nil t)))
+      (when (eq js2-FUNCTION (js2-node-type (js2-node-parent node)))
+        (setq node (js2-node-parent node)))
+      (when (js2-ast-root-p node)
+        (error "no expression found"))
+      (let ((start (js2-node-abs-pos node))
+            (end (js2-node-abs-end node)))
+        (list (buffer-substring-no-properties start end) start end)))))
+
+(defun skewer-eval-last-expression (&optional prefix)
   "Evaluate the JavaScript expression before the point in the
-waiting browser."
-  (interactive)
-  (if js2-mode-buffer-dirty-p
-      (js2-mode-wait-for-parse #'skewer-eval-last-expression)
-    (save-excursion
-      (js2-backward-sws)
-      (backward-char)
-      (let ((node (js2-node-at-point nil t)))
-        (when (eq js2-FUNCTION (js2-node-type (js2-node-parent node)))
-          (setq node (js2-node-parent node)))
-        (when (js2-ast-root-p node)
-          (error "no expression found"))
-        (let ((start (js2-node-abs-pos node))
-              (end (js2-node-abs-end node)))
-          (skewer-flash-region start end)
-          (skewer-eval (buffer-substring-no-properties start end)
-                       #'skewer-post-minibuffer))))))
+waiting browser. If invoked with a prefix argument, insert the
+result into the current buffer."
+  (interactive "P")
+  (if prefix
+      (skewer-eval-print-last-expression)
+    (if js2-mode-buffer-dirty-p
+        (js2-mode-wait-for-parse #'skewer-eval-last-expression)
+      (destructuring-bind (string start end) (skewer-get-last-expression)
+        (skewer-flash-region start end)
+        (skewer-eval string #'skewer-post-minibuffer)))))
+
+(defun skewer-get-defun ()
+  "Return the toplevel JavaScript expression around the point as
+a list: (string start end)."
+  (save-excursion
+    (js2-backward-sws)
+    (backward-char)
+    (let ((node (js2-node-at-point nil t)))
+      (when (js2-ast-root-p node)
+        (error "no expression found"))
+      (while (and (js2-node-parent node)
+                  (not (js2-ast-root-p (js2-node-parent node))))
+        (setf node (js2-node-parent node)))
+      (let ((start (js2-node-abs-pos node))
+            (end (js2-node-abs-end node)))
+        (list (buffer-substring-no-properties start end) start end)))))
 
 (defun skewer-eval-defun ()
   "Evaluate the JavaScript expression before the point in the
@@ -267,46 +408,65 @@ waiting browser."
   (interactive)
   (if js2-mode-buffer-dirty-p
       (js2-mode-wait-for-parse #'skewer-eval-last-expression)
-    (save-excursion
-      (js2-backward-sws)
-      (backward-char)
-      (let ((node (js2-node-at-point nil t)))
-        (when (js2-ast-root-p node)
-          (error "no expression found"))
-        (while (and (js2-node-parent node)
-                    (not (js2-ast-root-p (js2-node-parent node))))
-          (setf node (js2-node-parent node)))
-        (let ((start (js2-node-abs-pos node))
-              (end (js2-node-abs-end node)))
-          (skewer-flash-region start end)
-          (skewer-eval (buffer-substring-no-properties start end)
-                       #'skewer-post-minibuffer))))))
+    (destructuring-bind (string start end) (skewer-get-defun)
+      (skewer-flash-region start end)
+      (skewer-eval string #'skewer-post-minibuffer))))
+
+;; Print last expression
+
+(defvar skewer-eval-print-map (make-cache-table skewer-timeout :test 'equal)
+  "A mapping of evaluation IDs to insertion points.")
+
+(defun skewer-post-print (result)
+  "Insert the result after its source expression."
+  (if (not (skewer-success-p result))
+      (skewer-post-minibuffer result)
+    (let* ((id (cdr (assoc 'id result)))
+           (pos (get-cache-table id skewer-eval-print-map)))
+      (when pos
+        (with-current-buffer (car pos)
+          (goto-char (cdr pos))
+          (insert (cdr (assoc 'value result)) "\n"))))))
+
+(defun skewer-eval-print-last-expression ()
+  "Evaluate the JavaScript expression before the point in the
+waiting browser and insert the result in the buffer at point."
+  (interactive)
+  (if js2-mode-buffer-dirty-p
+      (js2-mode-wait-for-parse #'skewer-eval-print-last-expression)
+    (destructuring-bind (string start end) (skewer-get-defun)
+      (skewer-flash-region start end)
+      (insert "\n")
+      (let* ((request (skewer-eval string #'skewer-post-print :verbose t))
+             (id (cdr (assoc 'id request)))
+             (pos (cons (current-buffer) (point))))
+        (setf (get-cache-table id skewer-eval-print-map) pos)))))
 
 ;; Script loading
 
-(defvar skewer-hosted-scripts (make-hash-table)
+(defvar skewer-hosted-scripts (make-cache-table skewer-timeout)
   "Map of hosted scripts to IDs.")
 
 (defun skewer-host-script (string)
   "Host script STRING from the script servlet, returning the script ID."
   (let ((id (random most-positive-fixnum)))
     (prog1 id
-      (puthash id (cons (float-time) string) skewer-hosted-scripts)
-      (maphash (lambda (k v)
-                 (if (> (- (float-time) 3600) (car v))
-                     (remhash k skewer-hosted-scripts)))
-               skewer-hosted-scripts))))
+      (setf (get-cache-table id skewer-hosted-scripts) string))))
 
 (defun skewer-load-buffer ()
-  "Load the current buffer into the browser."
+  "Load the entire current buffer into the browser. A snapshot of
+the buffer is hosted so that browsers visiting late won't see an
+inconsistent buffer."
   (interactive)
-  (let ((id (skewer-host-script (buffer-string))))
-    (skewer-eval (format "$.getScript('/skewer/script/%d')" id)
-                 'skewer-post-minibuffer)))
+  (lexical-let ((id (skewer-host-script (buffer-string)))
+                (buffer-name (buffer-name)))
+    (skewer-eval (format "/skewer/script/%d" id)
+                 (lambda (_) (message "%s loaded" buffer-name))
+                 :type "script")))
 
 (defservlet skewer/script text/javascript (path)
   (let ((id (string-to-number (file-name-nondirectory path))))
-    (insert (cdr (gethash id skewer-hosted-scripts)))))
+    (insert (get-cache-table id skewer-hosted-scripts ""))))
 
 ;; Define the minor mode
 
