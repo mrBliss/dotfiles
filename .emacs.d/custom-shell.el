@@ -25,7 +25,16 @@
   (let ((comint-buffer-maximum-size 0))
     (comint-truncate-buffer)))
 
+
+(defun comint-delchar-or-eof-or-kill-buffer (arg)
+  (interactive "p")
+  (if (null (get-buffer-process (current-buffer)))
+      (kill-buffer)
+    (comint-delchar-or-maybe-eof arg)))
+
+
 (define-key shell-mode-map (kbd "C-c C-l") 'clear-shell)
+(define-key shell-mode-map (kbd "C-d") 'comint-delchar-or-eof-or-kill-buffer)
 (define-key shell-mode-map (kbd "M-p") 'comint-previous-matching-input-from-input)
 (define-key shell-mode-map (kbd "M-n") 'comint-next-matching-input-from-input)
 
