@@ -50,7 +50,7 @@ export MANPAGER=less
 alias x='startx'
 
 # Load autojump
-source /etc/profile.d/autojump.zsh
+# source /etc/profile.d/autojump.zsh
 
 # Personal TeX packages
 export TEXMFHOME=~/.texmf
