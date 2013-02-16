@@ -58,7 +58,7 @@
       auto-save-file-name-transforms
       `((".*" ,(expand-file-name "~/.emacs.d/auto-saves/") t)))
 
-;; Autoclose successfull compilations
+;; Autoclose successful compilations
 (setq compilation-finish-functions nil)
 
 ;; Always use the cool undo-tree-mode
@@ -212,14 +212,14 @@
 (autoload 'post-mode "post" "mode for e-mail" t)
 (add-to-list 'auto-mode-alist '("\\.*mutt-*" . post-mode))
 
-(defun post-hook ()
-  (auto-fill-mode t)
+(defun mail-customizations-hook ()
+  (setq ispell-local-dictionary "dutch")
+  (turn-on-flyspell)
   (setq fill-column 72)) ;; rfc 1855 for usenet messages
-(add-hook 'post-mode-hook 'post-hook)
+(add-hook 'post-mode-hook 'mail-customizations-hook)
 
 ;; tbemail for editing Thunderbird emails
 (require 'tbemail)
-
 (add-hook 'tbemail-mode-hook 'mail-customizations-hook)
 
 ;; When opened via cocoa (i.e drop file on icon, or dbl click) open in
