@@ -50,5 +50,8 @@
 
 (add-hook 'TeX-mode-hook 'latex-hook)
 
+(defun bibtex-hook ()
+  (define-key bibtex-mode-map (kbd "C-M-h") 'backward-kill-word))
+(add-hook 'bibtex-mode-hook 'bibtex-hook)
 
 (provide 'custom-latex)
