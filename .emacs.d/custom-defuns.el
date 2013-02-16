@@ -25,7 +25,7 @@
       (let ((new-name (read-from-minibuffer
                        "New name: " (file-name-nondirectory filename))))
         (if (get-buffer new-name)
-            (message "A buffer named '%s' already exists!" new-name)
+            (error "A buffer named '%s' already exists!" new-name)
           (progn
             (rename-file name new-name 1)
             (rename-buffer new-name)
