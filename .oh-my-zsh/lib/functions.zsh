@@ -200,3 +200,35 @@ sem() {
     fi
     $EDITOR "/sudo:root@localhost:$1"
 }
+
+# Merge PDFs
+pdfmerge() {
+    pdftk $* cat output merged.pdf
+}
+
+# Copy over ssh-id (w/o dependencies)
+authme() {
+  ssh "$1" 'mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys' < ~/.ssh/id_rsa.pub
+}
+
+# Create an SSH tunnel
+
+ssh_tunnel() {
+  if [ $# -eq 3 ]; then
+    user=$1
+    host=$2
+    localPort=$3
+    remotePort=$3
+  elif [ $# -eq 4 ]; then
+      user=$1
+      host=$2
+      localPort=$3
+      remotePort=$4
+  else
+      echo -n "User: "; read user
+      echo -n "host: "; read host
+      echo -n "Distant host: "; read remotePort
+      echo -n "Local port: "; read localPort
+  fi
+  ssh -N -f $user@$host -L ${localPort}:${host}:${remotePort}
+}

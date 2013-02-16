@@ -107,3 +107,12 @@ alias pingg='ping -c 3 www.google.com'
 
 # Mosh on the KUL workstations
 alias moshkul='mosh --server=/home/s0202013/bin/bin.linux/bin/mosh-server'
+
+# Start a local Python webserver in the current directory
+alias serve='python2 -m SimpleHTTPServer'
+
+# Show active network listeners
+alias listeners='lsof -i -P | grep LISTEN'
+
+# Sniff GET and POST traffic over HTTP
+alias sniff='sudo ngrep -d "eth1" -t "^(GET|POST) " "tcp and port 80"'
