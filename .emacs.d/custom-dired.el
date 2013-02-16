@@ -117,6 +117,7 @@ this is not done, the function would stop working after executing
 
 (ad-activate 'dired-details-toggle)
 
+(setq dired-details-hidden-string "--- ")
 
 
 (defun dired-move-beginning-of-line ()
