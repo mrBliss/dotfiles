@@ -111,4 +111,8 @@ is looked at."
 (add-hook 'haskell-mode-hook 'haskell-hook)
 
 
+;; Literate haskell
+(autoload 'haskell-latex-mode "haskell-latex" nil t)
+
+
 (provide 'custom-haskell)
