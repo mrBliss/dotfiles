@@ -13,6 +13,7 @@
 (require 'maven-mode)
 (require 'minimap)
 (require 'num3-mode)
+(require 's)
 (require 'scratch)
 (require 'typing-speed)
 (require 'unbound)

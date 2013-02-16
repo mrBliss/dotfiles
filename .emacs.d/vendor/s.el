@@ -3,7 +3,7 @@
 ;; Copyright (C) 2012 Magnar Sveen
 
 ;; Author: Magnar Sveen <magnars@gmail.com>
-;; Version: 1.2.0
+;; Version: 1.3.1
 ;; Keywords: strings
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -47,9 +47,16 @@
   "Convert all adjacent whitespace characters to a single space."
   (replace-regexp-in-string "[ \t\n\r]+" " " s))
 
+(defun s-split (separators s &optional omit-nulls)
+  "Split S into substrings bounded by matches for SEPARATORS.
+If OMIT-NULLS is t, zeo-length substrins are ommitted.
+
+This is a simple wrapper around the built-in `split-string'."
+  (split-string s separators omit-nulls))
+
 (defun s-lines (s)
   "Splits S into a list of strings on newline characters."
-  (split-string s "\\(\r\n\\|[\n\r]\\)"))
+  (s-split "\\(\r\n\\|[\n\r]\\)" s))
 
 (defun s-join (separator strings)
   "Join all the strings in STRINGS with SEPARATOR in between."
@@ -253,6 +260,17 @@ This is a simple wrapper around the built-in `string-match-p'."
      (and (string-match-p "[a-zæøå]" s)
           (string-match-p "[A-ZÆØÅ]" s)))))
 
+(defun s-capitalized? (s)
+  "In S, is the first letter upper case, and all other letters lower case?"
+  (let ((case-fold-search nil))
+    (s--truthy?
+     (string-match-p "^[A-ZÆØÅ][^A-ZÆØÅ]*$" s))))
+
+(defun s-numeric? (s)
+  "Is S a number?"
+  (s--truthy?
+   (string-match-p "[0-9]+" s)))
+
 (defun s-replace (old new s)
   "Replaces OLD with NEW in S."
   (replace-regexp-in-string (regexp-quote old) new s t t))
@@ -270,6 +288,10 @@ This is a simple wrapper around the built-in `upcase'."
   (upcase s))
 
 (defun s-capitalize (s)
+  "Convert the first word's first character to upper case and the rest to lower case in S."
+  (concat (upcase (substring s 0 1)) (downcase (substring s 1))))
+
+(defun s-titleize (s)
   "Convert each word's first character to upper case and the rest to lower case in S.
 
 This is a simple wrapper around the built-in `capitalize'."
@@ -308,19 +330,21 @@ If it did not match the returned value is an empty list (nil)."
       (let ((match-data-list (match-data))
             result)
         (while match-data-list
-          (let ((beg (car match-data-list))
-                (end (cadr match-data-list)))
-            (setq result (cons (substring s beg end) result))
+          (let* ((beg (car match-data-list))
+                 (end (cadr match-data-list))
+                 (subs (if (and beg end) (substring s beg end) nil)))
+            (setq result (cons subs result))
             (setq match-data-list
                   (cddr match-data-list))))
         (nreverse result))))
 
 (defun s-split-words (s)
   "Split S into list of words."
-  (split-string
+  (s-split
+   "[^A-Za-z0-9]+"
    (let ((case-fold-search nil))
      (replace-regexp-in-string "\\([a-z]\\)\\([A-Z]\\)" "\\1 \\2" s))
-   "[^A-Za-z0-9]+" t))
+   t))
 
 (defun s--mapcar-head (fn-head fn-rest list)
   "Like MAPCAR, but applies a different function to the first element."
@@ -345,7 +369,66 @@ If it did not match the returned value is an empty list (nil)."
 
 (defun s-capitalized-words (s)
   "Convert S to Capitalized Words."
-  (s-join " " (mapcar 'capitalize (s-split-words s))))
+  (let ((words (s-split-words s)))
+    (s-join " " (cons (capitalize (car words)) (mapcar 'downcase (cdr words))))))
+
+(defun s-titleized-words (s)
+  "Convert S to Titleized Words."
+  (s-join " " (mapcar 's-titleize (s-split-words s))))
+
+
+;; Errors for s-format
+(progn
+  (put 's-format-resolve
+       'error-conditions
+       '(error s-format s-format-resolve))
+  (put 's-format-resolve
+       'error-message
+       "Cannot resolve a template to values"))
+
+(defun s-format (template replacer &optional extra)
+  "Format TEMPLATE with the function REPLACER.
+
+REPLACER takes an argument of the format variable and optionally
+an extra argument which is the EXTRA value from the call to
+`s-format'.
+
+Several standard `s-format' helper functions are recognized and
+adapted for this:
+
+    (s-format \"${name}\" 'gethash hash-table)
+    (s-format \"${name}\" 'aget alist)
+    (s-format \"$0\" 'elt sequence)
+
+The REPLACER function may be used to do any other kind of
+transformation."
+  (let ((saved-match-data (match-data)))
+    (unwind-protect
+        (replace-regexp-in-string
+         "\\$\\({\\([^}]+\\)}\\|[0-9]+\\)"
+         (lambda (md)
+           (let ((var
+                  (let ((m (match-string 2 md)))
+                    (if m m
+                      (string-to-number (match-string 1 md)))))
+                 (replacer-match-data (match-data)))
+             (unwind-protect
+                 (let ((v
+                        (cond
+                         ((eq replacer 'gethash)
+                          (funcall replacer var extra))
+                         ((eq replacer 'aget)
+                          (funcall replacer extra var))
+                         ((eq replacer 'elt)
+                          (funcall replacer extra var))
+                         (t
+                          (set-match-data saved-match-data)
+                          (if extra
+                              (funcall replacer var extra)
+                            (funcall replacer var))))))
+                   (if v v (signal 's-format-resolve md)))
+               (set-match-data replacer-match-data)))) template)
+      (set-match-data saved-match-data))))
 
 (provide 's)
 ;;; s.el ends here
