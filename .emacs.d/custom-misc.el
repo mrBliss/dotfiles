@@ -651,3 +651,5 @@ number input."
 (global-set-key (vector 'remap 'goto-line) 'goto-line-with-feedback)
 
 
+(require 'move-text)
+(move-text-default-bindings)
