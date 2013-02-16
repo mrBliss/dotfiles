@@ -634,3 +634,19 @@ You can configure `comment-style' to change the way regions are commented."
 
 
 (provide 'custom-misc)
+;; From Magnar Sveen
+(defun goto-line-with-feedback ()
+  "Show line numbers temporarily, while prompting for the line
+number input."
+  (interactive)
+  (if (and (boundp 'linum-mode) linum-mode)
+      (goto-line (read-number "Goto line: "))
+    (unwind-protect
+        (progn
+          (linum-mode 1)
+          (goto-line (read-number "Goto line: ")))
+      (linum-mode -1))))
+
+(global-set-key (vector 'remap 'goto-line) 'goto-line-with-feedback)
+
+
