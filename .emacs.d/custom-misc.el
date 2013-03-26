@@ -8,6 +8,7 @@
 (autoload 'regex-tool "regex-tool" nil t)
 (autoload 'gitconfig-mode "gitconfig-mode" nil t)
 
+(require 'dash)
 (require 'eldoc-eval)
 (require 'goto-last-change)
 (require 'maven-mode)
@@ -600,8 +601,9 @@ You can configure `comment-style' to change the way regions are commented."
 (wrap-region-global-mode t)
 
 ;; Also enable wrap-region for earmuffs and `
-(wrap-region-add-punctuation "*" "*")
-(wrap-region-add-punctuation "`" "`")
+(wrap-region-add-wrappers
+ '(("*" "*")
+   ("`" "`")))
 
 
 ;; Treat CamelCaseWords as distinct words
