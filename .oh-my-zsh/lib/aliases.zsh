@@ -106,7 +106,7 @@ alias tree='tree -C'
 alias pingg='ping -c 3 www.google.com'
 
 # Mosh on the KUL workstations
-alias moshkul='mosh --server=/home/s0202013/bin/bin.linux/bin/mosh-server'
+alias moshkul='mosh --server=/home/s0202013/local/bin/mosh-server'
 
 # Start a local Python webserver in the current directory
 alias serve='python2 -m SimpleHTTPServer'
