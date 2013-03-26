@@ -27,6 +27,10 @@
   (setq ns-alternate-modifier 'none)
   (setq ns-command-modifier 'meta)
 
+  ;; Use gnu ls for dired
+  (setq insert-directory-program "gls"
+        dired-use-ls-dired t)
+
   ;; Add some folders to the PATH on OS X
   (setenv "PATH"
           (concat (getenv "PATH")
