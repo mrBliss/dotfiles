@@ -72,6 +72,7 @@ a light color-theme when passed a prefix argument."
     (emacs-lisp-mode . "EL")
     (lisp-interaction-mode . "EL")
     (haskell-mode . "Hs")
+    (literate-haskell-mode . "LHs")
     (inferior-haskell-mode . "iHs")
     (clojure-mode . "Clj")
     (text-mode . "Txt")
