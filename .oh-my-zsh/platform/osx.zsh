@@ -13,7 +13,7 @@ export ALTERNATE_EDITOR='emacsserver'
 
 # Environment variables
 export JAVA_HOME=/Library/Java/Home
-export PATH=~/.bin:/usr/local/bin:~/.cabal/bin:~/.cljr/bin:$PATH
+export PATH=~/.bin:~/.cabal/bin:/usr/local/bin:/usr/local/share/npm/bin:$PATH
 export NODE_PATH=/usr/local/lib/node:/usr/local/lib/node_modules
 
 # A secure tunnel to a KUL workstation, to be used in public hot
@@ -30,9 +30,6 @@ pman() {
 
 # View output in Preview.app with the preview command (usage: .. | preview)
 alias preview='groff -Tps > /tmp/tmp.ps && open -a Preview /tmp/tmp.ps'
-
-# Load autojump
-source /usr/local/Cellar/autojump/20/etc/autojump.zsh
 
 # homebrew aliases
 alias br='brew'
