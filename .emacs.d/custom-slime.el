@@ -9,7 +9,7 @@
 (slime-setup '(slime-fancy))
 
 ;; autocomplete for Slime
-(require 'ac-slime)
+(autoload 'set-up-slime-ac "ac-slime" t)
 (add-to-list 'ac-modes 'slime-repl-mode)
 
 ;; Snippet from Bill Clementson
