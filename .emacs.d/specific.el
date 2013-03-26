@@ -56,6 +56,9 @@
     (let (openwith-mode)
       ad-do-it)))
 
+(when (string= user-login-name "s0202013")
+  (setq explicit-shell-file-name "zsh"))
+
 ;; Run a server on Windows, work with a daemon on Linux and Mac OS X
 (when (eq system-type 'windows-nt)
   (server-start))
