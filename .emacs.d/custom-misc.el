@@ -636,7 +636,6 @@ You can configure `comment-style' to change the way regions are commented."
 (autoload 'httpd-start "simple-httpd" nil t)
 
 
-(provide 'custom-misc)
 ;; From Magnar Sveen
 (defun goto-line-with-feedback ()
   "Show line numbers temporarily, while prompting for the line
@@ -655,3 +654,22 @@ number input."
 
 (require 'move-text)
 (move-text-default-bindings)
+
+;; git-gutter
+(autoload 'git-gutter "git-gutter" nil t)
+(autoload 'git-gutter-fringe "git-gutter-fringe" nil t)
+(autoload 'git-gutter:toggle "git-gutter" nil t)
+
+(setq git-gutter:lighter " GG")
+
+(global-set-key (kbd "C-x M-g") 'git-gutter:toggle)
+(global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
+
+;; Jump to next/previous hunk
+(global-set-key (kbd "C-x v p") 'git-gutter:previous-hunk)
+(global-set-key (kbd "C-x v n") 'git-gutter:next-hunk)
+
+;; Revert current hunk
+(global-set-key (kbd "C-x v r") 'git-gutter:revert-hunk)
+
+(provide 'custom-misc)
