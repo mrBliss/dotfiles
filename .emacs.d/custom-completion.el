@@ -71,6 +71,18 @@
       (if ac-use-dictionary-as-stop-words
           (member word (ac-buffer-dictionary)))))
 
+(defun set-auto-complete-as-completion-at-point-function ()
+  (setq completion-at-point-functions '(auto-complete)))
+
+
+(defun auto-complete-at-point ()
+  "Perform auto-complete."
+  (interactive)
+  (let ((completion-at-point-functions '(auto-complete)))
+    (completion-at-point)))
+
+(global-set-key (kbd "<C-tab>") 'auto-complete-at-point)
+
 
 ;;##############################################################################
 ;; Ido
