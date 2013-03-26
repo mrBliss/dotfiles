@@ -107,6 +107,7 @@
 
 (require 'cl)
 (require 'json)
+(require 'url-util)
 (require 'simple-httpd)
 (require 'js2-mode)
 (require 'cache-table)
@@ -274,7 +275,7 @@ callback. The response object is passed to the hook function.")
 
 (defun skewer--error (string)
   "Return STRING propertized as an error message."
-  (propertize string 'font-lock-face 'skewer-error-face))
+  (propertize (or string "<unknown>") 'font-lock-face 'skewer-error-face))
 
 (defun skewer-post-minibuffer (result)
   "Report results in the minibuffer or the error buffer."
@@ -290,7 +291,7 @@ callback. The response object is passed to the hook function.")
         (erase-buffer)
         (skewer-error-mode)
         (insert (skewer--error (cdr (assoc 'name error))) ": ")
-        (insert (cdr (assoc 'message error)) "\n\n")
+        (insert (or (cdr (assoc 'message error)) "") "\n\n")
         (insert (or (cdr (assoc 'stack error)) "") "\n\n")
         (insert (format "Expression: %s\n\n"
                         (if (cdr (assoc 'strict result)) "(strict)" ""))
@@ -460,12 +461,13 @@ inconsistent buffer."
   (interactive)
   (lexical-let ((id (skewer-host-script (buffer-string)))
                 (buffer-name (buffer-name)))
-    (skewer-eval (format "/skewer/script/%d" id)
+    (skewer-eval (format "/skewer/script/%d/%s"
+                         id (url-hexify-string buffer-name))
                  (lambda (_) (message "%s loaded" buffer-name))
                  :type "script")))
 
 (defservlet skewer/script text/javascript (path)
-  (let ((id (string-to-number (file-name-nondirectory path))))
+  (let ((id (string-to-number (nth 3 (split-string path "/")))))
     (insert (get-cache-table id skewer-hosted-scripts ""))))
 
 ;; Define the minor mode
