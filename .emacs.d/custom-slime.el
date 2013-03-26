@@ -2,7 +2,7 @@
 ;;
 ;; Author: Thomas Winant <dewinant@gmail.com>
 ;; Created: Mon Jun 20 2011
-;; Keywords: slime, lisp, clojure
+;; Keywords: slime, lisp
 
 ;; Load Slime
 (require 'slime-autoloads)
@@ -118,10 +118,8 @@ connection of the REPL is chosen as the default."
      (setq slime-enable-evaluate-in-emacs t)
      ;; Completion
      (setq slime-complete-symbol*-fancy t)
-     (setq slime-complete-symbol-function 'slime-simple-complete-symbol)
+     (setq slime-complete-symbol-function 'slime-simple-complete-symbol)))
 
-     (add-hook 'slime-repl-mode-hook 'slime-clojure-repl-setup)
-     (tweak-clojure-syntax 'slime-repl-mode)))
 
 (eval-after-load "slime-repl"
   '(progn

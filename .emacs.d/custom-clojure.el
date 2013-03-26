@@ -62,23 +62,14 @@
      (add-hook 'clojure-mode-hook 'run-lisp-common-hooks)
      (tweak-clojure-syntax 'clojure-mode)
      (define-key clojure-mode-map (kbd "C-c t") 'clojure-jump-to-test)
-     (define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)))
+     (define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)
+     (define-key clojure-mode-map (kbd "C-TAB") 'complete-symbol)))
 
 ;; Undo the overriding of M-p/n in clojure-test-mode
 (eval-after-load "clojure-test-mode"
   '(progn
      (define-key clojure-test-mode-map (kbd "M-p") 'backward-paragraph)
      (define-key clojure-test-mode-map (kbd "M-n") 'forward-paragraph)))
-
-;; Better REPL behaviour
-(defun slime-clojure-repl-setup ()
-  (when (string-match-p "clojure.*" (slime-connection-name))
-    (message "Setting up repl for clojure")
-    (when (slime-inferior-process)
-      (slime-redirect-inferior-output))
-    (set-syntax-table clojure-mode-syntax-table)
-    (clojure-mode-font-lock-setup)
-    (setq lisp-indent-function 'clojure-indent-function)))
 
 ;; Macro for face definition
 (defmacro defcljface (name color desc &optional others)
@@ -94,63 +85,6 @@
 (defcljface clojure-java-call    "#7587a6"   "Clojure Java calls")
 (defcljface clojure-special      "#0074e8"   "Clojure special")
 (defcljface clojure-double-quote "#00920A"   "Clojure special")
-
-(defun lein-swank ()
-  "Start a leiningen Swank server and connect to it"
-  (interactive)
-  (let ((default-directory (locate-dominating-file default-directory
-                                                   "project.clj")))
-    (when (not default-directory)
-      (error "Not in a Leiningen project."))
-    ;; If there already are connections, generate a new port number
-    (lexical-let ((port (if (and (boundp 'slime-net-processes)
-                                 slime-net-processes)
-                            (1+ (apply #'max
-                                       (mapcar #'slime-connection-port
-                                               slime-net-processes)))
-                          4005)))
-      (let ((proc (start-process "lein-swank" "*lein-swank*" "lein" "swank"
-                                 (number-to-string port))))
-        (when proc
-          (process-put proc :output nil)
-          (set-process-sentinel
-           proc (lambda (proc event)
-                  (message "%s%s: `%S'" (process-get proc :output)
-                           proc (replace-regexp-in-string "\n" "" event))))
-          (set-process-filter
-           proc (lambda (proc output)
-                  (process-put proc :output
-                               (concat (process-get proc :output) output))
-                  (when (string-match "Connection opened on" output)
-                    (slime-connect "localhost" port)
-                    ;; no need to further process output
-                    (set-process-filter proc nil))))
-          (message "Starting lein swank server on port %d..." port))))))
-
-(autoload 'lein-swank "slime"
-  "Start and connect to a Swank server for the current leiningen project." t)
-
-(defun cljr-swank ()
-  (interactive)
-  (let ((proc (start-process-shell-command
-               "cljr-swank" "*cljr-swank*"
-               "cljr" "swank"
-               (number-to-string slime-port))))
-    (when proc
-      (process-put proc :output nil)
-      (set-process-sentinel
-       proc (lambda (proc event)
-              (message "%s%s: `%S'" (process-get proc :output)
-                       proc (replace-regexp-in-string "\n" "" event))))
-      (set-process-filter
-       proc (lambda (proc output)
-              (process-put proc :output
-                           (concat (process-get proc :output) output))
-              (when (string-match "Connection opened on" output)
-                (slime-connect "localhost" slime-port)
-                ;; no need to further process output
-                (set-process-filter proc nil))))
-      (message "Starting cljr swank server..."))))
 
 ;; Completions for lein-task
 (setq lein-task-list '("pom" "help" "install" "jar" "test" "deps"
@@ -182,63 +116,22 @@
                     (delete-process proc))))
           (message (concat "Running lein " task)))))))
 
-(defun durendal-dim-sldb-font-lock ()
-  "Dim irrelevant lines in Clojure debugger buffers."
-  (if (string-match "clojure" (buffer-name))
-      (font-lock-add-keywords
-       nil `((,(concat " [0-9]+: " (regexp-opt '("clojure.core"
-                                                 "clojure.lang"
-                                                 "swank." "java."))
-                       ;; TODO: regexes ending in .* are ignored by
-                       ;; font-lock; what gives?
-                       "[a-zA-Z0-9\\._$]*")
-              . font-lock-comment-face)) t)))
+;; nREPL.el
+(autoload 'nrepl-jack-in "nrepl" nil t)
+(add-hook 'nrepl-mode-hook 'nrepl-turn-on-eldoc-mode)
+(setq nrepl-lein-command "lein2")
+(setq nrepl-history-file ".nrepl.history")
 
-(add-hook 'sldb-mode-hook 'durendal-dim-sldb-font-lock)
+;; auto-complete in nREPL
+(require 'ac-nrepl)
+(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+(eval-after-load "auto-complete"
+  '(add-to-list 'ac-modes 'nrepl-mode))
 
-
-;; Clojure Debugging Toolkit
-
-(defun sldb-line-bp ()
-  "Set breakpoint on current buffer line."
-  (interactive)
-  (slime-eval-async (list 'swank:sldb-line-bp
-                          ,(buffer-file-name) ,(line-number-at-pos))))
-
-(defun slime-force-continue ()
-  "force swank server to continue"
-  (interactive)
-  (slime-dispatch-event '(:emacs-interrupt :cdt)))
-
-(defun slime-get-thing-at-point ()
-  (interactive)
-  (let ((thing (thing-at-point 'sexp)))
-    (set-text-properties 0 (length thing) nil thing)
-    thing))
-
-(defun slime-eval-last-frame ()
-  "Eval thing at point in the context of the last frame viewed"
-  (interactive)
-  (slime-eval-with-transcript (list 'swank:eval-last-frame
-                                    ,(slime-get-thing-at-point))))
-
-(define-prefix-command 'cdt-map)
-(define-key cdt-map (kbd "C-b") 'sldb-line-bp)
-(define-key cdt-map (kbd "C-g") 'slime-force-continue)
-(define-key cdt-map (kbd "C-p") 'slime-eval-last-frame)
-
-(eval-after-load 'slime
-  '(progn
-     (define-key slime-mode-map (kbd "C-c d") 'cdt-map)
-     (define-key sldb-mode-map (kbd "C-c d") 'cdt-map)))
-
-(eval-after-load 'slime-repl
-  '(define-key slime-repl-mode-map
-     (kbd "C-c d") 'cdt-map))
-
-(eval-after-load 'cc-mode
-  '(define-key java-mode-map
-     (kbd "C-c d") 'cdt-map))
+;; auto-complete with C-Tab
+(add-hook 'nrepl-mode-hook 'set-auto-complete-as-completion-at-point-function)
+(add-hook 'nrepl-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
 
 (provide 'custom-clojure)
