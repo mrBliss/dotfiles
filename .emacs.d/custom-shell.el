@@ -71,5 +71,15 @@ will be shortened to \"~\"."
                     (buffer-name))))
     (rename-buffer new-name)))
 
+(defadvice comint-previous-matching-input-from-input
+  (before go-to-bottom first nil activate)
+  "Go to the bottom of the buffer, i.e. the prompt"
+  (end-of-buffer))
+
+(defadvice comint-next-matching-input-from-input
+  (before go-to-bottom first nil activate)
+  "Go to the bottom of the buffer, i.e. the prompt"
+  (end-of-buffer))
+
 
 (provide 'custom-shell)
