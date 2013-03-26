@@ -141,6 +141,26 @@ rename."
 
 
 ;;##############################################################################
+;; Fortran
+
+(defun fortran-custom ()
+  (define-key f90-mode-map (kbd "C-M-h") 'backward-kill-word)
+  (define-key f90-mode-map (kbd "M-N") 'flymake-goto-next-error)
+  (define-key f90-mode-map (kbd "M-P") 'flymake-goto-prev-error))
+
+(add-hook 'f90-mode-hook 'fortran-custom)
+
+(push '("\\.[fF]\\(03\\|95\\)$"
+        flymake-simple-make-init
+        flymake-simple-cleanup
+        flymake-get-real-file-name)
+      flymake-allowed-file-name-masks)
+
+(push '("^\\(.+\\):\\([0-9]+\\)\.\\([0-9]+\\) \\(.+?\\)\\(?: at (1)\\)"
+        1 2 3 4)
+      flymake-err-line-patterns)
+
+;;##############################################################################
 ;; Java
 
 (autoload 'javadoc-lookup "javadoc-help" "Look up Java class in Javadoc." t)
