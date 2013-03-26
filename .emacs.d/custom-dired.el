@@ -138,11 +138,23 @@ command twice to go to the real end of the line."
   (if (and (eq last-command 'dired-move-end-of-line)
            (< (point) (point-at-eol)))
       (move-end-of-line nil)
-    ;; Catch the error thrown when we're not on a file name, just move
-    ;; to the end of the line in that case.
-    (condition-case nil
-        (dired-move-to-end-of-filename)
-      (error (move-end-of-line nil)))))
+    ;; When we're not on a file name, just move to the end of the line
+    ;; in that case.
+    (unless (dired-move-to-end-of-filename t)
+      (move-end-of-line nil))))
+
+
+(defun dired-move-before-extension ()
+  "Move point before the last dot in the filename on the current line.
+Goes to the end of the line when the filename doesn't contain a dot.
+The first character of dotfiles is counted as a dot."
+  (interactive)
+  (let ((start (dired-move-to-filename)))
+    (when start
+      (dired-move-to-end-of-filename)
+      (unless (re-search-backward "\\." (+ 1 start) t)
+        (dired-move-to-end-of-filename)))))
+
 
 (defun dired-goto-first-item ()
   "Go to the first item of a dired buffer."
@@ -158,17 +170,28 @@ command twice to go to the real end of the line."
   (forward-line -1)
   (dired-move-to-filename))
 
+(defun dired-folder-name-to-kill-ring ()
+  "Copy the folder name (not the full path) to the kill ring."
+  (interactive)
+  (let ((folder-name (replace-regexp-in-string "^.*/\\(.*\\)/" "\\1"
+                                               default-directory)))
+    (kill-new folder-name)
+    (message "Copied \"%s\" to kill ring" folder-name)))
+
 
 (define-key dired-mode-map (kbd "C-a") 'dired-move-beginning-of-line)
 (define-key dired-mode-map (kbd "C-e") 'dired-move-end-of-line)
+(define-key dired-mode-map (kbd "M-e") 'dired-move-before-extension)
 (define-key dired-mode-map (kbd "<") 'dired-goto-first-item)
 (define-key dired-mode-map (kbd ">") 'dired-goto-last-item)
+(define-key dired-mode-map (kbd "W") 'dired-folder-name-to-kill-ring)
 
 
 (eval-after-load "wdired"
   '(progn
      (define-key wdired-mode-map (kbd "C-a") 'dired-move-beginning-of-line)
-     (define-key wdired-mode-map (kbd "C-e") 'dired-move-end-of-line)))
+     (define-key wdired-mode-map (kbd "C-e") 'dired-move-end-of-line)
+     (define-key wdired-mode-map (kbd "M-e") 'dired-move-before-extension)))
 
 
 (provide 'custom-dired)
