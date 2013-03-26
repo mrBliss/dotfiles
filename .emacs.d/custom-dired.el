@@ -10,7 +10,6 @@
 (require 'dired-sort-map)
 (require 'episode-renamer)
 
-
 (defun dired-up-and-kill ()
   "Run Dired on the parent directory of the current
        directory, kills the current Dired buffer."
@@ -98,15 +97,19 @@ Otherwise, display it in another buffer."
      (define-key view-mode-map (kbd "n") 'dired-view-file-next)
      (define-key view-mode-map (kbd "p") 'dired-view-file-previous)))
 
-;; Copy file to the other open dired folder by default
-(setq dired-dwim-target t)
-
 ;; Enable disabled command
 (put 'dired-find-alternate-file 'disabled nil)
 
-;; Dired ls switches and search option
-(setq dired-listing-switches "-alhF"
-      dired-isearch-filenames 'dwim)
+;; Copy file to the other open dired folder by default
+(setq dired-dwim-target t
+      ;; Dired ls switches
+      dired-listing-switches "-alhvF --group-directories-first"
+      ;; Sane isearch
+      dired-isearch-filenames 'dwim
+      ;; Don't bother me
+      dired-recursive-deletes 'always
+      dired-recursive-copies 'always)
+
 
 
 (defadvice dired-details-toggle (before dired-details-toggle-delete-overlays)
