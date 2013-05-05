@@ -71,6 +71,26 @@ paragraph is filled. Optional arguments are only passed to
             (beginning-of-defun)
             (indent-sexp)))))))
 
+(defun toggle-keyword-string ()
+  "Toggle between keyword and string."
+  (interactive)
+  (labels ((string-name (s) (substring s 1 -1))
+           (keyword-name (s) (substring s 1))
+           (delete-and-extract-sexp
+            ()
+            (let ((begin (point)))
+              (forward-sexp)
+              (let ((result (buffer-substring-no-properties begin (point))))
+                (delete-region begin (point))
+                result))))
+    (save-excursion
+      (cond ((looking-at "\"")
+             (insert ":" (string-name (delete-and-extract-sexp))))
+            ((looking-at ":")
+             (insert "\"" (keyword-name (delete-and-extract-sexp)) "\""))
+            (t (backward-char) (toggle-keyword-string))))))
+
+(define-key lisp-mode-shared-map (kbd "C-c C-:") 'toggle-keyword-string)
 (define-key lisp-mode-shared-map (kbd "M-q") 'lisp-fill-or-indent)
 
 
