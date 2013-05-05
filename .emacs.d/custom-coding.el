@@ -75,6 +75,8 @@ rename."
 (setq c-default-style '((java-mode . "java") (awk-mode . "awk") (other . "k&r"))
       c-basic-offset 4)
 
+(eval-after-load 'cc-mode '(require 'disaster))
+
 
 ;;##############################################################################
 ;; Coffeescript
