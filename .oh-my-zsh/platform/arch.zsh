@@ -12,27 +12,24 @@ export EDITOR='emacsclient -t -a ""'
 export ALTERNATE_EDITOR='emacs --daemon; emacsclient -t'
 
 # pacman aliases
-alias paci='nocorrect sudo pacman-color -S'
-alias pacs='nocorrect pacman-color -Ss'
-alias pacu='nocorrect sudo pacman-color -Syu'
-alias pacref='nocorrect sudo pacman-color -Syy'
-alias pacr='nocorrect sudo pacman-color -R'
-alias pacrdeps='nocorrect sudo pacman-color -Rs'
-alias pacinfo='nocorrect pacman-color -Si'
-alias pacfiles='nocorrect pacman-color -Ql'
-alias pacsloc='nocorrect pacman-color -Qs'
-alias pacorph='nocorrect pacman-color -Qdt'
-alias pacwhich='nocorrect pacman-color -Qo'
-alias pacclean='nocorrect sudo pacman-color -Sc'
+alias paci='nocorrect sudo pacman -S'
+alias pacs='nocorrect pacman -Ss'
+alias pacu='nocorrect sudo pacman -Syu'
+alias pacref='nocorrect sudo pacman -Syy'
+alias pacr='nocorrect sudo pacman -R'
+alias pacrdeps='nocorrect sudo pacman -Rs'
+alias pacinfo='nocorrect pacman -Si'
+alias pacfiles='nocorrect pacman -Ql'
+alias pacsloc='nocorrect pacman -Qs'
+alias pacorph='nocorrect pacman -Qdt'
+alias pacwhich='nocorrect pacman -Qo'
+alias pacclean='nocorrect sudo pacman -Sc'
 
 # yaourt aliases
 alias yrt='nocorrect yaourt'
 alias yrti='nocorrect yaourt -S'
 alias yrts='nocorrect yaourt -Ss'
 alias yrtu='nocorrect yaourt -Syu --aur'
-
-# Use pacman-color for yaourt
-export PACMAN=pacman-color
 
 # Nice ls alternative
 alias lls='~/.bin/lls'
