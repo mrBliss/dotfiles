@@ -7,6 +7,7 @@ SAVEHIST=1000000
 
 unsetopt hist_beep
 setopt hist_ignore_dups
+setopt hist_ignore_space
 setopt hist_find_no_dups
 setopt hist_reduce_blanks
 setopt hist_no_store
