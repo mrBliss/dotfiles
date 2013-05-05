@@ -63,6 +63,7 @@
      (tweak-clojure-syntax 'clojure-mode)
      (define-key clojure-mode-map (kbd "C-c t") 'clojure-jump-to-test)
      (define-key clojure-mode-map (kbd "C-c C-a") 'align-cljlet)
+     (define-key clojure-mode-map (kbd "C-j") 'nrepl-eval-print-last-expression)
      (define-key clojure-mode-map (kbd "C-TAB") 'complete-symbol)))
 
 ;; Undo the overriding of M-p/n in clojure-test-mode
