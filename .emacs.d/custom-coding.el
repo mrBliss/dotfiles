@@ -27,6 +27,7 @@
 (add-hook 'c-mode-common-hook 'add-watchwords)
 (add-hook 'c-mode-common-hook 'idle-highlight)
 (add-hook 'c-mode-common-hook 'turn-on-outline)
+(add-hook 'c-mode-common-hook 'electric-pair-mode)
 
 
 ;; Please don't
@@ -60,10 +61,10 @@ rename."
 
 
 (defun c-mode-customisations ()
-  (define-key c-mode-map (kbd "C-M-h") 'backward-kill-word)
   (flymake-mode-on)
   (linum-mode 1)
   (add-to-list 'ac-sources 'ac-source-clang)
+  (define-key c-mode-map (kbd "C-M-h") 'backward-kill-word)
   (define-key c-mode-map (kbd "M-N") 'flymake-goto-next-error)
   (define-key c-mode-map (kbd "M-P") 'flymake-goto-prev-error)
   (define-key c-mode-map (kbd "M-R") 'c-rename-variable)
@@ -76,6 +77,22 @@ rename."
       c-basic-offset 4)
 
 (eval-after-load 'cc-mode '(require 'disaster))
+;;##############################################################################
+;; C++
+
+(defun c++-mode-customisations ()
+  (flymake-mode-on)
+  (linum-mode 1)
+  (add-to-list 'ac-sources 'ac-source-clang)
+  (define-key c++-mode-map (kbd "C-M-h") 'backward-kill-word)
+  (define-key c++-mode-map (kbd "M-N") 'flymake-goto-next-error)
+  (define-key c++-mode-map (kbd "M-P") 'flymake-goto-prev-error)
+  (push 'ac-source-clang ac-sources)
+  (push 'ac-source-yasnippet ac-sources))
+(add-hook 'c++-mode-hook 'c++-mode-customisations)
+
+(push '("\\.hpp$" flymake-simple-make-init)
+      flymake-allowed-file-name-masks)
 
 
 ;;##############################################################################
