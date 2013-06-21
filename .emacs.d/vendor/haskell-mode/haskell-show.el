@@ -27,6 +27,7 @@
 
 (defvar sexp-show "sexp-show")
 (require 'haskell-string)
+(with-no-warnings (require 'cl))
 
 (defun haskell-show-replace-region ()
   "Replace the given region with a pretty printed version."
@@ -250,3 +251,9 @@
           s))
 
 (provide 'haskell-show)
+
+;; Local Variables:
+;; byte-compile-warnings: (not cl-functions)
+;; End:
+
+;;; haskell-show.el ends here

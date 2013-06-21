@@ -31,7 +31,7 @@
 
 ;; (defun haskell-cabal-extract-fields-from-doc ()
 ;;   (require 'xml)
-;;   (require 'cl)
+;;   (with-no-warnings (require 'cl))
 ;;   (let ((section (completing-read
 ;;                   "Section: "
 ;;                   '("general-fields" "library" "executable" "buildinfo"))))
@@ -46,7 +46,9 @@
 ;;          (fields (mapcar (lambda (sym) (substring-no-properties sym 0 -1)) syms)))
 ;;     fields))
 
-(eval-when-compile (require 'cl))
+(with-no-warnings (require 'cl))
+
+(declare-function haskell-read-directory-name "haskell-process.el" (prompt default))
 
 (defconst haskell-cabal-general-fields
   ;; Extracted with (haskell-cabal-extract-fields-from-doc "general-fields")
@@ -129,7 +131,7 @@
   (set (make-local-variable 'comment-start-skip) "\\(^[ \t]*\\)--[ \t]*")
   (set (make-local-variable 'comment-end) "")
   (set (make-local-variable 'comment-end-skip) "[ 	]*\\(\\s>\\|\n\\)")
-)
+  )
 
 (defun haskell-cabal-get-setting (name)
   (save-excursion
@@ -160,12 +162,11 @@
    and indeed just prompting the user. Do them all."
   (let* ((file (haskell-cabal-find-file))
          (dir (when file (file-name-directory file))))
-    (read-directory-name
-     (format "Cabal dir%s: " (if file (format " (%s)" (file-relative-name file)) ""))
-     nil
-     (or dir default-directory))))
+    (haskell-read-directory-name
+     (format "Cabal dir%s: " (if file (format " (guessed from %s)" (file-relative-name file)) ""))
+     dir)))
 
-(defun haskell-cabal-compute-checksum (cabal-dir) 
+(defun haskell-cabal-compute-checksum (cabal-dir)
   "Computes a checksum of the .cabal configuration files."
   (let* ((cabal-file-paths (directory-files cabal-dir t "\\.cabal$"))
          (get-file-contents (lambda (path)
@@ -225,5 +226,8 @@
 
 (provide 'haskell-cabal)
 
-;; arch-tag: d455f920-5e4d-42b6-a2c7-4a7e84a05c29
+;; Local Variables:
+;; byte-compile-warnings: (not cl-functions)
+;; End:
+
 ;;; haskell-cabal.el ends here

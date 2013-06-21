@@ -25,9 +25,17 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))
 (require 'haskell-cabal)
 (require 'haskell-string)
+(with-no-warnings (require 'cl))
+
+(declare-function haskell-interactive-mode "haskell-interactive-mode" (session))
+(declare-function haskell-kill-session-process "haskell-process" (&optional session))
+(declare-function haskell-process-start "haskell-process" (session))
+(declare-function haskell-process-cd "haskell-process" (&optional not-interactive))
+
+;; Dynamically scoped variables.
+(defvar haskell-process-type)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Globals
@@ -86,8 +94,38 @@
                    "egrep '^module [^ (\r]+' * -r -I --include='*hs' -o -h | sed 's/^module //'"))))
     (split-string modules "\n")))
 
+(defun haskell-session-kill (&optional leave-interactive-buffer)
+  "Kill the session process and buffer, delete the session.
+0. Prompt to kill all associated buffers.
+1. Kill the process.
+2. Kill the interactive buffer.
+3. Walk through all the related buffers and set their haskell-session to nil.
+4. Remove the session from the sessions list."
+  (interactive)
+  (let* ((session (haskell-session))
+         (name (haskell-session-name session))
+         (also-kill-buffers (y-or-n-p (format "Killing `%s'. Also kill all associated buffers?" name))))
+    (haskell-kill-session-process session)
+    (unless leave-interactive-buffer
+      (kill-buffer (haskell-session-interactive-buffer session)))
+    (loop for buffer in (buffer-list)
+          do (with-current-buffer buffer
+               (when (and (boundp 'haskell-session)
+                          (string= (haskell-session-name haskell-session) name))
+                 (setq haskell-session nil)
+                 (when also-kill-buffers
+                   (kill-buffer)))))
+    (setq haskell-sessions
+          (remove-if (lambda (session)
+                       (string= (haskell-session-name session)
+                                name))
+                     haskell-sessions))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Finding/clearing the session
+
+;; Used internally
+(defvar haskell-session)
 
 (defun haskell-session-maybe ()
   "Maybe get the Haskell session, return nil if there isn't one."
@@ -113,15 +151,21 @@
 
 (defun haskell-session-from-buffer ()
   "Get the session based on the buffer."
-  (when (buffer-file-name)
-    (let ((sessions (remove-if-not (lambda (session)
-                                     (haskell-is-prefix-of (file-name-directory (buffer-file-name))
-                                                           (haskell-session-cabal-dir session)))
-                                   haskell-sessions)))
-      (sort sessions (lambda (a b) (< (length (haskell-session-cabal-dir a))
-                                      (length (haskell-session-cabal-dir b)))))
-      (when (consp sessions)
-        (car sessions)))))
+  (when (and (buffer-file-name)
+             (consp haskell-sessions))
+    (reduce (lambda (acc a)
+              (if (haskell-is-prefix-of (haskell-session-cabal-dir a)
+                                        (file-name-directory (buffer-file-name)))
+                  (if acc
+                      (if (and
+                           (> (length (haskell-session-cabal-dir a))
+                              (length (haskell-session-cabal-dir acc))))
+                          a
+                        acc)
+                    a)
+                acc))
+            haskell-sessions
+            :initial-value nil)))
 
 (defun haskell-session-new ()
   "Make a new session."
@@ -228,12 +272,14 @@
 
 (defun haskell-session-set-cabal-dir (s v)
   "Set the session cabal-dir."
-  (haskell-session-set s 'cabal-dir v)
-  (haskell-session-set-cabal-checksum s v))
+  (let ((true-path (file-truename v)))
+    (haskell-session-set s 'cabal-dir true-path)
+    (haskell-session-set-cabal-checksum s true-path)))
 
 (defun haskell-session-set-current-dir (s v)
   "Set the session current directory."
-  (haskell-session-set s 'current-dir v))
+  (let ((true-path (file-truename v)))
+    (haskell-session-set s 'current-dir true-path)))
 
 (defun haskell-session-set-cabal-checksum (s cabal-dir)
   "Set the session checksum of .cabal files"
@@ -270,3 +316,9 @@
                       (cdr s))))
 
 (provide 'haskell-session)
+
+;; Local Variables:
+;; byte-compile-warnings: (not cl-functions)
+;; End:
+
+;;; haskell-session.el ends here

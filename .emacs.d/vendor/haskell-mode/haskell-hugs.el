@@ -25,11 +25,8 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to the
-;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-;; Boston, MA 02111-1307, USA.
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 ;;; Commentary:
 
 ;; Purpose:
@@ -70,6 +67,9 @@
 ;;    
 ;;; All functions/variables start with
 ;;; `(turn-(on/off)-)haskell-hugs' or `haskell-hugs-'.
+
+(require 'comint)
+(require 'shell)
 
 (defgroup haskell-hugs nil
   "Major mode for interacting with an inferior Hugs session."
@@ -127,10 +127,6 @@ subjob if any.
   )
 
 ;; Hugs-interface
-
-(require 'comint)
-(require 'shell)
-
 (defvar haskell-hugs-process nil
   "The active Hugs subprocess corresponding to current buffer.")
 
@@ -280,7 +276,7 @@ error line otherwise show the Hugs buffer."
       (let ((efile (buffer-substring (match-beginning 1)
 				     (match-end 1)))
 	    (eline (if (match-beginning 3)
-                       (string-to-int (buffer-substring (match-beginning 3)
+                       (string-to-number (buffer-substring (match-beginning 3)
                                                         (match-end 3)))))
 	    (emesg (buffer-substring (1+ (point))
 				     (save-excursion (end-of-line) (point)))))
@@ -291,7 +287,9 @@ error line otherwise show the Hugs buffer."
                  (file-name-nondirectory efile) emesg)
         (if (file-exists-p efile)
             (progn (find-file-other-window efile)
-                   (if eline (goto-line eline))
+                   (when eline
+                         (goto-char (point-min))
+                         (forward-line (1- eline)))
                    (recenter)))
         )
     (pop-to-buffer  haskell-hugs-process-buffer) ; show *hugs* buffer
@@ -312,5 +310,4 @@ error line otherwise show the Hugs buffer."
 
 (provide 'haskell-hugs)
 
-;; arch-tag: c2a621e9-d743-4361-a459-983fbf1d4589
 ;;; haskell-hugs.el ends here

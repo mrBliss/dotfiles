@@ -21,11 +21,8 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to the
-;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-;; Boston, MA 02111-1307, USA.
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 ;;; Commentary:
 
 ;; Purpose:
@@ -99,10 +96,9 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'haskell-mode)
-  (require 'cl))
+(require 'haskell-mode)
 (require 'font-lock)
+(with-no-warnings (require 'cl))
 
 (defcustom haskell-font-lock-symbols nil
   "Display \\ and -> and such using symbols in fonts.
@@ -230,9 +226,6 @@ Regexp match data 0 points to the chars."
   ;; Return nil because we're not adding any face property.
   nil)
 
-(unless (fboundp 'char-displayable-p)
-  (require 'latin1-disp nil t))
-
 (defun haskell-font-lock-symbols-keywords ()
   (when (fboundp 'compose-region)
     (let ((alist nil))
@@ -272,7 +265,8 @@ Returns keywords suitable for `font-lock-keywords'."
 
          ;; We allow _ as the first char to fit GHC
          (varid "\\b[[:lower:]_][[:alnum:]'_]*\\b")
-         (conid "\\b[[:upper:]][[:alnum:]'_]*\\b")
+         ;; We allow ' preceding conids because of DataKinds/PolyKinds
+         (conid "\\b'?[[:upper:]][[:alnum:]'_]*\\b")
 	 (modid (concat "\\b" conid "\\(\\." conid "\\)*\\b"))
          (qvarid (concat modid "\\." varid))
          (qconid (concat modid "\\." conid))
@@ -555,6 +549,7 @@ that should be commented under LaTeX-style literate scripts."
   (haskell-font-lock-keywords-create 'latex)
   "Font lock definitions for LaTeX-style literate Haskell.")
 
+;;;###autoload
 (defun haskell-font-lock-choose-keywords ()
   (let ((literate (if (boundp 'haskell-literate) haskell-literate)))
     (case literate
@@ -650,5 +645,8 @@ Invokes `haskell-font-lock-hook' if not nil."
 
 (provide 'haskell-font-lock)
 
-;; arch-tag: 89fd122e-8378-4c7f-83a3-1f49a64e458d
+;; Local Variables:
+;; byte-compile-warnings: (not cl-functions)
+;; End:
+
 ;;; haskell-font-lock.el ends here

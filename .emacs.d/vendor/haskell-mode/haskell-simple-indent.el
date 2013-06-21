@@ -22,11 +22,8 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to the
-;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-;; Boston, MA 02111-1307, USA.
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 ;;; Commentary:
 
 ;; Purpose:
@@ -67,6 +64,9 @@
 
 ;; All functions/variables start with
 ;; `(turn-(on/off)-)haskell-simple-indent'.
+
+;; Dynamically scoped variables.
+(defvar unindent-line-function)
 
 ;; Version.
 (defconst haskell-simple-indent-version "1.2"
@@ -165,6 +165,7 @@ column, `tab-to-tab-stop' is done instead."
 (defvar haskell-simple-unindent-old)
 
 ;; The main functions.
+;;;###autoload
 (defun turn-on-haskell-simple-indent ()
   "Set `indent-line-function' to a simple indentation function.
 TAB will now move the cursor to the next indent point in the previous
@@ -195,5 +196,4 @@ I.e. the value before `turn-on-haskell-simple-indent' was called."
 
 (provide 'haskell-simple-indent)
 
-;; arch-tag: 18a08122-723b-485e-b958-e1cf8218b816
 ;;; haskell-simple-indent.el ends here

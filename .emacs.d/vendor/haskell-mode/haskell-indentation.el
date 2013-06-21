@@ -17,9 +17,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to the
-;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-;; Boston, MA 02111-1307, USA.
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
 
@@ -35,8 +33,20 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl)) ;needed for def of incf
-(require 'syntax nil t)			; Emacs 21 add-on
+(require 'syntax)
+(with-no-warnings (require 'cl))
+
+;; Dynamically scoped variables.
+(defvar following-token)
+(defvar current-token)
+(defvar left-indent)
+(defvar starter-indent)
+(defvar current-indent)
+(defvar layout-indent)
+(defvar parse-line-number)
+(defvar possible-indentations)
+(defvar indentation-point)
+(defvar haskell-literate)
 
 (defgroup haskell-indentation nil
   "Haskell indentation."
@@ -45,6 +55,16 @@
 
 (defcustom haskell-indentation-cycle-warn t
   "Warn before moving to the leftmost indentation, if you tab at the rightmost one."
+  :type 'boolean
+  :group 'haskell-indentation)
+
+(defcustom haskell-indentation-delete-backward-indentation t
+  "Delete backward removes indentation."
+  :type 'boolean
+  :group 'haskell-indentation)
+
+(defcustom haskell-indentation-delete-indentation t
+  "Delete removes indentation."
   :type 'boolean
   :group 'haskell-indentation)
 
@@ -98,6 +118,9 @@
     (define-key keymap [?\C-d] 'haskell-indentation-delete-char)
     keymap))
 
+;; Used internally
+(defvar haskell-indent-last-position)
+
 ;;;###autoload
 (define-minor-mode haskell-indentation-mode
   "Haskell indentation mode that deals with the layout rule.
@@ -117,6 +140,7 @@ autofill-mode."
     (set (make-local-variable 'haskell-indent-last-position)
          nil)))
 
+;;;###autoload
 (defun turn-on-haskell-indentation ()
   "Turn on the haskell-indentation minor mode."
   (interactive)
@@ -345,10 +369,10 @@ Preserves indentation and removes extra whitespace"
 (defun haskell-indentation-delete-backward-char (n)
   (interactive "p")
   (on-parse-error
-   (delete-backward-char n)
+   (delete-char (- n))
    (cond
     ((haskell-indentation-outside-bird-line)
-     (delete-backward-char n))
+     (delete-char (- n)))
     ((and delete-selection-mode
 	  mark-active
 	  (not (= (point) (mark))))
@@ -356,8 +380,9 @@ Preserves indentation and removes extra whitespace"
     ((or (= (haskell-current-column) 0)
 	 (> (haskell-current-column) (haskell-indentation-current-indentation))
 	(nth 8 (syntax-ppss)))
-     (delete-backward-char n))
-    (t (let* ((ci (haskell-indentation-current-indentation))
+     (delete-char (- n)))
+    (haskell-indentation-delete-backward-indentation
+       (let* ((ci (haskell-indentation-current-indentation))
 	      (pi (haskell-indentation-previous-indentation
 		   ci (haskell-indentation-find-indentations))))
 	 (save-excursion
@@ -370,7 +395,8 @@ Preserves indentation and removes extra whitespace"
 		  (beginning-of-line)
 		  (delete-region (max (point-min) (- (point) 1))
 				 (progn (move-to-column ci)
-					(point)))))))))))
+					(point))))))))
+    (t (delete-char (- n))))))
 
 (defun haskell-indentation-delete-char (n)
   (interactive "p")
@@ -389,7 +415,7 @@ Preserves indentation and removes extra whitespace"
 	   (>= (haskell-current-column) (haskell-indentation-current-indentation))
 	   (nth 8 (syntax-ppss)))
        (delete-char n))
-      (t
+      (haskell-indentation-delete-indentation
        (let* ((ci (haskell-indentation-current-indentation))
 	      (pi (haskell-indentation-previous-indentation
 		   ci (haskell-indentation-find-indentations))))
@@ -398,7 +424,8 @@ Preserves indentation and removes extra whitespace"
 	       (move-to-column pi))
 	   (delete-region (point)
 			  (progn (move-to-column ci)
-				 (point))))))))))
+				 (point))))))
+    (t (delete-char (- n)))))))
 
 (defun haskell-indentation-goto-least-indentation ()
   (beginning-of-line)
@@ -434,17 +461,6 @@ Preserves indentation and removes extra whitespace"
     (beginning-of-line)
     (when (bobp)
       (forward-comment (buffer-size)))))
-
-;; Dynamically scoped variables.
-(defvar following-token)
-(defvar current-token)
-(defvar left-indent)
-(defvar starter-indent)
-(defvar current-indent)
-(defvar layout-indent)
-(defvar parse-line-number)
-(defvar possible-indentations)
-(defvar indentation-point)
 
 (defun haskell-indentation-parse-to-indentations ()
   (save-excursion
@@ -490,14 +506,15 @@ Preserves indentation and removes extra whitespace"
 
 (defconst haskell-indentation-toplevel-list
   '(("module" . haskell-indentation-module)
-    ("data" . haskell-indentation-data)
-    ("type" . haskell-indentation-data)
-    ("newtype" . haskell-indentation-data)
+    ("data" . (lambda () (haskell-indentation-statement-right #'haskell-indentation-data)))
+    ("type" . (lambda () (haskell-indentation-statement-right #'haskell-indentation-data)))
+    ("newtype" . (lambda () (haskell-indentation-statement-right #'haskell-indentation-data)))
     ("class" . haskell-indentation-class-declaration)
     ("instance" . haskell-indentation-class-declaration )))
 
 (defconst haskell-indentation-type-list
-  '(("::"    . (lambda () (haskell-indentation-statement-right #'haskell-indentation-type)))
+  '(("::"    . (lambda () (haskell-indentation-with-starter
+			   (lambda () (haskell-indentation-separated #'haskell-indentation-type "->" nil)) nil)))
     ("("     . (lambda () (haskell-indentation-list #'haskell-indentation-type
 						    ")" "," nil)))
     ("["     . (lambda () (haskell-indentation-list #'haskell-indentation-type
@@ -520,6 +537,8 @@ Preserves indentation and removes extra whitespace"
 			   #'haskell-indentation-expression-layout nil)))
     ("mdo"   . (lambda () (haskell-indentation-with-starter
 			   #'haskell-indentation-expression-layout nil)))
+    ("rec"   . (lambda () (haskell-indentation-with-starter
+			   #'haskell-indentation-expression-layout nil)))
     ("case"  . (lambda () (haskell-indentation-phrase
 			   '(haskell-indentation-expression
 			     "of" haskell-indentation-case-layout))))
@@ -531,7 +550,8 @@ Preserves indentation and removes extra whitespace"
 			     "->" haskell-indentation-expression))))
     ("where" . (lambda () (haskell-indentation-with-starter
 			   #'haskell-indentation-declaration-layout nil t)))
-    ("::"    . (lambda () (haskell-indentation-statement-right #'haskell-indentation-type)))
+    ("::"    . (lambda () (haskell-indentation-with-starter
+			   (lambda () (haskell-indentation-separated #'haskell-indentation-type "->" nil)) nil)))
     ("="     . (lambda () (haskell-indentation-statement-right #'haskell-indentation-expression)))
     ("<-"    . (lambda () (haskell-indentation-statement-right #'haskell-indentation-expression)))
     ("("     . (lambda () (haskell-indentation-list #'haskell-indentation-expression
@@ -948,7 +968,7 @@ Preserves indentation and removes extra whitespace"
 		 (t (setq current-token (haskell-indentation-peek-token))))))))
 
 (defun haskell-indentation-peek-token ()
-  (cond ((looking-at "\\(if\\|then\\|else\\|let\\|in\\|mdo\\|do\\|proc\\|case\\|of\\|where\\|module\\|deriving\\|data\\|type\\|newtype\\|class\\|instance\\)\\([^[:alnum:]'_]\\|$\\)")
+  (cond ((looking-at "\\(if\\|then\\|else\\|let\\|in\\|mdo\\|rec\\|do\\|proc\\|case\\|of\\|where\\|module\\|deriving\\|data\\|type\\|newtype\\|class\\|instance\\)\\([^[:alnum:]'_]\\|$\\)")
 	 (match-string 1))
 	((looking-at "[][(){}[,;]")
 	 (match-string 0))
@@ -982,4 +1002,9 @@ Preserves indentation and removes extra whitespace"
       (forward-comment (buffer-size)))))
 
 (provide 'haskell-indentation)
+
+;; Local Variables:
+;; byte-compile-warnings: (not cl-functions)
+;; End:
+
 ;;; haskell-indentation.el ends here

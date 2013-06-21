@@ -8,6 +8,7 @@
 ;; Status:  distributed under terms of GPL2 or above
 
 (require 'compile)
+(with-no-warnings (require 'cl))
 
 (defgroup haskell-checkers nil
   "Run HLint as inferior of Emacs, parse error messages."
@@ -83,7 +84,8 @@
            (new-old-code ""))
       (save-excursion
         (switch-to-buffer (get-file-buffer fname))
-        (goto-line fline)
+        (goto-char (point-min))
+        (forward-line (1- fline))
         (beginning-of-line)
         (setf bline (point))
         (when (or hs-checkers-replace-without-ask
@@ -154,5 +156,9 @@ name - user visible name for this mode"
 (hs-checkers-setup scan "HScan")
 
 (provide 'haskell-checkers)
+
+;; Local Variables:
+;; byte-compile-warnings: (not cl-functions)
+;; End:
 
 ;;; haskell-checkers.el ends here

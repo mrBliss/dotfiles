@@ -21,11 +21,8 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to the
-;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-;; Boston, MA 02111-1307, USA.
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 ;;; Commentary:
 
 ;; Purpose:
@@ -128,13 +125,13 @@
 ;;; Code:
 
 (require 'haskell-mode)
-(require 'syntax nil t)			; Emacs 21 add-on
+(require 'syntax)
+(with-no-warnings (require 'cl))
 
-;;###autoload
+;;;###autoload
 ;; As `cl' defines macros that `imenu' uses, we must require them at
 ;; compile time.
 (eval-when-compile
-  (require 'cl)
   (condition-case nil
       (require 'imenu)
     (error nil))
@@ -502,6 +499,7 @@ positions and the type is one of the symbols \"variable\", \"datatype\",
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Declaration scanning via `imenu'.
 
+;;;###autoload
 (defun haskell-ds-create-imenu-index ()
   "Function for finding `imenu' declarations in Haskell mode.
 Finds all declarations (classes, variables, imports, instances and
@@ -619,6 +617,7 @@ datatypes) in a Haskell file for the `imenu' package."
   (concat "^" literate-haskell-ds-start-decl-re)
   "As `haskell-ds-func-menu-regexp' but for Bird-style literate scripts.")
 
+(declare-function fume-add-menubar-entry "ext:func-menu")
 (defvar fume-menubar-menu-name)
 (defvar fume-function-name-regexp-alist)
 (defvar fume-find-function-name-method-alist)
@@ -639,6 +638,7 @@ datatypes) in a Haskell file for the `imenu' package."
   (local-set-key [(meta button1)] 'fume-mouse-function-goto))
 
 ;; The main functions to turn on declaration scanning.
+;;;###autoload
 (defun turn-on-haskell-decl-scan ()
   (interactive)
   "Unconditionally activate `haskell-decl-scan-mode'."
@@ -715,5 +715,8 @@ Invokes `haskell-decl-scan-mode-hook'."
 
 (provide 'haskell-decl-scan)
 
-;; arch-tag: f4335fd8-4b6c-472e-9899-004d47d94818
+;; Local Variables:
+;; byte-compile-warnings: (not cl-functions)
+;; End:
+
 ;;; haskell-decl-scan.el ends here

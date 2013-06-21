@@ -1,4 +1,4 @@
-;;; haskell-doc.el --- show function types in echo area  -*- coding: iso-8859-1 -*-
+;;; haskell-doc.el --- show function types in echo area  -*- coding: utf-8 -*-
 
 ;; Copyright (C) 2004, 2005, 2006, 2007, 2009  Free Software Foundation, Inc.
 ;; Copyright (C) 1997 Hans-Wolfgang Loidl
@@ -16,16 +16,14 @@
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 3, or (at your option)
 ;; any later version.
-;;
+
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-;;
+
 ;; You should have received a copy of the GNU General Public License
-;; along with this program; if not, you can either send email to this
-;; program's maintainer or write to: The Free Software Foundation,
-;; Inc.; 59 Temple Place, Suite 330; Boston, MA 02111-1307, USA.
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
 ;;  ===========
@@ -269,7 +267,7 @@
 ;;  (haskell-doc-install-keymap): Simplify.
 ;;
 ;;  Revision 1.5  2003/01/09 11:56:26  simonmar
-;;  Patches from Ville Skytt‰ <scop@xemacs.org>, the XEmacs maintainer of
+;;  Patches from Ville Skytt√§ <scop@xemacs.org>, the XEmacs maintainer of
 ;;  the haskell-mode:
 ;;
 ;;   - Make the auto-mode-alist modifications autoload-only.
@@ -287,7 +285,7 @@
 ;;
 ;;  Revision 1.2  2002/04/23 14:45:10  simonmar
 ;;  Tweaks to the doc strings and support for customization, from
-;;  Ville Skytt‰ <scop@xemacs.org>.
+;;  Ville Skytt√§ <scop@xemacs.org>.
 ;;
 ;;  Revision 1.1  2001/07/19 16:17:36  rrt
 ;;  Add the current version of the Moss/Thorn/Marlow Emacs mode, along with its
@@ -354,7 +352,9 @@
 ;;@subsection Emacs portability
 
 (require 'haskell-mode)
-(eval-when-compile (require 'cl))
+(require 'inf-haskell)
+(require 'imenu)
+(with-no-warnings (require 'cl))
 
 (defgroup haskell-doc nil
   "Show Haskell function types in echo area."
@@ -1316,9 +1316,6 @@ URL is the URL of the online doc."
 ;;@node Menubar Support, Haskell Doc Mode, Install as minor mode, top
 ;;@section Menubar Support
 
-;; get imenu
-(require 'imenu)
-
 ;; a dummy definition needed for XEmacs (I know, it's horrible :-(
 
 ;;@cindex haskell-doc-install-keymap
@@ -1420,7 +1417,7 @@ See variable docstring."
 
     (run-hooks 'haskell-doc-mode-hook))
 
-  (and (interactive-p)
+  (and (called-interactively-p 'any)
        (message "haskell-doc-mode is %s"
 		(if haskell-doc-mode "enabled" "disabled")))
   haskell-doc-mode)
@@ -1507,6 +1504,7 @@ is not."
 This function is run by an idle timer to print the type
  automatically if `haskell-doc-mode' is turned on."
   (and haskell-doc-mode
+       (not (eobp))
        (not executing-kbd-macro)
        ;; Having this mode operate in the minibuffer makes it impossible to
        ;; see what you're doing.
@@ -1523,6 +1521,7 @@ This function is run by an idle timer to print the type
        ;;        (or nil ; (haskell-doc-print-var-docstring current-symbol)
        ;;            (haskell-doc-show-type current-fnsym)))))))
 
+;;;###autoload
 (defun haskell-doc-current-info ()
   "Return the info about symbol at point.
 Meant for `eldoc-documentation-function'."
@@ -1559,15 +1558,12 @@ function.  Only the user interface is different."
 
 ;;@cindex haskell-doc-show-type
 
-(require 'syntax-ppss nil t)		; possible add-on in Emacs 21
-
 (defun haskell-doc-in-code-p ()
   (not (or (and (eq haskell-literate 'bird)
                 ;; Copied from haskell-indent-bolp.
                 (<= (current-column) 2)
                 (eq (char-after (line-beginning-position)) ?\>))
-           (if (fboundp 'syntax-ppss)
-               (nth 8 (syntax-ppss))))))
+           (nth 8 (syntax-ppss)))))
 
 ;;;###autoload
 (defun haskell-doc-show-type (&optional sym)
@@ -1989,5 +1985,8 @@ This function switches to and potentially loads many buffers."
 
 (provide 'haskell-doc)
 
-;; arch-tag: 6492eb7e-7048-47ac-a331-da09e1eb6254
+;; Local Variables:
+;; byte-compile-warnings: (not cl-functions)
+;; End:
+
 ;;; haskell-doc.el ends here

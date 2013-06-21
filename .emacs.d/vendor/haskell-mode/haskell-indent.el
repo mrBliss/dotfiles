@@ -22,11 +22,8 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to the
-;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-;; Boston, MA 02111-1307, USA.
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 ;;; Commentary:
 
 ;; Purpose:
@@ -91,7 +88,9 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))	;need defs of push and pop
+(require 'haskell-string)
+(with-no-warnings (require 'cl))
+
 (defvar haskell-literate)
 
 (defgroup haskell-indent nil
@@ -654,7 +653,8 @@ Returns the location of the start of the comment, nil otherwise."
          (is-where
           (string-match "where[ \t]*" haskell-indent-current-line-first-ident))
          (diff-first                 ; not a function def with the same name
-          (not(string= valname-string haskell-indent-current-line-first-ident)))
+          (not(string= (haskell-trim valname-string)
+                       (haskell-trim haskell-indent-current-line-first-ident))))
          ;; (is-type-def
          ;;  (and rhs-sign (eq (char-after rhs-sign) ?\:)))
          (test (string
@@ -1503,6 +1503,7 @@ One indentation cycle is used."
     (define-key map [?\C-c ?\C->] 'haskell-indent-put-region-in-literate)
     map))
 
+;;;###autoload
 (defun turn-on-haskell-indent ()
   "Turn on ``intelligent'' Haskell indentation mode."
   (set (make-local-variable 'indent-line-function) 'haskell-indent-cycle)
@@ -1579,5 +1580,8 @@ Invokes `haskell-indent-hook' if not nil."
 
 (provide 'haskell-indent)
 
-;; arch-tag: e4e5e90a-12e2-4002-b5cb-7b2375710013
+;; Local Variables:
+;; byte-compile-warnings: (not cl-functions)
+;; End:
+
 ;;; haskell-indent.el ends here

@@ -1,6 +1,10 @@
+;;; haskell-mode-autoloads.el --- automatically extracted autoloads
+;;
+;;; Code:
+
 
 ;;;### (autoloads (ghc-core-mode ghc-core-create-core) "ghc-core"
-;;;;;;  "ghc-core.el" (20327 38141))
+;;;;;;  "ghc-core.el" (20917 53525 289 408000))
 ;;; Generated autoloads from ghc-core.el
 
 (autoload 'ghc-core-create-core "ghc-core" "\
@@ -18,7 +22,7 @@ Major mode for GHC Core files.
 ;;;***
 
 ;;;### (autoloads (haskell-align-imports) "haskell-align-imports"
-;;;;;;  "haskell-align-imports.el" (20341 28472))
+;;;;;;  "haskell-align-imports.el" (20917 53525 289 408000))
 ;;; Generated autoloads from haskell-align-imports.el
 
 (autoload 'haskell-align-imports "haskell-align-imports" "\
@@ -28,8 +32,8 @@ Align all the imports in the buffer.
 
 ;;;***
 
-;;;### (autoloads (haskell-c-mode) "haskell-c" "haskell-c.el" (20327
-;;;;;;  38141))
+;;;### (autoloads (haskell-c-mode) "haskell-c" "haskell-c.el" (20917
+;;;;;;  53525 289 408000))
 ;;; Generated autoloads from haskell-c.el
 
 (add-to-list 'auto-mode-alist '("\\.hsc\\'" . haskell-c-mode))
@@ -42,7 +46,7 @@ Major mode for Haskell FFI files.
 ;;;***
 
 ;;;### (autoloads (haskell-cabal-get-dir haskell-cabal-mode) "haskell-cabal"
-;;;;;;  "haskell-cabal.el" (20334 23077))
+;;;;;;  "haskell-cabal.el" (20917 53525 289 408000))
 ;;; Generated autoloads from haskell-cabal.el
 
 (add-to-list 'auto-mode-alist '("\\.cabal\\'" . haskell-cabal-mode))
@@ -60,9 +64,24 @@ Get the Cabal dir for a new project. Various ways of figuring this out,
 
 ;;;***
 
-;;;### (autoloads (haskell-decl-scan-mode) "haskell-decl-scan" "haskell-decl-scan.el"
-;;;;;;  (20327 38141))
+;;;### (autoloads (haskell-decl-scan-mode turn-on-haskell-decl-scan
+;;;;;;  haskell-ds-create-imenu-index) "haskell-decl-scan" "haskell-decl-scan.el"
+;;;;;;  (20917 53525 289 408000))
 ;;; Generated autoloads from haskell-decl-scan.el
+
+(eval-when-compile (condition-case nil (require 'imenu) (error nil)) (unless (eq (syntax-table) (with-syntax-table (syntax-table) (syntax-table))) (defmacro with-syntax-table (table &rest body) "Evaluate BODY with syntax table of current buffer set to a copy of TABLE.\nThe syntax table of the current buffer is saved, BODY is evaluated, and the\nsaved table is restored, even in case of an abnormal exit.\nValue is what BODY returns." (let ((old-table (make-symbol "table")) (old-buffer (make-symbol "buffer"))) `(let ((,old-table (syntax-table)) (,old-buffer (current-buffer))) (unwind-protect (progn (set-syntax-table ,table) ,@body) (save-current-buffer (set-buffer ,old-buffer) (set-syntax-table ,old-table))))))))
+
+(autoload 'haskell-ds-create-imenu-index "haskell-decl-scan" "\
+Function for finding `imenu' declarations in Haskell mode.
+Finds all declarations (classes, variables, imports, instances and
+datatypes) in a Haskell file for the `imenu' package.
+
+\(fn)" nil nil)
+
+(autoload 'turn-on-haskell-decl-scan "haskell-decl-scan" "\
+
+
+\(fn)" t nil)
 
 (autoload 'haskell-decl-scan-mode "haskell-decl-scan" "\
 Minor mode for declaration scanning for Haskell mode.
@@ -110,8 +129,9 @@ Invokes `haskell-decl-scan-mode-hook'.
 
 ;;;***
 
-;;;### (autoloads (haskell-doc-show-type haskell-doc-mode) "haskell-doc"
-;;;;;;  "haskell-doc.el" (20327 38141))
+;;;### (autoloads (haskell-doc-show-type haskell-doc-current-info
+;;;;;;  haskell-doc-mode) "haskell-doc" "haskell-doc.el" (20917 53525
+;;;;;;  3622 834000))
 ;;; Generated autoloads from haskell-doc.el
 
 (autoload 'haskell-doc-mode "haskell-doc" "\
@@ -121,6 +141,12 @@ See variable docstring.
 \(fn &optional ARG)" t nil)
 
 (defalias 'turn-on-haskell-doc-mode 'haskell-doc-mode)
+
+(autoload 'haskell-doc-current-info "haskell-doc" "\
+Return the info about symbol at point.
+Meant for `eldoc-documentation-function'.
+
+\(fn)" nil nil)
 
 (autoload 'haskell-doc-show-type "haskell-doc" "\
 Show the type of the function near point.
@@ -133,9 +159,25 @@ current buffer.
 
 ;;;***
 
-;;;### (autoloads (haskell-indent-mode) "haskell-indent" "haskell-indent.el"
-;;;;;;  (20327 38141))
+;;;### (autoloads (haskell-font-lock-choose-keywords) "haskell-font-lock"
+;;;;;;  "haskell-font-lock.el" (20917 53525 3622 834000))
+;;; Generated autoloads from haskell-font-lock.el
+
+(autoload 'haskell-font-lock-choose-keywords "haskell-font-lock" "\
+
+
+\(fn)" nil nil)
+
+;;;***
+
+;;;### (autoloads (haskell-indent-mode turn-on-haskell-indent) "haskell-indent"
+;;;;;;  "haskell-indent.el" (20917 53525 3622 834000))
 ;;; Generated autoloads from haskell-indent.el
+
+(autoload 'turn-on-haskell-indent "haskell-indent" "\
+Turn on ``intelligent'' Haskell indentation mode.
+
+\(fn)" nil nil)
 
 (autoload 'haskell-indent-mode "haskell-indent" "\
 ``Intelligent'' Haskell indentation mode.
@@ -165,8 +207,9 @@ Invokes `haskell-indent-hook' if not nil.
 
 ;;;***
 
-;;;### (autoloads (haskell-indentation-mode) "haskell-indentation"
-;;;;;;  "haskell-indentation.el" (20328 13471))
+;;;### (autoloads (turn-on-haskell-indentation haskell-indentation-mode)
+;;;;;;  "haskell-indentation" "haskell-indentation.el" (20917 53525
+;;;;;;  3622 834000))
 ;;; Generated autoloads from haskell-indentation.el
 
 (autoload 'haskell-indentation-mode "haskell-indentation" "\
@@ -177,15 +220,23 @@ autofill-mode.
 
 \(fn &optional ARG)" t nil)
 
+(autoload 'turn-on-haskell-indentation "haskell-indentation" "\
+Turn on the haskell-indentation minor mode.
+
+\(fn)" t nil)
+
 ;;;***
 
 ;;;### (autoloads (haskell-interactive-mode-echo haskell-interactive-switch
 ;;;;;;  haskell-interactive-bring haskell-interactive-mode) "haskell-interactive-mode"
-;;;;;;  "haskell-interactive-mode.el" (20338 50718))
+;;;;;;  "haskell-interactive-mode.el" (20917 53525 3622 834000))
 ;;; Generated autoloads from haskell-interactive-mode.el
 
 (autoload 'haskell-interactive-mode "haskell-interactive-mode" "\
 Interactive mode for Haskell.
+
+Key bindings:
+\\{haskell-interactive-mode-map}
 
 \(fn SESSION)" t nil)
 
@@ -206,11 +257,32 @@ Echo a read only piece of text before the prompt.
 
 ;;;***
 
+;;;### (autoloads (haskell-menu) "haskell-menu" "haskell-menu.el"
+;;;;;;  (20917 53525 3622 834000))
+;;; Generated autoloads from haskell-menu.el
+
+(autoload 'haskell-menu "haskell-menu" "\
+Launch the Haskell sessions menu.
+
+\(fn)" t nil)
+
+;;;***
+
 ;;;### (autoloads (haskell-hayoo haskell-hoogle literate-haskell-mode
-;;;;;;  haskell-mode) "haskell-mode" "haskell-mode.el" (20341 54213))
+;;;;;;  haskell-mode haskell-version) "haskell-mode" "haskell-mode.el"
+;;;;;;  (20917 53525 3622 834000))
 ;;; Generated autoloads from haskell-mode.el
 
-(add-to-list 'load-path (or (file-name-directory load-file-name) (car load-path)))
+(autoload 'haskell-version "haskell-mode" "\
+Show the `haskell-mode` version in the echo area.
+With prefix argument HERE, insert it at point.
+When FULL is non-nil, use a verbose version string.
+When MESSAGE is non-nil, display a message with the version.
+
+\(fn &optional HERE)" t nil)
+
+(defvar haskell-mode-map (let ((map (make-sparse-keymap))) (define-key map [24 4] 'inferior-haskell-send-decl) (define-key map [3 26] 'switch-to-haskell) (define-key map [3 12] 'inferior-haskell-load-file) (define-key map [3 2] 'switch-to-haskell) (define-key map (kbd "C-c C-t") 'inferior-haskell-type) (define-key map (kbd "C-c C-i") 'inferior-haskell-info) (define-key map (kbd "C-c M-.") 'inferior-haskell-find-definition) (define-key map (kbd "C-c C-d") 'inferior-haskell-find-haddock) (define-key map [3 22] 'haskell-check) (define-key map (kbd "C-c C-.") 'haskell-mode-format-imports) (define-key map [remap delete-indentation] 'haskell-delete-indentation) (define-key map [backtab] 'unindent-for-tab-command) map) "\
+Keymap used in Haskell mode.")
 
 (autoload 'haskell-mode "haskell-mode" "\
 Major mode for editing Haskell programs.
@@ -275,20 +347,44 @@ Do a Hayoo search for QUERY.
 
 ;;;***
 
-;;;### (autoloads (haskell-move-nested) "haskell-move-nested" "haskell-move-nested.el"
-;;;;;;  (20328 13471))
+;;;### (autoloads (haskell-move-nested-left haskell-move-nested-right
+;;;;;;  haskell-move-nested) "haskell-move-nested" "haskell-move-nested.el"
+;;;;;;  (20917 53525 3622 834000))
 ;;; Generated autoloads from haskell-move-nested.el
 
 (autoload 'haskell-move-nested "haskell-move-nested" "\
-Not documented
+Shift the nested off-side-rule block adjacent to point by COLS columns to the right.
 
-\(fn COLUMNS)" nil nil)
+In Transient Mark mode, if the mark is active, operate on the contents
+of the region instead.
+
+\(fn COLS)" nil nil)
+
+(autoload 'haskell-move-nested-right "haskell-move-nested" "\
+Increase indentation of the following off-side-rule block adjacent to point.
+
+Use a numeric prefix argument to indicate amount of indentation to apply.
+
+In Transient Mark mode, if the mark is active, operate on the contents
+of the region instead.
+
+\(fn COLS)" t nil)
+
+(autoload 'haskell-move-nested-left "haskell-move-nested" "\
+Decrease indentation of the following off-side-rule block adjacent to point.
+
+Use a numeric prefix argument to indicate amount of indentation to apply.
+
+In Transient Mark mode, if the mark is active, operate on the contents
+of the region instead.
+
+\(fn COLS)" t nil)
 
 ;;;***
 
 ;;;### (autoloads (haskell-navigate-imports-return haskell-navigate-imports-go
 ;;;;;;  haskell-navigate-imports) "haskell-navigate-imports" "haskell-navigate-imports.el"
-;;;;;;  (20328 13471))
+;;;;;;  (20917 53525 3622 834000))
 ;;; Generated autoloads from haskell-navigate-imports.el
 
 (autoload 'haskell-navigate-imports "haskell-navigate-imports" "\
@@ -310,14 +406,31 @@ Return to the non-import point we were at before going to the module list.
 ;;;***
 
 ;;;### (autoloads (haskell-process haskell-process-start haskell-process-cabal
-;;;;;;  haskell-process-cabal-build haskell-process-load-file) "haskell-process"
-;;;;;;  "haskell-process.el" (20340 57610))
+;;;;;;  haskell-process-cabal-build haskell-process-load-or-reload
+;;;;;;  haskell-process-reload-file haskell-process-load-file haskell-process-generate-tags)
+;;;;;;  "haskell-process" "haskell-process.el" (20917 53525 6956
+;;;;;;  261000))
 ;;; Generated autoloads from haskell-process.el
+
+(autoload 'haskell-process-generate-tags "haskell-process" "\
+Regenerate the TAGS table.
+
+\(fn &optional AND-THEN-FIND-THIS-TAG)" t nil)
 
 (autoload 'haskell-process-load-file "haskell-process" "\
 Load the current buffer file.
 
 \(fn)" t nil)
+
+(autoload 'haskell-process-reload-file "haskell-process" "\
+Re-load the current buffer file.
+
+\(fn)" t nil)
+
+(autoload 'haskell-process-load-or-reload "haskell-process" "\
+Load or reload. Universal argument toggles which.
+
+\(fn &optional TOGGLE)" t nil)
 
 (autoload 'haskell-process-cabal-build "haskell-process" "\
 Build the Cabal project.
@@ -339,16 +452,10 @@ Get the current process from the current session.
 
 \(fn)" nil nil)
 
-(autoload 'haskell-process-generate-tags "haskell-process" "\
-Regenerate the TAGS table.
-
-\(fn &optional AND-THEN-FIND-THIS-TAG)" nil nil)
-
-
 ;;;***
 
 ;;;### (autoloads (haskell-session-process haskell-session) "haskell-session"
-;;;;;;  "haskell-session.el" (20344 42487))
+;;;;;;  "haskell-session.el" (20917 53525 6956 261000))
 ;;; Generated autoloads from haskell-session.el
 
 (autoload 'haskell-session "haskell-session" "\
@@ -363,8 +470,50 @@ Get the session process.
 
 ;;;***
 
+;;;### (autoloads (haskell-show-parse haskell-show-parse-and-insert
+;;;;;;  haskell-show-replace) "haskell-show" "haskell-show.el" (20917
+;;;;;;  53525 6956 261000))
+;;; Generated autoloads from haskell-show.el
+
+(autoload 'haskell-show-replace "haskell-show" "\
+Replace the given region containing a Show value with a pretty
+  printed collapsible version.
+
+\(fn START END)" nil nil)
+
+(autoload 'haskell-show-parse-and-insert "haskell-show" "\
+Parse a `string' containing a Show instance value and insert
+  it pretty printed into the current buffer.
+
+\(fn GIVEN)" nil nil)
+
+(autoload 'haskell-show-parse "haskell-show" "\
+Parse the given input into a tree.
+
+\(fn GIVEN)" nil nil)
+
+;;;***
+
+;;;### (autoloads (turn-on-haskell-simple-indent) "haskell-simple-indent"
+;;;;;;  "haskell-simple-indent.el" (20917 53525 6956 261000))
+;;; Generated autoloads from haskell-simple-indent.el
+
+(autoload 'turn-on-haskell-simple-indent "haskell-simple-indent" "\
+Set `indent-line-function' to a simple indentation function.
+TAB will now move the cursor to the next indent point in the previous
+nonblank line.  An indent point is a non-whitespace character following
+whitespace.
+
+Runs `haskell-simple-indent-hook'.
+
+Use `haskell-simple-indent-version' to find out what version this is.
+
+\(fn)" t nil)
+
+;;;***
+
 ;;;### (autoloads (haskell-sort-imports) "haskell-sort-imports" "haskell-sort-imports.el"
-;;;;;;  (20328 13471))
+;;;;;;  (20917 53525 6956 261000))
 ;;; Generated autoloads from haskell-sort-imports.el
 
 (autoload 'haskell-sort-imports "haskell-sort-imports" "\
@@ -374,11 +523,32 @@ Sort the import list at the point.
 
 ;;;***
 
+;;;### (autoloads (haskell-is-prefix-of haskell-string-take haskell-trim)
+;;;;;;  "haskell-string" "haskell-string.el" (20917 53525 6956 261000))
+;;; Generated autoloads from haskell-string.el
+
+(autoload 'haskell-trim "haskell-string" "\
+
+
+\(fn STRING)" nil nil)
+
+(autoload 'haskell-string-take "haskell-string" "\
+Take n chars from string.
+
+\(fn STRING N)" nil nil)
+
+(autoload 'haskell-is-prefix-of "haskell-string" "\
+Is x string a prefix of y string?
+
+\(fn X Y)" nil nil)
+
+;;;***
+
 ;;;### (autoloads (inferior-haskell-find-haddock inferior-haskell-find-definition
-;;;;;;  inferior-haskell-info inferior-haskell-type inferior-haskell-send-decl
-;;;;;;  inferior-haskell-load-and-run inferior-haskell-load-file
-;;;;;;  switch-to-haskell) "inf-haskell" "inf-haskell.el" (20333
-;;;;;;  43796))
+;;;;;;  inferior-haskell-info inferior-haskell-kind inferior-haskell-type
+;;;;;;  inferior-haskell-send-decl inferior-haskell-load-and-run
+;;;;;;  inferior-haskell-load-file switch-to-haskell) "inf-haskell"
+;;;;;;  "inf-haskell.el" (20917 53525 6956 261000))
 ;;; Generated autoloads from inf-haskell.el
 
 (defalias 'run-haskell 'switch-to-haskell)
@@ -412,6 +582,11 @@ The returned info is cached for reuse by `haskell-doc-mode'.
 
 \(fn EXPR &optional INSERT-VALUE)" t nil)
 
+(autoload 'inferior-haskell-kind "inf-haskell" "\
+Query the haskell process for the kind of the given expression.
+
+\(fn TYPE)" t nil)
+
 (autoload 'inferior-haskell-info "inf-haskell" "\
 Query the haskell process for the info of the given expression.
 
@@ -441,10 +616,17 @@ we load it.
 
 ;;;***
 
-;;;### (autoloads nil nil ("haskell-checkers.el" "haskell-font-lock.el"
+;;;### (autoloads nil nil ("haskell-checkers.el" "haskell-compat.el"
 ;;;;;;  "haskell-ghci.el" "haskell-hugs.el" "haskell-package.el"
-;;;;;;  "haskell-simple-indent.el" "haskell-string.el" "init.el")
-;;;;;;  (20344 42495 885853))
+;;;;;;  "haskell-unicode-input-method.el") (20917 54084 348922 835000))
 
 ;;;***
 
+(provide 'haskell-mode-autoloads)
+;; Local Variables:
+;; version-control: never
+;; no-byte-compile: t
+;; no-update-autoloads: t
+;; coding: utf-8
+;; End:
+;;; haskell-mode-autoloads.el ends here

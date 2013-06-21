@@ -6,7 +6,7 @@
 
 
 ;; Haskell-mode
-(load "haskell-site-file")
+(require 'haskell-mode-autoloads)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-decl-scan)
@@ -103,6 +103,10 @@ is looked at."
   (define-key haskell-mode-map (kbd "M-p") 'backward-paragraph)
   (define-key haskell-mode-map (kbd "M-.") 'haskell-mode-tag-find)
   (define-key haskell-mode-map (kbd "M-,") 'pop-tag-mark)
+  (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
+  (define-key haskell-mode-map (kbd "C-c c") 'haskell-process-cabal)
+  (define-key haskell-mode-map (kbd "C-c C-t") 'haskell-process-do-type)
+  (define-key haskell-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
   (define-key haskell-mode-map (kbd "C-c C-,") 'haskell-indent-insert-comma)
   (define-key haskell-mode-map (kbd "C-c C-a") 'haskell-next-argument)
   (define-key haskell-mode-map (kbd "C-c C-n") 'haskell-implement-or-next-case)

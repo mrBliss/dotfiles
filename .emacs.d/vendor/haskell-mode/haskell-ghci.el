@@ -19,11 +19,8 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to the
-;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-;; Boston, MA 02111-1307, USA.
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 ;;; Commentary:
 
 ;; Purpose:
@@ -70,6 +67,9 @@
 
 ;;; Code:
 
+(require 'comint)
+(require 'shell)
+
 (defgroup haskell-ghci nil
   "Major mode for interacting with an inferior GHCi session."
   :group 'haskell
@@ -114,9 +114,6 @@ The commands available from within a Haskell script are:
 
 
 ;; GHCi interface:
-
-(require 'comint)
-(require 'shell)
 
 (defvar haskell-ghci-process nil
   "The active GHCi subprocess corresponding to current buffer.")
@@ -302,7 +299,7 @@ error line otherwise show the *ghci* buffer."
 		  "^[^\/]*\\([^:\n]+\\):\\([0-9]+\\)" nil t)
 		 (let ((efile (buffer-substring (match-beginning 1)
 						(match-end 1)))
-		       (eline (string-to-int 
+		       (eline (string-to-number 
 			       (buffer-substring (match-beginning 2)
 						 (match-end 2)))))
 
@@ -312,7 +309,8 @@ error line otherwise show the *ghci* buffer."
                    eline (file-name-nondirectory efile))
 		   (if (file-exists-p efile)
 		       (progn (find-file-other-window efile)
-			      (goto-line eline)
+			      (goto-char (point-min))
+			      (forward-line (1- eline))
 			      (recenter))))
 
       ;; We got an error without a file and line number, so put the
@@ -332,5 +330,4 @@ error line otherwise show the *ghci* buffer."
 
 (provide 'haskell-ghci)			
 
-;; arch-tag: f0bade4b-288d-4329-9791-98c1e24167ac
 ;;; haskell-ghci.el ends here
