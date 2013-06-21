@@ -651,6 +651,12 @@ number input."
 
 (global-set-key (vector 'remap 'goto-line) 'goto-line-with-feedback)
 
+;; Gnuplot
+(autoload 'gnuplot-mode "gnuplot" "gnuplot major mode" t)
+(autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
+
+(add-to-list 'auto-mode-alist '("\\.gnuplot$" . gnuplot-mode))
+
 
 (require 'move-text)
 (move-text-default-bindings)
