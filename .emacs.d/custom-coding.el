@@ -302,6 +302,14 @@ rename."
      ;; js2-mode binds C-M-h to something else; undo this
      (define-key js2-mode-map (kbd "C-M-h") 'backward-kill-word)))
 
+(autoload 'tern-mode "tern" nil t)
+(add-hook 'js2-mode-hook 'tern-mode)
+(eval-after-load 'tern
+   '(progn
+      (require 'tern-auto-complete)
+      (tern-ac-setup)))
+
+
 (add-hook 'js2-mode-hook 'local-comment-auto-fill)
 (add-hook 'js2-mode-hook 'add-watchwords)
 (remove-hook 'js2-mode-hook 'wisent-javascript-setup-parser)
