@@ -178,6 +178,62 @@ skewer.fn.css = function(request) {
 };
 
 /**
+ * HTML evaluator, appends or replaces a selection with given HTML.
+ */
+skewer.fn.html = function(request) {
+    function buildSelector(ancestry) {
+        return ancestry.map(function(tag) {
+            return tag[0] + ':nth-of-type(' + tag[1] + ')';
+        }).join(' > ');
+    }
+    function query(ancestry) {
+        return document.querySelector(buildSelector(ancestry));
+    }
+    function htmlToNode(html) {
+        var wrapper = document.createElement('div');
+        wrapper.innerHTML = html;
+        return wrapper.firstChild;
+    }
+
+    var target = query(request.ancestry);
+
+    if (target == null) {
+        /* Determine missing part of the ancestry. */
+        var path = request.ancestry.slice(0);  // copy
+        var missing = [];
+        while (query(path) == null) {
+            missing.push(path.pop());
+        }
+
+        /* Build up the missing elements. */
+        target = query(path);
+        while (missing.length > 0) {
+            var tag = missing.pop(),
+                name = tag[0],
+                nth = tag[1];
+            var empty = null;
+            var count = target.querySelectorAll(name).length;
+            for (; count < nth; count++) {
+                empty = document.createElement(tag[0]);
+                target.appendChild(empty);
+            }
+            target = empty;
+        }
+    }
+
+    target.parentNode.replaceChild(htmlToNode(request.eval), target);
+    return {};
+};
+
+/**
+ * Fetch the HTML contents of selector.
+ */
+skewer.fn.fetchselector = function(request) {
+    var element = document.querySelector(request.eval);
+    return { value: element.innerHTML };
+};
+
+/**
  * Host of the skewer script (CORS support).
  * @type string
  */

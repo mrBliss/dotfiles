@@ -4,15 +4,26 @@
 
 ;; Author: Christopher Wellons <mosquitopsu@gmail.com>
 ;; URL: https://github.com/skeeto/skewer-mode
-;; Version: 1.4
+;; Version: 1.5.0
 ;; Package-Requires: ((simple-httpd "1.4.0") (js2-mode "20090723"))
 
 ;;; Commentary:
 
-;;  1. Place dependencies in your `load-path' or load them directly
+;; Quick start (without package.el):
+
+;;  1. Put this directory in your `load-path'
 ;;  2. Load skewer-mode.el
 ;;  3. M-x `run-skewer' to attach a browser to Emacs
-;;  4. From a `js2-mode' buffer, send forms to the browser to evaluate
+;;  4. From a `js2-mode' buffer with `skewer-mode' minor mode enabled,
+;;     send forms to the browser to evaluate
+
+;; The function `skewer-setup' can be used to configure all of mode
+;; hooks (previously this was the default). This can also be done
+;; manually like so,
+
+;;     (add-hook 'js2-mode-hook 'skewer-mode)
+;;     (add-hook 'css-mode-hook 'skewer-css-mode)
+;;     (add-hook 'html-mode-hook 'skewer-html-mode)
 
 ;; The keybindings for evaluating expressions in the browser are just
 ;; like the Lisp modes. These are provided by the minor mode
@@ -24,9 +35,9 @@
 
 ;; The result of the expression is echoed in the minibuffer.
 
-;; Additionally, `css-mode' gets a similar set of bindings for
-;; modifying the CSS rules on the current page. They operate on
-;; declarations and rules.
+;; Additionally, `css-mode' and `html-mode' get a similar set of
+;; bindings for modifying the CSS rules and updating HTML on the
+;; current page.
 
 ;; Note: `run-skewer' uses `browse-url' to launch the browser. This
 ;; may require further setup depending on your operating system and
@@ -44,9 +55,7 @@
 ;; skewer() to reconnect. This avoids a page reload, which would lose
 ;; any fragile browser state you might care about.
 
-;; Manual version:
-
-;; To skewer your own document rather than the provided blank one,
+;; To skewer your own document rather than the provided blank page,
 
 ;;  1. Load the dependencies
 ;;  2. Load skewer-mode.el
@@ -55,20 +64,20 @@
 ;;     (see `example.html' and check your `httpd-port')
 ;;  5. Visit the document from your browser
 
-;; Skewer fully supports CORS so the document need not be hosted by
-;; Emacs itself. A Greasemonkey userscript is provided for injecting
-;; Skewer into any arbitrary page you're visiting without needing to
-;; modify the page on the host.
+;; Skewer fully supports CORS, so the document need not be hosted by
+;; Emacs itself. A Greasemonkey userscript and a bookmarklet are
+;; provided for injecting Skewer into any arbitrary page you're
+;; visiting without needing to modify the page on the host.
 
 ;; With skewer-repl.el loaded, a REPL into the browser can be created
-;; with M-x `skewer-repl', or C-c C-z. This should work just like a
-;; console within the browser. Messages can be logged to this REPL
-;; with `skewer.log()` (just like `console.log()`).
+;; with M-x `skewer-repl', or C-c C-z. This should work like a console
+;; within the browser. Messages can be logged to this REPL with
+;; skewer.log() (just like console.log()).
 
 ;; Extending Skewer:
 
-;; Skewer is flexible and open to extension. The REPL in
-;; skewer-repl.el is a partial example of this. You can extend
+;; Skewer is flexible and open to extension. The REPL and the CSS and
+;; HTML minor modes are a partial examples of this. You can extend
 ;; skewer.js with your own request handlers and talk to them from
 ;; Emacs using `skewer-eval' (or `skewer-eval-synchronously') with
 ;; your own custom :type. The :type string chooses the dispatch
@@ -81,6 +90,12 @@
 
 ;;; History:
 
+;; Version 1.5.0: features
+;;   * No more automatic hook setup (see `skewer-setup').
+;;   * Support for HTML interaction
+;;   * Support for loading Bower packages
+;;   * Drop jQuery dependency
+;;   * Many small improvements
 ;; Version 1.4: features
 ;;   * Full CSS interaction
 ;;   * Greasemonkey userscript for injection
@@ -329,6 +344,47 @@ callback. Use with caution."
           do (accept-process-output nil 0.01)
           finally (return result))))
 
+(defun skewer-apply (function args)
+  "Synchronously apply FUNCTION in the browser with the supplied
+arguments, returning the result. All ARGS must be printable by
+`json-encode'. For example,
+
+    (skewer-apply \"Math.atan2\" '(1 -2)) ; => 2.677945044588987
+
+Uncaught exceptions propagate to Emacs as an error."
+  (let ((specials '(("undefined" . nil)
+                    ("NaN" . 0.0e+NaN)
+                    ("Infinity" . 1.0e+INF)
+                    ("-Infinity" . -1.0e+INF))))
+    (let* ((expr (concat function "(" (mapconcat #'json-encode args ", ") ")"))
+           (result (skewer-eval-synchronously expr :verbose t))
+           (value (cdr (assoc 'value result))))
+      (if (skewer-success-p result)
+          (if (assoc value specials)
+              (cdr (assoc value specials))
+            (condition-case _
+                (json-read-from-string value)
+              (json-readtable-error value)))
+        (signal 'javascript
+                (list (cdr (assoc 'message (cdr (assoc'error result))))))))))
+
+(defun skewer-funcall (function &rest args)
+  "Synchronously call FUNCTION with the supplied ARGS. All ARGS
+must be printable by `json-read-from-string. For example,
+
+    (skewer-funcall \"Math.sin\" 0.5)  ; => 0.479425538604203
+
+Uncaught exceptions propagate to Emacs as an error."
+  (skewer-apply function args))
+
+(defun skewer--save-point (f &rest args)
+  "Return a function that calls F with point at the current point."
+  (let ((saved-point (point)))
+    (lambda (&rest more)
+      (save-excursion
+        (goto-char saved-point)
+        (apply f (append args more))))))
+
 (defun* skewer-ping ()
   "Ping the browser to test that it's still alive."
   (unless (null skewer-clients) ; don't queue pings
@@ -382,7 +438,8 @@ result into the current buffer."
   (if prefix
       (skewer-eval-print-last-expression)
     (if js2-mode-buffer-dirty-p
-        (js2-mode-wait-for-parse #'skewer-eval-last-expression)
+        (js2-mode-wait-for-parse
+         (skewer--save-point #'skewer-eval-last-expression))
       (destructuring-bind (string start end) (skewer-get-last-expression)
         (skewer-flash-region start end)
         (skewer-eval string #'skewer-post-minibuffer)))))
@@ -408,7 +465,7 @@ a list: (string start end)."
 waiting browser."
   (interactive)
   (if js2-mode-buffer-dirty-p
-      (js2-mode-wait-for-parse #'skewer-eval-last-expression)
+      (js2-mode-wait-for-parse (skewer--save-point #'skewer-eval-defun))
     (destructuring-bind (string start end) (skewer-get-defun)
       (skewer-flash-region start end)
       (skewer-eval string #'skewer-post-minibuffer))))
@@ -434,7 +491,8 @@ waiting browser."
 waiting browser and insert the result in the buffer at point."
   (interactive)
   (if js2-mode-buffer-dirty-p
-      (js2-mode-wait-for-parse #'skewer-eval-print-last-expression)
+      (js2-mode-wait-for-parse
+       (skewer--save-point #'skewer-eval-print-last-expression))
     (destructuring-bind (string start end) (skewer-get-defun)
       (skewer-flash-region start end)
       (insert "\n")
@@ -480,15 +538,16 @@ inconsistent buffer."
   :group 'skewer)
 
 ;;;###autoload
-(add-hook 'js2-mode-hook 'skewer-mode)
-
-;;;###autoload
 (defun run-skewer ()
   "Attach a browser to Emacs for a skewer JavaScript REPL. Uses
 `browse-url' to launch a browser."
   (interactive)
   (httpd-start)
   (browse-url (format "http://127.0.0.1:%d/skewer/demo" httpd-port)))
+
+;; Local Variables:
+;; lexical-binding: t
+;; End:
 
 (provide 'skewer-mode)
 

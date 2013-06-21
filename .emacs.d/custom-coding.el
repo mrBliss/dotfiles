@@ -141,6 +141,7 @@ rename."
     (add-hook 'after-save-hook 'auto-reload-firefox t t)
     (message "Enabled auto-reloading")))
 
+(autoload 'skewer-css-mode "skewer-css" nil t)
 
 ;;##############################################################################
 ;; Erlang
@@ -294,6 +295,7 @@ rename."
 (autoload 'run-skewer "skewer-mode" nil t)
 (autoload 'skewer-repl "skewer-repl" nil t)
 ;; Start a session with M-x run-skewer
+(autoload 'skewer-bower-load "skewer-bower" nil t)
 
 (eval-after-load "js2-mode"
   '(progn
