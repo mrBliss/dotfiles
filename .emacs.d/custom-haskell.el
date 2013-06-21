@@ -110,6 +110,7 @@ is looked at."
   (define-key haskell-mode-map (kbd "C-c C-,") 'haskell-indent-insert-comma)
   (define-key haskell-mode-map (kbd "C-c C-a") 'haskell-next-argument)
   (define-key haskell-mode-map (kbd "C-c C-n") 'haskell-implement-or-next-case)
+  (define-key haskell-mode-map (kbd "C-c C-p") 'ghc-insert-pragma)
   (flymake-mode 1))
 
 (add-hook 'haskell-mode-hook 'haskell-hook)
@@ -118,5 +119,22 @@ is looked at."
 ;; Literate haskell
 (autoload 'haskell-latex-mode "haskell-latex" nil t)
 
+(defun ghc-insert-pragma ()
+  "Insert a GHC LANGUAGE pragma.  Let the user choose one from the
+supported GHC extensions and add it to the top of the buffer.  It
+will be added below the already present pragmas or as the first
+line if there are none.  No detection of duplicates is done."
+  (interactive)
+  (let ((pragma (completing-read "LANGUAGE pragma: " ghc-language-extensions nil t)))
+    (save-excursion
+      ;; Go to bottom
+      (goto-char (point-max))
+      ;; Search for the last existing pragmas
+      (if (search-backward-regexp "^{-# LANGUAGE" nil t)
+          ;; Add the pragma below
+          (progn (end-of-line) (newline))
+        ;; No existing pragma, then add as the first line
+        (goto-char (point-min)) (open-line 1))
+      (insert (format "{-# LANGUAGE %s #-}" pragma)))))
 
 (provide 'custom-haskell)
