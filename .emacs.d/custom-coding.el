@@ -75,6 +75,7 @@ rename."
   (define-key c-mode-map (kbd "M-N") 'flymake-goto-next-error)
   (define-key c-mode-map (kbd "M-P") 'flymake-goto-prev-error)
   (define-key c-mode-map (kbd "M-R") 'c-rename-variable)
+  (define-key c-mode-map (kbd "C-c M-d") 'disaster)
   (push 'ac-source-clang ac-sources)
   (push 'ac-source-yasnippet ac-sources))
 (add-hook 'c-mode-hook 'c-mode-customisations)
@@ -84,6 +85,8 @@ rename."
       c-basic-offset 4)
 
 (eval-after-load 'cc-mode '(require 'disaster))
+
+
 ;;##############################################################################
 ;; C++
 
