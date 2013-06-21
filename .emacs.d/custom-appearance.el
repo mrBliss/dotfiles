@@ -5,52 +5,78 @@
 ;; Keywords: color-themes, appearance, looks
 
 ;;##############################################################################
-;; Miscellaneous
 
-(require 'color-theme)
-(require 'custom-themes)
+;; Load my themes
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
-;; The dark and light color-themes
-(setq dark-color-theme 'color-theme-dark-violet)
-(setq light-color-theme 'color-theme-solarized-light)
-;; The color-theme for the next frame
-(setq next-color-theme dark-color-theme)
+;; Default font
+(set-face-attribute 'default nil :family
+                    (case system-type
+                      ('gnu/linux "Quadraat Sans Mono")
+                      ('darwin "Inconsolata")))
 
-(defun make-frame-light-or-dark (arg)
-  "Make a new frame like `make-frame' with a dark color-theme or
-a light color-theme when passed a prefix argument."
-  (interactive "P")
-  (setq next-color-theme (if arg light-color-theme dark-color-theme))
-  (make-frame))
-
-
-;; Set font and theme depending on frame type. Also disable the tool
-;; bar and the scroll bar
-(defun appearance (f)
-  "Applies the color-theme, ir-black in a terminal or dark-violet in a
-   GUI. Disables the scroll and tool bar. Also sets the font."
-  (with-selected-frame f
-    (if (display-graphic-p f)
-        (progn
-          (set-frame-font
-           (case system-type
-             ('windows-nt "Envy Code R-8")
-             ('gnu/linux "QuadraatSMono-Regular-9")
-             ('darwin "Inconsolata-14")
-             ('cygwin "m-9")))
-          (tool-bar-mode -1)
-          (set-scroll-bar-mode nil)
-          (funcall next-color-theme))
-      (color-theme-ir-black))))
-(add-hook 'after-make-frame-functions 'appearance)
-
-;; Not global, because terminal and graphical windows have different
-;; themes.
-(setq color-theme-is-global nil)
-
-
+;; Powerline
 (require 'powerline)
-(powerline-default)
+
+(defpowerline powerline-file-format
+  (case (coding-system-eol-type buffer-file-coding-system)
+    (0 "")
+    (1 "^R")
+    (2 "^M")))
+
+(defun powerline-custom-theme ()
+  "Setup my custom mode-line."
+  (interactive)
+  (setq-default mode-line-format
+                '("%e"
+                  (:eval
+                   (let* ((active (powerline-selected-window-active))
+                          (face1 (if active 'powerline-active1
+                                   'powerline-inactive1))
+                          (face2 (if active 'powerline-active2
+                                   'powerline-inactive2))
+                          (lhs (list
+                                (powerline-raw "%*" nil 'l)
+                                (powerline-file-format nil 'l)
+                                (powerline-buffer-size nil 'l)
+                                (powerline-buffer-id nil 'l)
+
+                                (powerline-raw " ")
+                                (powerline-arrow-right nil face1)
+
+                                (when (boundp 'erc-modified-channels-object)
+                                  (powerline-raw erc-modified-channels-object
+                                                 face1 'l))
+
+                                (powerline-major-mode face1 'l)
+                                (powerline-process face1)
+                                (powerline-minor-modes face1 'l)
+                                (powerline-narrow face1 'l)
+
+                                (powerline-raw " " face1)
+                                (powerline-arrow-right face1 face2)
+
+                                (powerline-vc face2)))
+                          (rhs (list
+                                (powerline-raw global-mode-string face2 'r)
+
+                                (powerline-arrow-left face2 face1)
+
+                                (powerline-raw "%4l" face1 'r)
+                                (powerline-raw ":" face1)
+                                (powerline-raw "%3c" face1 'r)
+
+                                (powerline-arrow-left face1 nil)
+                                (powerline-raw " ")
+
+                                (powerline-raw "%6p" nil 'r)
+
+                                (powerline-hud face2 face1))))
+                     (concat
+                      (powerline-render lhs)
+                      (powerline-fill face2 (powerline-width rhs))
+                      (powerline-render rhs)))))))
+(powerline-custom-theme)
 
 
 (defvar mode-line-cleaner-alist
@@ -116,28 +142,6 @@ want to use in the modeline *in lieu of* the original.")
     (setq mode-line (concat mode-line flymake-mode-line-status))
     (setq flymake-mode-line mode-line)
     (force-mode-line-update)))
-
-
-;; Change flyspell faces
-(eval-after-load "flyspell"
-  ;; The faces in my color-themes are ignored :-(
-  '(if (display-graphic-p)
-       (progn (set-face-foreground 'flyspell-incorrect "#FA2573"
-                                   (selected-frame))
-              (set-face-attribute 'flyspell-incorrect (selected-frame)
-                                  :underline t :bold t)
-              (set-face-foreground 'flyspell-duplicate "#FF8844"
-                                   (selected-frame))
-              (set-face-attribute 'flyspell-duplicate (selected-frame)
-                                  :underline t :bold t))
-     (progn (set-face-foreground 'flyspell-incorrect "#FFA560"
-                                 (selected-frame))
-            (set-face-attribute 'flyspell-incorrect (selected-frame)
-                                :underline nil :bold nil)
-            (set-face-foreground 'flyspell-duplicate "#F1266F"
-                                 (selected-frame))
-            (set-face-attribute 'flyspell-duplicate (selected-frame)
-                                :underline nil :bold nil))))
 
 ;; Pretty lambdas
 (require 'pretty-lambdada)
