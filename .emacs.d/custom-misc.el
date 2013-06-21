@@ -446,7 +446,10 @@ Starts with the subfolders of the folders in
 (global-set-key (kbd "C-x r t") 'inline-string-rectangle)
 
 ;; Let ediff split horizontally.
-(setq ediff-split-window-function 'split-window-horizontally)
+(setq ediff-split-window-function 'split-window-horizontally
+      ;; Don't create an extra frame
+      ediff-window-setup-function 'ediff-setup-windows-plain)
+
 
 ;; Load pkgbuild-mode for PKGBUILD files on Arch Linux
 (autoload 'pkgbuild-mode "pkgbuild-mode.el" "PKGBUILD mode." t)
