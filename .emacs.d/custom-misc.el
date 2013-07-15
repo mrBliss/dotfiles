@@ -630,9 +630,12 @@ You can configure `comment-style' to change the way regions are commented."
     ad-do-it))
 
 
-;; Use Python's regular expressions
-(require 'pyregexp)
-(global-set-key (kbd "C-c %") 'pyregexp-query-replace)
+;; Visual regexp
+(autoload 'vr/replace "visual-regexp" nil t)
+(autoload 'vr/query-replace "visual-regexp" nil t)
+(eval-after-load "visual-regexp"
+  '(require 'visual-regexp-steroids))
+(global-set-key (kbd "C-c %") 'vr/query-replace)
 
 
 ;; Simple HTTP server

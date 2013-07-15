@@ -1,27 +1,21 @@
-# Copyright (C) 2012 Marko Bencun
+# Copyright (C) 2013 Marko Bencun
 #
-# Author : benma <mbencun@gmail.com>
-# URL : https://github.com/benma/pyregexp/
-# Version : 0.1
-# Keywords : regexp, replace, python
+# This file is part of visual-regexp-steroids
 #
-# This file is part of pyregexp.
-#
-# pyregexp is free software: you can redistribute it and/or modify
+# visual-regexp-steroids is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# pyregexp is distributed in the hope that it will be useful,
+# visual-regexp-steroids is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with pyregexp.  If not, see <http://www.gnu.org/licenses/>.
+# along with visual-regexp-steroids.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys, re
-
 
 # True if we are running on Python 3.
 PY3 = sys.version_info[0] == 3
@@ -82,7 +76,7 @@ if argv[1] == 'matches':
             sys.stdout.write(' '.join("%s %s" % span for span in match.regs))
             sys.stdout.write('\n')
         if matches:
-            message("%d occurrences" % len(matches))
+            message("%d matches" % len(matches))
         else:
             message("no match")
     except re.error as e:
@@ -134,13 +128,13 @@ elif argv[1] == "replace":
         # are not part of match.group(0) and the regexp would not match again.
         re.sub(regexp, eval_replace, region, count=feedback_limit if feedback and feedback_limit else 0)
         # this line is only for counting matches
-        occurrences = len(list(re.finditer(regexp, region)))
+        matches = len(list(re.finditer(regexp, region)))
         if feedback:
-            if occurrences:
-                message("%d occurrences" % occurrences)
+            if matches:
+                message("%d matches" % matches)
             else:
                 message("no match")
         else:
-            message("replaced %d occurrences" % occurrences)
+            message("replaced %d matches" % matches)
     except Exception as e:
         message("Invalid: %s" % e)
