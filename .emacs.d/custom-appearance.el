@@ -15,6 +15,9 @@
                       ('gnu/linux "Quadraat Sans Mono")
                       ('darwin "Inconsolata")))
 
+;; Fallback font for unicode
+(set-fontset-font "fontset-default" 'unicode "Liberation Mono")
+
 ;; Powerline
 (require 'powerline)
 
