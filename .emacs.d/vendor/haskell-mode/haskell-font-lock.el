@@ -310,7 +310,8 @@ Returns keywords suitable for `font-lock-keywords'."
 
 	 ;; Top-level declarations
 	 (topdecl-var
-	  (concat line-prefix "\\(" varid "\\)\\s-*\\("
+	  (concat line-prefix "\\(" varid "\\)\\s-*\\([
+]*\\s-+\\)*\\("
                   ;; A toplevel declaration can be followed by a definition
                   ;; (=), a type (::) or (∷), a guard, or a pattern which can
                   ;; either be a variable, a constructor, a parenthesized
@@ -327,10 +328,10 @@ Returns keywords suitable for `font-lock-keywords'."
     (setq keywords
 	  `(;; NOTICE the ordering below is significant
 	    ;;
-            ("^<<<<<<< .*$" 0 'font-lock-preprocessor-face t)
-            ("^=======" 0 'font-lock-preprocessor-face t)
-            ("^>>>>>>> .*$" 0 'font-lock-preprocessor-face t)
-	    ("^#.*$" 0 'font-lock-warning-face t)
+            ("^<<<<<<< .*$" 0 'font-lock-warning-face t)
+            ("^=======" 0 'font-lock-warning-face t)
+            ("^>>>>>>> .*$" 0 'font-lock-warning-face t)
+	    ("^#.*$" 0 'font-lock-preprocessor-face t)
 	    ,@(unless haskell-emacs21-features ;Supports nested comments?
 		;; Expensive.
 		`((,string-and-char 1 font-lock-string-face)))
@@ -647,6 +648,7 @@ Invokes `haskell-font-lock-hook' if not nil."
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not cl-functions)
+;; tab-width: 8
 ;; End:
 
 ;;; haskell-font-lock.el ends here

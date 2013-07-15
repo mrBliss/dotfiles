@@ -30,14 +30,11 @@
 (require 'haskell-show)
 (with-no-warnings (require 'cl))
 
-;; Dynamically scoped variables.
-(defvar haskell-process-prompt-regex)
-
 (defcustom haskell-interactive-mode-eval-pretty
   nil
   "Print eval results that can be parsed as Show instances prettily. Requires sexp-show (on Hackage)."
   :type 'boolean
-  :group 'haskell)
+  :group 'haskell-interactive)
 
 (defvar haskell-interactive-prompt "λ> "
   "The prompt to use.")
@@ -52,22 +49,19 @@ interference with prompts that look like haskell expressions."
   nil
   "Use the given mode's font-locking to render some text."
   :type '(choice function (const :tag "None" nil))
-  :group 'haskell)
+  :group 'haskell-interactive)
 
 (defcustom haskell-interactive-mode-hide-multi-line-errors
   t
   "Hide collapsible multi-line compile messages by default."
   :type 'boolean
-  :group 'haskell)
+  :group 'haskell-interactive)
 
-
-(defvar haskell-interactive-greetings
-  (list "Hello, Haskell!"
-        "The lambdas must flow."
-        "Hours of hacking await!"
-        "The next big Haskell project is about to start!"
-        "Your wish is my IO ().")
-  "Greetings for when the Haskell process starts up.")
+(defcustom haskell-interactive-mode-delete-superseded-errors
+  t
+  "Whether to delete compile messages superseded by recompile/reloads."
+  :type 'boolean
+  :group 'haskell-interactive)
 
 ;; Used internally
 (defvar haskell-interactive-mode)
@@ -77,11 +71,13 @@ interference with prompts that look like haskell expressions."
 (defvar haskell-interactive-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "RET") 'haskell-interactive-mode-return)
+    (define-key map (kbd "SPC") 'haskell-interactive-mode-space)
     (define-key map (kbd "C-j") 'haskell-interactive-mode-newline-indent)
     (define-key map (kbd "C-a") 'haskell-interactive-mode-beginning)
     (define-key map (kbd "<home>") 'haskell-interactive-mode-beginning)
     (define-key map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
     (define-key map (kbd "C-c C-c") 'haskell-process-interrupt)
+    (define-key map (kbd "C-c C-f") 'next-error-follow-minor-mode)
     (define-key map (kbd "M-p") 'haskell-interactive-mode-history-previous)
     (define-key map (kbd "M-n") 'haskell-interactive-mode-history-next)
     (define-key map (kbd "C-<up>") 'haskell-interactive-mode-history-previous)
@@ -91,44 +87,41 @@ interference with prompts that look like haskell expressions."
   "Interactive Haskell mode map.")
 
 ;;;###autoload
-(defun haskell-interactive-mode (session)
+(define-derived-mode haskell-interactive-mode fundamental-mode "Interactive-Haskell"
   "Interactive mode for Haskell.
+
+See Info node `(haskell-mode)haskell-interactive-mode' for more
+information.
 
 Key bindings:
 \\{haskell-interactive-mode-map}"
-  (interactive)
-  (kill-all-local-variables)
-  (haskell-session-assign session)
-  (use-local-map haskell-interactive-mode-map)
+  :group 'haskell-interactive
   (set (make-local-variable 'haskell-interactive-mode) t)
-  (setq major-mode 'haskell-interactive-mode)
-  (setq mode-name "Interactive-Haskell")
-  (run-mode-hooks 'haskell-interactive-mode-hook)
-  (set (make-local-variable 'haskell-interactive-mode-history)
-       (list))
-  (set (make-local-variable 'haskell-interactive-mode-history-index)
-       0)
-  (haskell-interactive-mode-prompt session))
+  (set (make-local-variable 'haskell-interactive-mode-history) (list))
+  (set (make-local-variable 'haskell-interactive-mode-history-index) 0)
+  (setq next-error-function 'haskell-interactive-next-error-function)
+  (haskell-interactive-mode-prompt))
+
 
 (defface haskell-interactive-face-prompt
   '((t :inherit 'font-lock-function-name-face))
   "Face for the prompt."
-  :group 'haskell)
+  :group 'haskell-interactive)
 
 (defface haskell-interactive-face-compile-error
   '((t :inherit 'compilation-error))
   "Face for compile errors."
-  :group 'haskell)
+  :group 'haskell-interactive)
 
 (defface haskell-interactive-face-compile-warning
   '((t :inherit 'compilation-warning))
   "Face for compiler warnings."
-  :group 'haskell)
+  :group 'haskell-interactive)
 
 (defface haskell-interactive-face-result
   '((t :inherit 'font-lock-string-face))
   "Face for the result."
-  :group 'haskell)
+  :group 'haskell-interactive)
 
 (defun haskell-interactive-mode-newline-indent ()
   "Make newline and indent."
@@ -152,17 +145,23 @@ Key bindings:
 (defun haskell-interactive-switch ()
   "Switch to the interactive mode for this session."
   (interactive)
-  (let ((session (haskell-session)))
-    (let ((buffer (haskell-session-interactive-buffer session)))
-      (unless (find-if (lambda (window) (equal (window-buffer window) buffer))
-                       (window-list))
-        (switch-to-buffer-other-window (haskell-session-interactive-buffer session))))))
+  (let ((buffer (haskell-session-interactive-buffer (haskell-session))))
+    (unless (eq buffer (window-buffer))
+      (switch-to-buffer-other-window buffer))))
 
 (defun haskell-interactive-mode-return ()
   "Handle the return key."
   (interactive)
-  (or (haskell-interactive-jump-to-error-line)
-      (haskell-interactive-handle-line)))
+  (if (haskell-interactive-at-compile-message)
+      (next-error-internal)
+    (haskell-interactive-handle-line)))
+
+(defun haskell-interactive-mode-space (n)
+  "Handle the space key."
+  (interactive "p")
+  (if (haskell-interactive-at-compile-message)
+      (next-error-no-select 0)
+    (self-insert-command n)))
 
 (defun haskell-interactive-at-prompt ()
   "Am I at the prompt?"
@@ -209,7 +208,7 @@ Key bindings:
   "Jump to the error line."
   (let ((orig-line (buffer-substring-no-properties (line-beginning-position)
                                                    (line-end-position))))
-    (and (string-match "^\\([^:]+\\):\\([0-9]+\\):\\([0-9]+\\):" orig-line)
+    (and (string-match "^\\([^:]+\\):\\([0-9]+\\):\\([0-9]+\\)\\(-[0-9]+\\)?:" orig-line)
          (let* ((file (match-string 1 orig-line))
                 (line (match-string 2 orig-line))
                 (col (match-string 3 orig-line))
@@ -242,26 +241,34 @@ Key bindings:
 (defun haskell-interactive-mode-clear ()
   "Newline and indent at the prompt."
   (interactive)
-  (with-current-buffer (haskell-session-interactive-buffer (haskell-session))
-    (let ((inhibit-read-only t))
-      (set-text-properties (point-min) (point-max) nil))
-    (delete-region (point-min) (point-max))
-    (mapc 'delete-overlay (overlays-in (point-min) (point-max)))
-    (haskell-interactive-mode-prompt (haskell-session))))
+  (let ((session (haskell-session)))
+    (with-current-buffer (haskell-session-interactive-buffer session)
+      (let ((inhibit-read-only t))
+        (set-text-properties (point-min) (point-max) nil))
+      (delete-region (point-min) (point-max))
+      (mapc 'delete-overlay (overlays-in (point-min) (point-max)))
+      (haskell-interactive-mode-prompt session)
+      (haskell-session-set session 'next-error-region nil)
+      (haskell-session-set session 'next-error-locus nil))))
 
 (defun haskell-interactive-mode-input ()
   "Get the interactive mode input."
   (substring
    (buffer-substring-no-properties
     (save-excursion
-      (goto-char (max (point-max)))
+      (goto-char (point-max))
       (search-backward-regexp (haskell-interactive-prompt-regex)))
     (line-end-position))
    (length haskell-interactive-prompt)))
 
-(defun haskell-interactive-mode-prompt (session)
-  "Show a prompt at the end of the buffer."
-  (with-current-buffer (haskell-session-interactive-buffer session)
+(defun haskell-interactive-mode-prompt (&optional session)
+  "Show a prompt at the end of the REPL buffer.
+If SESSION is non-nil, use the REPL buffer associated with
+SESSION, otherwise operate on the current buffer.
+"
+  (with-current-buffer (if session
+                           (haskell-session-interactive-buffer session)
+                         (current-buffer))
     (goto-char (point-max))
     (insert (propertize haskell-interactive-prompt
                         'face 'haskell-interactive-face-prompt
@@ -337,6 +344,7 @@ Key bindings:
 (defun haskell-interactive-mode-compile-message (session message type)
   "Echo a compiler warning."
   (with-current-buffer (haskell-session-interactive-buffer session)
+    (setq next-error-last-buffer (current-buffer))
     (save-excursion
       (haskell-interactive-mode-goto-end-point)
       (let ((lines (string-match "^\\(.*\\)\n\\([[:unibyte:][:nonascii:]]+\\)" message)))
@@ -396,22 +404,22 @@ Key bindings:
           haskell-interactive-mode-history))))
 
 (defun haskell-interactive-mode-history-previous (arg)
-    "Cycle backwards through input history."
-    (interactive "*p")
-    (when (haskell-interactive-at-prompt)
-      (if (not (zerop arg))
-          (haskell-interactive-mode-history-toggle arg)
-        (setq haskell-interactive-mode-history-index 0)
-        (haskell-interactive-mode-history-toggle 1))))
+  "Cycle backwards through input history."
+  (interactive "*p")
+  (when (haskell-interactive-at-prompt)
+    (if (not (zerop arg))
+        (haskell-interactive-mode-history-toggle arg)
+      (setq haskell-interactive-mode-history-index 0)
+      (haskell-interactive-mode-history-toggle 1))))
 
 (defun haskell-interactive-mode-history-next (arg)
-    "Cycle forward through input history."
-    (interactive "*p")
-    (when (haskell-interactive-at-prompt)
-      (if (not (zerop arg))
-          (haskell-interactive-mode-history-toggle (- arg))
-        (setq haskell-interactive-mode-history-index 0)
-        (haskell-interactive-mode-history-toggle -1))))
+  "Cycle forward through input history."
+  (interactive "*p")
+  (when (haskell-interactive-at-prompt)
+    (if (not (zerop arg))
+        (haskell-interactive-mode-history-toggle (- arg))
+      (setq haskell-interactive-mode-history-index 0)
+      (haskell-interactive-mode-history-toggle -1))))
 
 (defun haskell-interactive-mode-set-prompt (p)
   "Set (and overwrite) the current prompt."
@@ -428,14 +436,12 @@ Key bindings:
 
 (defun haskell-interactive-show-load-message (session type module-name file-name echo)
   "Show the '(Compiling|Loading) X' message."
-  (let* ((file-name-module
-          (replace-regexp-in-string
-           "\\.hs$" ""
-           (replace-regexp-in-string "[\\/]" "." file-name)))
-         (msg (ecase type
-                ('compiling (format "Compiling: %s" module-name))
-                ('loading (format "Loading: %s" module-name)))))
+  (let ((msg (ecase type
+               ('compiling (format "Compiling: %s (%s)" module-name file-name))
+               ('loading (format "Loading: %s" module-name)))))
     (haskell-mode-message-line msg)
+    (when haskell-interactive-mode-delete-superseded-errors
+      (haskell-interactive-mode-delete-compile-messages session file-name))
     (when echo
       (haskell-interactive-mode-echo session msg))))
 
@@ -462,37 +468,129 @@ Key bindings:
                                 'invisible
                                 (not visibility)))))))
 
-(defun haskell-interactive-mode-error-backward ()
+(defconst haskell-interactive-mode-error-regexp
+  "^\\([^\r\n:]+\\):\\([0-9]+\\):\\([0-9]+\\)\\(-[0-9]+\\)?:")
+
+(defun haskell-interactive-at-compile-message ()
+  "Am I on a compile message?"
+  (save-excursion
+    (goto-char (line-beginning-position))
+    (looking-at haskell-interactive-mode-error-regexp)))
+
+(defun haskell-interactive-mode-error-backward (&optional count)
   "Go backward to the previous error."
   (interactive)
-  (search-backward-regexp "^[^:]+:[0-9]+:[0-9]+: " nil t))
+  (search-backward-regexp haskell-interactive-mode-error-regexp nil t count))
 
-(defun haskell-interactive-mode-error-forward ()
+(defun haskell-interactive-mode-error-forward (&optional count)
   "Go forward to the next error, or return to the REPL."
   (interactive)
   (goto-char (line-end-position))
-  (if (search-forward-regexp "^[^:]+:[0-9]+:[0-9]+: " nil t)
+  (if (search-forward-regexp haskell-interactive-mode-error-regexp nil t count)
       (progn (goto-char (line-beginning-position))
              t)
     (progn (goto-char (point-max))
            nil)))
+
+(defun haskell-interactive-next-error-function (&optional n reset)
+  "See `next-error-function' for more information."
+
+  (let* ((session (haskell-session))
+         (next-error-region (haskell-session-get session 'next-error-region))
+         (next-error-locus (haskell-session-get session 'next-error-locus))
+         (reset-locus nil))
+
+    (when (and next-error-region (or reset (and (/= n 0) (not next-error-locus))))
+      (goto-char (car next-error-region))
+      (unless (looking-at haskell-interactive-mode-error-regexp)
+        (haskell-interactive-mode-error-forward))
+
+      (setq reset-locus t)
+      (unless (looking-at haskell-interactive-mode-error-regexp)
+        (error "no errors found")))
+
+    ;; move point if needed
+    (cond
+     (reset-locus nil)
+     ((> n 0) (unless (haskell-interactive-mode-error-forward n)
+                (error "no more errors")))
+
+     ((< n 0) (unless (haskell-interactive-mode-error-backward (- n))
+                (error "no more errors"))))
+
+    (let ((orig-line (buffer-substring-no-properties (line-beginning-position) (line-end-position))))
+
+      (when (string-match haskell-interactive-mode-error-regexp orig-line)
+        (let* ((msgmrk (set-marker (make-marker) (line-beginning-position)))
+               (file (match-string 1 orig-line))
+               (line (match-string 2 orig-line))
+               (col1 (match-string 3 orig-line))
+               (col2 (match-string 4 orig-line))
+
+               (cabal-relative-file (expand-file-name file (haskell-session-cabal-dir session)))
+               (src-relative-file (expand-file-name file (haskell-session-current-dir session)))
+
+               (real-file (cond ((file-exists-p cabal-relative-file) cabal-relative-file)
+                                ((file-exists-p src-relative-file) src-relative-file))))
+
+          (haskell-session-set session 'next-error-locus msgmrk)
+
+          (if real-file
+              (let ((m1 (make-marker))
+                    (m2 (make-marker)))
+                (with-current-buffer (find-file-noselect real-file)
+                  (save-excursion
+                    (goto-char (point-min))
+                    (forward-line (1- (string-to-number line)))
+                    (set-marker m1 (+ (string-to-number col1) (point) -1))
+
+                    (when col2
+                      (set-marker m2 (- (point) (string-to-number col2))))))
+                ;; ...finally select&hilight error locus
+                (compilation-goto-locus msgmrk m1 (and (marker-position m2) m2)))
+            (error "don't know where to find %S" file)))))))
+
+(defun haskell-interactive-mode-delete-compile-messages (session &optional file-name)
+  "Delete compile messages in REPL buffer.
+If FILE-NAME is non-nil, restrict to removing messages concerning
+FILE-NAME only."
+  (with-current-buffer (haskell-session-interactive-buffer session)
+    (save-excursion
+      (goto-char (point-min))
+      (while (when (re-search-forward haskell-interactive-mode-error-regexp nil t)
+               (let ((msg-file-name (match-string-no-properties 1))
+                     (msg-startpos (line-beginning-position)))
+                 ;; skip over hanging continuation message lines
+                 (while (progn (forward-line) (looking-at "^    ")))
+
+                 (when (or (not file-name) (string= file-name msg-file-name))
+                   (let ((inhibit-read-only t))
+                     (set-text-properties msg-startpos (point) nil))
+                   (delete-region msg-startpos (point))
+                   ))
+               t)))))
 
 (defun haskell-interactive-mode-visit-error ()
   "Visit the buffer of the current (or last) error message."
   (interactive)
   (with-current-buffer (haskell-session-interactive-buffer (haskell-session))
     (if (progn (goto-char (line-beginning-position))
-               (looking-at "^[^:]+:[0-9]+:[0-9]+: "))
+               (looking-at haskell-interactive-mode-error-regexp))
         (progn (forward-line -1)
                (haskell-interactive-jump-to-error-line))
       (progn (goto-char (point-max))
              (haskell-interactive-mode-error-backward)
              (haskell-interactive-jump-to-error-line)))))
 
+;;;###autoload
 (defun haskell-interactive-mode-reset-error (session)
   "Reset the error cursor position."
   (interactive)
   (with-current-buffer (haskell-session-interactive-buffer session)
+    (haskell-interactive-mode-goto-end-point)
+    (let ((mrk (point-marker)))
+      (haskell-session-set session 'next-error-locus nil)
+      (haskell-session-set session 'next-error-region (cons mrk (copy-marker mrk t))))
     (goto-char (point-max))))
 
 (defun haskell-interactive-kill ()

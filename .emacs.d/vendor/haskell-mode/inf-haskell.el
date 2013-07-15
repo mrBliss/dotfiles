@@ -41,6 +41,13 @@
 ;; Dynamically scoped variables.
 (defvar find-tag-marker-ring)
 
+(defgroup inferior-haskell nil
+  "Settings for REPL interaction via `inferior-haskell-mode'"
+  :link '(custom-manual "(haskell-mode)inferior-haskell-mode")
+  :prefix "inferior-haskell-"
+  :prefix "haskell-"
+  :group 'haskell)
+
 ;; Here I depart from the inferior-haskell- prefix.
 ;; Not sure if it's a good idea.
 (defcustom haskell-program-name
@@ -54,7 +61,7 @@ The command can include arguments."
   ;; Custom only supports the :options keyword for a few types, e.g. not
   ;; for string.
   ;; :options '("hugs \"+.\"" "ghci")
-  :group 'haskell
+  :group 'inferior-haskell
   :type '(choice string (repeat string)))
 
 (defconst inferior-haskell-info-xref-re
@@ -104,11 +111,12 @@ The format should be the same as for `compilation-error-regexp-alist'.")
 (defcustom inferior-haskell-find-project-root t
   "If non-nil, try and find the project root directory of this file.
 This will either look for a Cabal file or a \"module\" statement in the file."
-  :group 'haskell
+  :group 'inferior-haskell
   :type 'boolean)
 
 (define-derived-mode inferior-haskell-mode comint-mode "Inf-Haskell"
   "Major mode for interacting with an inferior Haskell process."
+  :group 'inferior-haskell
   (set (make-local-variable 'comint-prompt-regexp)
        ;; Whay the backslash in [\\._[:alnum:]]?
        "^\\*?[[:upper:]][\\._[:alnum:]]*\\(?: \\*?[[:upper:]][\\._[:alnum:]]*\\)*> \\|^> $")
@@ -198,7 +206,7 @@ setting up the inferior-haskell buffer."
 (defcustom inferior-haskell-wait-and-jump nil
   "If non-nil, wait for file loading to terminate and jump to the error."
   :type 'boolean
-  :group 'haskell)
+  :group 'inferior-haskell)
 
 (defvar inferior-haskell-send-decl-post-filter-on nil)
 (make-variable-buffer-local 'inferior-haskell-send-decl-post-filter-on)
@@ -246,11 +254,12 @@ The process PROC should be associated to a comint buffer."
   (with-current-buffer buf
     (or (and (buffer-live-p inferior-haskell-cabal-buffer)
              inferior-haskell-cabal-buffer)
-        (and (not (local-variable-p 'inferior-haskell-cabal-buffer
-                                    ;; XEmacs needs this argument.
-                                    (current-buffer)))
-             (set (make-local-variable 'inferior-haskell-cabal-buffer)
-                  (haskell-cabal-find-file))))))
+        (if (local-variable-p 'inferior-haskell-cabal-buffer
+                              ;; XEmacs needs this argument.
+                              (current-buffer))
+            inferior-haskell-cabal-buffer
+          (set (make-local-variable 'inferior-haskell-cabal-buffer)
+               (haskell-cabal-find-file))))))
 
 (defun inferior-haskell-find-project-root (buf)
   (with-current-buffer buf
@@ -582,7 +591,7 @@ file doesn't exist, when do nothing, `fallback', which means only
 use the online documentation when the local file doesn't exist,
 or `always', meaning always use the online documentation,
 regardless of existance of local files.  Default is `fallback'."
-  :group 'haskell
+  :group 'inferior-haskell
   :type '(choice (const :tag "Never" never)
                  (const :tag "As fallback" fallback)
                  (const :tag "Always" always)))
@@ -592,12 +601,12 @@ regardless of existance of local files.  Default is `fallback'."
   "The base URL of the online libraries documentation.
 This will only be used if the value of `inferior-haskell-use-web-docs'
 is `always' or `fallback'."
-  :group 'haskell
+  :group 'inferior-haskell
   :type 'string)
 
 (defcustom haskell-package-manager-name "ghc-pkg"
   "Name of the program to consult regarding package details."
-  :group 'haskell
+  :group 'inferior-haskell
   :type 'string)
 
 (defcustom haskell-package-conf-file
@@ -610,7 +619,7 @@ is `always' or `fallback'."
     (error nil))
   "Where the package configuration file for the package manager resides.
 By default this is set to `ghc --print-libdir`/package.conf."
-  :group 'haskell
+  :group 'inferior-haskell
   :type 'string)
 
 (defun inferior-haskell-get-module (sym)
@@ -675,7 +684,7 @@ Insert the output into the current buffer."
                     temporary-file-directory)
   "Where to save the module -> package lookup table.
 Set this to nil to never cache to a file."
-  :group 'haskell
+  :group 'inferior-haskell
   :type '(choice (const :tag "Don't cache to file" nil) string))
 
 (defvar inferior-haskell-module-alist nil
