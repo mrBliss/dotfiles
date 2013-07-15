@@ -25,6 +25,13 @@
 ;; Rebuild TAGS on save
 (setq haskell-tags-on-save t)
 
+;; auto-complete for ghc-mod
+(ac-define-source ghc-mod
+  '((depends ghc)
+    (candidates . (ghc-select-completion-symbol))
+    (symbol . "s")
+    (document . haskell-doc-sym-doc)
+    (cache)))
 
 (defun haskell-indent-insert-comma ()
   "Insert a comma and indent.  Start a new line unless the current
@@ -112,6 +119,7 @@ is looked at."
   (define-key haskell-mode-map (kbd "C-c C-a") 'haskell-next-argument)
   (define-key haskell-mode-map (kbd "C-c C-n") 'haskell-implement-or-next-case)
   (define-key haskell-mode-map (kbd "C-c C-p") 'ghc-insert-pragma)
+  (setq ac-sources '(ac-source-ghc-mod ac-source-words-in-same-mode-buffers))
   (flymake-mode 1))
 
 (add-hook 'haskell-mode-hook 'haskell-hook)
