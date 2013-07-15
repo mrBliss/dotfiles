@@ -642,6 +642,10 @@ You can configure `comment-style' to change the way regions are commented."
 (autoload 'esup "esup" "Emacs Start Up Profiler." nil)
 
 
+;; Enhanced shell command completion
+(require 'pcmpl-args)
+
+
 ;; Simple HTTP server
 (autoload 'httpd-start "simple-httpd" nil t)
 
