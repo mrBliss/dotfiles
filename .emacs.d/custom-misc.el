@@ -638,6 +638,10 @@ You can configure `comment-style' to change the way regions are commented."
 (global-set-key (kbd "C-c %") 'vr/query-replace)
 
 
+;; Emacs Start Up Profiler
+(autoload 'esup "esup" "Emacs Start Up Profiler." nil)
+
+
 ;; Simple HTTP server
 (autoload 'httpd-start "simple-httpd" nil t)
 
