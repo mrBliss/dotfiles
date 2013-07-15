@@ -103,7 +103,7 @@ Otherwise, display it in another buffer."
 ;; Copy file to the other open dired folder by default
 (setq dired-dwim-target t
       ;; Dired ls switches
-      dired-listing-switches "--group-directories-first -alhvF"
+      dired-listing-switches "--group-directories-first -AlhvF"
       ;; Sane isearch
       dired-isearch-filenames 'dwim
       ;; Don't bother me
